@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Randevu Özeti</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4c025",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221e10",
+                        "surface-dark": "#2c281b", // Slightly lighter than background-dark for cards
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#181611] dark:text-white font-display min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-background-dark">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 justify-between border-b border-black/5 dark:border-white/5">
+<button class="text-black dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-black dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">
+            Randevu Özeti
+        </h2>
+</div>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col gap-6 p-4 pb-28">
+<!-- Barber/Staff Profile Card -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-black/5 dark:border-white/5">
+<div class="flex gap-4 items-center">
+<div class="relative shrink-0">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20 shadow-inner" data-alt="Modern barbershop logo with gold accents on dark background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBl_zevtGPF6GxExe6Z3usKX9Pv1rOCInJfdNgqIzkrCsnSx23XdyhVD5GtlHuts7z_T_GqrZolNJ9E07g7A8_pCHnC2SAS4t2BDJXo8JUh2Lg0FkQA-NOL2CSWAzFG66TpJJUnr04NpqJXfGMQWnGYu9mHRu2kuNF2w0tvS0x6XCB0jog8RAGPJGJIxPau8_o4cfk6gzlP2mNQCQOiUYNY4hcA3T7iRsolURYiXVDPFpRndugR69gSQJR7_tLYfxSz62es9mdLumE");'>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-background-dark rounded-full p-1 border-2 border-surface-dark">
+<span class="material-symbols-outlined text-[16px] block">verified</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<h3 class="text-lg font-bold leading-tight tracking-tight truncate">Golden Scissors</h3>
+<div class="flex items-center gap-1 mt-1 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-[16px]">person</span>
+<p class="text-sm font-medium truncate">Ahmet Yılmaz</p>
+</div>
+<div class="flex items-center gap-1 mt-0.5 text-gray-400 dark:text-gray-500">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<p class="text-xs truncate">Beşiktaş, İstanbul</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Date & Time Section -->
+<div class="flex flex-col gap-3">
+<h3 class="text-base font-bold px-1">Tarih ve Saat</h3>
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 flex items-center justify-between border border-black/5 dark:border-white/5">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<div>
+<p class="font-bold text-sm">14 Ekim, Cuma</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">2023</p>
+</div>
+</div>
+<div class="h-8 w-[1px] bg-gray-200 dark:bg-white/10 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-bold text-sm">15:30</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">45 Dk.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Services Section -->
+<div class="flex flex-col gap-3">
+<h3 class="text-base font-bold px-1">Hizmetler</h3>
+<div class="bg-white dark:bg-surface-dark rounded-xl overflow-hidden border border-black/5 dark:border-white/5 divide-y divide-gray-100 dark:divide-white/5">
+<!-- Service Item 1 -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-start gap-3">
+<div class="mt-0.5 text-gray-400">
+<span class="material-symbols-outlined text-[20px]">content_cut</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-medium">Saç Kesimi</span>
+<span class="text-xs text-gray-500 dark:text-gray-400">30 Dk.</span>
+</div>
+</div>
+<span class="font-bold text-primary">250 TL</span>
+</div>
+<!-- Service Item 2 -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-start gap-3">
+<div class="mt-0.5 text-gray-400">
+<span class="material-symbols-outlined text-[20px]">face</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-medium">Sakal Tıraşı</span>
+<span class="text-xs text-gray-500 dark:text-gray-400">15 Dk.</span>
+</div>
+</div>
+<span class="font-bold text-primary">100 TL</span>
+</div>
+</div>
+</div>
+<!-- Note Section -->
+<div class="flex flex-col gap-3">
+<h3 class="text-base font-bold px-1">Not Ekle</h3>
+<div class="relative">
+<textarea class="w-full bg-white dark:bg-surface-dark rounded-xl border border-black/5 dark:border-white/5 p-4 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none h-24" placeholder="Berbere özel bir isteğiniz var mı?"></textarea>
+<div class="absolute bottom-3 right-3 text-gray-400 pointer-events-none">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+</div>
+</div>
+</div>
+<!-- Payment Summary -->
+<div class="mt-2 p-4 rounded-xl bg-primary/5 border border-primary/20 flex flex-col gap-3">
+<div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300">
+<span>Ara Toplam</span>
+<span>350 TL</span>
+</div>
+<div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300">
+<span>Vergi &amp; Hizmet</span>
+<span>0 TL</span>
+</div>
+<div class="h-[1px] w-full bg-primary/20"></div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-lg">Toplam</span>
+<span class="font-bold text-xl text-primary">350 TL</span>
+</div>
+</div>
+</main>
+<!-- Sticky Footer CTA -->
+<div class="fixed bottom-0 left-0 w-full bg-background-light dark:bg-background-dark border-t border-black/5 dark:border-white/5 p-4 z-40 pb-8">
+<button class="w-full h-14 bg-primary hover:bg-[#dcae22] active:scale-[0.99] transition-all rounded-full flex items-center justify-center gap-2 shadow-lg shadow-primary/20 group">
+<span class="text-background-dark font-bold text-lg">Randevuyu Tamamla</span>
+<span class="material-symbols-outlined text-background-dark group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</body></html>

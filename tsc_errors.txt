@@ -1,0 +1,172 @@
+app/(auth)/login.tsx(5,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(auth)/register.tsx(4,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(business)/calendar.tsx(131,79): error TS2339: Property 'customerName' does not exist on type 'Appointment'.
+app/(business)/dashboard.tsx(83,68): error TS2339: Property 'total_price' does not exist on type 'never'.
+app/(business)/dashboard.tsx(94,35): error TS2339: Property 'customer_id' does not exist on type 'never'.
+app/(business)/dashboard.tsx(100,35): error TS2339: Property 'staff_id' does not exist on type 'never'.
+app/(business)/dashboard.tsx(105,27): error TS2339: Property 'id' does not exist on type 'never'.
+app/(business)/dashboard.tsx(106,48): error TS2339: Property 'full_name' does not exist on type 'never'.
+app/(business)/dashboard.tsx(108,35): error TS2339: Property 'start_time' does not exist on type 'never'.
+app/(business)/dashboard.tsx(109,42): error TS2339: Property 'name' does not exist on type 'never'.
+app/(business)/dashboard.tsx(110,31): error TS2339: Property 'status' does not exist on type 'never'.
+app/(business)/dashboard.tsx(147,32): error TS2339: Property 'name' does not exist on type 'User'.
+app/(business)/finance.tsx(110,32): error TS2339: Property 'customerName' does not exist on type 'Appointment'.
+app/(business)/finance.tsx(113,32): error TS2339: Property 'serviceName' does not exist on type 'Appointment'.
+app/(business)/service-detail.tsx(24,63): error TS2339: Property 'isActive' does not exist on type 'Service'.
+app/(business)/service-detail.tsx(55,49): error TS2345: Argument of type '{ name: string; description: string; price: number; duration: number; category: string; isActive: any; staffIds: string[]; }' is not assignable to parameter of type 'Omit<Service, "id" | "createdAt">'.
+  Property 'barberId' is missing in type '{ name: string; description: string; price: number; duration: number; category: string; isActive: any; staffIds: string[]; }' but required in type 'Omit<Service, "id" | "createdAt">'.
+app/(business)/service-detail.tsx(161,48): error TS2339: Property 'white' does not exist on type '{ readonly background: { readonly DEFAULT: "#0f0f0f"; readonly card: "#1a1a1a"; readonly light: "#f6f7f8"; readonly admin: "#0F172A"; readonly adminCard: "#1E293B"; }; readonly primary: { readonly DEFAULT: "#137fec"; readonly light: "#4b9ff2"; readonly dark: "#0b5cb0"; }; readonly text: { ...; }; readonly status: { ...'.
+app/(business)/services.tsx(83,52): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'SetStateAction<string>'.
+  Type 'undefined' is not assignable to type 'SetStateAction<string>'.
+app/(business)/staff-dashboard.tsx(29,32): error TS2339: Property 'name' does not exist on type 'User'.
+app/(business)/staff-detail.tsx(54,47): error TS2345: Argument of type '{ name: string; expertise: string[]; isActive: boolean; workingHours: { start: string; end: string; }; workingDays: string[]; rating: number; reviewCount: number; }' is not assignable to parameter of type 'Omit<Staff, "id" | "createdAt">'.
+  Property 'barberId' is missing in type '{ name: string; expertise: string[]; isActive: boolean; workingHours: { start: string; end: string; }; workingDays: string[]; rating: number; reviewCount: number; }' but required in type 'Omit<Staff, "id" | "createdAt">'.
+app/(business)/staff-detail.tsx(145,48): error TS2339: Property 'white' does not exist on type '{ readonly background: { readonly DEFAULT: "#0f0f0f"; readonly card: "#1a1a1a"; readonly light: "#f6f7f8"; readonly admin: "#0F172A"; readonly adminCard: "#1E293B"; }; readonly primary: { readonly DEFAULT: "#137fec"; readonly light: "#4b9ff2"; readonly dark: "#0b5cb0"; }; readonly text: { ...; }; readonly status: { ...'.
+app/(customer)/_layout.tsx(4,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/barber/[id].tsx(6,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/booking/booking-success.tsx(4,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/booking/booking-summary.tsx(5,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/booking/booking-summary.tsx(38,103): error TS2339: Property 'dark' does not exist on type '{ readonly DEFAULT: "#0f0f0f"; readonly card: "#1a1a1a"; readonly light: "#f6f7f8"; readonly admin: "#0F172A"; readonly adminCard: "#1E293B"; }'.
+app/(customer)/booking/booking-summary.tsx(154,92): error TS2339: Property 'dark' does not exist on type '{ readonly DEFAULT: "#0f0f0f"; readonly card: "#1a1a1a"; readonly light: "#f6f7f8"; readonly admin: "#0F172A"; readonly adminCard: "#1E293B"; }'.
+app/(customer)/booking/staff-selection.tsx(5,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/booking/time-slot-selection.tsx(5,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/favorites.tsx(74,63): error TS2322: Type '{ business: any; }' is not assignable to type 'IntrinsicAttributes & BarberCardProps'.
+  Property 'business' does not exist on type 'IntrinsicAttributes & BarberCardProps'.
+app/(customer)/favorites.tsx(75,25): error TS2322: Type '{ data: any[]; renderItem: ({ item }: ListRenderItemInfo<any>) => Element; estimatedItemSize: number; showsVerticalScrollIndicator: false; ListEmptyComponent: () => Element; contentContainerStyle: { ...; }; }' is not assignable to type 'IntrinsicAttributes & FlashListProps<any> & { ref?: Ref<FlashListRef<any>> | undefined; }'.
+  Property 'estimatedItemSize' does not exist on type 'IntrinsicAttributes & FlashListProps<any> & { ref?: Ref<FlashListRef<any>> | undefined; }'.
+app/(customer)/home.tsx(6,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/home.tsx(192,13): error TS2322: Type '{ data: Business[]; renderItem: ({ item }: ListRenderItemInfo<Business>) => Element; estimatedItemSize: number; showsVerticalScrollIndicator: false; contentContainerStyle: { ...; }; ListEmptyComponent: () => Element; }' is not assignable to type 'IntrinsicAttributes & FlashListProps<Business> & { ref?: Ref<FlashListRef<Business>> | undefined; }'.
+  Property 'estimatedItemSize' does not exist on type 'IntrinsicAttributes & FlashListProps<Business> & { ref?: Ref<FlashListRef<Business>> | undefined; }'.
+app/(customer)/profile.tsx(5,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+app/(customer)/search.tsx(149,19): error TS2322: Type '{ data: Business[]; renderItem: ({ item }: ListRenderItemInfo<Business>) => Element; estimatedItemSize: number; keyExtractor: (item: Business) => any; showsVerticalScrollIndicator: false; contentContainerStyle: { ...; }; }' is not assignable to type 'IntrinsicAttributes & FlashListProps<Business> & { ref?: Ref<FlashListRef<Business>> | undefined; }'.
+  Property 'estimatedItemSize' does not exist on type 'IntrinsicAttributes & FlashListProps<Business> & { ref?: Ref<FlashListRef<Business>> | undefined; }'.
+app/index.tsx(4,31): error TS2307: Cannot find module '@expo/vector-icons' or its corresponding type declarations.
+services/bookings.ts(189,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "bookings", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; service_id?: string | null | undefined; ... 8 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "bookings", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; service_id?: string | null | undefined; ... 8 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never[]'.
+      Type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; service_id?: string | null | undefined; ... 8 more ...; updated_at?: string | undefined; }' is missing the following properties from type 'never[]': length, pop, push, concat, and 35 more.
+services/bookings.ts(200,15): error TS2345: Argument of type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; service_id?: string | null | undefined; ... 8 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+services/bookings.ts(249,16): error TS2339: Property 'start_time' does not exist on type 'never'.
+services/bookings.ts(250,14): error TS2339: Property 'end_time' does not exist on type 'never'.
+services/businesses.ts(81,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "businesses", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; owner_id?: string | null | undefined; name: string; description?: string | null | undefined; address?: string | null | undefined; city?: string | null | undefined; ... 10 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "businesses", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; owner_id?: string | null | undefined; name: string; description?: string | null | undefined; address?: string | null | undefined; city?: string | null | undefined; ... 10 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never[]'.
+      Type '{ id?: string | undefined; owner_id?: string | null | undefined; name: string; description?: string | null | undefined; address?: string | null | undefined; city?: string | null | undefined; ... 10 more ...; updated_at?: string | undefined; }' is missing the following properties from type 'never[]': length, pop, push, concat, and 35 more.
+services/businesses.ts(92,15): error TS2345: Argument of type '{ id?: string | undefined; owner_id?: string | null | undefined; name?: string | undefined; description?: string | null | undefined; address?: string | null | undefined; city?: string | null | undefined; ... 10 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+services/businesses.ts(131,69): error TS2345: Argument of type '{ lat: number; long: number; radius_km: number; }' is not assignable to parameter of type 'undefined'.
+services/favorites.ts(47,8): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "favorites", never, "POST">', gave the following error.
+    Argument of type '{ user_id: string; business_id: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "favorites", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'user_id' does not exist in type 'never[]'.
+services/mockApi.ts(8,5): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'User'.
+services/mockApi.ts(17,5): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'User'.
+services/mockApi.ts(28,5): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'User'.
+services/mockApi.ts(39,5): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'User'.
+services/mockApi.ts(183,7): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'User'.
+services/reviews.ts(12,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "reviews", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; booking_id?: string | null | undefined; rating: number; comment?: string | ... 1 more ... | undefined; created_at?: string | undefined; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "reviews", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; booking_id?: string | null | undefined; rating: number; comment?: string | ... 1 more ... | undefined; created_at?: string | undefined; updated_at?: string | undefined; }' is not assignable to parameter of type 'never[]'.
+      Type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; booking_id?: string | null | undefined; rating: number; comment?: string | ... 1 more ... | undefined; created_at?: string | undefined; updated_at?: string | undefined; }' is missing the following properties from type 'never[]': length, pop, push, concat, and 35 more.
+services/reviews.ts(23,15): error TS2345: Argument of type '{ id?: string | undefined; customer_id?: string | null | undefined; business_id?: string | null | undefined; staff_id?: string | null | undefined; booking_id?: string | null | undefined; rating?: number | undefined; comment?: string | ... 1 more ... | undefined; created_at?: string | undefined; updated_at?: string |...' is not assignable to parameter of type 'never'.
+services/servicesApi.ts(54,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "services", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; business_id?: string | null | undefined; category_id?: string | null | undefined; name: string; description?: string | null | undefined; duration_minutes: number; price: number; is_active?: boolean | undefined; created_at?: string | undefined; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "services", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; business_id?: string | null | undefined; category_id?: string | null | undefined; name: string; description?: string | null | undefined; duration_minutes: number; price: number; is_active?: boolean | undefined; created_at?: string | undefined; updated_at?: string | undefined; }' is not assignable to parameter of type 'never[]'.
+      Type '{ id?: string | undefined; business_id?: string | null | undefined; category_id?: string | null | undefined; name: string; description?: string | null | undefined; duration_minutes: number; price: number; is_active?: boolean | undefined; created_at?: string | undefined; updated_at?: string | undefined; }' is missing the following properties from type 'never[]': length, pop, push, concat, and 35 more.
+services/servicesApi.ts(65,15): error TS2345: Argument of type '{ id?: string | undefined; business_id?: string | null | undefined; category_id?: string | null | undefined; name?: string | undefined; description?: string | null | undefined; duration_minutes?: number | undefined; price?: number | undefined; is_active?: boolean | undefined; created_at?: string | undefined; updated...' is not assignable to parameter of type 'never'.
+services/servicesApi.ts(77,15): error TS2345: Argument of type '{ is_active: boolean; }' is not assignable to parameter of type 'never'.
+services/servicesApi.ts(96,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "service_categories", never, "POST">', gave the following error.
+    Argument of type 'Omit<{ id: string; name: string; icon: string | null; display_order: number; created_at: string; }, "id" | "created_at">' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "service_categories", never, "POST">', gave the following error.
+    Argument of type 'Omit<{ id: string; name: string; icon: string | null; display_order: number; created_at: string; }, "id" | "created_at">' is not assignable to parameter of type 'never[]'.
+      Type 'Omit<{ id: string; name: string; icon: string | null; display_order: number; created_at: string; }, "id" | "created_at">' is missing the following properties from type 'never[]': length, pop, push, concat, and 35 more.
+services/staff.ts(65,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "business_staff", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; business_id?: string | null | undefined; user_id?: string | null | undefined; name: string; title?: string | null | undefined; avatar_url?: string | null | undefined; ... 5 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "business_staff", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; business_id?: string | null | undefined; user_id?: string | null | undefined; name: string; title?: string | null | undefined; avatar_url?: string | null | undefined; ... 5 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never[]'.
+      Type '{ id?: string | undefined; business_id?: string | null | undefined; user_id?: string | null | undefined; name: string; title?: string | null | undefined; avatar_url?: string | null | undefined; ... 5 more ...; updated_at?: string | undefined; }' is missing the following properties from type 'never[]': length, pop, push, concat, and 35 more.
+services/staff.ts(76,15): error TS2345: Argument of type '{ id?: string | undefined; business_id?: string | null | undefined; user_id?: string | null | undefined; name?: string | undefined; title?: string | null | undefined; avatar_url?: string | null | undefined; ... 5 more ...; updated_at?: string | undefined; }' is not assignable to parameter of type 'never'.
+services/staff.ts(88,15): error TS2345: Argument of type '{ is_active: boolean; }' is not assignable to parameter of type 'never'.
+services/staff.ts(113,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "staff_working_hours", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; staff_id?: string | null | undefined; day_of_week: number; start_time: string; end_time: string; is_available?: boolean | undefined; created_at?: string | undefined; }[]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "staff_working_hours", never, "POST">', gave the following error.
+    Argument of type '{ id?: string | undefined; staff_id?: string | null | undefined; day_of_week: number; start_time: string; end_time: string; is_available?: boolean | undefined; created_at?: string | undefined; }[]' is not assignable to parameter of type 'never[]'.
+      Type '{ id?: string | undefined; staff_id?: string | null | undefined; day_of_week: number; start_time: string; end_time: string; is_available?: boolean | undefined; created_at?: string | undefined; }' is not assignable to type 'never'.
+services/staff.ts(130,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "staff_services", never, "POST">', gave the following error.
+    Argument of type '{ staff_id: string; service_id: string; }[]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "staff_services", never, "POST">', gave the following error.
+    Argument of type '{ staff_id: string; service_id: string; }[]' is not assignable to parameter of type 'never[]'.
+      Type '{ staff_id: string; service_id: string; }' is not assignable to type 'never'.
+stores/adminStore.ts(62,75): error TS2339: Property 'total_price' does not exist on type 'never'.
+stores/adminStore.ts(131,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "businesses", never, "POST">', gave the following error.
+    Argument of type '{ owner_id: string; cover_url: string | undefined; created_at: string; is_active: boolean; id?: string | undefined; name?: string | undefined; description?: string | undefined; address?: string | undefined; ... 7 more ...; createdAt?: string | undefined; }[]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "businesses", never, "POST">', gave the following error.
+    Type '{ owner_id: string; cover_url: string | undefined; created_at: string; is_active: boolean; id?: string | undefined; name?: string | undefined; description?: string | undefined; address?: string | undefined; ... 7 more ...; createdAt?: string | undefined; }' is not assignable to type 'never'.
+stores/adminStore.ts(150,9): error TS2698: Spread types may only be created from object types.
+stores/adminStore.ts(151,26): error TS2339: Property 'cover_url' does not exist on type 'never'.
+stores/authStore.ts(48,17): error TS2741: Property 'createdAt' is missing in type '{ id: any; email: any; fullName: any; phone: any; avatar: any; role: Role; }' but required in type 'User'.
+stores/authStore.ts(49,25): error TS2339: Property 'id' does not exist on type 'never'.
+stores/authStore.ts(50,28): error TS2339: Property 'email' does not exist on type 'never'.
+stores/authStore.ts(51,31): error TS2339: Property 'full_name' does not exist on type 'never'.
+stores/authStore.ts(52,28): error TS2339: Property 'phone' does not exist on type 'never'.
+stores/authStore.ts(53,29): error TS2339: Property 'avatar_url' does not exist on type 'never'.
+stores/authStore.ts(54,27): error TS2339: Property 'role' does not exist on type 'never'.
+stores/authStore.ts(79,19): error TS2741: Property 'createdAt' is missing in type '{ id: any; email: any; fullName: any; phone: any; avatar: any; role: Role; }' but required in type 'User'.
+stores/authStore.ts(80,27): error TS2339: Property 'id' does not exist on type 'never'.
+stores/authStore.ts(81,30): error TS2339: Property 'email' does not exist on type 'never'.
+stores/authStore.ts(82,33): error TS2339: Property 'full_name' does not exist on type 'never'.
+stores/authStore.ts(83,30): error TS2339: Property 'phone' does not exist on type 'never'.
+stores/authStore.ts(84,31): error TS2339: Property 'avatar_url' does not exist on type 'never'.
+stores/authStore.ts(85,29): error TS2339: Property 'role' does not exist on type 'never'.
+stores/authStore.ts(132,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "profiles", never, "POST">', gave the following error.
+    Argument of type '{ id: any; email: string; full_name: string; phone: string | null; role: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "profiles", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'id' does not exist in type 'never[]'.
+stores/authStore.ts(143,13): error TS2741: Property 'createdAt' is missing in type '{ id: any; email: string; fullName: string; phone: string; role: "customer"; }' but required in type 'User'.
+stores/authStore.ts(188,13): error TS2741: Property 'createdAt' is missing in type '{ id: any; email: any; fullName: any; phone: any; avatar: any; role: Role; }' but required in type 'User'.
+stores/authStore.ts(189,21): error TS2339: Property 'id' does not exist on type 'never'.
+stores/authStore.ts(190,24): error TS2339: Property 'email' does not exist on type 'never'.
+stores/authStore.ts(191,27): error TS2339: Property 'full_name' does not exist on type 'never'.
+stores/authStore.ts(192,24): error TS2339: Property 'phone' does not exist on type 'never'.
+stores/authStore.ts(193,25): error TS2339: Property 'avatar_url' does not exist on type 'never'.
+stores/authStore.ts(194,23): error TS2339: Property 'role' does not exist on type 'never'.
+stores/authStore.ts(242,17): error TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
+stores/bookingStore.ts(111,49): error TS2339: Property 'createBooking' does not exist on type 'typeof import("C:/Users/Mustafa/source/repos/breberber-app/services/bookings")'.
+stores/bookingStore.ts(138,50): error TS2339: Property 'getUserBookings' does not exist on type 'typeof import("C:/Users/Mustafa/source/repos/breberber-app/services/bookings")'.
+stores/bookingStore.ts(148,29): error TS2339: Property 'cancelBooking' does not exist on type 'typeof import("C:/Users/Mustafa/source/repos/breberber-app/services/bookings")'.
+stores/businessStore.ts(2,44): error TS2305: Module '"@/types"' has no exported member 'Business'.
+stores/businessStore.ts(37,3): error TS2300: Duplicate identifier 'removeService'.
+stores/businessStore.ts(39,3): error TS2300: Duplicate identifier 'removeService'.
+stores/businessStore.ts(320,77): error TS2353: Object literal may only specify known properties, and 'date' does not exist in type '{ status?: "pending" | "confirmed" | "completed" | "cancelled" | undefined; startDate?: string | undefined; endDate?: string | undefined; staffId?: string | undefined; }'.
+stores/businessStore.ts(467,72): error TS2339: Property 'total_price' does not exist on type 'never'.
+stores/businessStore.ts(470,59): error TS2339: Property 'customer_id' does not exist on type 'never'.
+stores/businessStore.ts(474,15): error TS2339: Property 'id' does not exist on type 'never'.
+stores/businessStore.ts(475,23): error TS2339: Property 'business_id' does not exist on type 'never'.
+stores/businessStore.ts(476,20): error TS2339: Property 'staff_id' does not exist on type 'never'.
+stores/businessStore.ts(477,22): error TS2339: Property 'service_id' does not exist on type 'never'.
+stores/businessStore.ts(478,23): error TS2339: Property 'customer_id' does not exist on type 'never'.
+stores/businessStore.ts(479,17): error TS2339: Property 'booking_date' does not exist on type 'never'.
+stores/businessStore.ts(480,22): error TS2339: Property 'start_time' does not exist on type 'never'.
+stores/businessStore.ts(481,20): error TS2339: Property 'end_time' does not exist on type 'never'.
+stores/businessStore.ts(482,19): error TS2339: Property 'status' does not exist on type 'never'.
+stores/businessStore.ts(483,23): error TS2339: Property 'total_price' does not exist on type 'never'.
+stores/businessStore.ts(484,26): error TS2339: Property 'total_duration' does not exist on type 'never'.
+stores/businessStore.ts(485,25): error TS2339: Property 'profiles' does not exist on type 'never'.
+stores/businessStore.ts(486,24): error TS2339: Property 'services' does not exist on type 'never'.
+stores/businessStore.ts(487,22): error TS2339: Property 'business_staff' does not exist on type 'never'.
+stores/businessStore.ts(496,11): error TS2322: Type '{ id: any; businessId: any; staffId: any; serviceId: any; customerId: any; date: any; startTime: any; endTime: any; status: any; totalPrice: any; totalDuration: any; customerName: any; serviceName: any; staffName: any; }[]' is not assignable to type 'Appointment[]'.
+  Type '{ id: any; businessId: any; staffId: any; serviceId: any; customerId: any; date: any; startTime: any; endTime: any; status: any; totalPrice: any; totalDuration: any; customerName: any; serviceName: any; staffName: any; }' is missing the following properties from type 'Appointment': barberId, serviceIds, createdAt

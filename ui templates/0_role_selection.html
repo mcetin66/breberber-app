@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rol Seçimi | BarberConnect</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Subtle backdrop gradient for depth */
+        .backdrop-gradient {
+            background: radial-gradient(circle at 50% 0%, rgba(19, 127, 236, 0.15) 0%, rgba(16, 25, 34, 0) 50%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white overflow-hidden antialiased selection:bg-primary selection:text-white">
+<div class="relative flex flex-col min-h-screen w-full backdrop-gradient justify-center">
+<!-- Abstract Background Pattern -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-overlay">
+<img class="w-full h-full object-cover" data-alt="Abstract dark smoke fluid background texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUbt2vZPWm4ZJWqr74byYYO1h3sPKxiPNAEcnp_-IdWYBP-yh7jB3pJiqJ4nD5ZeZFhJPPTMMegB7cS48LP_FUGv2Qst-AAh-Uc0GJvQ3aDFzDTTF6tBnJpTLHxdW48to615FtJjGeBea19Mjp6YodpjBTC3XdhLx9kx2RbEAviEt1surcXiSaqP2W679wYOeGnjNDgmHZ6VeYQVMRY3zBVhQGLatExpVhwkm9WoksmoBgmzmOC_qRGZz11HXjP6WsOlJi6h5Mfn8"/>
+</div>
+<!-- Main Content Container -->
+<div class="relative z-10 w-full max-w-md mx-auto px-6 py-8 flex flex-col items-center justify-between min-h-[600px]">
+<!-- Top Section: Logo & Welcome -->
+<div class="flex flex-col items-center w-full mt-10">
+<div class="w-20 h-20 bg-background-dark border border-white/10 rounded-full flex items-center justify-center shadow-2xl mb-8 group">
+<span class="material-symbols-outlined text-primary text-4xl group-hover:scale-110 transition-transform duration-300">content_cut</span>
+</div>
+<h1 class="text-white tracking-tight text-[32px] font-bold leading-tight text-center">Hoş Geldiniz</h1>
+<p class="text-gray-400 text-base font-normal leading-normal pt-2 text-center max-w-[280px]">
+                    Lütfen devam etmek için rolünüzü seçin.
+                </p>
+</div>
+<!-- Middle Section: Role Selection Cards -->
+<div class="w-full flex flex-col gap-4 my-auto py-8">
+<!-- Customer Button / Card -->
+<button class="relative w-full group overflow-hidden bg-[#1a232d] hover:bg-[#1e2a36] border border-white/5 hover:border-primary/50 rounded transition-all duration-300 p-1">
+<div class="flex items-center p-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#253341] text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</div>
+<div class="ml-4 flex flex-col items-start text-left flex-1">
+<span class="text-white text-lg font-bold leading-tight">Müşteri</span>
+<span class="text-gray-400 text-sm mt-0.5">Müşteri Olarak Devam Et</span>
+</div>
+<div class="text-gray-600 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+</div>
+</button>
+<!-- Business Button / Card -->
+<button class="relative w-full group overflow-hidden bg-[#1a232d] hover:bg-[#1e2a36] border border-white/5 hover:border-primary/50 rounded transition-all duration-300 p-1">
+<div class="flex items-center p-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#253341] text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined text-[24px]">storefront</span>
+</div>
+<div class="ml-4 flex flex-col items-start text-left flex-1">
+<span class="text-white text-lg font-bold leading-tight">Berber / İşletme</span>
+<span class="text-gray-400 text-sm mt-0.5">İşletme Olarak Devam Et</span>
+</div>
+<div class="text-gray-600 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+</div>
+</button>
+</div>
+<!-- Footer: Legal Links -->
+<div class="w-full text-center pb-6">
+<p class="text-xs text-gray-500 font-medium">
+                    Devam ederek 
+                    <a class="text-gray-300 hover:text-primary transition-colors" href="#">Kullanım Koşulları</a> ve 
+                    <a class="text-gray-300 hover:text-primary transition-colors" href="#">Gizlilik Politikası</a>'nı kabul etmiş olursunuz.
+                </p>
+</div>
+</div>
+</div>
+</body></html>

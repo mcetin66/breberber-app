@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Kontrol Paneli</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-dark": "#1C252E",
+                        "text-secondary": "#9dabb9",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark shadow-xl">
+<!-- Header -->
+<div class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800">
+<div class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Admin Paneli</h2>
+<div class="flex w-12 items-center justify-end">
+<div class="h-10 w-10 rounded-full bg-cover bg-center border-2 border-primary" data-alt="Admin User Profile Picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5K03eDNqcUGuU8hJqS1tJYRD3AUDx-0D4qi3MolPAo82FHv7U9sc_4g5L43B7cecQnUwUZ57Vas3qNds9EIbKtTMyXG1dt1qPtj6iiBkBHvD05IcPMQBQzHgg6cKNc6kTeUbmrbeMlBLdmb9JrrUhco13mzCEllhv5nDTh90RcdNfrgTm4DJXA7oNacyujf16whOUbFjGA60_bAa3xI70wtmi4SYGYee0DH-LOCs2-l-DzphV8nTLr65jjCEDv3eG2BL8mNur4sw');"></div>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto pb-24">
+<!-- Welcome Section -->
+<div class="px-4 py-5">
+<h1 class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">Hoşgeldin, Admin 👋</h1>
+<p class="text-text-secondary text-sm mt-1">İşte platformunun güncel durumu.</p>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 gap-4 px-4">
+<!-- Aktif Berberler -->
+<div class="col-span-2 sm:col-span-1 flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-between">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-primary">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<span class="flex items-center text-xs font-medium text-green-500 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-xs mr-0.5">trending_up</span> +5%
+                        </span>
+</div>
+<p class="text-text-secondary text-sm font-medium mt-2">Aktif Berberler</p>
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">124</p>
+</div>
+<!-- Aktif Abonelikler -->
+<div class="col-span-1 flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-between">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">payments</span>
+</div>
+</div>
+<p class="text-text-secondary text-sm font-medium mt-2">Aktif Abonelikler</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">85</p>
+<p class="text-green-500 text-xs font-medium leading-normal">+2% geçen aya göre</p>
+</div>
+<!-- Bugünkü Randevular -->
+<div class="col-span-1 flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-between">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">calendar_clock</span>
+</div>
+</div>
+<p class="text-text-secondary text-sm font-medium mt-2">Randevular</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">312</p>
+<p class="text-green-500 text-xs font-medium leading-normal">+12% bugüne özel</p>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="px-4 py-6">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight mb-4">Hızlı İşlemler</h2>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center gap-2 cursor-pointer rounded-xl h-24 bg-primary text-white shadow-lg shadow-blue-900/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl">content_cut</span>
+<span class="text-sm font-bold">Berberleri Yönet</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 cursor-pointer rounded-xl h-24 bg-surface-dark dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white active:scale-95 transition-transform hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-3xl text-primary">price_change</span>
+<span class="text-sm font-bold">Planları Yönet</span>
+</button>
+</div>
+</div>
+<!-- Chart Section (Revenue Summary) -->
+<div class="px-4 pb-4">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Gelir Özeti</h2>
+<button class="text-primary text-sm font-medium">Raporu Gör</button>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-xl p-5 border border-gray-100 dark:border-gray-800">
+<div class="flex items-end gap-1 h-32 w-full justify-between px-2">
+<!-- Mock Chart Bars -->
+<div class="w-2 bg-gray-200 dark:bg-gray-700 rounded-t h-[40%]"></div>
+<div class="w-2 bg-gray-200 dark:bg-gray-700 rounded-t h-[60%]"></div>
+<div class="w-2 bg-gray-200 dark:bg-gray-700 rounded-t h-[45%]"></div>
+<div class="w-2 bg-gray-200 dark:bg-gray-700 rounded-t h-[30%]"></div>
+<div class="w-2 bg-gray-200 dark:bg-gray-700 rounded-t h-[70%]"></div>
+<div class="w-2 bg-gray-200 dark:bg-gray-700 rounded-t h-[55%]"></div>
+<div class="w-2 bg-gray-200 dark:bg-gray-700 rounded-t h-[40%]"></div>
+<div class="w-2 bg-primary/50 rounded-t h-[65%]"></div>
+<div class="w-2 bg-primary/70 rounded-t h-[80%]"></div>
+<div class="w-2 bg-primary rounded-t h-[95%] shadow-[0_0_10px_rgba(19,127,236,0.5)]"></div>
+</div>
+<div class="flex justify-between mt-3 text-xs text-text-secondary font-medium">
+<span>1 Haz</span>
+<span>10 Haz</span>
+<span>20 Haz</span>
+<span>Bugün</span>
+</div>
+<div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
+<div>
+<p class="text-text-secondary text-xs">Toplam Gelir</p>
+<p class="text-slate-900 dark:text-white font-bold text-lg">₺124,500</p>
+</div>
+<span class="flex items-center text-xs font-medium text-green-500 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+                            +12.5%
+                        </span>
+</div>
+</div>
+</div>
+<!-- Recent Activity List -->
+<div class="px-4 pb-6">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight mb-4">Son Aktiviteler</h2>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 bg-white dark:bg-surface-dark p-3 rounded-lg border border-gray-100 dark:border-gray-800">
+<div class="h-10 w-10 rounded-full bg-cover bg-center" data-alt="New Barber Registration Profile" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAsa274L4By-Xuuimhzww6USVVr-tCvbk3kWyDHbmoUpiG2Y9SJc3rVrPcldkJf-kXlCS3jkC5ZWvql3ywYwy0DiWDl3on5IJwo0MvC_BITucyekLJQMu7rSTrwRdhTt0KYLsphwjyxYcTluJ-CmQ78jJuSZ-OP8hWb4S2ufVzP6W2a3dmkcXDOyJkv2kcVocooSGKIQh8s5UiOhqOQ-5l3YWCirSGgo8TEo_Olhznf2hIT0wSjnbIk-AkxAeipeuqv0SeV7MFvOAw');"></div>
+<div class="flex-1">
+<p class="text-slate-900 dark:text-white text-sm font-bold">Yeni Berber Kaydı</p>
+<p class="text-text-secondary text-xs">Makas &amp; Tarak Salonu sisteme katıldı.</p>
+</div>
+<span class="text-text-secondary text-xs">2d</span>
+</div>
+<div class="flex items-center gap-3 bg-white dark:bg-surface-dark p-3 rounded-lg border border-gray-100 dark:border-gray-800">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 text-green-600">
+<span class="material-symbols-outlined text-lg">verified</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-900 dark:text-white text-sm font-bold">Abonelik Yenileme</p>
+<p class="text-text-secondary text-xs">Gold Plan - Barber King</p>
+</div>
+<span class="text-text-secondary text-xs">1s</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-20 bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 px-4 py-2">
+<div class="flex justify-around items-center">
+<button class="flex flex-col items-center gap-1 p-2 text-primary">
+<span class="material-symbols-outlined text-2xl filled">dashboard</span>
+<span class="text-[10px] font-medium">Panel</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-text-secondary hover:text-slate-900 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined text-2xl">group</span>
+<span class="text-[10px] font-medium">Kullanıcılar</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-text-secondary hover:text-slate-900 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+<span class="text-[10px] font-medium">Finans</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-text-secondary hover:text-slate-900 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<span class="text-[10px] font-medium">Ayarlar</span>
+</button>
+</div>
+<!-- iOS Home Indicator Safe Area Fix -->
+<div class="h-4 w-full"></div>
+</div>
+</div>
+</body></html>

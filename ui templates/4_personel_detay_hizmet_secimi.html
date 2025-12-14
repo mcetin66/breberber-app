@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Personel Detay &amp; Hizmet Seçimi</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922", // Using the theme default but overriding with pure black for this specific design requirement where needed
+                        "surface-dark": "#1a1a1a",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "2xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for clean mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-black font-display antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-white dark:bg-black shadow-xl overflow-hidden">
+<!-- Header / Navigation -->
+<div class="fixed top-0 left-0 right-0 z-20 flex items-center justify-between p-4 bg-white/80 dark:bg-black/80 backdrop-blur-md max-w-md mx-auto">
+<button class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-surface-dark text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex gap-4">
+<button class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-surface-dark text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-surface-dark text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto pb-32 pt-20">
+<!-- Profile Header -->
+<div class="flex flex-col items-center px-4 pt-4 pb-8">
+<div class="relative mb-4">
+<div class="size-32 rounded-full border-4 border-white dark:border-surface-dark shadow-2xl overflow-hidden bg-gray-200" data-alt="Portrait of a professional barber with a beard" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDU6IKH_YkM-AaMfodbGhu5WDzJ-l_p3IfaNewGey-TBcWHvzIJDVult_XUC9UE4MkNgGCFu5Oyv7AeRQ3TME7dZfOvtFR_WoUt36IImLHRDB5Dn7rVeekf8cnz5dIvLIHNYcaHhvRNpZOu3FMW5p8_wi8j8Hr1R0D-zXZgrfEQNhfpvBQ31z5t88NtbSmtdfVG_PirPnbuAh03omi3jk4pNnVBG4Yzkhbv7JYYNhJB90Q7cxbsIgJjzwa9W9ZbHfRlOBSLi8aoPVA'); background-size: cover; background-position: center;">
+</div>
+<div class="absolute bottom-1 right-1 bg-green-500 border-2 border-white dark:border-black size-5 rounded-full"></div>
+</div>
+<h1 class="text-2xl font-bold text-gray-900 dark:text-white text-center mb-1">Ahmet Yılmaz</h1>
+<p class="text-sm font-medium text-gray-500 dark:text-gray-400 text-center uppercase tracking-wider mb-4">Master Barber</p>
+<div class="flex gap-6 text-center">
+<div>
+<p class="text-lg font-bold text-gray-900 dark:text-white">4.9</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">Puan</p>
+</div>
+<div class="w-px h-full bg-gray-200 dark:bg-gray-800"></div>
+<div>
+<p class="text-lg font-bold text-gray-900 dark:text-white">1.2k</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">İşlem</p>
+</div>
+<div class="w-px h-full bg-gray-200 dark:bg-gray-800"></div>
+<div>
+<p class="text-lg font-bold text-gray-900 dark:text-white">5 yıl</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">Deneyim</p>
+</div>
+</div>
+</div>
+<!-- Services Title -->
+<div class="px-6 pb-4">
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Hizmetler</h2>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Lütfen istediğiniz işlemleri seçin</p>
+</div>
+<!-- Services List -->
+<div class="px-4 flex flex-col gap-3">
+<!-- Service Item 1 (Selected) -->
+<label class="group relative flex items-center justify-between bg-white dark:bg-surface-dark p-4 rounded-xl border-2 border-primary cursor-pointer transition-all shadow-lg shadow-primary/10">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">content_cut</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-bold text-gray-900 dark:text-white">Saç Kesimi</span>
+<span class="text-sm text-gray-500 dark:text-gray-400">30 - 45 dk</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-base font-bold text-primary">250₺</span>
+<div class="relative flex items-center justify-center">
+<input checked="" class="peer appearance-none size-6 border-2 border-gray-300 dark:border-gray-600 rounded-full checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-white text-[18px] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
+</div>
+</div>
+</label>
+<!-- Service Item 2 (Selected) -->
+<label class="group relative flex items-center justify-between bg-white dark:bg-surface-dark p-4 rounded-xl border-2 border-primary cursor-pointer transition-all shadow-lg shadow-primary/10">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">face</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-bold text-gray-900 dark:text-white">Sakal Tıraşı</span>
+<span class="text-sm text-gray-500 dark:text-gray-400">15 - 20 dk</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-base font-bold text-primary">150₺</span>
+<div class="relative flex items-center justify-center">
+<input checked="" class="peer appearance-none size-6 border-2 border-gray-300 dark:border-gray-600 rounded-full checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-white text-[18px] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
+</div>
+</div>
+</label>
+<!-- Service Item 3 -->
+<label class="group relative flex items-center justify-between bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 cursor-pointer transition-all">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center size-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">spa</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-bold text-gray-900 dark:text-white">Cilt Bakımı</span>
+<span class="text-sm text-gray-500 dark:text-gray-400">30 dk</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-base font-bold text-gray-900 dark:text-white">300₺</span>
+<div class="relative flex items-center justify-center">
+<input class="peer appearance-none size-6 border-2 border-gray-300 dark:border-gray-600 rounded-full checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-white text-[18px] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
+</div>
+</div>
+</label>
+<!-- Service Item 4 -->
+<label class="group relative flex items-center justify-between bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 cursor-pointer transition-all">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center size-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">wash</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-bold text-gray-900 dark:text-white">Saç Yıkama</span>
+<span class="text-sm text-gray-500 dark:text-gray-400">10 dk</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-base font-bold text-gray-900 dark:text-white">50₺</span>
+<div class="relative flex items-center justify-center">
+<input class="peer appearance-none size-6 border-2 border-gray-300 dark:border-gray-600 rounded-full checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-white text-[18px] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Empty State (Hidden but structured if list was empty) -->
+<div class="hidden flex-col items-center justify-center py-10">
+<div class="size-16 rounded-full bg-gray-100 dark:bg-surface-dark flex items-center justify-center mb-4 text-gray-400">
+<span class="material-symbols-outlined text-3xl">block</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400">Hizmet yok</p>
+</div>
+</div>
+<!-- Sticky Footer -->
+<div class="fixed bottom-0 left-0 right-0 z-30 bg-white/90 dark:bg-[#101922]/90 backdrop-blur-lg border-t border-gray-200 dark:border-gray-800 p-4 pb-8 max-w-md mx-auto">
+<div class="flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">Toplam (2 İşlem)</span>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold text-gray-900 dark:text-white">400₺</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">~60 dk</span>
+</div>
+</div>
+<button class="flex-1 bg-primary hover:bg-blue-600 text-white font-bold h-14 rounded-full shadow-lg shadow-blue-500/30 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span>Uygun Saat Seç</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>
