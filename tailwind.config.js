@@ -8,25 +8,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // EXACT PORT FROM HTML TEMPLATE
+        "primary": "#137fec",
+        "background-light": "#f6f7f8",
+        "background-dark": "#101922",
+        "surface-dark": "#1C2630",
+        "surface-light": "#FFFFFF",
+
+        // Mapping for legacy/shared components if needed
         background: {
-          DEFAULT: '#0f0f0f',
-          card: '#1a1a1a',
-        },
-        primary: {
-          DEFAULT: '#137fec',
-          light: '#4b9ff2',
-          dark: '#0b5cb0',
+          DEFAULT: '#101922', // Match background-dark
+          card: '#1C2630',    // Match surface-dark
+          subtle: '#293038',  // Border color derived from template
         },
         text: {
           DEFAULT: '#FFFFFF',
-          secondary: '#B0B0B0',
-          muted: '#6B7280',
-        },
-        status: {
-          success: '#10B981',
-          error: '#EF4444',
-          warning: '#F59E0B',
-          info: '#3B82F6',
+          secondary: '#9dabb9',
+          muted: '#6a7785',
         },
       },
       fontFamily: {
@@ -34,6 +32,7 @@ module.exports = {
         'poppins-medium': ['Poppins_500Medium'],
         'poppins-semibold': ['Poppins_600SemiBold'],
         'poppins-bold': ['Poppins_700Bold'],
+        // 'display': ['Manrope'] // We stick to Poppins as we likely don't have Manrope font files loaded
       },
     },
   },

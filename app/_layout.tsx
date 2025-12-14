@@ -64,7 +64,7 @@ export default function RootLayout() {
 
 
     // Allow access to shared/public routes regardless of role
-    const isPublicRoute = segments[0] === 'barber' || segments[0] === 'detail';
+    const isPublicRoute = segments[0] === 'barber' || segments[0] === 'detail' || segments[0] === 'business-role';
     if (isPublicRoute) return;
 
     if (!isAuthenticated && !inAuthGroup && !inAdminGroup && segments[0] !== undefined) {

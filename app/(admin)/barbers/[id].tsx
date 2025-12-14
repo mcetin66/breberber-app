@@ -3,13 +3,14 @@ import { View, Text, ScrollView, Pressable, Image, Modal, TextInput, Platform, K
 import { FormModal } from '@/components/common/FormModal';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ChevronLeft, TrendingUp, Users, Calendar, DollarSign, Trash2, X, Check, MoreVertical, PenSquare, MapPin, Crown, Instagram, Upload } from 'lucide-react-native';
+import { ChevronLeft, TrendingUp, Users, Calendar, DollarSign, Trash2, X, Check, MoreVertical, PenSquare, MapPin, Crown, Instagram, Upload, UserCog } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
 import type { Barber } from '@/types';
 import { SUBSCRIPTION_PLANS, getPlanDetails } from '@/constants/plans';
 import { useAdminStore } from '@/stores/adminStore';
+import { useAuthStore } from '@/stores/authStore';
 import Toast from 'react-native-toast-message';
 import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
@@ -257,6 +258,7 @@ export default function AdminBarberDetailScreen() {
 
             <Animated.ScrollView
                 className="flex-1"
+                contentContainerStyle={{ paddingBottom: 120 }}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                     { useNativeDriver: false } // logical property animation (backgroundColor) needs false
@@ -399,6 +401,20 @@ export default function AdminBarberDetailScreen() {
                 {/* 5. Actions */}
                 <View className="p-4 mb-8">
                     <Text className="text-white text-base font-bold mb-4">İşlemler</Text>
+
+                    {/* Impersonate Button */}
+                    <Pressable
+                        onPress={() => {
+                            if (!barber) return;
+                            const { impersonateBusiness } = useAuthStore.getState();
+                            impersonateBusiness(barber.id, barber.name);
+                            router.replace('/(business)/dashboard');
+                        }}
+                        className="bg-[#10B981] rounded-xl py-4 flex-row items-center justify-center gap-3 mb-3 shadow-lg shadow-green-500/20 active:opacity-90"
+                    >
+                        <UserCog size={18} color="white" />
+                        <Text className="text-white font-bold text-sm uppercase tracking-wide">Bu İşletmeyi Yönet</Text>
+                    </Pressable>
 
                     {/* Full Width Blue Button */}
                     <Pressable

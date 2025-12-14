@@ -115,7 +115,7 @@ export default function AdminBarbersScreen() {
 
                     <View className="flex-1 ml-4 justify-between min-h-[64px]">
                         <View>
-                            <Text className="text-white text-lg font-bold leading-tight mb-1">{item.name}</Text>
+                            <Text className="text-white text-lg font-bold leading-tight mb-1" numberOfLines={1}>{item.name}</Text>
                             <View className="flex-row items-center">
                                 <MapPin size={12} color="#94A3B8" />
                                 <Text className="text-slate-400 text-xs ml-1 font-medium">{item.city || 'Konum Belirtilmemiş'}</Text>
@@ -129,41 +129,44 @@ export default function AdminBarbersScreen() {
                             </View>
                         </View>
 
-                        <View className="flex-row items-center mt-2 flex-wrap gap-2">
-                            <View
-                                className="px-2 py-0.5 rounded-md border"
-                                style={{
-                                    backgroundColor: planDetails.color + '20', // 20% opacity
-                                    borderColor: planDetails.color + '30'
-                                }}
-                            >
-                                <Text
-                                    className="text-[10px] font-bold"
-                                    style={{ color: planDetails.color }}
-                                >
-                                    {planDetails.label.toUpperCase()}
-                                </Text>
-                            </View>
-                            {/* <Text className={`text-xs ${expiryColor}`}>Bitiş: {item.expiryDate}</Text> */}
-                        </View>
+                        {/* Old Plan Badge Location Removed */}
                     </View>
-                </View>
 
-                <View className="h-[1px] bg-white/5 w-full mb-3" />
-
-                <View className="flex-row items-center justify-between">
-                    <View className="flex-row items-center gap-2">
+                    {/* New Switch Location (Top Right) */}
+                    <View className="items-end pl-2">
                         <Switch
                             value={item.isOpen}
                             onValueChange={(val) => useAdminStore.getState().updateBusinessStatus(item.id, val)}
                             trackColor={{ false: '#334155', true: COLORS.primary.DEFAULT }}
                             thumbColor={'#fff'}
                             ios_backgroundColor="#334155"
-                            style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                            style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }} // Slightly smaller
                         />
-                        <Text className={`text-xs font-medium ${item.isOpen ? 'text-primary' : 'text-gray-400'}`}>
+                        <Text className={`text-[10px] font-medium mt-1 ${item.isOpen ? 'text-primary' : 'text-gray-400'}`}>
                             {item.isOpen ? 'Aktif' : 'Pasif'}
                         </Text>
+                    </View>
+                </View>
+
+                <View className="h-[1px] bg-white/5 w-full mb-3" />
+
+                <View className="flex-row items-center justify-between">
+                    {/* New Plan Badge Location (Bottom Left) */}
+                    <View className="flex-row items-center gap-2">
+                        <View
+                            className="px-2 py-0.5 rounded-md border"
+                            style={{
+                                backgroundColor: planDetails.color + '20', // 20% opacity
+                                borderColor: planDetails.color + '30'
+                            }}
+                        >
+                            <Text
+                                className="text-[10px] font-bold"
+                                style={{ color: planDetails.color }}
+                            >
+                                {planDetails.label.toUpperCase()}
+                            </Text>
+                        </View>
                     </View>
 
                     <Pressable

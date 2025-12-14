@@ -19,26 +19,26 @@ const BUSINESS_TYPES = {
 };
 const SERVICES_DATA = {
     berber: [
-        { name: 'Saç Kesimi', price: 200, duration: 30 },
-        { name: 'Sakal Kesimi', price: 100, duration: 15 },
-        { name: 'Saç Yıkama & Masaj', price: 50, duration: 15 },
-        { name: 'Çocuk Tıraşı', price: 150, duration: 30 },
-        { name: 'Damat Tıraşı', price: 1000, duration: 60 },
-        { name: 'Cilt Bakımı', price: 300, duration: 30 },
+        { name: 'Saç Kesimi', price: 200, duration_minutes: 30 },
+        { name: 'Sakal Kesimi', price: 100, duration_minutes: 15 },
+        { name: 'Saç Yıkama & Masaj', price: 50, duration_minutes: 15 },
+        { name: 'Çocuk Tıraşı', price: 150, duration_minutes: 30 },
+        { name: 'Damat Tıraşı', price: 1000, duration_minutes: 60 },
+        { name: 'Cilt Bakımı', price: 300, duration_minutes: 30 },
     ],
     kuafor: [
-        { name: 'Fön', price: 100, duration: 30 },
-        { name: 'Saç Kesimi', price: 300, duration: 45 },
-        { name: 'Dip Boya', price: 600, duration: 60 },
-        { name: 'Komple Boya', price: 1200, duration: 90 },
-        { name: 'Manikür', price: 200, duration: 30 },
-        { name: 'Gelin Başı', price: 3000, duration: 120 },
+        { name: 'Fön', price: 100, duration_minutes: 30 },
+        { name: 'Saç Kesimi', price: 300, duration_minutes: 45 },
+        { name: 'Dip Boya', price: 600, duration_minutes: 60 },
+        { name: 'Komple Boya', price: 1200, duration_minutes: 90 },
+        { name: 'Manikür', price: 200, duration_minutes: 30 },
+        { name: 'Gelin Başı', price: 3000, duration_minutes: 120 },
     ],
     guzellik_merkezi: [
-        { name: 'Lazer Epilasyon', price: 1500, duration: 60 },
-        { name: 'Hydrafacial', price: 1200, duration: 60 },
-        { name: 'Protez Tırnak', price: 800, duration: 90 },
-        { name: 'Microblading', price: 2500, duration: 120 },
+        { name: 'Lazer Epilasyon', price: 1500, duration_minutes: 60 },
+        { name: 'Hydrafacial', price: 1200, duration_minutes: 60 },
+        { name: 'Protez Tırnak', price: 800, duration_minutes: 90 },
+        { name: 'Microblading', price: 2500, duration_minutes: 120 },
     ],
 };
 
@@ -59,16 +59,15 @@ async function seedBusinesses() {
             const email = `${slug}@isletme.com`;
 
             // Owner Auth
-            const { data: ownerAuth } = await supabase.auth.admin.createUser({
+            const { data: ownerAuth, error: authError } = await supabase.auth.admin.createUser({
                 email,
                 password: 'password123',
                 email_confirm: true,
                 user_metadata: { full_name: ownerName, role: 'business', sub_role: 'owner' }
             });
 
-            if (!ownerAuth?.user) {
-                console.error(`   ❌ Sahip oluşturulamadı (${email}):`, ownerAuth?.error?.message || 'Bilinmeyen Hata');
-                if (ownerAuth?.error) console.error(ownerAuth.error);
+            if (authError || !ownerAuth?.user) {
+                console.error(`   ❌ Sahip oluşturulamadı (${email}):`, authError?.message || 'Bilinmeyen Hata');
                 continue;
             }
 
@@ -111,20 +110,26 @@ async function seedBusinesses() {
             const servicesList = SERVICES_DATA[type as keyof typeof SERVICES_DATA].map(s => ({
                 business_id: business.id, ...s, is_active: true
             }));
-            await supabase.from('services').insert(servicesList);
+            const { error: serviceError } = await supabase.from('services').insert(servicesList);
+            if (serviceError) {
+                console.error(`   ❌ Hizmetler Eklenemedi (${businessName}):`, serviceError.message);
+            }
 
             // Staff
             const staffCount = getRandomInt(config.staffMin, config.staffMax);
             const staffList = Array.from({ length: staffCount }).map((_, idx) => ({
                 business_id: business.id,
                 name: faker.person.fullName(),
-                role: idx === 0 ? 'manager' : 'staff',
+                title: idx === 0 ? 'manager' : 'staff', // Schema: title
                 email: `${sanitize(faker.person.firstName())}.${idx}@${slug}.com`,
                 phone: faker.phone.number(),
-                photo_url: faker.image.avatar(),
+                avatar_url: faker.image.avatar(), // Schema: avatar_url
                 is_active: true
             }));
-            await supabase.from('business_staff').insert(staffList);
+            const { error: staffError } = await supabase.from('business_staff').insert(staffList);
+            if (staffError) {
+                console.error(`   ❌ Personel Eklenemedi (${businessName}):`, staffError.message);
+            }
 
             totalCount++;
             process.stdout.write(`   ✅ ${businessName} oluşturuldu (${totalCount})\r`);

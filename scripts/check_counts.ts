@@ -12,9 +12,13 @@ async function check() {
     const { count: bookingCount } = await supabase.from('bookings').select('*', { count: 'exact', head: true });
     const { count: businessCount } = await supabase.from('businesses').select('*', { count: 'exact', head: true });
     const { count: userCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+    const { count: staffCount } = await supabase.from('business_staff').select('*', { count: 'exact', head: true });
+    const { count: serviceCount } = await supabase.from('services').select('*', { count: 'exact', head: true });
 
     console.log('--- 📊 GÜNCEL VERİ TABLOSU DURUMU ---');
     console.log(`🏠 İşletmeler: ${businessCount}`);
+    console.log(`👨‍💼 Personel: ${staffCount}`);
+    console.log(`💇 Hizmetler: ${serviceCount}`);
     console.log(`👥 Kullanıcılar: ${userCount}`);
     console.log(`📅 Randevular: ${bookingCount}`);
     console.log('-------------------------------------');

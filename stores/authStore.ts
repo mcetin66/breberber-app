@@ -11,15 +11,19 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
   selectedRole: Role | null; // For pre-login selection
+  originalUser: User | null; // For admin impersonation
 
   initialize: () => Promise<void>;
   setSelectedRole: (role: Role | null) => void;
+  impersonateBusiness: (businessId: string, businessName: string) => void;
+  stopImpersonating: () => void;
   signUp: (email: string, password: string, fullName: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<User>) => Promise<{ success: boolean; error?: string }>;
   updatePassword: (password: string) => Promise<{ success: boolean; error?: string }>;
   setUser: (user: User | null) => void;
+  setBarberId: (id: string) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
 }
@@ -33,6 +37,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   selectedRole: null,
 
   setSelectedRole: (role) => set({ selectedRole: role }),
+  setBarberId: (id) => set((state) => ({ user: state.user ? { ...state.user, barberId: id } : null })),
 
   initialize: async () => {
     try {
@@ -277,6 +282,35 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ isLoading: false, error: error.message });
       return { success: false, error: error.message };
     }
+  },
+
+  originalUser: null, // For admin impersonation
+
+  impersonateBusiness: (businessId: string, businessName: string) => {
+    const currentUser = get().user;
+    if (!currentUser || currentUser.role !== 'admin') return;
+
+    set({
+      originalUser: currentUser,
+      user: {
+        id: currentUser.id, // Keep same ID to avoid auth errors
+        email: `impersonated@${businessId}.com`,
+        fullName: businessName,
+        role: 'business',
+        subRole: 'owner', // Mock as owner
+        barberId: businessId // CRITICAL: This allows dashboard to query correct data
+      } as User
+    });
+  },
+
+  stopImpersonating: () => {
+    const original = get().originalUser;
+    if (!original) return;
+
+    set({
+      user: original,
+      originalUser: null
+    });
   },
 
   setUser: (user) => set({ user, isAuthenticated: !!user }),

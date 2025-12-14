@@ -4,10 +4,13 @@ export interface User {
   id: string;
   email: string;
   fullName: string;
+  name?: string; // Mapped from full_name or business name
   phone: string;
   avatar?: string;
+  avatar_url?: string; // Mapped from avatar
   role: Role;
   subRole?: 'owner' | 'staff';
+  barberId?: string; // For business owners/staff
   createdAt?: string;
 }
 

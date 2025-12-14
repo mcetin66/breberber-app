@@ -3,8 +3,6 @@ import { LayoutDashboard, Scissors, Wallet, Settings, Shield } from 'lucide-reac
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { View } from 'react-native';
 
-const ACTIVE_BLUE = '#2563EB';
-
 export default function AdminLayout() {
   return (
     <Tabs
@@ -36,7 +34,7 @@ export default function AdminLayout() {
           height: 80,
           paddingTop: 15,
         },
-        tabBarActiveTintColor: ACTIVE_BLUE,
+        tabBarActiveTintColor: '#3B82F6', // Blue-500
         tabBarInactiveTintColor: '#64748B',
         tabBarLabelStyle: {
           fontFamily: 'Poppins_500Medium',
@@ -66,13 +64,13 @@ export default function AdminLayout() {
           title: '',
           tabBarIcon: ({ focused }) => (
             <View
-              className={`w-[72px] h-[72px] rounded-full items-center justify-center -mt-4 shadow-xl border-[4px] border-[#0F172A]`}
-              style={{ backgroundColor: focused ? ACTIVE_BLUE : '#334155' }}
+              className="w-[72px] h-[72px] rounded-full items-center justify-center -mt-4 shadow-xl border-[4px] border-[#0F172A]"
+              style={{ backgroundColor: focused ? '#3B82F6' : '#334155' }}
             >
               <LayoutDashboard size={32} color={focused ? 'white' : '#94A3B8'} />
             </View>
           ),
-          tabBarLabelStyle: { display: 'none' },
+          tabBarLabelStyle: { display: 'none' }, // Hide label for center button
         }}
       />
       <Tabs.Screen
