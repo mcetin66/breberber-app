@@ -1,8 +1,9 @@
 import { Tabs } from 'expo-router';
-import { LayoutDashboard, Scissors, Wallet, Settings } from 'lucide-react-native';
+import { LayoutDashboard, Scissors, Wallet, Settings, Shield } from 'lucide-react-native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { COLORS } from '@/constants/theme';
 import { View } from 'react-native';
+
+const ACTIVE_BLUE = '#2563EB';
 
 export default function AdminLayout() {
   return (
@@ -13,94 +14,79 @@ export default function AdminLayout() {
           backgroundColor: '#1E293B',
           borderTopWidth: 0,
           position: 'absolute',
-          bottom: 40, // Increased to clear Home Indicator completely
-          left: 20,
-          right: 20,
-          borderRadius: 30, // Slightly rounder
-          height: 70, // Slightly taller
-          paddingBottom: 0, // Reset padding
+          bottom: 30,
+          left: 15,
+          right: 15,
+          borderRadius: 25,
+          height: 80,
+          paddingBottom: 0,
+          paddingHorizontal: 5,
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 999, // Ensure it's on top
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
             height: 10,
           },
-          shadowOpacity: 0.3,
-          shadowRadius: 5,
-          elevation: 10,
+          shadowOpacity: 0.5,
+          shadowRadius: 10,
+          elevation: 20,
         },
         tabBarItemStyle: {
-          height: 70,
-          paddingTop: 12,
+          height: 80,
+          paddingTop: 15,
         },
-        tabBarActiveTintColor: '#3B82F6',
+        tabBarActiveTintColor: ACTIVE_BLUE,
         tabBarInactiveTintColor: '#64748B',
         tabBarLabelStyle: {
           fontFamily: 'Poppins_500Medium',
-          fontSize: 10,
-          marginTop: 4, // Space between icon and label
-          marginBottom: 12, // Push label up
+          fontSize: 9,
+          marginTop: 5,
+          marginBottom: 15,
         },
       }}
     >
       <Tabs.Screen
-        name="dashboard"
-        options={{
-          title: 'Panel',
-          tabBarIcon: ({ color, size }) => <LayoutDashboard size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="barbers"
-        options={({ route }) => ({
+        options={{
           title: 'İşletmeler',
-          tabBarIcon: ({ color, size }) => <Scissors size={size} color={color} />,
-          tabBarStyle: ((route) => {
-            const routeName = getFocusedRouteNameFromRoute(route);
-            // console.log('Current Route:', routeName); // For debugging if needed
-
-            // Only show tab bar on the main list (index) or when undefined (initial load)
-            if (routeName && routeName !== "index") {
-              return { display: "none" };
-            }
-
-            // Keep the default style (floating) for the index
-            return {
-              backgroundColor: '#1E293B',
-              borderTopWidth: 0,
-              position: 'absolute',
-              bottom: 40,
-              left: 20,
-              right: 20,
-              borderRadius: 30,
-              height: 70,
-              paddingBottom: 0,
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 999,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 10 },
-              shadowOpacity: 0.3,
-              shadowRadius: 5,
-              elevation: 10,
-            };
-          })(route),
-        })}
+          tabBarIcon: ({ color, size }) => <Scissors size={24} color={color} />,
+        }}
       />
       <Tabs.Screen
         name="reports"
         options={{
           title: 'Finans',
-          tabBarIcon: ({ color, size }) => <Wallet size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Wallet size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          title: '',
+          tabBarIcon: ({ focused }) => (
+            <View
+              className={`w-[72px] h-[72px] rounded-full items-center justify-center -mt-4 shadow-xl border-[4px] border-[#0F172A]`}
+              style={{ backgroundColor: focused ? ACTIVE_BLUE : '#334155' }}
+            >
+              <LayoutDashboard size={32} color={focused ? 'white' : '#94A3B8'} />
+            </View>
+          ),
+          tabBarLabelStyle: { display: 'none' },
+        }}
+      />
+      <Tabs.Screen
+        name="audit"
+        options={{
+          title: 'Kayıtlar',
+          tabBarIcon: ({ color, size }) => <Shield size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Ayarlar',
-          tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Settings size={24} color={color} />,
         }}
       />
     </Tabs>

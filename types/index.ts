@@ -1,4 +1,4 @@
-export type Role = 'customer' | 'business_owner' | 'staff' | 'admin';
+export type Role = 'customer' | 'business_owner' | 'staff' | 'admin' | 'business';
 
 export interface User {
   id: string;
@@ -7,6 +7,7 @@ export interface User {
   phone: string;
   avatar?: string;
   role: Role;
+  subRole?: 'owner' | 'staff';
   createdAt?: string;
 }
 

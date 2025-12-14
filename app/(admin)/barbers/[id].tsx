@@ -2,7 +2,7 @@
 import { View, Text, ScrollView, Pressable, Image, Modal, TextInput, Platform, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { FormModal } from '@/components/common/FormModal';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, TrendingUp, Users, Calendar, DollarSign, Trash2, X, Check, MoreVertical, PenSquare, MapPin, Crown, Instagram, Upload } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect, useRef } from 'react';
@@ -369,7 +369,7 @@ export default function AdminBarberDetailScreen() {
                         <View className="h-2.5 bg-white/10 rounded-full mb-2 overflow-hidden border border-white/5">
                             <View
                                 className="h-full rounded-full"
-                                style={{ width: `${Math.max(5, progressPercent)}% `, backgroundColor: currentTierColor }}
+                                style={{ width: `${Math.max(5, progressPercent)}%` as any, backgroundColor: currentTierColor }}
                             />
                         </View>
                         <Text className="text-gray-500 text-[10px] text-right mb-6">Yenilenme: {formatDate(end)}</Text>
@@ -714,4 +714,4 @@ export default function AdminBarberDetailScreen() {
         </View>
     );
 }
-```
+

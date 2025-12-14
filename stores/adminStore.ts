@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Barber, Activity } from '@/types';
 import { supabase } from '@/lib/supabase';
+import { logAudit } from '@/services/auditService';
 
 interface AggregateStats {
   totalBusinesses: number;
@@ -437,6 +438,13 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       // Refresh Stats to ensure counts and charts are correct
       get().fetchDashboardStats();
 
+      logAudit('BUSINESS_CREATE', {
+        name: dbPayload.name,
+        type: dbPayload.business_type,
+        owner_email: user.email,
+        owner_name: user.user_metadata?.full_name || 'Bilinmiyor'
+      });
+
       return { success: true };
     } catch (error: any) {
       console.error('Final Add Business Error:', error);
@@ -507,6 +515,9 @@ export const useAdminStore = create<AdminState>((set, get) => ({
         get().fetchDashboardStats();
       }
 
+      const businessName = barbers.find(b => b.id === id)?.name || 'Bilinmiyor';
+      logAudit('BUSINESS_UPDATE', { name: businessName, changes: data });
+
       return { success: true };
     } catch (error: any) {
       console.error('Update Info Error:', error);
@@ -538,6 +549,9 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
       // Refresh Stats
       get().fetchDashboardStats();
+
+      const businessName = get().barbers.find(b => b.id === id)?.name || 'Bilinmiyor';
+      logAudit('BUSINESS_DELETE', { name: businessName });
 
       return { success: true };
     } catch (error: any) {

@@ -34,6 +34,10 @@ const SimpleBar = ({ height, label, isToday }: { height: number, label: string, 
   </View>
 );
 
+import { AdminHeader } from '@/components/admin/AdminHeader';
+
+// ... (keep existing imports)
+
 export default function AdminDashboardScreen() {
   const router = useRouter();
   const screenWidth = Dimensions.get('window').width;
@@ -46,22 +50,19 @@ export default function AdminDashboardScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-
-        {/* Header */}
-        <View className="px-5 pt-4 pb-6 flex-row items-center justify-between">
-          <View>
-            <View className="flex-row items-center gap-2 mb-1">
-              <Text className="text-white text-2xl font-bold">Hoşgeldin, Admin</Text>
-              <Text className="text-2xl">👋</Text>
-            </View>
-            <Text className="text-slate-400 text-sm">İşte platformunun güncel durumu.</Text>
-          </View>
+      {/* Header */}
+      <AdminHeader
+        title="Hoşgeldin, Admin"
+        subtitle="İşte platformunun güncel durumu."
+        rightElement={
           <Image
             source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
             className="w-10 h-10 rounded-full border border-white/20"
           />
-        </View>
+        }
+      />
+
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
 
         {/* Big Stats Card - Active Businesses */}
         <View className="px-5 mb-4">

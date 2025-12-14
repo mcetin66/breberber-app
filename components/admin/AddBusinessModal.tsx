@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Modal, TextInput, Pressable, ScrollView, ActivityIndicator, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import MaskInput from 'react-native-mask-input';
 import { X, Store, MapPin, ChevronDown, Award, Minus, Plus, Calendar, ArrowRight, Check } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { useAdminStore } from '@/stores/adminStore';
 import Toast from 'react-native-toast-message';
 import { SUBSCRIPTION_PLANS } from '@/constants/plans';
 import { FormModal } from '@/components/common/FormModal';
+import { formatPhoneNumber } from '@/utils/format';
 
 interface AddBusinessModalProps {
     visible: boolean;
@@ -18,24 +20,6 @@ export default function AddBusinessModal({ visible, onClose }: AddBusinessModalP
     // Helper to format date as DD/MM/YYYY
     const formatDate = (date: Date) => {
         return date.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    };
-
-    const formatPhoneNumber = (text: string) => {
-        let cleaned = ('' + text).replace(/\D/g, '');
-        // Strip leading zero if present
-        if (cleaned.startsWith('0')) cleaned = cleaned.substring(1);
-        // Limit to 10 digits
-        if (cleaned.length > 10) cleaned = cleaned.substring(0, 10);
-
-        const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})$/);
-        if (match) {
-            let formatted = match[1];
-            if (match[2]) formatted = `(${match[1]}) ${match[2]}`;
-            if (match[3]) formatted += ` ${match[3]}`;
-            if (match[4]) formatted += ` ${match[4]}`;
-            return formatted;
-        }
-        return cleaned;
     };
 
     // State
@@ -203,13 +187,14 @@ export default function AddBusinessModal({ visible, onClose }: AddBusinessModalP
                 <View>
                     <Text className="text-gray-400 text-xs mb-1.5 ml-1">Telefon <Text className="text-red-500">*</Text></Text>
                     <View className="bg-[#1E293B] text-white rounded-2xl border border-white/5 flex-row items-center px-4 h-14">
-                        <TextInput
+                        <MaskInput
                             className="flex-1 text-white text-base font-medium h-full"
-                            placeholder="0555 123 45 67"
+                            placeholder="(0555) 123 45 67"
                             placeholderTextColor="#475569"
                             keyboardType="phone-pad"
                             value={formData.phone}
-                            onChangeText={(text) => setFormData(prev => ({ ...prev, phone: formatPhoneNumber(text) }))}
+                            onChangeText={(masked, unmasked) => setFormData(prev => ({ ...prev, phone: masked }))}
+                            mask={['(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/]}
                         />
                     </View>
                 </View>

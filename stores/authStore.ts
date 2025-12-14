@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 import { supabase } from '@/lib/supabase';
 import type { User, Role } from '@/types';
+import { logAudit } from '@/services/auditService';
 
 interface AuthState {
   user: User | null;
@@ -203,6 +204,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         isLoading: false,
       });
 
+      logAudit('AUTH_LOGIN', { email: user.email, role: user.role });
+
       return { success: true };
     } catch (error: any) {
       set({ isLoading: false, error: error.message });
@@ -213,6 +216,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signOut: async () => {
     try {
       set({ isLoading: true });
+      logAudit('AUTH_LOGOUT', {});
       await supabase.auth.signOut();
       set({
         user: null,
@@ -232,7 +236,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const { user } = get();
       if (!user) throw new Error('Kullanıcı oturumu bulunamadı');
 
-      set({ isLoading: true, error: null });
+      set({ error: null });
 
       const profileUpdates: any = {};
       if (updates.fullName !== undefined) profileUpdates.full_name = updates.fullName;
@@ -248,8 +252,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       set({
         user: { ...user, ...updates },
-        isLoading: false,
       });
+
+      logAudit('PROFILE_UPDATE', { changes: updates });
 
       return { success: true };
     } catch (error: any) {
@@ -260,12 +265,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   updatePassword: async (password: string) => {
     try {
-      set({ isLoading: true, error: null });
+      set({ error: null });
       const { error } = await supabase.auth.updateUser({ password });
 
       if (error) throw error;
 
-      set({ isLoading: false });
+      logAudit('PASSWORD_UPDATE', { method: 'user_initiated' });
+
       return { success: true };
     } catch (error: any) {
       set({ isLoading: false, error: error.message });

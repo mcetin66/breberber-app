@@ -4,6 +4,7 @@ import { useAdminStore } from '@/stores/adminStore';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, CreditCard, ChevronRight, BarChart2, PieChart } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { VictoryPie, VictoryLabel, VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory-native';
+import { AdminHeader } from '@/components/admin/AdminHeader';
 
 export default function AdminReportsScreen() {
     const { aggregateStats, fetchDashboardStats } = useAdminStore();
@@ -46,9 +47,11 @@ export default function AdminReportsScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-            <View className="flex-1 px-5 pt-2">
-                <Text className="text-white text-2xl font-bold mb-6">Finansal Raporlar</Text>
-
+            <AdminHeader
+                title="Finansal Raporlar"
+                subtitle="GELİR & İSTATİSTİK"
+            />
+            <View className="flex-1 px-5">
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {/* Main Summary */}
                     <ReportCard

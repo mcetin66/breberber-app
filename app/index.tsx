@@ -31,9 +31,12 @@ export default function RoleSelectionScreen() {
         <View className="items-center w-full mt-10">
           <Pressable
             onPress={() => router.push('/(auth)/admin-login')}
-            className="w-20 h-20 bg-background-dark border border-white/10 rounded-full items-center justify-center shadow-2xl mb-8 active:scale-95 transition-transform"
+            className="items-center justify-center mb-6 active:scale-95 transition-transform"
           >
-            <MaterialIcons name="content-cut" size={36} color={COLORS.primary.DEFAULT} />
+            <View className="w-16 h-16 bg-[#1a232d] border border-white/10 rounded-2xl items-center justify-center shadow-lg mb-2">
+              <MaterialIcons name="admin-panel-settings" size={32} color={COLORS.primary.DEFAULT} />
+            </View>
+            <Text className="text-gray-500 text-xs font-medium">Admin Girişi</Text>
           </Pressable>
           <Text className="text-white tracking-tight text-[32px] font-bold leading-tight text-center">Hoş Geldiniz</Text>
           <Text className="text-gray-400 text-base font-normal leading-normal pt-2 text-center max-w-[280px]">

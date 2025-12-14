@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router';
 import { useAdminStore } from '@/stores/adminStore';
 import AddBusinessModal from '@/components/admin/AddBusinessModal';
 import { getPlanDetails } from '@/constants/plans';
+import { AdminHeader } from '@/components/admin/AdminHeader';
 
 // Mock Data Types
 type PlanType = 'Pro Plan' | 'Basic' | 'Gold Plan' | 'Starter';
@@ -179,21 +180,21 @@ export default function AdminBarbersScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-            <View className="flex-1 px-4 pt-2">
-                {/* Header */}
-                <View className="flex-row items-center justify-between mb-6">
-                    <View>
-                        <Text className="text-slate-400 text-xs font-medium mb-0.5">Platform Yönetimi</Text>
-                        <Text className="text-white text-2xl font-bold">İşletme Listesi</Text>
-                    </View>
+            {/* Header */}
+            <AdminHeader
+                title="İşletme Listesi"
+                subtitle="Platform Yönetimi"
+                rightElement={
                     <Pressable
                         onPress={() => setIsAddModalVisible(true)}
                         className="w-10 h-10 rounded-full bg-primary items-center justify-center shadow-lg shadow-primary/30 active:scale-95"
                     >
                         <Plus size={24} color="white" />
                     </Pressable>
-                </View>
+                }
+            />
 
+            <View className="flex-1 px-4">
                 {/* Search Bar */}
                 <View className="bg-[#1E293B] border border-white/5 rounded-xl h-12 flex-row items-center px-4 mb-6">
                     <Search size={20} color="#64748B" />

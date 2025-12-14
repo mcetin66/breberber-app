@@ -9,7 +9,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '@/stores/authStore';
 
-SplashScreen.preventAutoHideAsync();
+// Prevent auto hide, but ignore errors if safe
+SplashScreen.preventAutoHideAsync().catch(() => {
+  /* reloading */
+});
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -32,20 +35,24 @@ export default function RootLayout() {
   useEffect(() => {
     if (fontsLoaded || fontError) {
       if (!isSplashHidden.current) {
-        SplashScreen.hideAsync()
-          .then(() => {
-            isSplashHidden.current = true;
-          })
-          .catch(() => {
-            // Ignore if already hidden
-            isSplashHidden.current = true;
-          });
+        // Wrap in immediate try-catch to satisfy linter and runtime
+        try {
+          SplashScreen.hideAsync()
+            .then(() => { isSplashHidden.current = true; })
+            .catch((e) => {
+              // Vital: Ignore "No native splash screen" error during hot reload
+              console.log('Splash Screen Safe Error:', e);
+              isSplashHidden.current = true;
+            });
+        } catch (e) {
+          // Ignore synchronous errors
+        }
       }
     }
   }, [fontsLoaded, fontError]);
 
   useEffect(() => {
-    if (!fontsLoaded && !fontError) return;
+    if ((!fontsLoaded && !fontError) || isLoading) return;
 
     const inAuthGroup = segments[0] === '(auth)';
     const inCustomerGroup = segments[0] === '(customer)';
@@ -75,7 +82,7 @@ export default function RootLayout() {
         } else if (user.subRole === 'staff' && !inBusinessGroup) {
           router.replace('/(business)/staff-dashboard');
         }
-      } else if (user.role === 'admin' && !inAdminGroup) {
+      } else if (user.role === 'admin' && !inAdminGroup && segments[0] !== undefined) {
         router.replace('/(admin)/dashboard');
       }
     }

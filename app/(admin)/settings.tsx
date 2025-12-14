@@ -1,4 +1,5 @@
-import { View, Text, Switch, Pressable, ScrollView, Image, Alert, TextInput } from 'react-native';
+import { View, Text, Switch, Pressable, ScrollView, Image, Alert, TextInput, ActivityIndicator } from 'react-native';
+import MaskInput from 'react-native-mask-input';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/stores/authStore';
@@ -12,10 +13,15 @@ import {
     HelpCircle,
     Mail,
     Lock,
-    Edit2
+    Edit2,
+    Check,
+    Smartphone
 } from 'lucide-react-native';
 import { useState } from 'react';
 import { FormModal } from '@/components/common/FormModal';
+import { SystemHealth } from '@/components/admin/SystemHealth';
+import { formatPhoneNumber } from '@/utils/format';
+import { AdminHeader } from '@/components/admin/AdminHeader';
 
 export default function AdminSettingsScreen() {
     const router = useRouter();
@@ -86,7 +92,7 @@ export default function AdminSettingsScreen() {
                     style: "destructive",
                     onPress: async () => {
                         await signOut();
-                        router.replace('/(auth)/login');
+                        router.replace('/');
                     }
                 }
             ]
@@ -125,10 +131,17 @@ export default function AdminSettingsScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-            <View className="flex-1 px-5 pt-2">
-                <Text className="text-white text-2xl font-bold mb-6">Ayarlar</Text>
+            <AdminHeader
+                title="Ayarlar"
+                subtitle="HESAP & SİSTEM"
+            />
+            <View className="flex-1 px-5">
 
-                <ScrollView showsVerticalScrollIndicator={false}>
+
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 120 }}
+                >
                     {/* Profile Card */}
                     <View className="bg-[#1E293B] p-4 rounded-2xl flex-row items-center mb-6 border border-white/5 relative">
                         <View className="w-14 h-14 rounded-full bg-slate-700 items-center justify-center overflow-hidden">
@@ -154,6 +167,9 @@ export default function AdminSettingsScreen() {
                         </Pressable>
                     </View>
 
+                    {/* System Health */}
+                    <SystemHealth />
+
                     {/* General Settings */}
                     <Text className="text-slate-400 text-xs font-bold uppercase mb-3 ml-1 tracking-wider">Genel</Text>
                     <View className="bg-[#1E293B] rounded-2xl px-4 overflow-hidden mb-6 border border-white/5">
@@ -172,10 +188,9 @@ export default function AdminSettingsScreen() {
                         />
                     </View>
 
-                    {/* Security & Support */}
+                    {/* Account Settings */}
                     <Text className="text-slate-400 text-xs font-bold uppercase mb-3 ml-1 tracking-wider">Hesap</Text>
                     <View className="bg-[#1E293B] rounded-2xl px-4 overflow-hidden mb-6 border border-white/5">
-                        <SettingItem icon={Shield} label="Güvenlik" />
                         <SettingItem icon={Mail} label="E-posta Tercihleri" />
                         <SettingItem icon={HelpCircle} label="Yardım & Destek" showBorder={false} />
                     </View>
@@ -192,6 +207,7 @@ export default function AdminSettingsScreen() {
                     <Text className="text-center text-slate-600 text-xs mt-6 mb-10">v1.0.0 (Build 124) • BreBerber Admin</Text>
                 </ScrollView>
             </View>
+
             {/* Edit Profile Modal */}
             <FormModal
                 visible={isProfileModalVisible}
@@ -201,9 +217,16 @@ export default function AdminSettingsScreen() {
                     <Pressable
                         onPress={handleUpdateProfile}
                         disabled={loading}
-                        className={`bg-primary h-14 rounded-2xl items-center justify-center ${loading ? 'opacity-50' : ''}`}
+                        className={`${loading ? 'opacity-50' : 'active:opacity-90'} bg-[#3B82F6] rounded-xl py-4 flex-row items-center justify-center gap-3`}
                     >
-                        <Text className="text-white font-bold text-lg">{loading ? 'Güncelleniyor...' : 'Kaydet'}</Text>
+                        {loading ? (
+                            <ActivityIndicator color="white" />
+                        ) : (
+                            <>
+                                <Check size={20} color="white" strokeWidth={2.5} />
+                                <Text className="text-white font-bold text-base">Kaydet</Text>
+                            </>
+                        )}
                     </Pressable>
                 }
             >
@@ -218,19 +241,22 @@ export default function AdminSettingsScreen() {
                                 value={profileForm.fullName}
                                 onChangeText={(text) => setProfileForm(prev => ({ ...prev, fullName: text }))}
                             />
+                            <User size={18} color="#64748B" />
                         </View>
                     </View>
                     <View>
                         <Text className="text-gray-400 text-xs mb-1.5 ml-1">Telefon</Text>
                         <View className="bg-[#1E293B] text-white rounded-2xl border border-white/5 flex-row items-center px-4 h-14">
-                            <TextInput
+                            <MaskInput
                                 className="flex-1 text-white text-base font-medium h-full"
-                                placeholder="Telefon"
+                                placeholder="(555) 123 45 67"
                                 placeholderTextColor="#475569"
                                 value={profileForm.phone}
-                                onChangeText={(text) => setProfileForm(prev => ({ ...prev, phone: text }))}
+                                onChangeText={(masked, unmasked) => setProfileForm(prev => ({ ...prev, phone: masked }))}
+                                mask={['(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/]}
                                 keyboardType="phone-pad"
                             />
+                            <Smartphone size={18} color="#64748B" />
                         </View>
                     </View>
                 </View>
