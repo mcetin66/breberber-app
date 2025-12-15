@@ -265,3 +265,34 @@ export const bookingService = {
     };
   },
 };
+
+// Aliases for compatibility with bookingStore
+export const createBooking = async (params: any) => {
+  // Convert friendly params to DB params if needed, or just pass through
+  // The store passes: { userId, businessId, staffId, serviceIds, date, startTime, endTime, totalPrice, notes }
+  // The DB expects: { customer_id, business_id, staff_id, service_id (single?), booking_date, start_time, end_time, total_price, notes }
+
+  // Note: DB schema has 'service_id' (singular). But store passes serviceIds (plural).
+  // If we support multiple services per booking, we might need a separate table or just pick the first one for the main reference.
+  // The schema I saw earlier: `service_id UUID REFERENCES services` in bookings.
+  // So it seems it supports single service per booking, OR we need to handle multiple.
+  // Assuming single service for now or primary service.
+
+  const { userId, businessId, staffId, serviceIds, date, startTime, endTime, totalPrice, notes } = params;
+
+  return bookingService.create({
+    customer_id: userId,
+    business_id: businessId,
+    staff_id: staffId,
+    service_id: serviceIds[0], // Taking the first one as primary
+    booking_date: date,
+    start_time: startTime,
+    end_time: endTime,
+    total_price: totalPrice,
+    notes: notes,
+    status: 'pending'
+  });
+};
+
+export const getUserBookings = bookingService.getMyBookings;
+export const cancelBooking = bookingService.cancel;

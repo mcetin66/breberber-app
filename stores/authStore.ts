@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             phone: (profile.phone as string) || '',
             avatar: (profile.avatar_url as string) || undefined,
             role: profile.role as Role,
-            subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
+            // subRole removed
           };
 
           // If Staff, fetch their Business ID
@@ -105,7 +105,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
               phone: (profile.phone as string) || '',
               avatar: (profile.avatar_url as string) || undefined,
               role: profile.role as Role,
-              subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
+              // subRole removed
             };
 
             // If Staff, fetch their Business ID
@@ -228,7 +228,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         phone: profile.phone || '',
         avatar: profile.avatar_url || undefined,
         role: profile.role as Role,
-        subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
       };
 
       set({
@@ -325,8 +324,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         id: currentUser.id, // Keep same ID to avoid auth errors
         email: `impersonated@${businessId}.com`,
         fullName: businessName,
-        role: 'business',
-        subRole: 'owner', // Mock as owner
+        role: 'business_owner', // Changed from business
         barberId: businessId // CRITICAL: This allows dashboard to query correct data
       } as User
     });

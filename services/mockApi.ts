@@ -5,7 +5,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export const mockUsers: User[] = [
   {
     id: 'user-1',
-    name: 'Ahmet Yılmaz',
+    fullName: 'Ahmet Yılmaz',
     email: 'ahmet@example.com',
     phone: '+905551234567',
     role: 'customer',
@@ -14,32 +14,30 @@ export const mockUsers: User[] = [
   },
   {
     id: 'user-2',
-    name: 'Mehmet Kaya',
+    fullName: 'Mehmet Kaya',
     email: 'mehmet@breberber.com',
     phone: '+905551234568',
-    role: 'business',
-    subRole: 'owner',
+    role: 'business_owner',
     barberId: 'barber-1',
     avatar: 'https://picsum.photos/seed/user2/200',
     createdAt: '2024-01-10T09:00:00Z',
   },
   {
     id: 'user-3',
-    name: 'Can Demir',
+    fullName: 'Can Demir',
     email: 'can@breberber.com',
     phone: '+905551234569',
-    role: 'business',
-    subRole: 'staff',
+    role: 'staff',
     barberId: 'barber-1',
     avatar: 'https://picsum.photos/seed/user3/200',
     createdAt: '2024-02-01T11:00:00Z',
   },
   {
     id: 'admin-1',
-    name: 'Admin User',
+    fullName: 'Admin User',
     email: 'admin@breberber.com',
     phone: '+905551234570',
-    role: 'platformOwner',
+    role: 'admin',
     avatar: 'https://picsum.photos/seed/admin/200',
     createdAt: '2023-12-01T08:00:00Z',
   },
@@ -55,10 +53,12 @@ export const mockBarbers: Barber[] = [
     rating: 4.8,
     reviewCount: 128,
     coverImage: 'https://picsum.photos/seed/barber1/800/400',
-    logo: 'https://picsum.photos/seed/logo1/200',
+    image: 'https://picsum.photos/seed/logo1/200', // Mapped 'logo' to 'image'
     phone: '+902161234567',
     email: 'info@goldenscissors.com',
     isOpen: true,
+    latitude: 41.0082,
+    longitude: 28.9784,
     workingHours: {
       monday: { isOpen: true, openTime: '09:00', closeTime: '19:00' },
       tuesday: { isOpen: true, openTime: '09:00', closeTime: '19:00' },
@@ -81,10 +81,12 @@ export const mockBarbers: Barber[] = [
     rating: 4.5,
     reviewCount: 85,
     coverImage: 'https://picsum.photos/seed/barber2/800/400',
-    logo: 'https://picsum.photos/seed/logo2/200',
+    image: 'https://picsum.photos/seed/logo2/200', // Mapped 'logo' to 'image'
     phone: '+902161234568',
     email: 'info@urbancut.com',
     isOpen: false,
+    latitude: 41.0422,
+    longitude: 29.0067,
     workingHours: {
       monday: { isOpen: true, openTime: '10:00', closeTime: '20:00' },
       tuesday: { isOpen: true, openTime: '10:00', closeTime: '20:00' },
@@ -175,12 +177,12 @@ export class MockApiService {
     };
   }
 
-  static async register(name: string, phone: string, role: 'customer' | 'business'): Promise<{ user: User; token: string }> {
+  static async register(name: string, phone: string, role: 'customer' | 'business_owner'): Promise<{ user: User; token: string }> {
     await delay(1000);
 
     const newUser: User = {
       id: `user-${Date.now()}`,
-      name,
+      fullName: name,
       phone,
       email: `${phone}@example.com`,
       role,

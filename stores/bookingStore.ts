@@ -25,7 +25,14 @@ interface BookingState extends BookingFlow {
 }
 
 const initialState: BookingFlow = {
+  barberId: undefined,
+  barber: undefined,
+  staffId: undefined,
+  staff: undefined,
   selectedServices: [],
+  selectedDate: undefined,
+  selectedSlot: undefined,
+  notes: undefined,
   totalDuration: 0,
   totalPrice: 0,
 };
@@ -118,7 +125,7 @@ export const useBookingStore = create<BookingState>()(
             endTime,
             totalPrice: state.totalPrice,
             notes: state.notes,
-          });
+          }) as any; // Cast because Api return type might differ from Appointment interface slightly
 
           set({
             appointments: [...state.appointments, appointment],
@@ -135,7 +142,7 @@ export const useBookingStore = create<BookingState>()(
       fetchUserAppointments: async (userId: string) => {
         set({ loading: true, error: null });
         try {
-          const appointments = await bookingsApi.getUserBookings(userId);
+          const appointments = await bookingsApi.getUserBookings(userId) as any[];
           set({ appointments, loading: false });
         } catch (error) {
           set({ error: (error as Error).message, loading: false });

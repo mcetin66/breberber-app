@@ -9,10 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '@/stores/authStore';
 
-// Prevent auto hide, but ignore errors if safe
-SplashScreen.preventAutoHideAsync().catch(() => {
-  /* reloading */
-});
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -35,12 +32,10 @@ export default function RootLayout() {
   useEffect(() => {
     if (fontsLoaded || fontError) {
       if (!isSplashHidden.current) {
-        // Wrap in immediate try-catch to satisfy linter and runtime
         try {
           SplashScreen.hideAsync()
             .then(() => { isSplashHidden.current = true; })
             .catch((e) => {
-              // Vital: Ignore "No native splash screen" error during hot reload
               console.log('Splash Screen Safe Error:', e);
               isSplashHidden.current = true;
             });
@@ -57,13 +52,12 @@ export default function RootLayout() {
     const inAuthGroup = segments[0] === '(auth)';
     const inCustomerGroup = segments[0] === '(customer)';
     const inBusinessGroup = segments[0] === '(business)';
+    const inStaffGroup = segments[0] === '(staff)';
     const inAdminGroup = segments[0] === '(admin)';
 
-    console.log('ROOT LAYOUT: Segments changed', JSON.stringify(segments));
+    console.log('ROOT LAYOUT: Segments', JSON.stringify(segments));
     console.log('ROOT LAYOUT: Auth State', { role: user?.role, isAuthenticated });
 
-
-    // Allow access to shared/public routes regardless of role
     const isPublicRoute = segments[0] === 'barber' || segments[0] === 'detail' || segments[0] === 'business-role';
     if (isPublicRoute) return;
 
@@ -74,15 +68,17 @@ export default function RootLayout() {
       if (user.role === 'customer' && !inCustomerGroup) {
         console.log('Redirecting to /(customer)/home');
         router.replace('/(customer)/home');
-      } else if (user.role === 'business') {
-        if (!user.subRole && (segments[1] as string) !== 'business-role') {
-          router.replace('/business-role');
-        } else if (user.subRole === 'owner' && !inBusinessGroup) {
-          router.replace('/(business)/dashboard');
-        } else if (user.subRole === 'staff' && !inBusinessGroup) {
-          router.replace('/(business)/staff-dashboard');
-        }
-      } else if (user.role === 'admin' && !inAdminGroup && segments[0] !== undefined) {
+      }
+      else if (user.role === 'business_owner' && !inBusinessGroup) {
+        console.log('Redirecting to /(business)/dashboard');
+        router.replace('/(business)/dashboard');
+      }
+      else if (user.role === 'staff' && !inStaffGroup) {
+        console.log('Redirecting to /(staff)/(tabs)/dashboard');
+        router.replace('/(staff)/(tabs)/dashboard');
+      }
+      else if (user.role === 'admin' && !inAdminGroup) {
+         console.log('Redirecting to /(admin)/dashboard');
         router.replace('/(admin)/dashboard');
       }
     }
@@ -102,6 +98,7 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(customer)" />
         <Stack.Screen name="(business)" />
+        <Stack.Screen name="(staff)" />
         <Stack.Screen name="(admin)" />
         <Stack.Screen name="business-role" />
         <Stack.Screen name="barber/[id]" options={{ presentation: 'card', headerTitle: 'Berber Detayı' }} />

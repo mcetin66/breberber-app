@@ -1,4 +1,4 @@
-export type Role = 'customer' | 'business_owner' | 'staff' | 'admin' | 'business';
+export type Role = 'customer' | 'business_owner' | 'staff' | 'admin';
 
 export interface User {
   id: string;
@@ -9,7 +9,7 @@ export interface User {
   avatar?: string;
   avatar_url?: string; // Mapped from avatar
   role: Role;
-  subRole?: 'owner' | 'staff';
+  // subRole removed - aligned with DB
   barberId?: string; // For business owners/staff
   createdAt?: string;
 }
@@ -118,4 +118,17 @@ export interface AdminStats {
   totalAppointments: number;
   activeBarbers: number;
   totalUsers: number;
+}
+
+export interface BookingFlow {
+  barberId?: string;
+  barber?: Barber;
+  staffId?: string;
+  staff?: Staff;
+  selectedServices: Service[];
+  selectedDate?: string;
+  selectedSlot?: string;
+  notes?: string;
+  totalDuration: number;
+  totalPrice: number;
 }
