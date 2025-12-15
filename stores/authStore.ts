@@ -60,6 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             phone: (profile.phone as string) || '',
             avatar: (profile.avatar_url as string) || undefined,
             role: profile.role as Role,
+            subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
           };
 
           set({
@@ -91,6 +92,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
               phone: (profile.phone as string) || '',
               avatar: (profile.avatar_url as string) || undefined,
               role: profile.role as Role,
+              subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
             };
 
             set({
@@ -200,6 +202,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         phone: profile.phone || '',
         avatar: profile.avatar_url || undefined,
         role: profile.role as Role,
+        subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
       };
 
       set({

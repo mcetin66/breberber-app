@@ -37,6 +37,7 @@ export interface Barber {
   subscriptionStartDate?: string;
   subscriptionEndDate?: string;
   isActive?: boolean;
+  workingHours?: any;
   createdAt?: string;
 }
 
@@ -49,6 +50,7 @@ export interface Service {
   description?: string;
   isActive?: boolean;
   barberId?: string;
+  staffIds?: string[];
 }
 
 export interface Staff {
@@ -57,9 +59,18 @@ export interface Staff {
   rating: number;
   reviewCount: number;
   avatar: string;
+  avatar_url?: string;
   expertise: string[];
   isAvailable?: boolean;
+  isActive?: boolean;
   barberId?: string;
+  workingHours?: {
+    start: string;
+    end: string;
+    lunchStart?: string;
+    lunchEnd?: string;
+  };
+  workingDays?: string[];
 }
 
 export interface TimeSlot {

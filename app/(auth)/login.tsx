@@ -67,9 +67,9 @@ export default function LoginScreen() {
         const result = await signIn(email, password);
         if (result.success) {
           const user = useAuthStore.getState().user;
-          if (user?.role === 'business_owner' || user?.role === 'staff') { // or check specific business roles
-            router.replace('/(business)/dashboard');
-          } else if (user?.role === 'admin') {
+          if (user?.subRole === 'owner') {
+            router.replace('/(business)/(tabs)/dashboard');
+          } else if (user?.subRole === 'staff') {
             router.replace('/(admin)/dashboard');
           } else {
             router.replace('/(customer)/home');

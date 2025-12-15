@@ -20,8 +20,8 @@ export const logAudit = async (action: string, details: object = {}) => {
             .insert({
                 user_id: user.id,
                 action,
-                details,
-            });
+                details: details,
+            } as any);
 
         if (error) {
             console.error('Audit Log Error:', error);

@@ -15,3 +15,22 @@ export const formatPhoneNumber = (text: string) => {
     }
     return cleaned;
 };
+
+/**
+ * Format price using Turkish currency standards without decimals (e.g., 1.250 ₺)
+ */
+export const formatCurrency = (amount: number | string) => {
+    const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+    if (isNaN(num)) return '0 ₺';
+
+    // Manual format to ensure consistency across engines
+    const integerPart = num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return `${integerPart} ₺`;
+};
+
+export const formatCurrencyNoSymbol = (amount: number | string) => {
+    const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+    if (isNaN(num)) return '0';
+
+    return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};

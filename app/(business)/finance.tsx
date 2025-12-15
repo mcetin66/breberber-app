@@ -43,7 +43,7 @@ export default function FinanceScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
         <View className="px-4 py-6">
           <Text className="text-white text-2xl font-poppins-bold mb-1">Gelir & Kasa</Text>
           <Text className="text-text-secondary font-poppins mb-6">

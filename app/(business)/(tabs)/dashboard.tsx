@@ -5,6 +5,8 @@ import { Calendar, DollarSign, Clock, Bell, UserPlus, Scissors } from 'lucide-re
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
+import { AdminHeader } from '@/components/admin/AdminHeader';
+import { StatCard } from '@/components/business/StatCard';
 
 // Helper for Turkish date formatting
 const getFormattedDate = () => {
@@ -43,6 +45,7 @@ export default function BusinessDashboardScreen() {
     completedBookings: 0,
   });
   const [todayAppointments, setTodayAppointments] = useState<TodayAppointment[]>([]);
+  const [businessName, setBusinessName] = useState('Kontrol Paneli');
 
   useEffect(() => {
     console.log('Dashboard Effect Triggered:', {
@@ -85,6 +88,7 @@ export default function BusinessDashboardScreen() {
       if (data) {
         console.log('Business Found:', data);
         setBarberId(data.id);
+        setBusinessName(data.name);
         loadDashboardData(data.id);
       } else {
         console.log('No business found for this owner');
@@ -166,65 +170,38 @@ export default function BusinessDashboardScreen() {
   // --- UI Components ---
   // Replicating HTML template structure 1:1
 
-  const StatCard = ({ label, value, icon: Icon, colorClass, highlight, highlightClass }: any) => (
-    <View className="w-[140px] h-[120px] rounded-xl bg-white dark:bg-surface-dark p-4 border border-gray-100 dark:border-[#293038] mr-3 shadow-sm justify-between">
-      <View className="flex-row items-start justify-between">
-        <View className={`p-1.5 rounded-lg ${colorClass}`}>
-          <Icon size={20} color={colorClass.includes('blue') ? '#137fec' : colorClass.includes('yellow') ? '#EAB308' : '#A855F7'} />
-        </View>
-        {highlight && (
-          <View className={`px-1.5 py-0.5 rounded-full ${highlightClass}`}>
-            <Text className="text-[10px] font-bold text-green-500">{highlight}</Text>
-          </View>
-        )}
-      </View>
-      <View>
-        <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-0.5">{value}</Text>
-        <Text className="text-[11px] font-medium text-gray-500 dark:text-[#9dabb9]">{label}</Text>
-      </View>
-    </View>
-  );
-
   return (
-    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark" edges={['top']}>
-      {/* Top App Bar */}
-      <View className="px-4 py-3 flex-row items-center justify-between border-b border-gray-200 dark:border-[#293038] bg-white/95 dark:bg-background-dark/95 backdrop-blur-sm z-50">
-        <View className="flex-row items-center gap-3">
-          <View className="relative">
-            <Image
-              source={{ uri: user?.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' }}
-              className="w-10 h-10 rounded-full border-2 border-primary"
-            />
-            <View className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-background-light dark:border-background-dark" />
+    <SafeAreaView className="flex-1 bg-background-dark" edges={['top']}>
+      {/* Top App Bar standardized with AdminHeader */}
+      <AdminHeader
+        title={businessName}
+        subtitle={getFormattedDate()}
+        rightElement={
+          <View className="flex-row items-center gap-3">
+            <Pressable onPress={() => router.push('/(business)/settings/profile')}>
+              <Image
+                source={{ uri: user?.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' }}
+                className="w-10 h-10 rounded-full border-2 border-primary"
+              />
+            </Pressable>
+            <Pressable className="w-10 h-10 rounded-full bg-surface-dark items-center justify-center border border-white/5">
+              <Bell size={20} color={user?.barberId ? '#137fec' : '#64748B'} />
+              <View className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500" />
+            </Pressable>
           </View>
-          <View>
-            <Text className="text-xs text-gray-500 dark:text-[#9dabb9] font-medium leading-none mb-1">Hoş geldin,</Text>
-            <Text className="text-sm font-bold text-gray-900 dark:text-white leading-none">{user?.name || 'İşletme Sahibi'}</Text>
-          </View>
-        </View>
-        <Pressable className="w-10 h-10 rounded-full bg-gray-100 dark:bg-surface-dark items-center justify-center hover:bg-gray-200 dark:hover:bg-[#2a3642] transition-colors">
-          <Bell size={20} color={user?.barberId ? '#137fec' : '#6a7785'} />
-          {/* Template has red dot */}
-          <View className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500" />
-        </Pressable>
-      </View>
+        }
+      />
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Admin Impersonation Banner */}
         {useAuthStore.getState().originalUser && (
-          <View className="bg-red-500/10 px-4 py-2 flex-row items-center justify-between">
+          <View className="bg-red-500/10 px-4 py-2 flex-row items-center justify-between mb-2">
             <Text className="text-red-500 font-bold text-xs">⚠️ Yönetici Modu</Text>
             <Pressable onPress={() => { useAuthStore.getState().stopImpersonating(); router.replace('/(admin)/dashboard'); }}>
               <Text className="text-red-500 font-bold text-xs underline">Çıkış</Text>
             </Pressable>
           </View>
         )}
-
-        {/* Date Header */}
-        <View className="px-4 pt-6 pb-2">
-          <Text className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Kontrol Paneli</Text>
-          <Text className="text-gray-500 dark:text-[#9dabb9] text-sm mt-1 capitalize">{getFormattedDate()}</Text>
-        </View>
 
         {/* Stats Section with Horizontal Scroll */}
         <View className="py-2">
@@ -264,7 +241,7 @@ export default function BusinessDashboardScreen() {
           <View className="flex-row gap-3">
             {/* Button 1: Add Staff */}
             <Pressable
-              onPress={() => router.push('/(business)/staff')}
+              onPress={() => router.push('/(business)/(tabs)/staff')}
               className="flex-1 bg-primary rounded-xl p-4 flex-col items-center justify-center gap-3 active:scale-95 transition-transform shadow-lg shadow-primary/20"
             >
               <View className="p-2 rounded-full bg-white/20">
@@ -275,7 +252,7 @@ export default function BusinessDashboardScreen() {
 
             {/* Button 2: Manage Services */}
             <Pressable
-              onPress={() => router.push('/(business)/services')}
+              onPress={() => router.push('/(business)/(tabs)/services')}
               className="flex-1 bg-white dark:bg-surface-dark border border-gray-200 dark:border-[#293038] rounded-xl p-4 flex-col items-center justify-center gap-3 active:scale-95 transition-transform"
             >
               <View className="p-2 rounded-full bg-gray-100 dark:bg-[#2a3642]">
@@ -322,10 +299,10 @@ export default function BusinessDashboardScreen() {
         </View>
 
         {/* Recent Activity List */}
-        <View className="px-4 pb-20">
+        <View className="px-4 pb-32">
           <View className="flex-row items-center justify-between mb-3 px-1">
             <Text className="text-lg font-bold text-gray-900 dark:text-white">Son Aktiviteler</Text>
-            <Pressable onPress={() => router.push('/(business)/calendar')}>
+            <Pressable onPress={() => router.push('/(business)/(tabs)/calendar')}>
               <Text className="text-sm font-medium text-primary">Tümü</Text>
             </Pressable>
           </View>

@@ -22,6 +22,7 @@ interface BusinessState {
   fetchBusinesses: () => Promise<void>;
   searchBusinesses: (query: string) => Promise<void>;
   getBusinessById: (id: string) => Promise<Barber | null>;
+  updateBusiness: (id: string, updates: Partial<Barber>) => Promise<void>;
   setCurrentBarberId: (barberId: string) => void;
 
   fetchStaff: (businessId: string) => Promise<void>;
@@ -88,6 +89,7 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
         isOpen: b.is_active, // Map is_active to isOpen
         subscriptionTier: b.subscription_tier || 'basic', // Map snake_case to camelCase
         subscriptionEndDate: b.subscription_end_date,
+        workingHours: b.working_hours,
       }));
       set({ businesses: mappedBusinesses as unknown as Barber[], loading: false });
     } catch (error: any) {
@@ -117,6 +119,39 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
     }
   },
 
+  updateBusiness: async (id: string, updates: Partial<Barber>) => {
+    set({ loading: true, error: null });
+    try {
+      const dbUpdates: any = {
+        name: updates.name,
+        address: updates.address,
+        phone: updates.phone,
+        description: updates.description,
+        city: updates.city,
+        cover_url: updates.coverImage,
+        is_active: updates.isOpen,
+        working_hours: updates.workingHours,
+      };
+
+      // Remove undefined fields
+      Object.keys(dbUpdates).forEach(key => dbUpdates[key] === undefined && delete dbUpdates[key]);
+
+      await businessService.update(id, dbUpdates);
+
+      const { currentBusiness, businesses } = get();
+      if (currentBusiness && currentBusiness.id === id) {
+        set({ currentBusiness: { ...currentBusiness, ...updates } });
+      }
+
+      // Update list as well
+      const updatedList = businesses.map(b => b.id === id ? { ...b, ...updates } : b);
+      set({ businesses: updatedList, loading: false });
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
   setCurrentBarberId: (barberId) => {
     const { barberData } = get();
     if (!barberData[barberId]) {
@@ -135,14 +170,31 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
   fetchStaff: async (businessId: string) => {
     set({ loading: true, error: null });
     try {
-      const staff = await staffService.getByBusinessId(businessId);
+      const staffFromDb = await staffService.getByBusinessId(businessId);
+
+      const mappedStaff = staffFromDb.map((s: any) => ({
+        ...s,
+        // Map joined services to simple string array for UI
+        expertise: s.staff_services?.map((ss: any) => ss.services?.name).filter(Boolean) || [],
+
+        // Map working hours (UI assumes same hours for all active days for now)
+        workingHours: s.staff_working_hours?.[0] ? {
+          start: s.staff_working_hours[0].start_time?.slice(0, 5) || '09:00', // Ensure HH:mm format
+          end: s.staff_working_hours[0].end_time?.slice(0, 5) || '19:00',
+          lunchStart: s.staff_working_hours[0].lunch_start?.slice(0, 5),
+          lunchEnd: s.staff_working_hours[0].lunch_end?.slice(0, 5)
+        } : undefined,
+
+        workingDays: s.staff_working_hours?.map((h: any) => h.day_of_week) || []
+      }));
+
       const { barberData } = get();
       set({
         barberData: {
           ...barberData,
           [businessId]: {
             ...barberData[businessId],
-            staff: staff as unknown as Staff[],
+            staff: mappedStaff as unknown as Staff[],
           },
         },
         loading: false,
@@ -158,49 +210,169 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
   },
 
   addStaff: async (businessId, staffData) => {
+    console.log('[Store] addStaff called', { businessId, staffData });
     set({ loading: true, error: null });
     try {
-      const newStaff = await staffService.create({ ...staffData, business_id: businessId } as any);
-      const { barberData } = get();
-      const currentData = barberData[businessId] || initializeBarberData();
+      const { expertise, workingHours, isActive, avatar, name, title, bio, rating, reviewCount, ...ignored } = staffData as any;
 
-      set({
-        barberData: {
-          ...barberData,
-          [businessId]: {
-            ...currentData,
-            staff: [...currentData.staff, newStaff as unknown as Staff],
+      const dbStaffData: any = {
+        name, // Name is required usually
+        is_active: isActive ?? true,
+        avatar_url: avatar || null
+      };
+
+      if (title !== undefined) dbStaffData.title = title;
+      if (bio !== undefined) dbStaffData.bio = bio;
+      if (rating !== undefined) dbStaffData.rating = rating;
+      if (reviewCount !== undefined) dbStaffData.review_count = reviewCount;
+
+      console.log('[Store] Creating staff in DB', dbStaffData);
+
+      // 1. Create Staff
+      const newStaff = await staffService.create({ ...dbStaffData, business_id: businessId }) as any;
+
+      console.log('[Store] Staff created result:', newStaff);
+
+      if (!newStaff) throw new Error('Personel oluşturulamadı');
+
+      // 2. Assign Services (Expertise)
+      if (expertise && expertise.length > 0) {
+        console.log('[Store] Assigning services', expertise);
+        const { barberData } = get();
+        const services = barberData[businessId]?.services || [];
+        const serviceIds = services
+          .filter(s => expertise.includes(s.name))
+          .map(s => s.id);
+
+        if (serviceIds.length > 0) {
+          await staffService.assignServices(newStaff.id, serviceIds);
+        }
+      }
+
+      // 3. Set Working Hours
+      if (workingHours) {
+        console.log('[Store] Setting working hours', workingHours);
+        const days = [1, 2, 3, 4, 5, 6]; // Mon-Sat
+        const hoursPayload = days.map(d => ({
+          staff_id: newStaff.id,
+          day_of_week: d,
+          start_time: workingHours.start,
+          end_time: workingHours.end,
+          is_available: true
+        }));
+        await staffService.setWorkingHours(newStaff.id, hoursPayload);
+      }
+
+      // 4. Optimistic Update
+      console.log('[Store] Applying optimistic update');
+      const { barberData } = get();
+      const currentData = barberData[businessId];
+
+      const optimisticStaff = {
+        ...newStaff,
+        isActive: isActive ?? true,
+        expertise: expertise || [],
+        workingHours: workingHours || { start: '09:00', end: '19:00' },
+        workingDays: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+        rating: 5.0,
+        reviewCount: 0
+      };
+
+      if (currentData) {
+        set({
+          barberData: {
+            ...barberData,
+            [businessId]: {
+              ...currentData,
+              staff: [...currentData.staff, optimisticStaff as unknown as Staff]
+            }
           },
-        },
-        loading: false,
-      });
+          loading: false
+        });
+      }
+
+      // 5. Refetch Validation
+      console.log('[Store] Triggering refetch');
+      await get().fetchStaff(businessId);
+      console.log('[Store] Refetch complete');
     } catch (error: any) {
-      set({ error: error.message, loading: false });
+      console.error('[Store] Add Staff Error:', error);
+      set({ error: error.message });
+    } finally {
+      set({ loading: false });
     }
   },
 
   updateStaff: async (barberId, staffId, updates) => {
+    console.log('[Store] updateStaff STARTED', { barberId, staffId, updates });
     set({ loading: true, error: null });
-    try {
-      await staffService.update(staffId, updates as any);
-      const { barberData } = get();
-      const currentData = barberData[barberId];
-      if (!currentData) return;
 
-      set({
-        barberData: {
-          ...barberData,
-          [barberId]: {
-            ...currentData,
-            staff: currentData.staff.map(s =>
-              s.id === staffId ? { ...s, ...updates } : s
-            ),
-          },
-        },
-        loading: false,
-      });
+    try {
+      // 1. Sanitize Data
+      const { expertise, workingHours, isActive, avatar, name, title, bio, rating, reviewCount, ...ignored } = updates as any;
+
+      const dbUpdates: any = {};
+
+      if (name !== undefined) dbUpdates.name = name;
+      if (title !== undefined) dbUpdates.title = title;
+      if (bio !== undefined) dbUpdates.bio = bio;
+      if (rating !== undefined) dbUpdates.rating = rating;
+
+      // Map special fields
+      if (isActive !== undefined) dbUpdates.is_active = isActive;
+      if (avatar !== undefined) dbUpdates.avatar_url = avatar;
+      if (reviewCount !== undefined) dbUpdates.review_count = reviewCount;
+
+      console.log('[Store] Sending to DB update:', dbUpdates);
+
+      // 2. Perform DB Update
+      let updatedStaff = null;
+      if (Object.keys(dbUpdates).length > 0) {
+        updatedStaff = await staffService.update(staffId, dbUpdates);
+        console.log('[Store] DB Update Response:', updatedStaff);
+
+        if (!updatedStaff) {
+          throw new Error('Veritabanı güncellemesi başarısız oldu (Kayıt dönmedi).');
+        }
+      }
+
+      // 3. Update Services
+      if (expertise) {
+        console.log('[Store] Updating expertise to:', expertise);
+        const { barberData } = get();
+        const services = barberData[barberId]?.services || [];
+        const serviceIds = services.filter(s => expertise.includes(s.name)).map(s => s.id);
+        await staffService.assignServices(staffId, serviceIds);
+      }
+
+      // 4. Update Working Hours
+      if (workingHours) {
+        console.log('[Store] Updating working hours to:', workingHours);
+        const days = [1, 2, 3, 4, 5, 6];
+        const hoursPayload = days.map(d => ({
+          staff_id: staffId,
+          day_of_week: d,
+          start_time: workingHours.start,
+          end_time: workingHours.end,
+          is_available: true
+        }));
+        await staffService.setWorkingHours(staffId, hoursPayload);
+      }
+
+      console.log('[Store] All requests finished successfully. Refetching...');
+
+      // 5. Refetch to valid
+      await get().fetchStaff(barberId);
+      console.log('[Store] Refetch complete. Update SUCCESS.');
+
     } catch (error: any) {
-      set({ error: error.message, loading: false });
+      console.error('[Store] Update Staff CRITICAL FAIL:', error);
+      // Ensure the error state is set so UI can react
+      set({ error: error.message || 'Güncelleme sırasında bilinmeyen bir hata oluştu.' });
+      // Re-throw so the UI component's try-catch block catches it and shows Alert
+      throw error;
+    } finally {
+      set({ loading: false });
     }
   },
 
@@ -253,49 +425,73 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
   },
 
   addService: async (businessId, serviceData) => {
+    console.log('[Store] addService STARTED', { businessId, serviceData });
     set({ loading: true, error: null });
     try {
-      const newService = await servicesApi.create({ ...serviceData, business_id: businessId } as any);
-      const { barberData } = get();
-      const currentData = barberData[businessId] || initializeBarberData();
+      const { isActive, duration, ...otherProps } = serviceData as any;
 
-      set({
-        barberData: {
-          ...barberData,
-          [businessId]: {
-            ...currentData,
-            services: [...currentData.services, newService as unknown as Service],
-          },
-        },
-        loading: false,
-      });
+      const dbServiceData: any = {
+        business_id: businessId,
+        name: otherProps.name,
+        price: otherProps.price,
+        duration_minutes: duration ? parseInt(duration) : (otherProps.duration_minutes || 30),
+        is_active: isActive ?? true
+      };
+
+      if (otherProps.description !== undefined) dbServiceData.description = otherProps.description;
+      if (otherProps.category !== undefined) dbServiceData.category = otherProps.category;
+
+      console.log('[Store] Creating Service DB Payload:', dbServiceData);
+
+      const newService = await servicesApi.create(dbServiceData);
+      console.log('[Store] Service Created:', newService);
+
+      await get().fetchServices(businessId);
+
     } catch (error: any) {
-      set({ error: error.message, loading: false });
+      console.error('[Store] Add Service FAIL:', error);
+      set({ error: error.message });
+      throw error;
+    } finally {
+      set({ loading: false });
     }
   },
 
   updateService: async (barberId, serviceId, updates) => {
+    console.log('[Store] updateService STARTED', { barberId, serviceId, updates });
     set({ loading: true, error: null });
     try {
-      await servicesApi.update(serviceId, updates as any);
-      const { barberData } = get();
-      const currentData = barberData[barberId];
-      if (!currentData) return;
+      const { isActive, duration, ...otherUpdates } = updates as any;
 
-      set({
-        barberData: {
-          ...barberData,
-          [barberId]: {
-            ...currentData,
-            services: currentData.services.map(s =>
-              s.id === serviceId ? { ...s, ...updates } : s
-            ),
-          },
-        },
-        loading: false,
-      });
+      const dbUpdates: any = {};
+
+      // Explicitly map allowed fields
+      if (otherUpdates.name !== undefined) dbUpdates.name = otherUpdates.name;
+      if (otherUpdates.description !== undefined) dbUpdates.description = otherUpdates.description;
+      if (otherUpdates.price !== undefined) dbUpdates.price = otherUpdates.price;
+      if (otherUpdates.category !== undefined) dbUpdates.category = otherUpdates.category;
+
+      // Map overrides
+      if (isActive !== undefined) dbUpdates.is_active = isActive;
+      if (duration !== undefined) dbUpdates.duration_minutes = parseInt(duration); // Ensure number
+      else if (otherUpdates.duration_minutes !== undefined) dbUpdates.duration_minutes = otherUpdates.duration_minutes;
+
+      console.log('[Store] Sending to DB update (Service):', dbUpdates);
+
+      if (Object.keys(dbUpdates).length > 0) {
+        await servicesApi.update(serviceId, dbUpdates);
+      }
+
+      // Refetch for consistency
+      await get().fetchServices(barberId);
+      console.log('[Store] Service update SUCCESS');
+
     } catch (error: any) {
-      set({ error: error.message, loading: false });
+      console.error('[Store] Update Service FAIL:', error);
+      set({ error: error.message });
+      throw error;
+    } finally {
+      set({ loading: false });
     }
   },
 
