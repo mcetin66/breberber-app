@@ -4,6 +4,7 @@ import { View, Text, TextInput, Pressable, Image, Alert, Keyboard, TouchableWith
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ChevronDown, User, Trash2, Eye, EyeOff } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -18,6 +19,20 @@ export default function LoginScreen() {
   const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('email');
   const [activeTab, setActiveTab] = useState('login');
   const [loading, setLoading] = useState(false);
+  const [savedAccounts, setSavedAccounts] = useState<any[]>([]);
+  const [showAccountsDropdown, setShowAccountsDropdown] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    loadSavedAccounts();
+  }, []);
+
+  const loadSavedAccounts = async () => {
+    try {
+      const saved = await AsyncStorage.getItem('saved_accounts');
+      if (saved) setSavedAccounts(JSON.parse(saved));
+    } catch (e) { }
+  };
 
   const handleTabChange = (tab: string) => {
     if (tab === 'signup') {
@@ -58,8 +73,17 @@ export default function LoginScreen() {
       setLoading(true);
       try {
         // Handle Remember Me
+        // Handle Remember Me
         if (rememberMe) {
           await AsyncStorage.setItem('saved_email', email);
+
+          // Update multi-account list
+          const accounts = savedAccounts.filter(a => a.email !== email); // remove duplicate if exists
+          accounts.unshift({ email, lastUsed: Date.now() }); // Add to top
+          if (accounts.length > 10) accounts.pop(); // Limit to 10
+
+          setSavedAccounts(accounts);
+          await AsyncStorage.setItem('saved_accounts', JSON.stringify(accounts));
         } else {
           await AsyncStorage.removeItem('saved_email');
         }
@@ -70,7 +94,7 @@ export default function LoginScreen() {
           if (user?.subRole === 'owner') {
             router.replace('/(business)/(tabs)/dashboard');
           } else if (user?.subRole === 'staff') {
-            router.replace('/(admin)/dashboard');
+            router.replace('/(business)/staff-dashboard');
           } else {
             router.replace('/(customer)/home');
           }
@@ -176,30 +200,83 @@ export default function LoginScreen() {
           ) : (
             <>
               {/* Email Input */}
-              <View className="gap-2">
+              <View className="gap-2 z-50">
                 <Text className="text-white text-base font-medium">E-posta Adresi</Text>
-                <TextInput
-                  className="h-14 bg-[#283039] rounded-xl text-white px-4 text-base font-normal"
-                  placeholder="ornek@email.com"
-                  placeholderTextColor="#9dabb9"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  value={email}
-                  onChangeText={setEmail}
-                />
+                <View>
+                  <TextInput
+                    className="h-14 bg-[#283039] rounded-xl text-white px-4 text-base font-normal pr-12"
+                    placeholder="ornek@email.com"
+                    placeholderTextColor="#9dabb9"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    value={email}
+                    onChangeText={setEmail}
+                  />
+                  {savedAccounts.length > 0 && (
+                    <Pressable
+                      onPress={() => setShowAccountsDropdown(!showAccountsDropdown)}
+                      className="absolute right-0 top-0 h-14 w-14 items-center justify-center"
+                    >
+                      <ChevronDown size={20} color="#9dabb9" />
+                    </Pressable>
+                  )}
+
+                  {/* Dropdown List */}
+                  {showAccountsDropdown && savedAccounts.length > 0 && (
+                    <View className="absolute top-16 left-0 right-0 bg-[#1E293B] rounded-xl border border-white/10 p-2 shadow-xl z-50">
+                      {savedAccounts.map((acc, index) => (
+                        <Pressable
+                          key={index}
+                          onPress={() => {
+                            setEmail(acc.email);
+                            setShowAccountsDropdown(false);
+                          }}
+                          className="flex-row items-center p-3 rounded-lg active:bg-white/5 border-b border-white/5 last:border-0"
+                        >
+                          <View className="w-8 h-8 rounded-full bg-primary/20 items-center justify-center mr-3">
+                            <User size={16} color={COLORS.primary.DEFAULT} />
+                          </View>
+                          <View className="flex-1">
+                            <Text className="text-white font-medium">{acc.email}</Text>
+                            <Text className="text-slate-500 text-xs">Son giriş: {new Date(acc.lastUsed).toLocaleDateString()}</Text>
+                          </View>
+                          <Pressable
+                            onPress={(e) => {
+                              e.stopPropagation();
+                              const newAccounts = savedAccounts.filter(a => a.email !== acc.email);
+                              setSavedAccounts(newAccounts);
+                              AsyncStorage.setItem('saved_accounts', JSON.stringify(newAccounts));
+                            }}
+                            className="p-2"
+                          >
+                            <Trash2 size={16} color="#ef4444" />
+                          </Pressable>
+                        </Pressable>
+                      ))}
+                    </View>
+                  )}
+                </View>
               </View>
 
               {/* Password Input */}
               <View className="gap-2">
                 <Text className="text-white text-base font-medium">Şifre</Text>
-                <TextInput
-                  className="h-14 bg-[#283039] rounded-xl text-white px-4 text-base font-normal"
-                  placeholder="••••••••"
-                  placeholderTextColor="#9dabb9"
-                  secureTextEntry
-                  value={password}
-                  onChangeText={setPassword}
-                />
+                <View className="relative justify-center">
+                  <TextInput
+                    className="h-14 bg-[#283039] rounded-xl text-white px-4 text-base font-normal pr-12"
+                    placeholder="••••••••"
+                    placeholderTextColor="#9dabb9"
+                    secureTextEntry={!showPassword}
+                    value={password}
+                    onChangeText={setPassword}
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword(!showPassword)}
+                    className="absolute right-0 h-14 w-14 items-center justify-center"
+                  >
+                    {showPassword ? <EyeOff size={20} color="#9dabb9" /> : <Eye size={20} color="#9dabb9" />}
+                  </Pressable>
+                </View>
               </View>
             </>
           )}

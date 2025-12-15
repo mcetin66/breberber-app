@@ -63,6 +63,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
           };
 
+          // If Staff, fetch their Business ID
+          if (user.role === 'staff') {
+            const { data: staffData } = await supabase
+              .from('business_staff')
+              .select('business_id')
+              .eq('email', user.email)
+              .maybeSingle();
+
+            if (staffData?.business_id) {
+              user.barberId = staffData.business_id;
+            }
+          }
+
           set({
             user,
             token: session.access_token,
@@ -94,6 +107,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
               role: profile.role as Role,
               subRole: (profile.role === 'business_owner' || profile.role === 'business') ? 'owner' : (profile.role === 'staff' ? 'staff' : undefined),
             };
+
+            // If Staff, fetch their Business ID
+            if (user.role === 'staff') {
+              const { data: staffData } = await supabase
+                .from('business_staff')
+                .select('business_id')
+                .eq('email', user.email)
+                .maybeSingle();
+
+              if (staffData?.business_id) {
+                user.barberId = staffData.business_id;
+              }
+            }
 
             set({
               user,

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Switch, Modal, FlatList, Platform, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft, Camera, Clock, Check, ChevronDown, X } from 'lucide-react-native';
+import { ChevronLeft, Camera, Clock, Check, ChevronDown, X, Coffee } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLORS } from '@/constants/theme';
@@ -12,7 +12,7 @@ export default function StaffDetailScreen() {
     const router = useRouter();
     const params = useLocalSearchParams();
     const { user } = useAuthStore();
-    const { addStaff, updateStaff, getStaff, fetchServices, getServices, loading } = useBusinessStore();
+    const { addStaff, updateStaff, getStaff, fetchServices, getServices, currentBusiness, loading } = useBusinessStore();
 
     const isEditing = !!params.id;
     const existingStaff = isEditing ? getStaff(user?.barberId!).find(s => s.id === params.id) : null;
@@ -25,12 +25,18 @@ export default function StaffDetailScreen() {
     // Time state
     const [workStart, setWorkStart] = useState(existingStaff?.workingHours?.start || '09:00');
     const [workEnd, setWorkEnd] = useState(existingStaff?.workingHours?.end || '19:00');
+
+    // Lunch Break state
+    const [hasLunch, setHasLunch] = useState(!!existingStaff?.workingHours?.lunchStart);
+    const [lunchStart, setLunchStart] = useState(existingStaff?.workingHours?.lunchStart || '12:00');
+    const [lunchEnd, setLunchEnd] = useState(existingStaff?.workingHours?.lunchEnd || '13:00');
+
     const [tempDate, setTempDate] = useState(new Date()); // For iOS picker
     const [activeOriginalTime, setActiveOriginalTime] = useState(''); // Keep track of what we are editing
 
     // Modals
     const [serviceModalVisible, setServiceModalVisible] = useState(false);
-    const [timePickerType, setTimePickerType] = useState<'start' | 'end' | null>(null); // 'start', 'end', or null
+    const [timePickerType, setTimePickerType] = useState<'start' | 'end' | 'lunchStart' | 'lunchEnd' | null>(null);
 
     const [saving, setSaving] = useState(false);
 
@@ -47,6 +53,25 @@ export default function StaffDetailScreen() {
         }
         if (!user?.barberId) return;
 
+        // Validation: Check against Shop Hours (using Monday as reference/outer bounds)
+        if (currentBusiness?.workingHours) {
+            const shopDay = (currentBusiness.workingHours as any)['monday'];
+            if (shopDay && shopDay.isOpen) {
+                // Determine shop bounds
+                const shopStart = shopDay.start;
+                const shopEnd = shopDay.end;
+
+                // Compare (String comparison works for HH:MM 24h)
+                if (workStart < shopStart || workEnd > shopEnd) {
+                    Alert.alert(
+                        'Geçersiz Saat',
+                        `Personel saatleri (${workStart}-${workEnd}), dükkanın çalışma saatleri (${shopStart}-${shopEnd}) sınırları içinde olmalıdır.`
+                    );
+                    return;
+                }
+            }
+        }
+
         setSaving(true);
         try {
             const staffData = {
@@ -55,7 +80,9 @@ export default function StaffDetailScreen() {
                 isActive,
                 workingHours: {
                     start: workStart,
-                    end: workEnd
+                    end: workEnd,
+                    lunchStart: hasLunch ? lunchStart : undefined,
+                    lunchEnd: hasLunch ? lunchEnd : undefined
                 },
                 workingDays: existingStaff?.workingDays || ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
                 rating: existingStaff?.rating || 5.0,
@@ -103,8 +130,11 @@ export default function StaffDetailScreen() {
         if (Platform.OS === 'android') {
             setTimePickerType(null);
             if (event.type === 'set' && selectedDate) {
-                if (activeOriginalTime === 'start') setWorkStart(formatTime(selectedDate));
-                else setWorkEnd(formatTime(selectedDate));
+                const fTime = formatTime(selectedDate);
+                if (activeOriginalTime === 'start') setWorkStart(fTime);
+                else if (activeOriginalTime === 'end') setWorkEnd(fTime);
+                else if (activeOriginalTime === 'lunchStart') setLunchStart(fTime);
+                else if (activeOriginalTime === 'lunchEnd') setLunchEnd(fTime);
             }
         } else {
             // iOS
@@ -112,16 +142,24 @@ export default function StaffDetailScreen() {
         }
     };
 
-    const openTimePicker = (type: 'start' | 'end') => {
-        const timeStr = type === 'start' ? workStart : workEnd;
+    const openTimePicker = (type: 'start' | 'end' | 'lunchStart' | 'lunchEnd') => {
+        let timeStr = '09:00';
+        if (type === 'start') timeStr = workStart;
+        else if (type === 'end') timeStr = workEnd;
+        else if (type === 'lunchStart') timeStr = lunchStart;
+        else if (type === 'lunchEnd') timeStr = lunchEnd;
+
         setTempDate(parseTime(timeStr));
         setActiveOriginalTime(type);
         setTimePickerType(type);
     };
 
     const confirmIosTime = () => {
-        if (activeOriginalTime === 'start') setWorkStart(formatTime(tempDate));
-        else setWorkEnd(formatTime(tempDate));
+        const fTime = formatTime(tempDate);
+        if (activeOriginalTime === 'start') setWorkStart(fTime);
+        else if (activeOriginalTime === 'end') setWorkEnd(fTime);
+        else if (activeOriginalTime === 'lunchStart') setLunchStart(fTime);
+        else if (activeOriginalTime === 'lunchEnd') setLunchEnd(fTime);
         setTimePickerType(null);
     };
 
@@ -218,6 +256,47 @@ export default function StaffDetailScreen() {
                                     <Text className="text-white font-medium text-base">{workEnd}</Text>
                                 </Pressable>
                             </View>
+                        </View>
+
+                        {/* Lunch Break Section */}
+                        <View className="bg-[#1E293B] p-4 rounded-xl border border-white/5 space-y-3">
+                            <View className="flex-row items-center justify-between">
+                                <View className="flex-row items-center">
+                                    <Coffee size={18} color="#94A3B8" />
+                                    <Text className="text-white font-medium text-base ml-3">Öğle Molası (Personel)</Text>
+                                </View>
+                                <Switch
+                                    value={hasLunch}
+                                    onValueChange={setHasLunch}
+                                    trackColor={{ false: '#334155', true: COLORS.primary.DEFAULT }}
+                                    thumbColor="white"
+                                />
+                            </View>
+
+                            {hasLunch && (
+                                <View className="flex-row gap-4 pt-4 border-t border-white/5 mt-2">
+                                    <View className="flex-1">
+                                        <Text className="text-[#94A3B8] text-[10px] font-bold mb-1 ml-1">BAŞLANGIÇ</Text>
+                                        <Pressable
+                                            onPress={() => openTimePicker('lunchStart')}
+                                            className="bg-[#0F172A] flex-row items-center px-3 py-3 rounded-lg border border-white/5 active:bg-white/5"
+                                        >
+                                            <Clock size={14} color="#64748B" style={{ marginRight: 8 }} />
+                                            <Text className="text-white font-medium">{lunchStart}</Text>
+                                        </Pressable>
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-[#94A3B8] text-[10px] font-bold mb-1 ml-1">BİTİŞ</Text>
+                                        <Pressable
+                                            onPress={() => openTimePicker('lunchEnd')}
+                                            className="bg-[#0F172A] flex-row items-center px-3 py-3 rounded-lg border border-white/5 active:bg-white/5"
+                                        >
+                                            <Clock size={14} color="#64748B" style={{ marginRight: 8 }} />
+                                            <Text className="text-white font-medium">{lunchEnd}</Text>
+                                        </Pressable>
+                                    </View>
+                                </View>
+                            )}
                         </View>
 
                         {/* Active Switch */}

@@ -23,6 +23,7 @@ interface BusinessState {
   searchBusinesses: (query: string) => Promise<void>;
   getBusinessById: (id: string) => Promise<Barber | null>;
   updateBusiness: (id: string, updates: Partial<Barber>) => Promise<void>;
+  fetchAppointmentsRange: (barberId: string, startDate: string, endDate: string) => Promise<void>;
   setCurrentBarberId: (barberId: string) => void;
 
   fetchStaff: (businessId: string) => Promise<void>;
@@ -40,8 +41,10 @@ interface BusinessState {
   fetchAppointments: (barberId: string, date?: string) => Promise<void>;
   getAppointments: (barberId: string) => Appointment[];
   addAppointment: (barberId: string, appointment: Appointment) => void;
+  createAppointment: (barberId: string, booking: any) => Promise<void>;
   updateAppointment: (barberId: string, appointmentId: string, updates: Partial<Appointment>) => void;
   cancelAppointment: (barberId: string, appointmentId: string) => void;
+  deleteAppointment: (barberId: string, appointmentId: string) => Promise<void>;
 
   getAvailableSlots: (barberId: string, staffId: string, date: string, duration: number) => string[];
 
@@ -179,8 +182,8 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
 
         // Map working hours (UI assumes same hours for all active days for now)
         workingHours: s.staff_working_hours?.[0] ? {
-          start: s.staff_working_hours[0].start_time?.slice(0, 5) || '09:00', // Ensure HH:mm format
-          end: s.staff_working_hours[0].end_time?.slice(0, 5) || '19:00',
+          start: s.staff_working_hours[0].start_time?.slice(0, 5), // Ensure HH:mm format
+          end: s.staff_working_hours[0].end_time?.slice(0, 5),
           lunchStart: s.staff_working_hours[0].lunch_start?.slice(0, 5),
           lunchEnd: s.staff_working_hours[0].lunch_end?.slice(0, 5)
         } : undefined,
@@ -541,8 +544,8 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
         status: b.status,
         notes: b.notes,
         createdAt: b.created_at,
-        customerName: b.profiles?.full_name,
-        serviceName: b.services?.name,
+        customerName: b.status === 'blocked' ? (b.notes || 'KAPALI') : b.profiles?.full_name,
+        serviceName: b.status === 'blocked' ? 'Mola' : b.services?.name,
         staffName: b.business_staff?.name,
       }));
 
@@ -556,6 +559,52 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
             ...currentData,
             appointments,
           }
+        },
+        loading: false,
+      });
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  fetchAppointmentsRange: async (barberId, startDate, endDate) => {
+    set({ loading: true, error: null });
+    try {
+      const bookings = await bookingService.getBusinessBookings(barberId, {
+        startDate,
+        endDate
+      });
+
+      const appointments: Appointment[] = bookings.map((b: any) => ({
+        id: b.id,
+        barberId: b.business_id,
+        customerId: b.customer_id,
+        staffId: b.staff_id,
+        serviceId: b.service_id,
+        serviceIds: [],
+        date: b.booking_date,
+        startTime: b.start_time,
+        endTime: b.end_time,
+        totalDuration: 0,
+        totalPrice: b.total_price,
+        status: b.status,
+        notes: b.notes,
+        createdAt: b.created_at,
+        customerName: b.status === 'blocked' ? (b.notes || 'KAPALI') : b.profiles?.full_name,
+        serviceName: b.status === 'blocked' ? 'Mola' : b.services?.name,
+        staffName: b.business_staff?.name,
+      }));
+
+      const { barberData } = get();
+      const currentData = barberData[barberId] || initializeBarberData();
+
+      set({
+        barberData: {
+          ...barberData,
+          [barberId]: {
+            ...currentData,
+            appointments,
+          },
         },
         loading: false,
       });
@@ -584,6 +633,39 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
     });
   },
 
+  createAppointment: async (barberId, bookingData) => {
+    set({ loading: true, error: null });
+    try {
+      const newBooking = await bookingService.create({
+        business_id: barberId,
+        ...bookingData
+      }) as any;
+
+      // Convert to Appointment type
+      const appt: Appointment = {
+        id: newBooking.id,
+        barberId: newBooking.business_id,
+        staffId: newBooking.staff_id,
+        customerId: newBooking.customer_id || '',
+        serviceId: newBooking.service_id || '',
+        date: newBooking.booking_date,
+        startTime: newBooking.start_time,
+        endTime: newBooking.end_time,
+        status: newBooking.status as any,
+        totalPrice: newBooking.total_price || 0,
+        customerName: newBooking.status === 'blocked' ? (newBooking.notes || 'KAPALI') : 'KAPALI',
+        serviceName: 'Mola',
+        staffName: '',
+      };
+
+      get().addAppointment(barberId, appt);
+      set({ loading: false });
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
   updateAppointment: (barberId, appointmentId, updates) => {
     const { barberData } = get();
     const currentData = barberData[barberId];
@@ -604,6 +686,31 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
 
   cancelAppointment: (barberId, appointmentId) => {
     get().updateAppointment(barberId, appointmentId, { status: 'cancelled' });
+  },
+
+  deleteAppointment: async (barberId, appointmentId) => {
+    set({ loading: true, error: null });
+    try {
+      await bookingService.delete(appointmentId);
+      // Update local state by removing it
+      const { barberData } = get();
+      const currentData = barberData[barberId];
+      if (currentData) {
+        set({
+          barberData: {
+            ...barberData,
+            [barberId]: {
+              ...currentData,
+              appointments: currentData.appointments.filter(a => a.id !== appointmentId)
+            }
+          },
+          loading: false
+        });
+      }
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+      throw error;
+    }
   },
 
   getAvailableSlots: (barberId, staffId, date, duration) => {
@@ -664,11 +771,15 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
       const bookings = await bookingService.getBusinessBookings(barberId, {
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
-        status: 'completed'
       });
 
-      const revenue = bookings.reduce((sum: number, booking: any) => sum + (booking.total_price || 0), 0);
-      const uniqueCustomers = new Set(bookings.map((b: any) => b.customer_id)).size;
+      // Include confirmed and completed for revenue stats
+      const validBookings = bookings.filter((b: any) =>
+        b.status === 'completed' || b.status === 'confirmed'
+      );
+
+      const revenue = validBookings.reduce((sum: number, booking: any) => sum + (booking.total_price || 0), 0);
+      const uniqueCustomers = new Set(validBookings.map((b: any) => b.customer_id)).size;
 
       const transactions: Appointment[] = bookings.map((b: any) => ({
         id: b.id,

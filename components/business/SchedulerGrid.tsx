@@ -16,7 +16,7 @@ const END_HOUR = 22;
 const BASE_HOUR_HEIGHT = 80; // Changed from 100 to 80 as per instruction
 const COLUMN_WIDTH = 120; // Wider columns for capsules
 const TIME_COL_WIDTH = 60;
-const HEADER_HEIGHT = 60;
+const HEADER_HEIGHT = 90;
 
 export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onSlotPress }: SchedulerProps) => {
     // Zoom State
@@ -95,7 +95,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
             </View>
 
             {/* Header Row (Staff Columns) */}
-            <View className="flex-row border-b border-white/10 h-[60px] bg-[#1E293B] z-10">
+            <View style={{ height: HEADER_HEIGHT }} className="flex-row border-b border-white/10 bg-[#1E293B] z-10">
                 {/* Empty Corner */}
                 <View style={{ width: TIME_COL_WIDTH }} className="border-r border-white/10 items-center justify-center">
                     <Text className="text-slate-500 text-[10px] font-bold">SAAT</Text>
@@ -116,7 +116,8 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                             className={`items-center justify-center border-r border-white/10 px-2 ${idx % 2 === 0 ? 'bg-[#1E293B]' : 'bg-[#1E293B]/50'}`}
                         >
                             {/* Staff Avatar or Initials */}
-                            <View className="w-8 h-8 rounded-full bg-slate-700 items-center justify-center mb-1 overflow-hidden border border-white/10">
+                            {/* Staff Avatar or Initials */}
+                            <View className="w-14 h-14 rounded-full bg-slate-700 items-center justify-center mb-2 overflow-hidden border-2 border-white/10 shadow-sm">
                                 {staff.avatar || (staff as any).avatar_url ? (
                                     <Image
                                         source={{ uri: staff.avatar || (staff as any).avatar_url }}
@@ -124,12 +125,12 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                         resizeMode="cover"
                                     />
                                 ) : (
-                                    <Text className="text-white font-bold text-xs" style={{ color: COLORS.primary.DEFAULT }}>
+                                    <Text className="text-white font-bold text-lg" style={{ color: COLORS.primary.DEFAULT }}>
                                         {staff.name.charAt(0).toUpperCase()}
                                     </Text>
                                 )}
                             </View>
-                            <Text numberOfLines={1} className="text-slate-300 text-xs font-medium">{staff.name}</Text>
+                            <Text numberOfLines={1} className="text-white font-bold text-xs">{staff.name}</Text>
                         </View>
                     ))}
                     {/* Spacer for right padding */}
@@ -186,25 +187,38 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                     >
                         <View className="bg-[#0F172A] relative">
                             {/* Background Grid Lines */}
+                            {/* Background Grid Lines & Interaction Layer */}
                             <View className="absolute inset-0 flex-row">
-                                {staffList.map((_, idx) => (
-                                    <View
-                                        key={idx}
+                                {staffList.map((staff, idx) => (
+                                    <Pressable
+                                        key={staff.id}
+                                        onPress={(e) => {
+                                            const y = e.nativeEvent.locationY;
+                                            // Calculate time
+                                            const totalMinutes = (y / hourHeight) * 60;
+                                            const hour = Math.floor(totalMinutes / 60) + START_HOUR;
+                                            const minute = Math.floor(totalMinutes % 60);
+                                            // Round to nearest 15 mins for easier selection
+                                            const roundedMinute = Math.floor(minute / 15) * 15;
+
+                                            const timeStr = `${hour.toString().padStart(2, '0')}:${roundedMinute.toString().padStart(2, '0')}`;
+                                            onSlotPress(staff.id, timeStr);
+                                        }}
                                         style={{ width: COLUMN_WIDTH }}
-                                        className={`border-r border-white/5 h-full`}
+                                        className={`border-r border-white/5 h-full active:bg-white/5`}
                                     />
                                 ))}
                             </View>
 
                             {/* Horizontal Time Lines */}
-                            <View className="absolute inset-0">
+                            <View className="absolute inset-0" pointerEvents="none">
                                 {hours.map(h => (
                                     <View key={h} style={{ height: hourHeight }} className="border-b border-white/5 w-[2000px]" />
                                 ))}
                             </View>
 
                             {/* 10-min Guidelines (Subtle) */}
-                            <View className="absolute inset-0 overflow-hidden">
+                            <View className="absolute inset-0 overflow-hidden" pointerEvents="none">
                                 {hours.map(h => (
                                     <View key={`sub-${h}`} style={{ height: hourHeight }}>
                                         {[10, 20, 30, 40, 50].map(m => (
@@ -220,6 +234,29 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                             />
                                         ))}
                                     </View>
+                                ))}
+                            </View>
+
+                            {/* Interaction Layer (On Top of Grid Lines) */}
+                            <View className="absolute inset-0 flex-row" style={{ zIndex: 10 }}>
+                                {staffList.map((staff, idx) => (
+                                    <Pressable
+                                        key={staff.id}
+                                        onPress={(e) => {
+                                            const y = e.nativeEvent.locationY;
+                                            // Calculate time
+                                            const totalMinutes = (y / hourHeight) * 60;
+                                            const hour = Math.floor(totalMinutes / 60) + START_HOUR;
+                                            const minute = Math.floor(totalMinutes % 60);
+                                            // Round to nearest 15 mins for easier selection
+                                            const roundedMinute = Math.floor(minute / 15) * 15;
+
+                                            const timeStr = `${hour.toString().padStart(2, '0')}:${roundedMinute.toString().padStart(2, '0')}`;
+                                            onSlotPress(staff.id, timeStr);
+                                        }}
+                                        style={{ width: COLUMN_WIDTH }}
+                                        className={`border-r border-white/5 h-full active:bg-white/5`}
+                                    />
                                 ))}
                             </View>
 
@@ -372,6 +409,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                         {staffApts.map(apt => {
                                             const top = getTopOffset(apt.startTime || '09:00');
                                             const height = getHeight(apt.totalDuration || 60);
+                                            const isBlocked = apt.status === 'blocked';
 
                                             return (
                                                 <Pressable
@@ -383,10 +421,10 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                         height,
                                                         left: 4,
                                                         right: 4,
-                                                        backgroundColor: COLORS.primary.DEFAULT + 'E6', // 90% opacity
+                                                        backgroundColor: isBlocked ? '#334155' : COLORS.primary.DEFAULT + 'E6',
                                                         borderRadius: 6,
                                                         borderLeftWidth: 3,
-                                                        borderLeftColor: '#fff',
+                                                        borderLeftColor: isBlocked ? '#94A3B8' : '#fff',
                                                         shadowColor: "#000",
                                                         shadowOffset: {
                                                             width: 0,
@@ -399,23 +437,36 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                     }}
                                                 >
                                                     <View className="flex-1 p-1.5 overflow-hidden">
-                                                        {/* Time Range (Top Priority) */}
-                                                        <View className="mb-0.5 flex-row items-center">
-                                                            <View className="bg-black/20 px-1.5 py-0.5 rounded">
-                                                                <Text className="text-white/95 text-[9px] font-bold">
-                                                                    {apt.startTime?.slice(0, 5)} - {apt.endTime?.slice(0, 5)}
-                                                                </Text>
+                                                        {isBlocked ? (
+                                                            <View className="flex-1 items-center justify-center opacity-70">
+                                                                <Text className="text-slate-300 font-bold text-[10px] tracking-widest uppercase mb-1">{apt.customerName || 'KAPALI'}</Text>
+                                                                <View className="bg-black/20 px-1.5 py-0.5 rounded">
+                                                                    <Text className="text-slate-200 text-[9px] font-bold">
+                                                                        {apt.startTime?.slice(0, 5)} - {apt.endTime?.slice(0, 5)}
+                                                                    </Text>
+                                                                </View>
                                                             </View>
-                                                        </View>
+                                                        ) : (
+                                                            <>
+                                                                {/* Time Range (Top Priority) */}
+                                                                <View className="mb-0.5 flex-row items-center">
+                                                                    <View className="bg-black/20 px-1.5 py-0.5 rounded">
+                                                                        <Text className="text-white/95 text-[9px] font-bold">
+                                                                            {apt.startTime?.slice(0, 5)} - {apt.endTime?.slice(0, 5)}
+                                                                        </Text>
+                                                                    </View>
+                                                                </View>
 
-                                                        <Text numberOfLines={1} className="text-white text-[11px] font-bold mb-0.5 leading-tight">
-                                                            {apt.customerName || 'Müşteri'}
-                                                        </Text>
+                                                                <Text numberOfLines={1} className="text-white text-[11px] font-bold mb-0.5 leading-tight">
+                                                                    {apt.customerName || 'Müşteri'}
+                                                                </Text>
 
-                                                        {height > 45 && (
-                                                            <Text numberOfLines={1} className="text-white/80 text-[10px]">
-                                                                {apt.serviceName}
-                                                            </Text>
+                                                                {height > 45 && (
+                                                                    <Text numberOfLines={1} className="text-white/80 text-[10px]">
+                                                                        {apt.serviceName}
+                                                                    </Text>
+                                                                )}
+                                                            </>
                                                         )}
                                                     </View>
                                                 </Pressable>

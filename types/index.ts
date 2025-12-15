@@ -65,8 +65,8 @@ export interface Staff {
   isActive?: boolean;
   barberId?: string;
   workingHours?: {
-    start: string;
-    end: string;
+    start?: string;
+    end?: string;
     lunchStart?: string;
     lunchEnd?: string;
   };
@@ -89,7 +89,7 @@ export interface Appointment {
   time?: string;
   startTime?: string;
   endTime?: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'blocked';
   totalPrice: number;
   totalDuration?: number;
   customerName?: string;
