@@ -17,18 +17,7 @@ export function SettingsLayout({ role }: SettingsLayoutProps) {
     const { signOut, user } = useAuthStore();
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
-    // Filter menu based on role. If role is 'business', we check subRole in store,
-    // but here we expect strictly passed roles like 'business_owner' or 'staff'.
-    // If the caller passes 'business', we might need to adjust, but the plan is to standardize roles.
-
-    // Fallback: if role is 'business', check user subRole
-    let effectiveRole = role;
-    if (role === 'business' as any) { // Casting because we are removing 'business' from Role type soon
-         if (user?.subRole === 'owner') effectiveRole = 'business_owner';
-         else if (user?.subRole === 'staff') effectiveRole = 'staff';
-    }
-
-    const menuItems = SETTINGS_MENU[effectiveRole] || [];
+    const menuItems = SETTINGS_MENU[role] || [];
 
     const handleAction = (item: SettingsItem) => {
         if (item.action === 'logout') {
@@ -45,7 +34,7 @@ export function SettingsLayout({ role }: SettingsLayoutProps) {
         <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
             <AppHeader
                 title="Ayarlar"
-                subtitle={`${user?.fullName || 'Kullanıcı'} (${effectiveRole === 'business_owner' ? 'İşletme Sahibi' : effectiveRole === 'staff' ? 'Personel' : effectiveRole})`}
+                subtitle={`${user?.fullName || 'Kullanıcı'} (${role === 'business_owner' ? 'İşletme Sahibi' : role === 'staff' ? 'Personel' : role})`}
             />
 
             <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false}>
