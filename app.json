@@ -36,19 +36,6 @@
     "experiments": {
       "typedRoutes": true
     },
-    "scheme": "breberber",
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "a7696920-b7c3-422f-a800-477d8d9210b4"
-      }
-    },
-    "owner": "mcetin66",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/a7696920-b7c3-422f-a800-477d8d9210b4"
-    }
+    "scheme": "breberber"
   }
 }

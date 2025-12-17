@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, Image, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,7 +41,6 @@ export default function LoginScreen() {
     }
   };
 
-  // Load saved email on mount
   useEffect(() => {
     loadSavedEmail();
   }, []);
@@ -61,9 +59,6 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (loginMethod === 'phone') {
-      // Mock phone login for now
-      // console.log('Phone login:', phoneNumber);
-      // In a real app, this would trigger OTP flow
       Alert.alert('Bilgi', 'Telefon ile giriş şuan simülasyon modundadır. E-posta ile giriş yapmayı deneyiniz.');
     } else {
       if (!email || !password) {
@@ -72,15 +67,12 @@ export default function LoginScreen() {
       }
       setLoading(true);
       try {
-        // Handle Remember Me
-        // Handle Remember Me
         if (rememberMe) {
           await AsyncStorage.setItem('saved_email', email);
 
-          // Update multi-account list
-          const accounts = savedAccounts.filter(a => a.email !== email); // remove duplicate if exists
-          accounts.unshift({ email, lastUsed: Date.now() }); // Add to top
-          if (accounts.length > 10) accounts.pop(); // Limit to 10
+          const accounts = savedAccounts.filter(a => a.email !== email);
+          accounts.unshift({ email, lastUsed: Date.now() });
+          if (accounts.length > 10) accounts.pop();
 
           setSavedAccounts(accounts);
           await AsyncStorage.setItem('saved_accounts', JSON.stringify(accounts));
@@ -91,10 +83,13 @@ export default function LoginScreen() {
         const result = await signIn(email, password);
         if (result.success) {
           const user = useAuthStore.getState().user;
-          if (user?.subRole === 'owner') {
+          // Updated role checking logic to match standard roles
+          if (user?.role === 'business_owner') {
             router.replace('/(business)/(tabs)/dashboard');
-          } else if (user?.subRole === 'staff') {
-            router.replace('/(business)/staff-dashboard');
+          } else if (user?.role === 'staff') {
+            router.replace('/(staff)/(tabs)/dashboard');
+          } else if (user?.role === 'admin') {
+            router.replace('/(admin)/dashboard');
           } else {
             router.replace('/(customer)/home');
           }
@@ -112,8 +107,6 @@ export default function LoginScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 bg-[#101922]">
-        {/* Top Bar with Back Arrow */}
-        {/* ... keeping existing top bar components ... */}
         <View className="flex-row items-center justify-between p-4 pb-2 mt-8">
           <Pressable
             onPress={() => router.back()}
@@ -128,13 +121,11 @@ export default function LoginScreen() {
           </Pressable>
         </View>
 
-        {/* Headline */}
         <View className="px-6 pt-4 pb-6">
           <Text className="text-white text-[32px] font-bold leading-tight">Tekrar Hoşgeldiniz</Text>
           <Text className="text-[#9dabb9] text-base font-normal mt-2">Randevularınızı yönetmek için giriş yapın.</Text>
         </View>
 
-        {/* Tab Switcher */}
         <View className="px-6 pb-6">
           <View className="flex-row h-12 w-full items-center justify-center rounded-full bg-[#283039] p-1">
             <Pressable
@@ -156,12 +147,10 @@ export default function LoginScreen() {
           </View>
         </View>
 
-        {/* Main Form Content */}
         <View className="flex-1 px-6 gap-6">
 
           {loginMethod === 'phone' ? (
             <>
-              {/* ... phone inputs ... */}
               <View className="gap-2">
                 <Text className="text-white text-base font-medium">Telefon Numarası</Text>
                 <View className="relative flex-row items-center">
@@ -179,7 +168,6 @@ export default function LoginScreen() {
                 </View>
               </View>
 
-              {/* OTP Input Simulation */}
               <View className="gap-2">
                 <View className="flex-row justify-between items-center">
                   <Text className="text-white text-base font-medium">Doğrulama Kodu</Text>
@@ -199,7 +187,6 @@ export default function LoginScreen() {
             </>
           ) : (
             <>
-              {/* Email Input */}
               <View className="gap-2 z-50">
                 <Text className="text-white text-base font-medium">E-posta Adresi</Text>
                 <View>
@@ -221,7 +208,6 @@ export default function LoginScreen() {
                     </Pressable>
                   )}
 
-                  {/* Dropdown List */}
                   {showAccountsDropdown && savedAccounts.length > 0 && (
                     <View className="absolute top-16 left-0 right-0 bg-[#1E293B] rounded-xl border border-white/10 p-2 shadow-xl z-50">
                       {savedAccounts.map((acc, index) => (
@@ -258,7 +244,6 @@ export default function LoginScreen() {
                 </View>
               </View>
 
-              {/* Password Input */}
               <View className="gap-2">
                 <Text className="text-white text-base font-medium">Şifre</Text>
                 <View className="relative justify-center">
@@ -281,9 +266,7 @@ export default function LoginScreen() {
             </>
           )}
 
-          {/* Alternative Login Link & Remember Me Row */}
           <View className="flex-row items-center justify-between">
-            {/* Remember Me Checkbox */}
             <Pressable
               className="flex-row items-center gap-2"
               onPress={() => setRememberMe(!rememberMe)}
@@ -305,7 +288,6 @@ export default function LoginScreen() {
             </Pressable>
           </View>
 
-          {/* Primary Action Button */}
           <Pressable
             onPress={handleLogin}
             disabled={loading}
@@ -316,14 +298,12 @@ export default function LoginScreen() {
             </Text>
           </Pressable>
 
-          {/* Divider */}
           <View className="flex-row items-center py-2">
             <View className="flex-1 border-t border-[#e6e8eb] dark:border-[#283039]" />
             <Text className="mx-4 text-[#9dabb9] text-xs font-medium uppercase">Veya şununla devam et</Text>
             <View className="flex-1 border-t border-[#e6e8eb] dark:border-[#283039]" />
           </View>
 
-          {/* Social Login Buttons (Disabled) */}
           <View className="flex-row gap-4 mb-8">
             <View className="flex-1 h-12 flex-row items-center justify-center gap-3 rounded-full bg-[#283039] opacity-60">
               <Text className="text-[#9dabb9] font-semibold text-sm">Google</Text>

@@ -4,12 +4,8 @@ import { View } from 'react-native';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function BusinessTabsLayout() {
-    const user = useAuthStore(state => state.user);
-    const isOwner = user?.subRole === 'owner';
-
-    // If not owner, we might want to show different tabs or redirect.
-    // For now, assuming this layout is primary for the business owner view.
-    // Staff view (StaffDashboard) is outside this group, so it won't use this layout.
+    // This layout is ONLY for business_owner role now
+    // Since routing is handled in app/_layout.tsx, we can assume user is authorized or will be redirected.
 
     return (
         <Tabs
@@ -44,8 +40,8 @@ export default function BusinessTabsLayout() {
                 tabBarActiveTintColor: '#3B82F6', // Blue-500
                 tabBarInactiveTintColor: '#64748B', // Slate-500
                 tabBarLabelStyle: {
-                    fontFamily: 'Manrope_500Medium',
-                    fontSize: 9, // Smaller font mainly for labels
+                    fontFamily: 'Poppins_500Medium', // Updated from Manrope
+                    fontSize: 9,
                     marginTop: 5,
                     marginBottom: 15,
                 },

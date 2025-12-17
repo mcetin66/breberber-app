@@ -83,9 +83,11 @@ export const staffService = {
   },
 
   async delete(id: string) {
+    // Cast updates to any because Supabase types might be strict about what can be updated
+    // or if the generated types don't match exactly.
     const { error } = await supabase
       .from('business_staff')
-      .update({ is_active: false })
+      .update({ is_active: false } as any)
       .eq('id', id);
 
     if (error) throw error;
@@ -108,9 +110,10 @@ export const staffService = {
       .delete()
       .eq('staff_id', staffId);
 
+    // Casting hours to any[] to bypass potential mismatch in generated types vs insert array
     const { data, error } = await supabase
       .from('staff_working_hours')
-      .insert(hours)
+      .insert(hours as any[])
       .select();
 
     if (error) throw error;
@@ -130,7 +133,7 @@ export const staffService = {
       .insert(serviceIds.map(serviceId => ({
         staff_id: staffId,
         service_id: serviceId,
-      })))
+      })) as any[])
       .select();
 
     if (error) throw error;

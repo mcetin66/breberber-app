@@ -5,6 +5,7 @@ import { UserCog, Users } from 'lucide-react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAuthStore } from '@/stores/authStore';
 import { COLORS } from '@/constants/theme';
+import { Role } from '@/types';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -12,8 +13,8 @@ export default function BusinessRoleScreen() {
   const router = useRouter();
   const setSelectedRole = useAuthStore(state => state.setSelectedRole);
 
-  const handleSubRoleSelect = (subRole: 'owner' | 'staff') => {
-    setSelectedRole('business');
+  const handleSubRoleSelect = (role: 'business_owner' | 'staff') => {
+    setSelectedRole(role);
     router.push('/(auth)/login');
   };
 
@@ -39,7 +40,7 @@ export default function BusinessRoleScreen() {
         <View className="w-full gap-4">
           <AnimatedPressable
             entering={FadeInDown.delay(400).duration(600)}
-            onPress={() => handleSubRoleSelect('owner')}
+            onPress={() => handleSubRoleSelect('business_owner')}
             className="bg-background-card border border-white/5 rounded-2xl p-6 active:scale-95 transition-transform"
           >
             <View className="flex-row items-center">
