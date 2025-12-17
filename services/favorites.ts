@@ -47,7 +47,7 @@ export const favoriteService = {
       .insert({
         user_id: userId,
         business_id: businessId,
-      })
+      } as any)
       .select()
       .single();
 

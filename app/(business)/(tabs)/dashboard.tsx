@@ -94,7 +94,7 @@ export default function BusinessDashboardScreen() {
         console.log('No business found for this owner');
         Alert.alert('Hata', 'İşletme bilgisi bulunamadı');
         setLoading(false);
-        router.replace('/(auth)/login');
+        // Route guard will handle redirect if needed
       }
     } catch (err) {
       console.error('checkBusiness Unexpected Error:', err);
@@ -197,7 +197,7 @@ export default function BusinessDashboardScreen() {
         {useAuthStore.getState().originalUser && (
           <View className="bg-red-500/10 px-4 py-2 flex-row items-center justify-between mb-2">
             <Text className="text-red-500 font-bold text-xs">⚠️ Yönetici Modu</Text>
-            <Pressable onPress={() => { useAuthStore.getState().stopImpersonating(); router.replace('/(admin)/dashboard'); }}>
+            <Pressable onPress={() => { useAuthStore.getState().stopImpersonating(); router.replace('/(platform)/dashboard'); }}>
               <Text className="text-red-500 font-bold text-xs underline">Çıkış</Text>
             </Pressable>
           </View>

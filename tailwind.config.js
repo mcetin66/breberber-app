@@ -9,17 +9,17 @@ module.exports = {
     extend: {
       colors: {
         // EXACT PORT FROM HTML TEMPLATE
-        "primary": "#137fec",
+        "primary": "#d4af37", // Gold
         "background-light": "#f6f7f8",
-        "background-dark": "#101922",
-        "surface-dark": "#1C2630",
+        "background-dark": "#0f0f0f",
+        "surface-dark": "#1a1a1a",
         "surface-light": "#FFFFFF",
 
         // Mapping for legacy/shared components if needed
         background: {
-          DEFAULT: '#101922', // Match background-dark
-          card: '#1C2630',    // Match surface-dark
-          subtle: '#293038',  // Border color derived from template
+          DEFAULT: '#0f0f0f',
+          card: '#1a1a1a',
+          subtle: '#333333',
         },
         text: {
           DEFAULT: '#FFFFFF',

@@ -186,7 +186,7 @@ export const bookingService = {
   async create(booking: BookingInsert) {
     const { data, error } = await supabase
       .from('bookings')
-      .insert(booking)
+      .insert(booking as any)
       .select()
       .single();
 
@@ -197,7 +197,7 @@ export const bookingService = {
   async update(id: string, updates: BookingUpdate) {
     const { data, error } = await supabase
       .from('bookings')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .select()
       .single();
@@ -254,7 +254,7 @@ export const bookingService = {
 
     if (bookingError) throw bookingError;
 
-    const bookedSlots = bookings?.map(b => ({
+    const bookedSlots = (bookings as any[])?.map(b => ({
       start: b.start_time,
       end: b.end_time,
     })) || [];

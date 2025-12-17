@@ -62,7 +62,7 @@ export const staffService = {
   async create(staff: StaffInsert) {
     const { data, error } = await supabase
       .from('business_staff')
-      .insert(staff)
+      .insert(staff as any)
       .select()
       .single();
 
@@ -73,7 +73,7 @@ export const staffService = {
   async update(id: string, updates: StaffUpdate) {
     const { data, error } = await supabase
       .from('business_staff')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .select()
       .single();

@@ -9,7 +9,7 @@ export const reviewService = {
   async create(review: ReviewInsert) {
     const { data, error } = await supabase
       .from('reviews')
-      .insert(review)
+      .insert(review as any)
       .select()
       .single();
 
@@ -20,7 +20,7 @@ export const reviewService = {
   async update(id: string, updates: ReviewUpdate) {
     const { data, error } = await supabase
       .from('reviews')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .select()
       .single();

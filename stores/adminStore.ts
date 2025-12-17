@@ -12,6 +12,8 @@ interface AggregateStats {
   recentActivity?: any[];
   planDistribution?: { [key: string]: number };
   typeDistribution?: { [key: string]: number };
+  planTypeBreakdown?: Record<string, Record<string, number>>;
+  typePlanBreakdown?: Record<string, Record<string, number>>;
   revenueHistory?: { date: string; amount: number; label: string; height: number }[];
 }
 
@@ -181,6 +183,26 @@ export const useAdminStore = create<AdminState>((set, get) => ({
         return acc;
       }, {});
 
+      const planTypeBreakdown = allBusinesses.reduce((acc: any, curr: any) => {
+        const tier = (curr.subscription_tier || 'silver').toLowerCase();
+        const type = (curr.business_type || 'berber').toLowerCase();
+
+        if (!acc[tier]) acc[tier] = {};
+        acc[tier][type] = (acc[tier][type] || 0) + 1;
+
+        return acc;
+      }, {});
+
+      const typePlanBreakdown = allBusinesses.reduce((acc: any, curr: any) => {
+        const tier = (curr.subscription_tier || 'silver').toLowerCase();
+        const type = (curr.business_type || 'berber').toLowerCase();
+
+        if (!acc[type]) acc[type] = {};
+        acc[type][tier] = (acc[type][tier] || 0) + 1;
+
+        return acc;
+      }, {});
+
       set({
         aggregateStats: {
           totalBusinesses: barbersRes.count || 0,
@@ -192,6 +214,8 @@ export const useAdminStore = create<AdminState>((set, get) => ({
             : 0,
           planDistribution: planDist,
           typeDistribution: typeDist,
+          planTypeBreakdown,
+          typePlanBreakdown,
           revenueHistory: revenueHistoryWithHeight
         },
         recentActivity: combinedActivity,

@@ -21,7 +21,7 @@ export default function ConfirmBookingScreen() {
   }
 
   if (!user) {
-    router.replace('/(auth)/login');
+    // Route guard in _layout.tsx will redirect
     return null;
   }
 

@@ -4,6 +4,9 @@ import { supabase } from '@/lib/supabase';
 import type { User, Role } from '@/types';
 import { logAudit } from '@/services/auditService';
 
+// ViewMode type for business owners to switch views
+type ViewMode = 'business' | 'staff' | 'customer' | 'platform';
+
 interface AuthState {
   user: User | null;
   token: string | null;
@@ -12,9 +15,11 @@ interface AuthState {
   error: string | null;
   selectedRole: Role | null; // For pre-login selection
   originalUser: User | null; // For admin impersonation
+  viewMode: ViewMode | null; // Current view mode (can differ from role for business_owner)
 
   initialize: () => Promise<void>;
   setSelectedRole: (role: Role | null) => void;
+  switchViewMode: (mode: ViewMode) => void; // Switch between business/staff views
   impersonateBusiness: (businessId: string, businessName: string) => void;
   stopImpersonating: () => void;
   signUp: (email: string, password: string, fullName: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
@@ -35,9 +40,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   error: null,
   selectedRole: null,
+  viewMode: null,
 
   setSelectedRole: (role) => set({ selectedRole: role }),
   setBarberId: (id) => set((state) => ({ user: state.user ? { ...state.user, barberId: id } : null })),
+
+  // Switch view mode (for business owners to toggle between business/staff views)
+  switchViewMode: (mode) => {
+    const { user } = get();
+    // Only business_owner can switch between business and staff
+    if (user?.role === 'business_owner' && (mode === 'business' || mode === 'staff')) {
+      console.log('🔄 Switching view mode to:', mode);
+      set({ viewMode: mode });
+    }
+  },
 
   initialize: async () => {
     try {
@@ -230,11 +246,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         role: profile.role as Role,
       };
 
+      // Set initial viewMode based on role
+      const initialViewMode =
+        user.role === 'business_owner' ? 'business' :
+          user.role === 'staff' ? 'staff' :
+            user.role === 'platform_admin' ? 'platform' : 'customer';
+
       set({
         user,
         token: data.session.access_token,
         isAuthenticated: true,
         isLoading: false,
+        viewMode: initialViewMode as ViewMode,
       });
 
       logAudit('AUTH_LOGIN', { email: user.email, role: user.role });
@@ -257,6 +280,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         isAuthenticated: false,
         isLoading: false,
         error: null,
+        viewMode: null,
       });
     } catch (error: any) {
       console.error('Sign out error:', error);

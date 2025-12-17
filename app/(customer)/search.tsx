@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Search as SearchIcon, X, TrendingUp, Clock, AlertCircle } from 'lucide-react-native';
-import { FlashList } from '@shopify/flash-list';
 import { useBusinessStore } from '@/stores/businessStore';
 import BarberCard from '@/components/BarberCard';
 import { COLORS } from '@/constants/theme';
+import type { Barber } from '@/types';
 
 const POPULAR_SEARCHES = [
   'Saç Kesimi',
@@ -143,10 +143,9 @@ export default function SearchScreen() {
               </View>
 
               {businesses.length > 0 ? (
-                <FlashList
+                <FlatList
                   data={businesses}
                   renderItem={({ item }) => <BarberCard barber={item} />}
-                  estimatedItemSize={320}
                   keyExtractor={item => item.id}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}

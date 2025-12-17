@@ -37,7 +37,7 @@ export const mockUsers: User[] = [
     fullName: 'Admin User',
     email: 'admin@breberber.com',
     phone: '+905551234570',
-    role: 'admin',
+    role: 'platform_admin',
     avatar: 'https://picsum.photos/seed/admin/200',
     createdAt: '2023-12-01T08:00:00Z',
   },
@@ -53,7 +53,8 @@ export const mockBarbers: Barber[] = [
     rating: 4.8,
     reviewCount: 128,
     coverImage: 'https://picsum.photos/seed/barber1/800/400',
-    image: 'https://picsum.photos/seed/logo1/200', // Mapped 'logo' to 'image'
+    image: 'https://picsum.photos/seed/logo1/200',
+    logo: 'https://picsum.photos/seed/logo1/200',
     phone: '+902161234567',
     email: 'info@goldenscissors.com',
     isOpen: true,
@@ -81,7 +82,8 @@ export const mockBarbers: Barber[] = [
     rating: 4.5,
     reviewCount: 85,
     coverImage: 'https://picsum.photos/seed/barber2/800/400',
-    image: 'https://picsum.photos/seed/logo2/200', // Mapped 'logo' to 'image'
+    image: 'https://picsum.photos/seed/logo2/200',
+    logo: 'https://picsum.photos/seed/logo2/200',
     phone: '+902161234568',
     email: 'info@urbancut.com',
     isOpen: false,

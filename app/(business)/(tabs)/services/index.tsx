@@ -26,7 +26,7 @@ export default function ServicesScreen() {
   useEffect(() => {
     if (!user?.barberId) {
       Alert.alert('Hata', 'İşletme bilgisi bulunamadı');
-      router.replace('/(auth)/login');
+      // Route guard will handle redirect if user is not authenticated
       return;
     }
     fetchServices(user.barberId);

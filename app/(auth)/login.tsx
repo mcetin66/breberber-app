@@ -1,17 +1,54 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, Image, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
-import { ChevronDown, User, Trash2, Eye, EyeOff } from 'lucide-react-native';
+import { ChevronDown, User, Trash2, Eye, EyeOff, Building2, UserCog, Shield, Users } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { useAuthStore } from '@/stores/authStore';
 
+// Role-based visual configuration
+const ROLE_CONFIG: Record<string, { icon: any; title: string; subtitle: string; color: string; badge?: string }> = {
+  customer: {
+    icon: User,
+    title: 'Tekrar Hoşgeldiniz',
+    subtitle: 'Randevularınızı yönetmek için giriş yapın.',
+    color: COLORS.primary.DEFAULT,
+  },
+  business: {
+    icon: Building2,
+    title: 'İşletme Girişi',
+    subtitle: 'İşletmenizi yönetmek için giriş yapın.',
+    color: '#10B981', // Green
+    badge: 'İŞLETME',
+  },
+  staff: {
+    icon: UserCog,
+    title: 'Personel Girişi',
+    subtitle: 'Randevularınızı görüntülemek için giriş yapın.',
+    color: '#8B5CF6', // Purple
+    badge: 'PERSONEL',
+  },
+  admin: {
+    icon: Shield,
+    title: 'Platform Yönetimi',
+    subtitle: 'Yönetim paneline erişmek için giriş yapın.',
+    color: '#EF4444', // Red
+    badge: 'YÖNETİCİ',
+  },
+};
+
 export default function LoginScreen() {
   const router = useRouter();
+  const { role } = useLocalSearchParams<{ role?: string }>();
   const { signIn } = useAuthStore();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('@isletme.com');
+
+  // Get role config or default to customer
+  const currentRole = (role && ROLE_CONFIG[role]) ? role : 'customer';
+  const roleConfig = ROLE_CONFIG[currentRole];
+  const RoleIcon = roleConfig.icon;
 
   const [rememberMe, setRememberMe] = useState(true);
   const [password, setPassword] = useState('password123');
@@ -83,14 +120,49 @@ export default function LoginScreen() {
         const result = await signIn(email, password);
         if (result.success) {
           const user = useAuthStore.getState().user;
+          console.log('🔐 Login successful - User role:', user?.role, 'Expected role:', currentRole);
+
+          // Role validation - check if user's role matches the expected login screen
+          const expectedRoles: Record<string, string[]> = {
+            customer: ['customer'],
+            business: ['business_owner'],
+            staff: ['staff'],
+            admin: ['platform_admin'],
+          };
+
+          const allowedRoles = expectedRoles[currentRole] || ['customer'];
+
+          if (user?.role && !allowedRoles.includes(user.role)) {
+            // Role mismatch - sign out and show error
+            console.log('❌ Role mismatch! User role:', user.role, 'Expected:', allowedRoles);
+            await useAuthStore.getState().signOut();
+
+            const roleNames: Record<string, string> = {
+              customer: 'Müşteri',
+              business_owner: 'İşletme Sahibi',
+              staff: 'Personel',
+              platform_admin: 'Platform Yöneticisi',
+            };
+
+            Alert.alert(
+              'Yetki Hatası',
+              `Bu giriş ekranı ${currentRole === 'admin' ? 'platform yöneticileri' : currentRole === 'business' ? 'işletme sahipleri' : currentRole === 'staff' ? 'personeller' : 'müşteriler'} içindir. Hesabınız "${roleNames[user.role] || user.role}" olarak kayıtlı. Lütfen doğru giriş ekranını kullanın.`
+            );
+            return;
+          }
+
           // Updated role checking logic to match standard roles
           if (user?.role === 'business_owner') {
+            console.log('➡️ Redirecting to business dashboard');
             router.replace('/(business)/(tabs)/dashboard');
           } else if (user?.role === 'staff') {
+            console.log('➡️ Redirecting to staff dashboard');
             router.replace('/(staff)/(tabs)/dashboard');
-          } else if (user?.role === 'admin') {
-            router.replace('/(admin)/dashboard');
+          } else if (user?.role === 'platform_admin') {
+            console.log('➡️ Redirecting to platform dashboard');
+            router.replace('/(platform)/dashboard');
           } else {
+            console.log('➡️ Redirecting to customer home (default)');
             router.replace('/(customer)/home');
           }
         } else {
@@ -122,8 +194,34 @@ export default function LoginScreen() {
         </View>
 
         <View className="px-6 pt-4 pb-6">
-          <Text className="text-white text-[32px] font-bold leading-tight">Tekrar Hoşgeldiniz</Text>
-          <Text className="text-[#9dabb9] text-base font-normal mt-2">Randevularınızı yönetmek için giriş yapın.</Text>
+          {/* Role Badge */}
+          {roleConfig.badge && (
+            <View
+              className="self-start px-3 py-1.5 rounded-full mb-3 flex-row items-center gap-2"
+              style={{ backgroundColor: roleConfig.color + '20' }}
+            >
+              <RoleIcon size={14} color={roleConfig.color} />
+              <Text
+                className="text-xs font-bold tracking-wider"
+                style={{ color: roleConfig.color }}
+              >
+                {roleConfig.badge}
+              </Text>
+            </View>
+          )}
+
+          {/* Role Icon for customers (no badge) */}
+          {!roleConfig.badge && (
+            <View
+              className="w-14 h-14 rounded-2xl items-center justify-center mb-4"
+              style={{ backgroundColor: roleConfig.color + '20' }}
+            >
+              <RoleIcon size={28} color={roleConfig.color} />
+            </View>
+          )}
+
+          <Text className="text-white text-[32px] font-bold leading-tight">{roleConfig.title}</Text>
+          <Text className="text-[#9dabb9] text-base font-normal mt-2">{roleConfig.subtitle}</Text>
         </View>
 
         <View className="px-6 pb-6">

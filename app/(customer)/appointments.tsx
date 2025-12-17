@@ -23,9 +23,8 @@ export default function AppointmentsScreen() {
   useEffect(() => {
     if (user) {
       fetchUserAppointments(user.id);
-    } else {
-      router.replace('/(auth)/login');
     }
+    // If no user, route guard in _layout.tsx will redirect
   }, [user]);
 
   const handleCancelAppointment = (appointmentId: string) => {

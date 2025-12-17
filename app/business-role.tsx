@@ -15,7 +15,8 @@ export default function BusinessRoleScreen() {
 
   const handleSubRoleSelect = (role: 'business_owner' | 'staff') => {
     setSelectedRole(role);
-    router.push('/(auth)/login');
+    const loginRole = role === 'business_owner' ? 'business' : 'staff';
+    router.push({ pathname: '/(auth)/login', params: { role: loginRole } });
   };
 
   return (

@@ -1,15 +1,16 @@
 export const COLORS = {
   background: {
     DEFAULT: '#0f0f0f',
+    dark: '#0f0f0f',
     card: '#1a1a1a',
     light: '#f6f7f8',
-    admin: '#0F172A', // Dark Slate Blue like in the design
-    adminCard: '#1E293B', // Lighter slate for cards
+    admin: '#0F172A',
+    adminCard: '#1E293B',
   },
   primary: {
-    DEFAULT: '#137fec',
-    light: '#4b9ff2',
-    dark: '#0b5cb0',
+    DEFAULT: '#d4af37', // Gold
+    light: '#f3cf55',
+    dark: '#aa8c2c',
   },
   text: {
     DEFAULT: '#FFFFFF',

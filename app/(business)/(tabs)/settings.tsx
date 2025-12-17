@@ -1,5 +1,5 @@
-import { SettingsLayout } from '@/components/shared/settings/SettingsLayout';
+import { SettingsShell } from '@/components/shared/settings/SettingsShell';
 
 export default function BusinessSettingsScreen() {
-    return <SettingsLayout role="business_owner" />;
+    return <SettingsShell role="business_owner" />;
 }

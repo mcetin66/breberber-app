@@ -8,7 +8,8 @@ export default function BusinessRootLayout() {
 
       {/* Feature Stacks / Screens outside tabs */}
       <Stack.Screen name="services" options={{ headerShown: false }} />
-      <Stack.Screen name="staff-dashboard" options={{ headerShown: false }} />
+      <Stack.Screen name="settings" options={{ headerShown: false }} />
+      <Stack.Screen name="finance" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
     </Stack>
   );

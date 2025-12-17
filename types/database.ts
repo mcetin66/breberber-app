@@ -16,7 +16,7 @@ export interface Database {
           full_name: string | null
           phone: string | null
           avatar_url: string | null
-          role: 'customer' | 'business_owner' | 'staff' | 'admin'
+          role: 'customer' | 'business_owner' | 'staff' | 'platform_admin'
           created_at: string
           updated_at: string
         }
@@ -26,7 +26,7 @@ export interface Database {
           full_name?: string | null
           phone?: string | null
           avatar_url?: string | null
-          role?: 'customer' | 'business_owner' | 'staff' | 'admin'
+          role?: 'customer' | 'business_owner' | 'staff' | 'platform_admin'
           created_at?: string
           updated_at?: string
         }
@@ -36,7 +36,7 @@ export interface Database {
           full_name?: string | null
           phone?: string | null
           avatar_url?: string | null
-          role?: 'customer' | 'business_owner' | 'staff' | 'admin'
+          role?: 'customer' | 'business_owner' | 'staff' | 'platform_admin'
           created_at?: string
           updated_at?: string
         }
@@ -62,6 +62,8 @@ export interface Database {
           business_type: string | null
           created_at: string
           updated_at: string
+          subscription_tier: string | null
+          subscription_end_date: string | null
         }
         Insert: {
           id?: string
@@ -81,6 +83,8 @@ export interface Database {
           is_active?: boolean
           created_at?: string
           updated_at?: string
+          subscription_tier?: string | null
+          subscription_end_date?: string | null
         }
         Update: {
           id?: string
@@ -100,6 +104,8 @@ export interface Database {
           is_active?: boolean
           created_at?: string
           updated_at?: string
+          subscription_tier?: string | null
+          subscription_end_date?: string | null
         }
       }
       business_staff: {
@@ -266,7 +272,7 @@ export interface Database {
           booking_date: string
           start_time: string
           end_time: string
-          status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+          status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'blocked'
           total_price: number
           notes: string | null
           cancellation_reason: string | null
@@ -282,7 +288,7 @@ export interface Database {
           booking_date: string
           start_time: string
           end_time: string
-          status?: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+          status?: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'blocked'
           total_price: number
           notes?: string | null
           cancellation_reason?: string | null
@@ -298,7 +304,7 @@ export interface Database {
           booking_date?: string
           start_time?: string
           end_time?: string
-          status?: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+          status?: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'blocked'
           total_price?: number
           notes?: string | null
           cancellation_reason?: string | null

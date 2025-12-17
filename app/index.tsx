@@ -1,93 +1,82 @@
 
-import { View, Text, Image, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '@/constants/theme';
-import { LinearGradient } from 'expo-linear-gradient';
+import { PremiumBackground } from '@/components/ui/PremiumBackground';
+import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated';
 
 export default function RoleSelectionScreen() {
   const router = useRouter();
 
   return (
-    <View className="flex-1 bg-background-light dark:bg-background-dark justify-center">
-
-      {/* Abstract Background Pattern */}
-      <View className="absolute inset-0 z-0 opacity-40">
-        <Image
-          source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCUbt2vZPWm4ZJWqr74byYYO1h3sPKxiPNAEcnp_-IdWYBP-yh7jB3pJiqJ4nD5ZeZFhJPPTMMegB7cS48LP_FUGv2Qst-AAh-Uc0GJvQ3aDFzDTTF6tBnJpTLHxdW48to615FtJjGeBea19Mjp6YodpjBTC3XdhLx9kx2RbEAviEt1surcXiSaqP2W679wYOeGnjNDgmHZ6VeYQVMRY3zBVhQGLatExpVhwkm9WoksmoBgmzmOC_qRGZz11HXjP6WsOlJi6h5Mfn8' }}
-          className="w-full h-full"
-          resizeMode="cover"
-        />
-        <LinearGradient
-          colors={['rgba(19, 127, 236, 0.15)', 'transparent']}
-          className="absolute inset-0"
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 0.5 }}
-        />
-      </View>
-
-      <View className="relative z-10 w-full max-w-md mx-auto px-6 py-8 flex-1 items-center justify-between min-h-[600px]">
+    <PremiumBackground className="justify-center items-center">
+      <View className="w-full max-w-md mx-auto px-6 py-8 flex-1 items-center justify-between min-h-[600px]">
         {/* Top Section */}
-        <View className="items-center w-full mt-10">
-          <Pressable
-            onPress={() => router.push('/(auth)/admin-login')}
-            className="items-center justify-center mb-6 active:scale-95 transition-transform"
-          >
-            <View className="w-16 h-16 bg-[#1a232d] border border-white/10 rounded-2xl items-center justify-center shadow-lg mb-2">
-              <MaterialIcons name="admin-panel-settings" size={32} color={COLORS.primary.DEFAULT} />
-            </View>
-            <Text className="text-gray-500 text-xs font-medium">Admin Girişi</Text>
-          </Pressable>
+        <Animated.View entering={FadeInDown.delay(100).springify()} className="items-center w-full mt-20">
+          {/* Logo or Icon */}
+          <View className="w-24 h-24 bg-background-card border border-primary/20 rounded-3xl items-center justify-center shadow-lg mb-8">
+            <MaterialIcons name="content-cut" size={48} color={COLORS.primary.DEFAULT} />
+          </View>
+
           <Text className="text-white tracking-tight text-[32px] font-bold leading-tight text-center">Hoş Geldiniz</Text>
-          <Text className="text-gray-400 text-base font-normal leading-normal pt-2 text-center max-w-[280px]">
-            Lütfen devam etmek için rolünüzü seçin.
+          <Text className="text-gray-400 text-base font-normal leading-normal pt-3 text-center max-w-[280px]">
+            Premium kuaför deneyimine başlamak için rolünüzü seçin.
           </Text>
-        </View>
+        </Animated.View>
 
         {/* Middle Section: Role Selection Cards */}
-        <View className="w-full gap-4 my-auto py-8">
+        <View className="w-full gap-5 my-auto py-8">
           {/* Customer Button */}
-          <Pressable
-            onPress={() => router.push('/(auth)/login')}
-            className="w-full bg-[#1a232d] active:bg-[#1e2a36] border border-white/5 active:border-primary/50 rounded-xl p-1 overflow-hidden"
-          >
-            <View className="flex-row items-center p-4">
-              <View className="w-12 h-12 items-center justify-center rounded-full bg-[#253341] active:bg-primary">
-                <MaterialIcons name="person" size={24} color={COLORS.primary.DEFAULT} />
+          <Animated.View entering={FadeInUp.delay(200).springify()}>
+            <Pressable
+              onPress={() => router.push({ pathname: '/(auth)/login', params: { role: 'customer' } })}
+              className="w-full bg-background-card active:bg-gray-800 border border-white/5 active:border-primary/50 rounded-2xl p-1 overflow-hidden"
+            >
+              <View className="flex-row items-center p-5">
+                <View className="w-14 h-14 items-center justify-center rounded-full bg-white/5 border border-white/5">
+                  <MaterialIcons name="person" size={28} color={COLORS.primary.DEFAULT} />
+                </View>
+                <View className="ml-4 flex-1">
+                  <Text className="text-white text-lg font-bold leading-tight">Müşteri</Text>
+                  <Text className="text-gray-400 text-sm mt-0.5">Randevu al ve keşfet</Text>
+                </View>
+                <MaterialIcons name="arrow-forward" size={20} color={COLORS.text.muted} />
               </View>
-              <View className="ml-4 flex-1">
-                <Text className="text-white text-lg font-bold leading-tight">Müşteri</Text>
-                <Text className="text-gray-400 text-sm mt-0.5">Müşteri Olarak Devam Et</Text>
-              </View>
-              <MaterialIcons name="arrow-forward" size={24} color="#4B5563" />
-            </View>
-          </Pressable>
+            </Pressable>
+          </Animated.View>
 
           {/* Business Button */}
-          <Pressable
-            onPress={() => router.push('/business-role')}
-            className="w-full bg-[#1a232d] active:bg-[#1e2a36] border border-white/5 active:border-primary/50 rounded-xl p-1 overflow-hidden"
-          >
-            <View className="flex-row items-center p-4">
-              <View className="w-12 h-12 items-center justify-center rounded-full bg-[#253341] active:bg-primary">
-                <MaterialIcons name="storefront" size={24} color={COLORS.primary.DEFAULT} />
+          <Animated.View entering={FadeInUp.delay(300).springify()}>
+            <Pressable
+              onPress={() => router.push('/business-role')}
+              className="w-full bg-background-card active:bg-gray-800 border border-white/5 active:border-primary/50 rounded-2xl p-1 overflow-hidden"
+            >
+              <View className="flex-row items-center p-5">
+                <View className="w-14 h-14 items-center justify-center rounded-full bg-white/5 border border-white/5">
+                  <MaterialIcons name="storefront" size={28} color={COLORS.primary.DEFAULT} />
+                </View>
+                <View className="ml-4 flex-1">
+                  <Text className="text-white text-lg font-bold leading-tight">İşletme</Text>
+                  <Text className="text-gray-400 text-sm mt-0.5">Salonunu yönet ve büyüt</Text>
+                </View>
+                <MaterialIcons name="arrow-forward" size={20} color={COLORS.text.muted} />
               </View>
-              <View className="ml-4 flex-1">
-                <Text className="text-white text-lg font-bold leading-tight">Berber / İşletme</Text>
-                <Text className="text-gray-400 text-sm mt-0.5">İşletme Olarak Devam Et</Text>
-              </View>
-              <MaterialIcons name="arrow-forward" size={24} color="#4B5563" />
-            </View>
-          </Pressable>
+            </Pressable>
+          </Animated.View>
         </View>
 
         {/* Footer */}
-        <View className="w-full items-center pb-6">
-          <Text className="text-xs text-gray-500 font-medium text-center">
-            Devam ederek <Text className="text-gray-300">Kullanım Koşulları</Text> ve <Text className="text-gray-300">Gizlilik Politikası</Text>'nı kabul etmiş olursunuz.
+        <Animated.View entering={FadeInUp.delay(400)} className="w-full items-center pb-8 gap-6">
+          <Pressable onPress={() => router.push({ pathname: '/(auth)/login', params: { role: 'admin' } })} hitSlop={20}>
+            <Text className="text-xs text-gray-700 font-medium tracking-wide uppercase">Admin Girişi</Text>
+          </Pressable>
+
+          <Text className="text-xs text-gray-500 font-medium text-center opacity-60">
+            Devam ederek <Text className="text-primary">Kullanım Koşulları</Text>'nı kabul edersiniz.
           </Text>
-        </View>
+        </Animated.View>
       </View>
-    </View>
+    </PremiumBackground>
   );
 }

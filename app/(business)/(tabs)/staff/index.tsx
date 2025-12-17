@@ -22,7 +22,7 @@ export default function StaffScreen() {
   useEffect(() => {
     if (!user?.barberId) {
       Alert.alert('Hata', 'İşletme bilgisi bulunamadı');
-      router.replace('/(auth)/login');
+      // Route guard will handle redirect if user is not authenticated
       return;
     }
     fetchStaff(user.barberId);

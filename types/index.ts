@@ -1,4 +1,4 @@
-export type Role = 'customer' | 'business_owner' | 'staff' | 'admin';
+export type Role = 'customer' | 'business_owner' | 'staff' | 'platform_admin';
 
 export interface User {
   id: string;
@@ -39,6 +39,7 @@ export interface Barber {
   isActive?: boolean;
   workingHours?: any;
   createdAt?: string;
+  logo?: string;
 }
 
 export interface Service {
@@ -95,6 +96,7 @@ export interface Appointment {
   customerName?: string;
   serviceName?: string;
   staffName?: string;
+  notes?: string;
   createdAt?: string;
 }
 
