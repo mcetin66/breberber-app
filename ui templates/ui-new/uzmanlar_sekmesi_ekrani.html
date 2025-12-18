@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Uzmanlar Sekmesi</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+            extend: {
+                colors: {
+                "primary": "#d4af35",
+                "background-light": "#f8f7f6",
+                "background-dark": "#121212", /* Adjusted to user request */
+                "surface-dark": "#1E1E1E", /* Adjusted to user request */
+                },
+                fontFamily: {
+                "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal scrolling areas to keep it sleek */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-[480px] mx-auto bg-background-light dark:bg-background-dark shadow-2xl overflow-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-transparent dark:bg-background-dark p-4 pb-2 justify-between z-10 sticky top-0 backdrop-blur-md bg-opacity-90 dark:bg-opacity-90 border-b border-white/5">
+<div class="text-white flex size-12 shrink-0 items-center justify-center rounded-full active:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white">arrow_back</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Gentleman's Lounge</h2>
+<div class="flex size-12 items-center justify-center rounded-full active:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white">more_vert</span>
+</div>
+</div>
+<!-- Header Image Area -->
+<div class="relative w-full h-[220px]">
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent z-10"></div>
+<img alt="Salon Interior" class="w-full h-full object-cover opacity-80" data-alt="Luxury dark barber shop interior with leather chairs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFizNZC08bXi4HRdHKUYsduPfpTlowzFa7n8-1QKW4iFoRgRPhlX2LpHprb9Pijh2H7K3xXIC-1nVC0Df_0O9n5z1GB2eWy3Typ_iwjl9sKcFcEMMmlUqjW8O7_rhp1jgNWnxEVO_E7oQoKELp7wxmJN9CjWrP9omlYS3MMbs4zg-LKr7rutzCWoOZC3zxohiJUG8aI06sUwQ7ewZYP5317VZcdxMyiO9HcHIWh9Je3uy_XmOPinuV36RLwfwXnn3Yg-nqlUjLSGRZ"/>
+<div class="absolute bottom-0 left-0 w-full p-4 z-20">
+<div class="flex justify-between items-end">
+<div>
+<h1 class="text-white text-3xl font-bold tracking-tight mb-1">Gentleman's Lounge</h1>
+<div class="flex items-center gap-1 text-primary/90 text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span>Nişantaşı, İstanbul</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 bg-surface-dark/80 backdrop-blur-sm px-2 py-1 rounded-lg border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[16px] fill-1">star</span>
+<span class="text-white font-bold text-sm">4.9</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tabs Navigation -->
+<div class="sticky top-[64px] z-30 bg-background-dark/95 backdrop-blur shadow-sm">
+<div class="flex border-b border-white/10 px-4 justify-between">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-gray-400 pb-[13px] pt-4 flex-1 hover:text-white transition-colors" href="#">
+<p class="text-sm font-semibold tracking-wide">Hizmetler</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-white pb-[13px] pt-4 flex-1" href="#">
+<p class="text-sm font-bold tracking-wide text-primary">Uzmanlar</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-gray-400 pb-[13px] pt-4 flex-1 hover:text-white transition-colors" href="#">
+<p class="text-sm font-semibold tracking-wide">Yorumlar</p>
+</a>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="py-5 px-4 overflow-x-auto hide-scrollbar">
+<div class="flex gap-3 min-w-max">
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary text-black px-4 transition-transform active:scale-95">
+<span class="text-sm font-bold leading-normal">Tümü</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 text-gray-300 px-4 hover:border-primary/50 transition-colors active:scale-95">
+<span class="text-sm font-medium leading-normal">Saç Kesimi</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 text-gray-300 px-4 hover:border-primary/50 transition-colors active:scale-95">
+<span class="text-sm font-medium leading-normal">Sakal</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 text-gray-300 px-4 hover:border-primary/50 transition-colors active:scale-95">
+<span class="text-sm font-medium leading-normal">Bakım</span>
+</button>
+</div>
+</div>
+<!-- Experts List Section -->
+<div class="px-4 pb-20 flex flex-col gap-5">
+<h3 class="text-xl font-bold text-white mb-1">Ekibimizle Tanışın</h3>
+<!-- Expert Card 1 -->
+<div class="group relative flex flex-col sm:flex-row gap-4 bg-surface-dark p-4 rounded-xl border border-white/5 shadow-lg shadow-black/40 hover:border-primary/40 transition-all duration-300">
+<!-- Image Container -->
+<div class="relative w-full sm:w-24 h-48 sm:h-24 shrink-0 rounded-lg overflow-hidden bg-gray-800">
+<img alt="Uzman Fotoğrafı" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Portrait of a professional barber with a beard looking confident" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2dk3c2VWAX6dkvaM9UwGKylOjVVags4OOv28pxHJHdTDGZBsdcAUFHv2N8vcTUQlpDj_jyGlJMxVFZkzmk5SOh48uHUjnPGS1MY1y78SxVxjorpwSZRWoDFp0_W7S9dXOSyOxQ8lizY6aKeTMIOcqExOhXsLlqfTqR1_idjuzi-Mz5Wnddjk8hVyusyJVulRS9djtGLt8PkSsn3lh-GsXpnvKz2ZFc96JT2X3zap2RLhukKdceRT9QEtKI6WeLiaPoFSjdtLczPcV"/>
+<div class="absolute top-2 right-2 bg-green-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm shadow-sm">
+                        Müsait
+                    </div>
+</div>
+<!-- Content -->
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<div>
+<h4 class="text-white text-lg font-bold">Caner Erkin</h4>
+<p class="text-primary text-xs uppercase tracking-widest font-semibold opacity-90">Master Barber</p>
+</div>
+<div class="flex items-center gap-1 bg-black/30 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-primary text-[14px] fill-1">star</span>
+<span class="text-white text-xs font-bold">5.0</span>
+<span class="text-gray-500 text-xs">(124)</span>
+</div>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-3">
+                            10 yıllık tecrübe ile modern saç kesimi ve sakal tasarımında uzmanlaşmış ödüllü stilist.
+                        </p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5 mt-1">
+<span class="text-xs text-gray-500 font-medium">Sonraki Randevu: <span class="text-white">Bugün 14:30</span></span>
+<button class="bg-primary hover:bg-yellow-500 text-black text-xs font-bold py-2 px-4 rounded-lg transition-colors active:scale-95 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                            Seç
+                        </button>
+</div>
+</div>
+</div>
+<!-- Expert Card 2 -->
+<div class="group relative flex flex-col sm:flex-row gap-4 bg-surface-dark p-4 rounded-xl border border-white/5 shadow-lg shadow-black/40 hover:border-primary/40 transition-all duration-300">
+<!-- Image Container -->
+<div class="relative w-full sm:w-24 h-48 sm:h-24 shrink-0 rounded-lg overflow-hidden bg-gray-800">
+<img alt="Uzman Fotoğrafı" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Portrait of a stylish male hair stylist wearing glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAViYKD81IHDNPcDnJJDrOEKTKgT6BuEnT8OoBfUENh2PEmA9H_iHKbnPQnwOPjR2zxtGPGAgEk-_X5srx67qz-LfYP1EK7Zck1NqeLZsMreWbjqQ0KCAvU60NnkHBtYpfVFXV9CI_Aa3vqLpE4yr9PCjRRNjGwsC3wtWCxR4oHiyDUCqsC-nr5eMb1yMC5jkGlX7-6YM4MezPp5G-4g_cA2CTu_XiiTT8rdSwGtrFtF0Q4MFDNLeEz-aYQJK6F3OrcUv97dCqjRsWb"/>
+<div class="absolute top-2 right-2 bg-red-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm shadow-sm">
+                        Dolu
+                    </div>
+</div>
+<!-- Content -->
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<div>
+<h4 class="text-white text-lg font-bold">Mehmet Demir</h4>
+<p class="text-primary text-xs uppercase tracking-widest font-semibold opacity-90">Saç Tasarımcı</p>
+</div>
+<div class="flex items-center gap-1 bg-black/30 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-primary text-[14px] fill-1">star</span>
+<span class="text-white text-xs font-bold">4.8</span>
+<span class="text-gray-500 text-xs">(98)</span>
+</div>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-3">
+                            Klasik tıraş teknikleri ve cilt bakımında uzman. Rahatlatıcı bir deneyim için tercihiniz.
+                        </p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5 mt-1">
+<span class="text-xs text-gray-500 font-medium">Sonraki Randevu: <span class="text-white">Yarın 10:00</span></span>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold py-2 px-4 rounded-lg border border-primary/30 transition-colors active:scale-95">
+                            İncele
+                        </button>
+</div>
+</div>
+</div>
+<!-- Expert Card 3 -->
+<div class="group relative flex flex-col sm:flex-row gap-4 bg-surface-dark p-4 rounded-xl border border-white/5 shadow-lg shadow-black/40 hover:border-primary/40 transition-all duration-300">
+<!-- Image Container -->
+<div class="relative w-full sm:w-24 h-48 sm:h-24 shrink-0 rounded-lg overflow-hidden bg-gray-800">
+<img alt="Uzman Fotoğrafı" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Portrait of a young cool barber smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjmKixqmmCyaMRrVY3Q_UdZKPObkBr0z_jQTLzAT3-9q9dtbYsulzT9KT0wHX2D7GTio2xXTspCJZrZyqM5s3VGKE70UCde73485BwnrlMqWVlLyrQxtgrtchSu5RFVxlMY1V-HqUM_xxrUQkP1uCfdo1K8Njt5S27WEKA3_GVAR58Qd7nWqyERVMoFKBjicvHdNymG0ehPCdQiDrVaFng7b_sqeiz19_fTjncpF2xqt2WlD6cHnu5lxFUQ8iZQ1r4fUuwbvHrYd5M"/>
+<div class="absolute top-2 right-2 bg-green-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm shadow-sm">
+                        Müsait
+                    </div>
+</div>
+<!-- Content -->
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<div>
+<h4 class="text-white text-lg font-bold">Burak Yılmaz</h4>
+<p class="text-primary text-xs uppercase tracking-widest font-semibold opacity-90">Renklendirme</p>
+</div>
+<div class="flex items-center gap-1 bg-black/30 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-primary text-[14px] fill-1">star</span>
+<span class="text-white text-xs font-bold">4.9</span>
+<span class="text-gray-500 text-xs">(45)</span>
+</div>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-3">
+                            Trend saç renkleri ve gölgelendirme konusunda yetenekli genç uzman.
+                        </p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5 mt-1">
+<span class="text-xs text-gray-500 font-medium">Sonraki Randevu: <span class="text-white">Bugün 16:15</span></span>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold py-2 px-4 rounded-lg border border-primary/30 transition-colors active:scale-95">
+                            İncele
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

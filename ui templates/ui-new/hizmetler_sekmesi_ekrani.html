@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hizmetler Sekmesi Ekranı</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Gold
+                        "primary-light": "#E5C558", 
+                        "primary-dark": "#B39225",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep Black
+                        "surface-dark": "#1E1E1E", // Dark Grey for Cards
+                        "surface-highlight": "#2A2A2A",
+                        "text-secondary": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                    backgroundImage: {
+                        'gold-gradient': 'linear-gradient(135deg, #D4AF37 0%, #F3D87E 50%, #B39225 100%)',
+                        'dark-gradient': 'linear-gradient(to bottom, #121212 0%, #1a1a1a 100%)',
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 4px 20px -5px rgba(212, 175, 55, 0.25)',
+                        'card-depth': '0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for horizontal scrolls */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Header Image & Overlay -->
+<div class="relative h-48 w-full shrink-0">
+<img class="h-full w-full object-cover opacity-60" data-alt="Modern barbershop interior with dark aesthetic and warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuUxe9mmfcGUQPke6O4_7iES5h3pZIFybsTTFTnMAju3edD9MKJ-IjIj3zUPubr3l2jgt9WkBrOH4l6gbmetHiGZcGH6cb6fpeRJyn-E7S-JmPor7RoeitLpB9Q4cNfo5dMUFPcKHAdOhf-Hoz1_B5qTxtlIyaEZUSj9dq_vgEhat5oqbPoYHFvbdG5r4s3bq3bY-Hzx1__AoS-Mj37pXLSKKSjMJIMY1AdAON8ZngmATp9_7rdQPIspNRZ6B9S3y9OBmQglA_pZmn"/>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#121212]/50 to-[#121212]"></div>
+<!-- Top App Bar (Overlaid) -->
+<div class="absolute top-0 left-0 right-0 flex items-center justify-between p-4 z-20 pt-10"> <!-- Added pt-10 for status bar space approximation -->
+<button class="flex size-10 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex gap-3">
+<button class="flex size-10 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-transform relative">
+<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full"></span>
+</button>
+</div>
+</div>
+<!-- Salon Info (Brief) -->
+<div class="absolute bottom-4 left-4 right-4 z-10">
+<h1 class="text-3xl font-serif font-bold text-white tracking-wide">Royal Gentleman</h1>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-primary text-[16px] fill-1">star</span>
+<span class="text-sm font-medium text-white">4.9</span>
+<span class="text-sm text-text-secondary">(128 Yorum)</span>
+<span class="text-sm text-text-secondary mx-1">•</span>
+<span class="text-sm text-text-secondary">Beşiktaş, İstanbul</span>
+</div>
+</div>
+</div>
+<!-- Sticky Navigation Tabs -->
+<div class="sticky top-0 z-30 bg-[#121212]/95 backdrop-blur-xl border-b border-white/5 pt-2">
+<div class="flex px-4 justify-between items-end">
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-text-secondary pb-3 flex-1 transition-colors hover:text-white" href="#">
+<p class="text-sm font-medium tracking-wide">Hakkında</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 flex-1" href="#">
+<p class="text-sm font-bold tracking-wide">Hizmetler</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-text-secondary pb-3 flex-1 transition-colors hover:text-white" href="#">
+<p class="text-sm font-medium tracking-wide">Yorumlar</p>
+</a>
+</div>
+</div>
+<!-- Category Filters (Chips) -->
+<div class="py-4 bg-[#121212]">
+<div class="flex gap-3 px-4 overflow-x-auto no-scrollbar">
+<!-- Active Chip -->
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-black px-5 shadow-gold-glow">
+<span class="text-sm font-bold">Tümü</span>
+</button>
+<!-- Inactive Chips -->
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50 hover:bg-surface-highlight">
+<span class="text-white text-sm font-medium">Saç Kesimi</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50 hover:bg-surface-highlight">
+<span class="text-white text-sm font-medium">Sakal Tıraşı</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50 hover:bg-surface-highlight">
+<span class="text-white text-sm font-medium">Bakım &amp; Spa</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50 hover:bg-surface-highlight">
+<span class="text-white text-sm font-medium">Paketler</span>
+</button>
+</div>
+</div>
+<!-- Main Content Area: Service Lists -->
+<div class="flex-1 overflow-y-auto bg-[#121212] pb-32 space-y-8 px-4">
+<!-- Category Section: Saç Kesimi -->
+<section>
+<h2 class="text-xl font-serif font-bold text-white mb-4 flex items-center gap-2">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+                    Saç Kesimi
+                </h2>
+<div class="space-y-4">
+<!-- Service Item 1 -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-surface-dark p-4 border border-white/5 shadow-card-depth hover:border-primary/30 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="flex-1 pr-4">
+<h3 class="text-white text-base font-bold mb-1 group-hover:text-primary transition-colors">Lüks Saç Kesimi</h3>
+<p class="text-text-secondary text-xs leading-relaxed line-clamp-2">Yıkama, stil danışmanlığı ve şekillendirme dahil premium saç kesimi deneyimi.</p>
+<div class="flex items-center gap-3 mt-3">
+<div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded text-xs text-primary">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                        45 dk
+                                    </div>
+<span class="text-white font-semibold tracking-wide">400 ₺</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center justify-center size-10 rounded-full bg-white/5 text-primary border border-white/10 hover:bg-primary hover:text-black hover:border-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<!-- Service Item 2 -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-surface-dark p-4 border border-white/5 shadow-card-depth hover:border-primary/30 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="flex-1 pr-4">
+<h3 class="text-white text-base font-bold mb-1 group-hover:text-primary transition-colors">Çocuk Saç Kesimi</h3>
+<p class="text-text-secondary text-xs leading-relaxed line-clamp-2">12 yaş altı çocuklar için özel kesim.</p>
+<div class="flex items-center gap-3 mt-3">
+<div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded text-xs text-primary">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                        30 dk
+                                    </div>
+<span class="text-white font-semibold tracking-wide">250 ₺</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center justify-center size-10 rounded-full bg-white/5 text-primary border border-white/10 hover:bg-primary hover:text-black hover:border-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Category Section: Sakal Tıraşı -->
+<section>
+<h2 class="text-xl font-serif font-bold text-white mb-4 flex items-center gap-2">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+                    Sakal Tıraşı
+                </h2>
+<div class="space-y-4">
+<!-- Service Item 3 -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-surface-dark p-4 border border-white/5 shadow-card-depth hover:border-primary/30 transition-all duration-300">
+<!-- Active State Simulation (Selected) -->
+<div class="absolute inset-0 border border-primary/50 rounded-xl pointer-events-none shadow-[inset_0_0_20px_rgba(212,175,55,0.1)]"></div>
+<div class="flex justify-between items-start">
+<div class="flex-1 pr-4">
+<h3 class="text-primary text-base font-bold mb-1">Kral Sakal Tasarımı</h3>
+<p class="text-text-secondary text-xs leading-relaxed line-clamp-2">Sıcak havlu kompresi, ustura ile ince detaylar ve bakım yağları.</p>
+<div class="flex items-center gap-3 mt-3">
+<div class="flex items-center gap-1 bg-primary/10 px-2 py-1 rounded text-xs text-primary">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                        30 dk
+                                    </div>
+<span class="text-primary font-semibold tracking-wide">300 ₺</span>
+</div>
+</div>
+<!-- Selected Button State -->
+<button class="shrink-0 flex items-center justify-center size-10 rounded-full bg-primary text-black shadow-gold-glow transition-all active:scale-90">
+<span class="material-symbols-outlined">check</span>
+</button>
+</div>
+</div>
+<!-- Service Item 4 -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-surface-dark p-4 border border-white/5 shadow-card-depth hover:border-primary/30 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="flex-1 pr-4">
+<h3 class="text-white text-base font-bold mb-1 group-hover:text-primary transition-colors">Geleneksel Tıraş</h3>
+<p class="text-text-secondary text-xs leading-relaxed line-clamp-2">Klasik ustura tıraşı.</p>
+<div class="flex items-center gap-3 mt-3">
+<div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded text-xs text-primary">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                        20 dk
+                                    </div>
+<span class="text-white font-semibold tracking-wide">200 ₺</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center justify-center size-10 rounded-full bg-white/5 text-primary border border-white/10 hover:bg-primary hover:text-black hover:border-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Category Section: VIP Paketler -->
+<section>
+<h2 class="text-xl font-serif font-bold text-white mb-4 flex items-center gap-2">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+                    VIP Paketler
+                </h2>
+<div class="space-y-4">
+<!-- Service Item 5 (Featured) -->
+<div class="relative overflow-hidden flex flex-col gap-3 rounded-xl bg-gradient-to-br from-surface-dark to-[#2a2510] p-4 border border-primary/20 shadow-card-depth hover:border-primary/40 transition-all duration-300">
+<div class="absolute top-0 right-0 p-1.5 bg-primary rounded-bl-lg">
+<span class="material-symbols-outlined text-black text-[16px]">diamond</span>
+</div>
+<div class="flex justify-between items-start">
+<div class="flex-1 pr-4">
+<h3 class="text-white text-base font-bold mb-1">Damat Paketi</h3>
+<p class="text-text-secondary text-xs leading-relaxed line-clamp-2">Saç, sakal, cilt bakımı, maske ve manikür. Tam kapsamlı hazırlık.</p>
+<div class="flex items-center gap-3 mt-3">
+<div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded text-xs text-primary">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                        120 dk
+                                    </div>
+<span class="text-white font-semibold tracking-wide">1500 ₺</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center justify-center size-10 rounded-full bg-white/5 text-primary border border-white/10 hover:bg-primary hover:text-black hover:border-primary transition-all active:scale-90 mt-2">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-40 p-4 bg-gradient-to-t from-[#121212] via-[#121212] to-transparent">
+<!-- Max-width wrapper to match main content on desktop if needed, here just full width mobile style -->
+<div class="max-w-md mx-auto">
+<div class="flex flex-col gap-3 rounded-2xl bg-surface-dark border border-white/10 p-4 shadow-2xl backdrop-blur-md">
+<!-- Summary Info -->
+<div class="flex items-center justify-between pb-3 border-b border-white/5">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary font-medium">Toplam Süre</span>
+<span class="text-sm text-white font-semibold">30 dk</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-xs text-text-secondary font-medium">1 Hizmet</span>
+<span class="text-lg text-primary font-bold">300 ₺</span>
+</div>
+</div>
+<!-- Main CTA -->
+<button class="flex w-full items-center justify-center gap-2 rounded-xl bg-gold-gradient py-3.5 text-black font-bold shadow-gold-glow hover:brightness-110 active:scale-[0.98] transition-all">
+<span>Devam Et</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

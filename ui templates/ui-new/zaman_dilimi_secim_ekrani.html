@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zaman Dilimi Seçimi</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35", // Gold/Bronze
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#201d12",
+                        "surface-dark": "#1E1E1E",
+                        "slot-green": "#4CAF50",
+                        "slot-orange": "#E65100",
+                        "slot-grey": "#424242",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'gold-gradient': 'linear-gradient(135deg, #D4AF37 0%, #B69220 100%)',
+                        'surface-gradient': 'linear-gradient(180deg, #1E1E1E 0%, #171717 100%)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#121212] font-display text-white antialiased min-h-screen relative overflow-x-hidden pb-28">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-white/5 px-4 pt-12 pb-4">
+<div class="flex items-center justify-between">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight text-white">Tarih ve Saat</h1>
+<div class="flex flex-col items-end">
+<span class="text-primary font-bold text-sm">Adım 3</span>
+<span class="text-xs text-gray-500">4 adımdan</span>
+</div>
+</div>
+</div>
+<!-- Date Selection (Chips) -->
+<div class="mt-4 pl-4 overflow-hidden">
+<div class="flex gap-3 overflow-x-auto hide-scrollbar pr-4 pb-2">
+<!-- Active Date -->
+<button class="flex flex-col shrink-0 items-center justify-center w-[72px] h-[84px] rounded-2xl bg-gradient-to-br from-primary to-[#B69220] shadow-[0_4px_20px_rgba(212,175,55,0.2)] border border-primary text-black transition-transform active:scale-95">
+<span class="text-xs font-semibold opacity-90 mb-1">Pzt</span>
+<span class="text-2xl font-bold">14</span>
+<span class="text-[10px] font-medium opacity-80 mt-1">Ekim</span>
+</button>
+<!-- Inactive Dates -->
+<button class="flex flex-col shrink-0 items-center justify-center w-[72px] h-[84px] rounded-2xl bg-surface-dark border border-white/5 text-gray-400 hover:border-primary/50 hover:text-white transition-all active:scale-95">
+<span class="text-xs font-medium mb-1">Sal</span>
+<span class="text-2xl font-bold text-white">15</span>
+<span class="text-[10px] font-medium opacity-60 mt-1">Ekim</span>
+</button>
+<button class="flex flex-col shrink-0 items-center justify-center w-[72px] h-[84px] rounded-2xl bg-surface-dark border border-white/5 text-gray-400 hover:border-primary/50 hover:text-white transition-all active:scale-95">
+<span class="text-xs font-medium mb-1">Çar</span>
+<span class="text-2xl font-bold text-white">16</span>
+<span class="text-[10px] font-medium opacity-60 mt-1">Ekim</span>
+</button>
+<button class="flex flex-col shrink-0 items-center justify-center w-[72px] h-[84px] rounded-2xl bg-surface-dark border border-white/5 text-gray-400 hover:border-primary/50 hover:text-white transition-all active:scale-95">
+<span class="text-xs font-medium mb-1">Per</span>
+<span class="text-2xl font-bold text-white">17</span>
+<span class="text-[10px] font-medium opacity-60 mt-1">Ekim</span>
+</button>
+<button class="flex flex-col shrink-0 items-center justify-center w-[72px] h-[84px] rounded-2xl bg-surface-dark border border-white/5 text-gray-400 hover:border-primary/50 hover:text-white transition-all active:scale-95">
+<span class="text-xs font-medium mb-1">Cum</span>
+<span class="text-2xl font-bold text-white">18</span>
+<span class="text-[10px] font-medium opacity-60 mt-1">Ekim</span>
+</button>
+</div>
+</div>
+<!-- View Toggle (Segmented Buttons) -->
+<div class="px-4 mt-6">
+<div class="bg-surface-dark p-1 rounded-full flex relative border border-white/5">
+<button class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full bg-primary text-black shadow-lg font-medium text-sm transition-all z-10">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+                Saatler
+            </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-gray-400 font-medium text-sm hover:text-white transition-all z-0">
+<span class="material-symbols-outlined text-[18px]">view_timeline</span>
+                Akış
+            </button>
+</div>
+</div>
+<!-- Legend -->
+<div class="px-6 mt-6 flex flex-wrap gap-x-6 gap-y-2 justify-center">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full border border-primary shadow-[0_0_8px_rgba(212,175,55,0.4)]"></div>
+<span class="text-xs text-gray-300">Boş</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-slot-green/80 shadow-[0_0_8px_rgba(76,175,80,0.4)]"></div>
+<span class="text-xs text-gray-300">Randevu</span>
+</div>
+<!-- Only conceptually visible, labeled simply as 'Dolu' for customers usually, but kept distinct per prompt -->
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-slot-orange/80 shadow-[0_0_8px_rgba(230,81,0,0.4)]"></div>
+<span class="text-xs text-gray-300">Dolu</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-slot-grey/80"></div>
+<span class="text-xs text-gray-300">Mola</span>
+</div>
+</div>
+<!-- Time Slots Grid -->
+<div class="px-4 mt-6 space-y-8">
+<!-- Morning Section -->
+<div>
+<h3 class="text-white/80 text-sm font-semibold mb-3 px-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">wb_sunny</span>
+                Sabah
+            </h3>
+<div class="grid grid-cols-3 gap-3">
+<!-- Available Slot -->
+<button class="group relative flex flex-col items-center justify-center py-3 rounded-xl border border-white/10 bg-surface-dark hover:border-primary hover:bg-primary/10 transition-all">
+<span class="text-white font-medium group-hover:text-primary">09:00</span>
+</button>
+<!-- Appointment (Green) -->
+<div class="relative flex flex-col items-center justify-center py-3 rounded-xl bg-slot-green/10 border border-slot-green/30 opacity-60">
+<span class="text-slot-green font-medium line-through decoration-slot-green/50">09:10</span>
+</div>
+<!-- Walk-in (Orange - Staff only usually, but requested here) -->
+<div class="relative flex flex-col items-center justify-center py-3 rounded-xl bg-slot-orange/10 border border-slot-orange/30 opacity-60">
+<span class="text-slot-orange font-medium">09:20</span>
+</div>
+<!-- Available Slot -->
+<button class="group relative flex flex-col items-center justify-center py-3 rounded-xl border border-white/10 bg-surface-dark hover:border-primary hover:bg-primary/10 transition-all">
+<span class="text-white font-medium group-hover:text-primary">09:30</span>
+</button>
+<!-- Break (Grey) -->
+<div class="relative flex flex-col items-center justify-center py-3 rounded-xl bg-white/5 border border-transparent">
+<span class="text-white/30 font-medium text-xs">Mola</span>
+</div>
+<!-- Selected Slot -->
+<button class="relative flex flex-col items-center justify-center py-3 rounded-xl bg-primary text-black font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] ring-2 ring-primary ring-offset-2 ring-offset-[#121212]">
+<span>09:50</span>
+<div class="absolute -top-1.5 -right-1.5 bg-white text-black text-[8px] font-bold px-1.5 py-0.5 rounded-full">SEÇİLİ</div>
+</button>
+</div>
+</div>
+<!-- Afternoon Section -->
+<div>
+<h3 class="text-white/80 text-sm font-semibold mb-3 px-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">partly_cloudy_day</span>
+                Öğleden Sonra
+            </h3>
+<div class="grid grid-cols-3 gap-3">
+<button class="group relative flex flex-col items-center justify-center py-3 rounded-xl border border-white/10 bg-surface-dark hover:border-primary hover:bg-primary/10 transition-all">
+<span class="text-white font-medium group-hover:text-primary">13:00</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center py-3 rounded-xl border border-white/10 bg-surface-dark hover:border-primary hover:bg-primary/10 transition-all">
+<span class="text-white font-medium group-hover:text-primary">13:10</span>
+</button>
+<!-- Appointment -->
+<div class="relative flex flex-col items-center justify-center py-3 rounded-xl bg-slot-green/10 border border-slot-green/30 opacity-60">
+<span class="text-slot-green font-medium line-through decoration-slot-green/50">13:20</span>
+</div>
+<button class="group relative flex flex-col items-center justify-center py-3 rounded-xl border border-white/10 bg-surface-dark hover:border-primary hover:bg-primary/10 transition-all">
+<span class="text-white font-medium group-hover:text-primary">13:30</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center py-3 rounded-xl border border-white/10 bg-surface-dark hover:border-primary hover:bg-primary/10 transition-all">
+<span class="text-white font-medium group-hover:text-primary">13:40</span>
+</button>
+<!-- Walk-in -->
+<div class="relative flex flex-col items-center justify-center py-3 rounded-xl bg-slot-orange/10 border border-slot-orange/30 opacity-60">
+<span class="text-slot-orange font-medium">13:50</span>
+</div>
+</div>
+</div>
+<!-- Divider for visual spacing -->
+<div class="h-8"></div>
+</div>
+<!-- Bottom Floating Action Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-[#121212]/90 backdrop-blur-lg border-t border-white/10 p-4 pb-8 z-50">
+<div class="flex items-center justify-between gap-4 max-w-lg mx-auto">
+<div class="flex flex-col">
+<span class="text-xs text-gray-400 font-medium uppercase tracking-wide">Seçilen Zaman</span>
+<span class="text-white font-bold text-lg flex items-center gap-2">
+                    14 Ekim, 09:50
+                    <span class="material-symbols-outlined text-primary text-sm">edit</span>
+</span>
+</div>
+<button class="bg-primary hover:bg-[#B69220] text-black font-bold py-3.5 px-8 rounded-full shadow-[0_4px_20px_rgba(212,175,55,0.3)] transition-all transform active:scale-95 flex items-center gap-2">
+                Devam Et
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

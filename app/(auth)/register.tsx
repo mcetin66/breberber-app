@@ -1,253 +1,245 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable, Alert } from 'react-native';
+import { View, Text, Pressable, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '@/constants/theme';
 import { useAuthStore } from '@/stores/authStore';
+import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { ArrowRight, ChevronLeft, User, Mail, Lock, Phone } from 'lucide-react-native';
+
+// Validation
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+// Schema Definitions
+const emailSchema = z.object({
+  fullName: z.string().min(2, 'Ad Soyad en az 2 karakter olmalıdır'),
+  email: z.string().email('Geçerli bir e-posta adresi giriniz'),
+  password: z.string().min(6, 'Şifre en az 6 karakter olmalıdır'),
+});
+
+const phoneSchema = z.object({
+  phoneNumber: z.string().min(10, 'Geçerli bir telefon numarası giriniz'),
+});
+
+type RegisterFormData = {
+  fullName?: string;
+  email?: string;
+  password?: string;
+  phoneNumber?: string;
+};
 
 export default function RegisterScreen() {
   const router = useRouter();
   const { signUp } = useAuthStore();
 
-  const [registerMethod, setRegisterMethod] = useState<'phone' | 'email'>('phone');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [registerMethod, setRegisterMethod] = useState<'phone' | 'email'>('email');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleTabChange = (tab: string) => {
-    if (tab === 'login') {
-      router.replace('/(auth)/login');
+  // Setup Form
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerMethod === 'email' ? emailSchema : phoneSchema) as any,
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      phoneNumber: '',
+    }
+  });
+
+  const onSubmit = async (data: RegisterFormData) => {
+    if (registerMethod === 'phone') {
+      router.push({ pathname: '/(auth)/otp', params: { phone: data.phoneNumber } });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Data is guaranteed to be valid per schema here
+      const result = await signUp(data.email!, data.password!, data.fullName!, data.phoneNumber);
+
+      if (result.success) {
+        Alert.alert('Başarılı', 'Kayıt işleminiz başarıyla tamamlandı.', [
+          { text: 'Tamam', onPress: () => router.replace('/(customer)/home') }
+        ]);
+      } else {
+        Alert.alert('Hata', result.error || 'Kayıt başarısız.');
+      }
+    } catch (error) {
+      Alert.alert('Hata', 'Beklenmedik bir hata oluştu.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRegister = async () => {
-    if (registerMethod === 'phone') {
-      Alert.alert('Bilgi', 'Telefon ile kayıt şuan simülasyon modundadır. E-posta ile kayıt olmayı deneyiniz.');
-    } else {
-      if (!email || !password || !fullName) {
-        Alert.alert('Hata', 'Lütfen tüm alanları doldurunuz.');
-        return;
-      }
-      setLoading(true);
-      try {
-        // Pass phone as optional if needed, or empty
-        const result = await signUp(email, password, fullName, phoneNumber);
-        if (result.success) {
-          Alert.alert('Başarılı', 'Kayıt işleminiz başarıyla tamamlandı.', [
-            { text: 'Tamam', onPress: () => router.replace('/(customer)/home') }
-          ]);
-        } else {
-          Alert.alert('Hata', result.error || 'Kayıt başarısız.');
-        }
-      } catch (error) {
-        Alert.alert('Hata', 'Beklenmedik bir hata oluştu.');
-      } finally {
-        setLoading(false);
-      }
-    }
+  const toggleMethod = () => {
+    setRegisterMethod(prev => prev === 'phone' ? 'email' : 'phone');
+    reset(); // Clear form errors and values when switching
   };
 
   return (
-    <View className="flex-1 bg-[#101922]">
-      <View className="flex-1 max-w-[480px] w-full mx-auto px-4 py-6 justify-between mt-8">
+    <ScreenWrapper noPadding>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View className="flex-1">
+          {/* Header */}
+          <View className="px-4 py-4 mt-8 flex-row items-center justify-between z-10">
+            <Pressable
+              onPress={() => router.back()}
+              className="w-10 h-10 rounded-full active:bg-white/5 items-center justify-center -ml-2"
+            >
+              <ChevronLeft size={28} color={COLORS.primary.DEFAULT} />
+            </Pressable>
 
-        {/* Top Section */}
-        <View className="w-full">
-          {/* Logo */}
-          <View className="items-center mb-6 pt-4">
-            <View className="w-16 h-16 bg-primary rounded-full items-center justify-center shadow-lg shadow-primary/20">
-              <MaterialIcons name="content-cut" size={32} color="white" />
+            <View className="flex-row items-center gap-2">
+              <MaterialIcons name="content-cut" size={20} color={COLORS.primary.DEFAULT} />
             </View>
+
+            {/* Empty view for balance */}
+            <View className="w-10" />
           </View>
 
-          {/* Headline */}
-          <View className="mb-8 items-center">
-            <Text className="text-3xl font-bold tracking-tight text-white mb-2">Hoşgeldiniz</Text>
-            <Text className="text-slate-400 text-sm font-medium">SaaS Barber'a üye olarak randevularınızı yönetin.</Text>
-          </View>
-
-          {/* Segmented Control */}
-          <View className="mb-8 flex-row h-14 items-center justify-center rounded-full bg-[#1e2936] p-1.5 border border-white/5">
-            <Pressable
-              onPress={() => handleTabChange('login')}
-              className="flex-1 h-full items-center justify-center rounded-full"
-            >
-              <Text className="text-slate-400 text-sm font-bold">Giriş Yap</Text>
-            </Pressable>
-            <Pressable
-              className="flex-1 h-full items-center justify-center rounded-full bg-primary shadow-md shadow-black/20"
-            >
-              <Text className="text-sm font-bold text-white">Üye Ol</Text>
-            </Pressable>
-          </View>
-
-          {/* Form */}
-          <View className="gap-6">
+          <View className="flex-1 px-6">
+            <View className="mb-8 mt-2">
+              <Text className="text-3xl font-bold text-white leading-tight mb-2 tracking-tight">Hesap Oluştur</Text>
+              <Text className="text-[#b6b1a0] text-sm font-normal leading-normal">
+                Lüks berber deneyimi için bilgilerinizi girin.
+              </Text>
+            </View>
 
             {registerMethod === 'phone' ? (
-              <>
-                {/* Phone Input */}
-                <View className="gap-2">
-                  <Text className="text-white text-sm font-semibold ml-1">Telefon Numarası</Text>
-                  <View className="relative justify-center">
-                    <View className="absolute left-4 z-10">
-                      <MaterialIcons name="smartphone" size={24} color="#94a3b8" />
-                    </View>
-                    <TextInput
-                      className="w-full h-14 pl-12 pr-4 bg-[#2a2a2a] rounded-full text-white placeholder:text-slate-500 font-medium text-base"
+              <View className="gap-2">
+                <Controller
+                  control={control}
+                  name="phoneNumber"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      label="TELEFON NUMARASI"
                       placeholder="+90 (5XX) XXX XX XX"
-                      placeholderTextColor="#64748b"
                       keyboardType="phone-pad"
-                      value={phoneNumber}
-                      onChangeText={setPhoneNumber}
+                      value={value}
+                      onChangeText={onChange}
+                      icon={<Phone size={20} color="#6a7785" />}
+                      error={errors.phoneNumber?.message}
                     />
-                  </View>
+                  )}
+                />
+                <View className="flex-row items-center justify-between mt-1 mb-6">
+                  <Text className="text-xs text-text-muted">Doğrulama kodu gönderilecektir.</Text>
                 </View>
-
-                {/* OTP Input */}
-                <View className="gap-2">
-                  <View className="flex-row justify-between items-end ml-1 mr-1">
-                    <Text className="text-white text-sm font-semibold">Onay Kodu</Text>
-                    <Text className="text-primary text-xs font-bold">Kodu Gönder</Text>
-                  </View>
-                  <View className="flex-row justify-between gap-3">
-                    {[1, 2, 3, 4].map(i => (
-                      <TextInput
-                        key={i}
-                        className="flex-1 h-14 text-center bg-[#2a2a2a] rounded-2xl text-white text-xl font-bold placeholder:text-slate-600"
-                        maxLength={1}
-                        keyboardType="number-pad"
-                        placeholder="-"
-                        placeholderTextColor="#475569"
-                      />
-                    ))}
-                  </View>
-                  <Text className="text-xs text-slate-500 mt-1 ml-1">Telefonunuza gelen 4 haneli kodu giriniz.</Text>
-                </View>
-              </>
+              </View>
             ) : (
-              <>
-                {/* Full Name Input */}
-                <View className="gap-2">
-                  <Text className="text-white text-sm font-semibold ml-1">Ad Soyad</Text>
-                  <View className="relative justify-center">
-                    <View className="absolute left-4 z-10">
-                      <MaterialIcons name="person" size={24} color="#94a3b8" />
-                    </View>
-                    <TextInput
-                      className="w-full h-14 pl-12 pr-4 bg-[#2a2a2a] rounded-full text-white placeholder:text-slate-500 font-medium text-base"
+              <View className="gap-2">
+                <Controller
+                  control={control}
+                  name="fullName"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      label="AD SOYAD"
                       placeholder="Ad Soyad"
-                      placeholderTextColor="#64748b"
-                      keyboardType="default"
-                      autoCorrect={false}
-                      value={fullName}
-                      onChangeText={setFullName}
+                      value={value}
+                      onChangeText={onChange}
+                      icon={<User size={20} color="#6a7785" />}
+                      error={errors.fullName?.message}
                     />
-                  </View>
-                </View>
+                  )}
+                />
 
-                {/* Email Input */}
-                <View className="gap-2">
-                  <Text className="text-white text-sm font-semibold ml-1">E-posta Adresi</Text>
-                  <View className="relative justify-center">
-                    <View className="absolute left-4 z-10">
-                      <MaterialIcons name="email" size={24} color="#94a3b8" />
-                    </View>
-                    <TextInput
-                      className="w-full h-14 pl-12 pr-4 bg-[#2a2a2a] rounded-full text-white placeholder:text-slate-500 font-medium text-base"
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      label="E-POSTA"
                       placeholder="ornek@email.com"
-                      placeholderTextColor="#64748b"
-                      keyboardType="email-address"
+                      value={value}
+                      onChangeText={onChange}
                       autoCapitalize="none"
-                      autoCorrect={false}
-                      value={email}
-                      onChangeText={setEmail}
+                      keyboardType="email-address"
+                      icon={<Mail size={20} color="#6a7785" />}
+                      error={errors.email?.message}
                     />
-                  </View>
-                </View>
+                  )}
+                />
 
-                {/* Password Input */}
-                <View className="gap-2">
-                  <Text className="text-white text-sm font-semibold ml-1">Şifre</Text>
-                  <View className="relative justify-center">
-                    <View className="absolute left-4 z-10">
-                      <MaterialIcons name="lock" size={24} color="#94a3b8" />
-                    </View>
-                    <TextInput
-                      className="w-full h-14 pl-12 pr-4 bg-[#2a2a2a] rounded-full text-white placeholder:text-slate-500 font-medium text-base"
-                      placeholder="••••••••"
-                      placeholderTextColor="#64748b"
-                      secureTextEntry
-                      autoCorrect={false}
-                      value={password}
-                      onChangeText={setPassword}
+                <View className="relative">
+                  <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        label="ŞİFRE"
+                        placeholder="En az 6 karakter"
+                        value={value}
+                        onChangeText={onChange}
+                        secureTextEntry={!showPassword}
+                        icon={<Lock size={20} color="#6a7785" />}
+                        error={errors.password?.message}
+                      />
+                    )}
+                  />
+                  <Pressable
+                    className="absolute right-4 top-[38px]"
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <MaterialIcons
+                      name={showPassword ? "visibility-off" : "visibility"}
+                      size={20}
+                      color="#6a7785"
                     />
-                  </View>
+                  </Pressable>
                 </View>
-              </>
+              </View>
             )}
 
-            {/* Switch Method Link */}
-            <View className="items-end">
-              <Pressable onPress={() => setRegisterMethod(registerMethod === 'phone' ? 'email' : 'phone')}>
-                <Text className="text-primary text-sm font-medium">
+            <View className="items-end mt-2 mb-6">
+              <Pressable onPress={toggleMethod}>
+                <Text className="text-primary text-sm font-medium hover:underline">
                   {registerMethod === 'phone' ? 'E-posta ile kayıt ol' : 'Telefon Numarası ile kayıt ol'}
                 </Text>
               </Pressable>
             </View>
 
-            {/* Submit Button */}
-            <Pressable
-              onPress={handleRegister}
-              disabled={loading}
-              className={`w-full h-14 bg-primary rounded-full items-center justify-center flex-row gap-2 shadow-lg shadow-primary/25 mt-2 active:scale-[0.98] ${loading ? 'opacity-70' : ''}`}
-            >
-              <Text className="text-white text-base font-bold tracking-wide">
-                {loading ? 'Kayıt Yapılıyor...' : 'Üye Ol'}
-              </Text>
-              {!loading && <MaterialIcons name="arrow-forward" size={20} color="white" />}
-            </Pressable>
-          </View>
+            <Button
+              label="Hemen Üye Ol"
+              onPress={handleSubmit(onSubmit)}
+              loading={loading}
+              icon={<ArrowRight size={20} color="black" />}
+              className="mt-2"
+            />
 
-          {/* Divider */}
-          <View className="relative py-8 h-12 justify-center">
-            <View className="absolute inset-0 flex items-center justify-center">
-              <View className="w-full border-t border-white/10" />
-            </View>
-            <View className="relative items-center">
-              <Text className="px-4 bg-[#101922] text-xs text-slate-500 uppercase tracking-wider font-semibold">Ya da şununla</Text>
-            </View>
-          </View>
-
-          {/* Social Buttons */}
-          <View className="flex-row gap-4">
-            <View className="flex-1 h-14 flex-row items-center justify-center bg-[#2a2a2a] rounded-2xl border border-white/5 opacity-50 relative">
-              <MaterialIcons name="language" size={24} color="white" className="mr-2" />
-              <Text className="text-white text-sm font-semibold ml-2">Google</Text>
-              <View className="absolute -top-2.5 -right-2 bg-[#1e2936] px-2 py-0.5 rounded-full border border-white/10">
-                <Text className="text-[9px] font-bold text-primary">YAKINDA</Text>
+            <View className="relative my-8">
+              <View className="absolute inset-0 flex items-center justify-center">
+                <View className="w-full border-t border-[#333]" />
+              </View>
+              <View className="relative flex-row justify-center">
+                <Text className="bg-[#121212] px-4 text-text-muted text-sm">veya şununla devam et</Text>
               </View>
             </View>
-            <View className="flex-1 h-14 flex-row items-center justify-center bg-[#2a2a2a] rounded-2xl border border-white/5 opacity-50 relative">
-              <MaterialIcons name="phone-iphone" size={24} color="white" className="mr-2" />
-              <Text className="text-white text-sm font-semibold ml-2">Apple</Text>
-              <View className="absolute -top-2.5 -right-2 bg-[#1e2936] px-2 py-0.5 rounded-full border border-white/10">
-                <Text className="text-[9px] font-bold text-primary">YAKINDA</Text>
-              </View>
+
+            <View className="flex-row gap-4 justify-center">
+              <Pressable className="w-14 h-14 rounded-full bg-[#1E1E1E] border border-[#333] items-center justify-center">
+                <MaterialIcons name="language" size={24} color="white" />
+              </Pressable>
+              <Pressable className="w-14 h-14 rounded-full bg-[#1E1E1E] border border-[#333] items-center justify-center">
+                <MaterialIcons name="phone-iphone" size={24} color="white" />
+              </Pressable>
             </View>
+
+            <View className="mt-auto mb-8 flex-row justify-center items-center gap-1.5">
+              <Text className="text-[#b6b1a0] text-sm">Hesabınız var mı?</Text>
+              <Pressable onPress={() => router.replace('/(auth)/login')}>
+                <Text className="text-primary font-bold text-sm">Giriş Yap</Text>
+              </Pressable>
+            </View>
+
           </View>
         </View>
-
-        {/* Footer */}
-        <View className="mt-8 mb-2 items-center">
-          <Text className="text-slate-500 text-sm font-medium">
-            Zaten bir hesabın var mı? <Text onPress={() => router.replace('/(auth)/login')} className="text-primary font-bold">Giriş Yap</Text>
-          </Text>
-        </View>
-
-      </View>
-    </View>
+      </TouchableWithoutFeedback>
+    </ScreenWrapper>
   );
 }
+

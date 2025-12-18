@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onay Yenileme Ekranı</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#201d12", // Keeping theme config, but will override for specific requested black #121212
+                        "surface-dark": "#1E1E1E",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    boxShadow: {
+                        "gold-glow": "0 0 20px -5px rgba(212, 175, 53, 0.15)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>/* Custom scrollbar for legal text areas if needed */
+::-webkit-scrollbar {
+    width: 4px
+    }
+::-webkit-scrollbar-track {
+    background: #1E1E1E
+    }
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px
+    }
+/* Checkbox Customization */
+.checkbox-custom:checked {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAPwD-V_r7clwB7QU0aXbStZHeH13ZcCbnu87FitLKDtMu-8qRRGfnCZqpWHXGoSOg2XKX_5FF_nouOKgJy4iU1aX5H9Va2AehdC6-pTTPN3rGq7qrZbe7NgrRXvPHIHCkSSoBbnvESDO_R7yPKsGo6FAySXsD2NTQUEcWZ_WUj0ULDmRvVqgaONSA-hJBRqYylIFJ0lEuRt76kU5QFRaKOlEtyv_z0Vi3PYGOk1zMumSoeM3ccpkXCWNe_1VLOiix4OMR-ujcp2fuf)
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#121212] text-white font-display selection:bg-primary/30 selection:text-primary overflow-x-hidden antialiased">
+<div class="relative flex min-h-screen w-full flex-col justify-between pb-6 pt-12 px-6 max-w-md mx-auto">
+<!-- Header & Icon Section -->
+<div class="flex flex-col items-center text-center space-y-6">
+<div class="relative group">
+<!-- Glowing background effect behind icon -->
+<div class="absolute -inset-4 bg-primary/20 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500"></div>
+<div class="relative bg-[#1E1E1E] border border-primary/20 p-5 rounded-full shadow-gold-glow">
+<span class="material-symbols-outlined text-primary !text-[48px]">verified_user</span>
+</div>
+</div>
+<div class="space-y-3">
+<h1 class="text-[28px] font-bold leading-tight tracking-tight text-white">
+                    Hizmet Şartlarımız Güncellendi
+                </h1>
+<p class="text-gray-400 text-base font-normal leading-relaxed">
+                    Sizlere daha iyi hizmet verebilmek ve kişisel verilerinizi en üst düzeyde korumak amacıyla yasal metinlerimizi güncelledik.
+                </p>
+</div>
+</div>
+<!-- Content Card Section -->
+<div class="flex-1 my-8 flex flex-col justify-center">
+<div class="bg-[#1E1E1E] rounded-2xl p-5 border border-white/5 shadow-gold-glow relative overflow-hidden">
+<!-- Decorative top gradient line -->
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
+<div class="space-y-4">
+<p class="text-xs font-semibold text-primary uppercase tracking-widest mb-2">Onay Bekleyenler</p>
+<!-- Checklist Item 1 -->
+<label class="flex gap-x-4 items-start group cursor-pointer">
+<div class="relative flex items-center mt-1">
+<input class="checkbox-custom h-5 w-5 rounded border-[#514c3e] border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary transition-colors duration-200" type="checkbox"/>
+</div>
+<div class="text-sm text-gray-300 leading-snug group-hover:text-white transition-colors">
+<span class="font-medium text-white">Kullanıcı Sözleşmesi</span>'ni okudum ve kabul ediyorum.
+                        </div>
+</label>
+<!-- Checklist Item 2 -->
+<label class="flex gap-x-4 items-start group cursor-pointer">
+<div class="relative flex items-center mt-1">
+<input class="checkbox-custom h-5 w-5 rounded border-[#514c3e] border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary transition-colors duration-200" type="checkbox"/>
+</div>
+<div class="text-sm text-gray-300 leading-snug group-hover:text-white transition-colors">
+<span class="font-medium text-white">KVKK Aydınlatma Metni</span>'ni okudum ve anladım.
+                        </div>
+</label>
+<!-- Checklist Item 3 -->
+<label class="flex gap-x-4 items-start group cursor-pointer">
+<div class="relative flex items-center mt-1">
+<input class="checkbox-custom h-5 w-5 rounded border-[#514c3e] border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary transition-colors duration-200" type="checkbox"/>
+</div>
+<div class="text-sm text-gray-300 leading-snug group-hover:text-white transition-colors">
+<span class="font-medium text-white">Ticari Elektronik İleti</span> iznini onaylıyorum.
+                        </div>
+</label>
+</div>
+<div class="mt-6 pt-4 border-t border-white/10">
+<div class="flex items-center gap-2 text-[#b6b1a0] text-xs">
+<span class="material-symbols-outlined !text-[16px]">info</span>
+<p>Metinlerin detaylarını görmek için başlıklara tıklayınız.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Section -->
+<div class="space-y-4">
+<button class="w-full bg-primary hover:bg-[#c29d2b] active:scale-[0.98] transition-all duration-200 text-[#121212] font-bold text-lg py-4 rounded-xl shadow-[0_4px_20px_-4px_rgba(212,175,53,0.4)] flex items-center justify-center gap-2">
+<span>Onayla ve Devam Et</span>
+<span class="material-symbols-outlined !text-[20px] font-bold">arrow_forward</span>
+</button>
+<button class="w-full text-[#757575] hover:text-white text-sm font-medium py-2 transition-colors duration-200">
+                Uygulamadan Çıkış Yap
+            </button>
+</div>
+</div>
+<!-- Background texture/noise simulation for richness (optional visual enhancement) -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-50" data-alt="Subtle noise texture overlay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAm9SJ1tikemGHGVe-iYkRahr4n7EmZMNDPm2zzu1az4d5UksYqqtiZ7sr1c2Ovd0aOfuHcaUnGW-TVKQnD_OCdLTwMnvojRJVf8PC-mmjbc0tSNk-P_gsfNL-JivrJDLtnJCpZkGO9xSesPpEFs1_lbwZ6f_LZvNXVvCpp4zMS5bJG7-elA0BcSj3jKbj2SL8FQ4el5osmeIZvCmPukSXCz-jkm4t6VLTD0lW4eDjAImoQddsH3ulM7b4k83LljDUW6-jjA6YAi_Al'); background-size: 4px;"></div>
+</body></html>

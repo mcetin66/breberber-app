@@ -162,14 +162,30 @@ export default function ServicesScreen() {
             </View>
           ))
         ) : (
-          <View className="flex-1 items-center justify-center py-12">
-            <Text className="text-text-secondary text-lg font-poppins-semibold mb-2">
-              {selectedCategory !== 'Tümü' ? 'Bu kategoride hizmet bulunamadı' : 'Henüz hizmet eklenmemiş'}
+          <View className="flex-1 items-center justify-center py-20">
+            <View className="w-20 h-20 rounded-3xl bg-[#1E293B] items-center justify-center mb-6 shadow-xl shadow-black border border-white/5 rotate-3">
+              <View className="w-20 h-20 rounded-3xl bg-[#1E293B] absolute top-0 left-0 -rotate-6 opacity-30 border border-white/5" />
+              <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center">
+                <Plus size={24} color={COLORS.primary.DEFAULT} />
+              </View>
+            </View>
+            <Text className="text-white text-xl font-poppins-bold mb-2">
+              {selectedCategory !== 'Tümü' ? 'Kategori Boş' : 'Hizmet Listeniz Boş'}
             </Text>
+            <Text className="text-slate-400 text-sm font-poppins-medium text-center px-10 mb-8 leading-relaxed">
+              {selectedCategory !== 'Tümü'
+                ? 'Bu kategoride henüz bir hizmet bulunmuyor.'
+                : 'Müşterilerinize sunacağınız hizmetleri ekleyerek başlayın.'}
+            </Text>
+
             {selectedCategory === 'Tümü' && (
-              <Text className="text-text-muted text-sm font-poppins text-center px-8">
-                Yeni hizmet eklemek için + Ekle butonuna tıklayın
-              </Text>
+              <Pressable
+                onPress={() => router.push('/(business)/(tabs)/services/detail')}
+                className="bg-primary px-8 py-3.5 rounded-xl flex-row items-center gap-2 shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+              >
+                <Plus size={20} color="black" />
+                <Text className="text-black font-poppins-bold text-base">Hizmet Ekle</Text>
+              </Pressable>
             )}
           </View>
         )}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Favoriler Ekranı</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "primary-dark": "#b08d2b",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Pure black requested
+                        "surface-dark": "#1E1E1E", // Dark grey requested
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "full": "9999px"},
+                    boxShadow: {
+                        "gold-glow": "0 0 15px -3px rgba(212, 175, 53, 0.15), 0 4px 6px -4px rgba(212, 175, 53, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal scrolling */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto border-x border-white/5">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md px-4 py-4 justify-between border-b border-white/5">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-full active:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white" style="font-size: 24px;">arrow_back</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">Favorilerim</h2>
+<button class="flex size-10 items-center justify-center rounded-full active:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">filter_list</span>
+</button>
+</header>
+<!-- Search Bar -->
+<div class="px-4 py-4">
+<div class="group flex w-full flex-1 items-stretch rounded-xl h-12 bg-surface-dark shadow-sm border border-white/5 focus-within:border-primary/50 transition-colors">
+<div class="text-gray-400 flex items-center justify-center pl-4 pr-2">
+<span class="material-symbols-outlined" style="font-size: 22px;">search</span>
+</div>
+<input class="flex w-full min-w-0 flex-1 bg-transparent text-white placeholder:text-gray-500 px-2 text-sm font-normal focus:outline-none border-none focus:ring-0" placeholder="Salon, semt veya hizmet ara..."/>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-3 px-4 pb-4 overflow-x-auto hide-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-5 shadow-gold-glow transition-transform active:scale-95">
+<p class="text-white text-xs font-semibold tracking-wide">Tümü</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 px-5 hover:bg-white/5 transition-colors">
+<p class="text-gray-300 text-xs font-medium tracking-wide">Berber</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 px-5 hover:bg-white/5 transition-colors">
+<p class="text-gray-300 text-xs font-medium tracking-wide">Kuaför</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 px-5 hover:bg-white/5 transition-colors">
+<p class="text-gray-300 text-xs font-medium tracking-wide">Cilt Bakımı</p>
+</button>
+</div>
+<!-- Favorites List -->
+<div class="flex flex-col gap-5 p-4 pb-24">
+<!-- Card 1 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-3 shadow-gold-glow border border-white/5 hover:border-primary/30 transition-all duration-300">
+<!-- Top Image Section -->
+<div class="relative w-full aspect-[16/9] rounded-xl overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Luxury barber shop interior with leather chairs and warm lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxjcD3c-iRAYlZeh0wSvwIAwfLX0po2DFsSlfQ3VqV8EnI0ATy8twEwZSsy2mSBtC_VRmGsnouwHN24WDqzqLYrynElmW7BsU2BoZChspnly0tyTdOro_G6D-5lCEQOWcbGrGMBRyT4U_OIdIwWFm0zt_vNi8Yn78CKIAH5us3h-YFwXhUXUKI5sDbXRQQwFJpKA0mZO3hJwjPQ_hb6cOWmwUS97I-4Vvf5MbiSTEV5SqrwOzfHc7ONHeB6zQTIAli4aIiPdnDIp2d");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<!-- Favorite Heart Icon -->
+<button class="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined fill-current" style="font-variation-settings: 'FILL' 1; font-size: 20px;">favorite</span>
+</button>
+<!-- Badge -->
+<div class="absolute bottom-3 left-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-white text-xs font-bold">4.9</span>
+<span class="text-gray-300 text-[10px] ml-0.5">(560)</span>
+</div>
+</div>
+<!-- Content Section -->
+<div class="flex flex-col gap-3 px-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight mb-1">Royal Gentlemen's Lounge</h3>
+<div class="flex items-center text-gray-400 text-xs">
+<span class="material-symbols-outlined mr-1" style="font-size: 14px;">location_on</span>
+                                Nişantaşı, İstanbul
+                            </div>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-primary text-xs font-medium bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Açık</span>
+<span class="text-gray-500 text-[10px] mt-1">1.2 km</span>
+</div>
+</div>
+<div class="h-px bg-white/10 w-full"></div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex -space-x-2 overflow-hidden">
+<img alt="Customer avatar" class="inline-block h-6 w-6 rounded-full ring-2 ring-[#1E1E1E] object-cover" data-alt="portrait of a smiling woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA67pXm09D_UTzAQVd0mIWAUBDmx2QK27BXjbVhAt-Xqx_yr8YU3gohHCYVo9BZnR-fvvc-XGV6suW7WQN8c18pG7y-XunW9QQ3UQgV293TIlQdL6lkXyl2HI0DiVpfx6efT22FEOKBU-qvwM4l1WcGj5bzJyDa9PF-_z4NwU3aMP90P1iGRBQQL0PAwtKZxg9nlGPA033GAFJ0Y64X5ciyLunk6jPJQ4AA7aBfmdyGPVE3_2c4YPMn_BX8ELHNfFs1jPxpvYRAfs8o"/>
+<img alt="Customer avatar" class="inline-block h-6 w-6 rounded-full ring-2 ring-[#1E1E1E] object-cover" data-alt="portrait of a man with beard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWoM0_SuoZ73kWEmbhjK3VcyciNkOFM8vohMIg_nWnXWmb-GDZWbj-_MOiJnYaCkmGg1DuTtjISWDJuY_WapFJXzvPgfT2U7KRjVigpHtVztklEtaMisvQFNtfu1Eto5VRiO-9V9D6OohqFiIRv4jlhEvhQApbmJ8f-wl8LEBye2PIkbHPehog9g2s9z6yPzNSJ0VuGVl0mIvdJEz3lKZxEOZkziS_ynnR0wEIwMcBPy44AqMPsLgk-fd0fr7eQ7YRaHdtNg9RsetR"/>
+<img alt="Customer avatar" class="inline-block h-6 w-6 rounded-full ring-2 ring-[#1E1E1E] object-cover" data-alt="portrait of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPGkmasFsdcZR2MIzg0kg8113FkxNWtb1DPCJ-bc-zyr_yOl62-nE9XsMLrNbJ6YZmFN14nsTu69WEtUxPujyJN-q7RI-DVKd3GuYE-TEAbFbrHWYqgBmj39yyqrJwGA_uA4iw8G8tEjXtFlNSAxs4r5UO2Ew5ODYraLMqgE9rNVC29g3BF3T3utNd7_Wotfskz9stDdI1mZVe0Svk_sJUx9kUs55pTQSEGX4cDgpSJ7miv9zUJ_f8Z1dHoP6aIIbdwdjhQHy1hTOz"/>
+<div class="flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 ring-2 ring-[#1E1E1E] text-[8px] text-gray-400 font-medium">+12</div>
+</div>
+<button class="flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-[#c49f2b] px-5 py-2 text-black text-sm font-bold shadow-[0_0_10px_rgba(212,175,53,0.3)] active:scale-95 transition-all">
+                            Randevu Al
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-3 shadow-gold-glow border border-white/5 hover:border-primary/30 transition-all duration-300">
+<div class="relative w-full aspect-[16/9] rounded-xl overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Modern hair salon interior with mirrors and salon chairs" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDgZng98JwbrxdP67i9GIBgV0WM-ZzlckpBXNrr9qTYbfMbQsRMZA_gwKyehPcU2OQOPcgtSBn9Q80wZ0sc46D14gVv_olj_bP6bGwooUT15xMZffkFWRTlSMDecfUnwcimq_49kusg7Y8TYbV487OnmpefeiUJGH51HNQ6pqeoocD6gyrpzgmla5Vfd2bSAAYdX9t3BnEiCCZlQlruEIu_uwNmnmLQ4kbgBkNtyMRp6tH8ZKxZvhu5DqaqzUPUelG0sDKP231ltx4R");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<button class="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined fill-current" style="font-variation-settings: 'FILL' 1; font-size: 20px;">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-white text-xs font-bold">4.7</span>
+<span class="text-gray-300 text-[10px] ml-0.5">(210)</span>
+</div>
+</div>
+<div class="flex flex-col gap-3 px-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight mb-1">The Barber Club</h3>
+<div class="flex items-center text-gray-400 text-xs">
+<span class="material-symbols-outlined mr-1" style="font-size: 14px;">location_on</span>
+                                Kadıköy, İstanbul
+                            </div>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-gray-400 text-xs font-medium bg-white/5 px-2 py-0.5 rounded border border-white/10">10:00'da</span>
+<span class="text-gray-500 text-[10px] mt-1">8.5 km</span>
+</div>
+</div>
+<div class="h-px bg-white/10 w-full"></div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1 text-primary/80 text-xs">
+<span class="material-symbols-outlined" style="font-size: 16px;">verified</span>
+<span>Onaylı İşletme</span>
+</div>
+<button class="flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-[#c49f2b] px-5 py-2 text-black text-sm font-bold shadow-[0_0_10px_rgba(212,175,53,0.3)] active:scale-95 transition-all">
+                            Randevu Al
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-3 shadow-gold-glow border border-white/5 hover:border-primary/30 transition-all duration-300">
+<div class="relative w-full aspect-[16/9] rounded-xl overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Close up of barber tools scissors and comb on wooden table" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAgImQwduVjhSVuMBqvOsXUAyfpizS4p1IXaRGNIWCDEdWmRl6H7pfPFeHIHvg4q2vKqxhTChItZ5VkKXel0ZFCME_Syfi_x4FYL-zaXj8lBIZM_N9K_k9POn55PR8U6XdWo_YyLjT3ada25xcyOqWBGgjFVOmture-n9EqI34dMln5qQC1xTNH--1DSuR0p1wNK-BTpeG3IYXPD0n0slfP7z902kHnDaPNQBFp90Uu7vwpZPCxAklZpF1RguYiA9g4MIGm022x09Vr");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<button class="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined fill-current" style="font-variation-settings: 'FILL' 1; font-size: 20px;">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px; font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-white text-xs font-bold">5.0</span>
+<span class="text-gray-300 text-[10px] ml-0.5">(89)</span>
+</div>
+</div>
+<div class="flex flex-col gap-3 px-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight mb-1">Golden Scissors</h3>
+<div class="flex items-center text-gray-400 text-xs">
+<span class="material-symbols-outlined mr-1" style="font-size: 14px;">location_on</span>
+                                Etiler, İstanbul
+                            </div>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-primary text-xs font-medium bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Açık</span>
+<span class="text-gray-500 text-[10px] mt-1">2.4 km</span>
+</div>
+</div>
+<div class="h-px bg-white/10 w-full"></div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1 text-gray-400 text-xs">
+<span class="material-symbols-outlined" style="font-size: 16px;">content_cut</span>
+<span>Saç &amp; Sakal</span>
+</div>
+<button class="flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-[#c49f2b] px-5 py-2 text-black text-sm font-bold shadow-[0_0_10px_rgba(212,175,53,0.3)] active:scale-95 transition-all">
+                            Randevu Al
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 left-0 right-0 z-50 border-t border-white/5 bg-background-dark/95 backdrop-blur-lg pb-5 pt-2 max-w-md mx-auto">
+<div class="flex items-center justify-around px-2">
+<button class="flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">home</span>
+<span class="text-[10px] font-medium">Anasayfa</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">explore</span>
+<span class="text-[10px] font-medium">Keşfet</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-primary">
+<span class="material-symbols-outlined fill-current" style="font-variation-settings: 'FILL' 1; font-size: 24px;">favorite</span>
+<span class="text-[10px] font-bold">Favoriler</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">calendar_month</span>
+<span class="text-[10px] font-medium">Randevular</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">person</span>
+<span class="text-[10px] font-medium">Profil</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

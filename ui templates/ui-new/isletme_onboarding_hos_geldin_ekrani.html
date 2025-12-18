@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>İşletme Onboarding - Luxe Partner</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#d4af37", // Updated to match user request
+              "background-light": "#f8f7f6",
+              "background-dark": "#121212", // Updated to match user request
+              "surface-dark": "#1E1E1E", // Custom surface color
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            backgroundImage: {
+                'gold-gradient': 'linear-gradient(135deg, #d4af37 0%, #b89528 100%)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased selection:bg-primary/30 selection:text-primary">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl">
+<!-- Header / Top Bar -->
+<header class="absolute top-0 left-0 right-0 z-20 flex items-center justify-center p-6 pt-12 bg-gradient-to-b from-background-dark/90 to-transparent">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">content_cut</span>
+<h1 class="text-white text-lg font-bold tracking-[0.1em] uppercase">Luxe Partner</h1>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto no-scrollbar pb-24">
+<!-- Hero Section -->
+<div class="relative w-full h-[65vh] min-h-[500px]">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 w-full h-full">
+<img class="w-full h-full object-cover grayscale opacity-90" data-alt="Close up of luxury barber tools scissors and leather texture in dark lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxBtBF98JxP2I3l21XNT0g53Q7GyRLoYQ9lKTTjxWX88oEBH83H_9SHAWTi6HzbIlQa-BVl3W-HH0qiJWsAcHoDVnAJZMUfkskDEu-dTpEVGRsmagYQsYtJPSY2RvDbI18QkQKe42ObKm1IwhTEbL5KVB_5zcYdaWnAKhuJFkf0z85qN1Mnam39QmCRF2ITUcQ3mKrjRHF0AxTXgtdtLIVuB7_1oq78bFaSEUSXh7iLC3Wqv-dmC1zv-hmQD3MIRWeYSFWTxYuj4vn"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
+</div>
+<!-- Hero Text Content -->
+<div class="absolute bottom-0 left-0 right-0 p-6 flex flex-col gap-4 z-10 pb-10">
+<div class="w-12 h-1 bg-primary rounded-full mb-2"></div>
+<h2 class="text-white text-4xl font-bold leading-[1.1] tracking-tight drop-shadow-lg">
+                        Sanatınız, <br/>
+<span class="text-primary">Hak Ettiği</span> Değeri Görsün.
+                    </h2>
+<p class="text-gray-300 text-base font-medium leading-relaxed max-w-[90%] drop-shadow-md">
+                        Türkiye'nin en seçkin berber ve kuaför ağına katılarak işletmenizi prestijli bir markaya dönüştürün.
+                    </p>
+</div>
+</div>
+<!-- Value Props Carousel -->
+<div class="flex flex-col gap-4 pl-6 mb-8 mt-2">
+<div class="flex items-center justify-between pr-6">
+<h3 class="text-white text-sm font-bold uppercase tracking-wider text-opacity-80">Neden Luxe Partner?</h3>
+<!-- Scroll indicators simulation -->
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-white/20"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-white/20"></div>
+</div>
+</div>
+<div class="flex overflow-x-auto gap-4 pr-6 pb-4 no-scrollbar">
+<!-- Card 1 -->
+<div class="min-w-[200px] w-[200px] bg-surface-dark p-5 rounded-xl border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex flex-col gap-4 group hover:border-primary/30 transition-colors">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined text-2xl">diamond</span>
+</div>
+<div>
+<h4 class="text-white text-lg font-bold leading-tight mb-1">Premium Ağ</h4>
+<p class="text-gray-400 text-xs leading-normal">Bölgenizdeki en seçkin müşteri kitlesine doğrudan ulaşın.</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[200px] w-[200px] bg-surface-dark p-5 rounded-xl border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex flex-col gap-4 group hover:border-primary/30 transition-colors">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined text-2xl">calendar_month</span>
+</div>
+<div>
+<h4 class="text-white text-lg font-bold leading-tight mb-1">Akıllı Randevu</h4>
+<p class="text-gray-400 text-xs leading-normal">Yapay zeka destekli takvim ile boş koltuk kalmasın.</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[200px] w-[200px] bg-surface-dark p-5 rounded-xl border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex flex-col gap-4 group hover:border-primary/30 transition-colors">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined text-2xl">monitoring</span>
+</div>
+<div>
+<h4 class="text-white text-lg font-bold leading-tight mb-1">Analitik Rapor</h4>
+<p class="text-gray-400 text-xs leading-normal">Gelir ve performans verileriyle büyümenizi yönetin.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Actions -->
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background-dark via-background-dark to-transparent z-30 max-w-md mx-auto">
+<div class="flex flex-col gap-3">
+<button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-14 px-5 bg-gold-gradient text-background-dark text-base font-bold leading-normal tracking-[0.015em] shadow-[0_0_15px_rgba(212,175,55,0.3)] hover:shadow-[0_0_25px_rgba(212,175,55,0.5)] active:scale-[0.98] transition-all">
+<span>İşletmeni Oluştur</span>
+<span class="material-symbols-outlined ml-2 text-xl">arrow_forward</span>
+</button>
+<button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-transparent text-white/70 hover:text-white text-sm font-medium leading-normal tracking-[0.015em] transition-colors">
+<span>Zaten Üye misiniz? <span class="text-primary font-bold">Giriş Yapın</span></span>
+</button>
+</div>
+<!-- Trust Indicator -->
+<div class="flex justify-center items-center gap-2 mt-4 opacity-30">
+<span class="material-symbols-outlined text-xs text-white">verified_user</span>
+<span class="text-[10px] text-white uppercase tracking-widest">Güvenli İş Ortağı</span>
+</div>
+</div>
+</div>
+</body></html>

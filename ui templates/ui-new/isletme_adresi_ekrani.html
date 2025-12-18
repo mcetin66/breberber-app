@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>İşletme Adresi Ekranı</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#d4a925",
+              "background-light": "#f8f7f6", 
+              "background-dark": "#121212", 
+              "surface-dark": "#1E1E1E",
+              "text-muted": "#A0A0A0",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            boxShadow: {
+                "gold-glow": "0 4px 20px rgba(212, 169, 37, 0.15)",
+                "gold-sm": "0 2px 10px rgba(212, 169, 37, 0.1)"
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4a925; 
+        }
+        .fill-1 {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display antialiased overflow-x-hidden selection:bg-primary selection:text-black">
+<div class="relative flex min-h-screen flex-col w-full max-w-md mx-auto bg-background-dark shadow-2xl overflow-hidden group/design-root">
+<!-- Top App Bar -->
+<header class="absolute top-0 left-0 right-0 z-30 flex items-center justify-between p-4 bg-gradient-to-b from-black/90 to-transparent">
+<button class="flex items-center justify-center size-10 rounded-full bg-black/40 backdrop-blur-md text-white hover:bg-black/60 border border-white/5 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-white text-lg font-bold tracking-tight drop-shadow-md">İşletme Adresi</h2>
+<button class="flex items-center justify-center px-3 h-10 rounded-full bg-black/40 backdrop-blur-md text-[#b7b19f] font-semibold text-sm hover:bg-black/60 border border-white/5 transition-colors">
+                Yardım
+             </button>
+</header>
+<!-- Map Section -->
+<!-- Taking approx 35-40% of screen height -->
+<div class="relative w-full h-[38vh] bg-[#1a1a1a]">
+<div class="absolute inset-0 bg-cover bg-center opacity-70 grayscale-[20%] contrast-[1.1]" data-alt="Dark stylized street map view for location selection" data-location="Istanbul" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQA3NKEfz1qQohdemG9V1INRnRgsFNPm1Vknq0mCRQkh6JDeGpEy51TsLghRaBdWEBGu0VxWf-Rn0zIJSk1RlyzaQcqLPV6Dxz0U3YMKYe0SyGHpjt1knhOFrCv2AsOl36MdYr_6WD8_rzSw6WcrZcWXqtBsMNotfiMfi4q7JDe-lkHShOaFai2N4mEFAFfcIA-YoeSgD4yJuArfT8Ec4xQBZOGKAZC1LBibEUJIza9WG6y84ZqpYFb4s4dPrIyfnxDFN6kuc3y9_R');">
+</div>
+<!-- Map Overlay Gradient for smooth transition to body -->
+<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background-dark via-background-dark/80 to-transparent"></div>
+<!-- Center Pin Animation -->
+<div class="absolute inset-0 flex items-center justify-center pb-6 pointer-events-none">
+<!-- Location Pin -->
+<span class="material-symbols-outlined text-5xl text-primary drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] z-10 fill-1 -translate-y-1/2">location_on</span>
+<!-- Pulse/Ripple Effect -->
+<div class="absolute size-4 bg-primary rounded-full animate-ping opacity-60 -translate-y-1/2"></div>
+<!-- Pin Shadow on ground -->
+<div class="absolute size-2 bg-black/50 blur-[2px] rounded-full mt-4 translate-y-2"></div>
+</div>
+<!-- Helper Tooltip -->
+<div class="absolute top-24 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md text-white text-xs font-medium px-4 py-2 rounded-full border border-white/10 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap">
+<span class="material-symbols-outlined text-[16px] text-primary">touch_app</span>
+                Pini sürükleyerek konumu doğrulayın
+             </div>
+<!-- Floating "Current Location" Button -->
+<button class="absolute bottom-8 right-5 size-12 bg-surface-dark rounded-full shadow-gold-glow flex items-center justify-center text-primary border border-primary/20 hover:bg-primary/10 active:scale-95 transition-all z-20">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+<!-- Scrollable Form Section -->
+<div class="flex-1 -mt-6 z-20 bg-background-dark rounded-t-[32px] px-5 pt-8 pb-32 relative overflow-y-auto shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+<!-- Visual Handle -->
+<div class="w-12 h-1.5 bg-[#333] rounded-full mx-auto mb-8"></div>
+<div class="space-y-6">
+<!-- Header Text -->
+<div class="mb-2">
+<h1 class="text-2xl font-bold text-white mb-2 tracking-tight">Adres Detayları</h1>
+<p class="text-sm text-text-muted leading-relaxed">İşletmenizin tam konumunu girerek müşterilerinizin sizi kolayca bulmasını sağlayın.</p>
+</div>
+<!-- City & District Row -->
+<div class="grid grid-cols-2 gap-4">
+<!-- City Select -->
+<label class="flex flex-col gap-2 group">
+<span class="text-text-muted text-sm font-medium group-focus-within:text-primary transition-colors">İl</span>
+<div class="relative">
+<select class="w-full bg-surface-dark border border-[#333] rounded-xl px-4 py-3.5 text-white placeholder-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-all shadow-sm cursor-pointer hover:border-[#555]">
+<option disabled="" selected="" value="">Seçiniz</option>
+<option value="34">İstanbul</option>
+<option value="06">Ankara</option>
+<option value="35">İzmir</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none text-xl transition-transform group-focus-within:rotate-180 group-focus-within:text-primary">expand_more</span>
+</div>
+</label>
+<!-- District Select -->
+<label class="flex flex-col gap-2 group">
+<span class="text-text-muted text-sm font-medium group-focus-within:text-primary transition-colors">İlçe</span>
+<div class="relative">
+<select class="w-full bg-surface-dark border border-[#333] rounded-xl px-4 py-3.5 text-white placeholder-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-all shadow-sm cursor-pointer hover:border-[#555]">
+<option disabled="" selected="" value="">Seçiniz</option>
+<option value="besiktas">Beşiktaş</option>
+<option value="kadikoy">Kadıköy</option>
+<option value="sisli">Şişli</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none text-xl transition-transform group-focus-within:rotate-180 group-focus-within:text-primary">expand_more</span>
+</div>
+</label>
+</div>
+<!-- Neighborhood Select -->
+<label class="flex flex-col gap-2 group">
+<span class="text-text-muted text-sm font-medium group-focus-within:text-primary transition-colors">Mahalle</span>
+<div class="relative">
+<select class="w-full bg-surface-dark border border-[#333] rounded-xl px-4 py-3.5 text-white placeholder-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-all shadow-sm cursor-pointer hover:border-[#555]">
+<option disabled="" selected="" value="">Mahalle seçiniz</option>
+<option value="etiler">Etiler Mah.</option>
+<option value="bebek">Bebek Mah.</option>
+<option value="arnavutkoy">Arnavutköy Mah.</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none text-xl transition-transform group-focus-within:rotate-180 group-focus-within:text-primary">expand_more</span>
+</div>
+</label>
+<!-- Open Address Textarea -->
+<label class="flex flex-col gap-2 group">
+<span class="text-text-muted text-sm font-medium group-focus-within:text-primary transition-colors">Açık Adres</span>
+<div class="relative">
+<textarea class="w-full bg-surface-dark border border-[#333] rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary h-28 resize-none transition-all shadow-sm hover:border-[#555]" placeholder="Cadde, sokak, bina no, kat ve diğer detayları buraya yazınız..."></textarea>
+<!-- Optional icon inside textarea -->
+<span class="material-symbols-outlined absolute right-3 top-3 text-white/10 pointer-events-none text-xl">edit_note</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Sticky Bottom Action Button -->
+<div class="fixed bottom-0 left-0 right-0 p-5 bg-background-dark/90 backdrop-blur-xl border-t border-white/5 z-40 max-w-md mx-auto">
+<button class="group w-full bg-primary text-[#121212] font-bold text-base py-4 rounded-xl shadow-gold-glow hover:shadow-[0_4px_25px_rgba(212,169,37,0.3)] hover:bg-[#eec136] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 relative overflow-hidden">
+<!-- Shine effect on hover -->
+<div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+<span class="material-symbols-outlined text-xl font-bold">check_circle</span>
+<span>Adresi Kaydet</span>
+</button>
+</div>
+</div>
+</body></html>

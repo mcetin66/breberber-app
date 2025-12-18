@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Görsel Seçici &amp; Kırpıcı</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Gold
+                        "primary-dark": "#AA8C2C",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep Black
+                        "surface-dark": "#1E1E1E", // Dark Gray
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "glow": "0 0 20px -5px rgba(212, 175, 55, 0.3)",
+                        "glow-lg": "0 10px 30px -5px rgba(212, 175, 55, 0.4)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom range slider styling for Webkit */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #D4AF37;
+            cursor: pointer;
+            margin-top: -8px; 
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #333;
+            border-radius: 2px;
+        }
+        
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #444;
+        }
+
+        /* Utility for the crop mask */
+        .crop-mask-circle {
+            box-shadow: 0 0 0 9999px rgba(18, 18, 18, 0.85);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark shadow-2xl overflow-y-auto">
+<!-- Header -->
+<header class="flex items-center justify-between p-4 sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<button class="flex size-10 items-center justify-center rounded-full text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white/80" style="font-size: 24px;">arrow_back_ios_new</span>
+</button>
+<h2 class="text-black dark:text-white text-lg font-bold tracking-tight">Fotoğrafı Düzenle</h2>
+<button class="flex items-center justify-center px-2 py-1 rounded-lg text-[#b6b1a0] hover:text-white transition-colors">
+<span class="text-sm font-semibold tracking-wide">İptal</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center w-full px-6 pt-2 pb-8">
+<!-- Instructions -->
+<p class="text-gray-500 dark:text-[#b6b1a0] text-sm font-normal leading-normal pb-6 text-center max-w-xs mx-auto">
+                Profil fotoğrafınız için resmi çerçeveye sığdırın
+            </p>
+<!-- Crop Container -->
+<div class="relative w-full aspect-square bg-[#1a1a1a] rounded-2xl overflow-hidden shadow-inner border border-white/5 mb-8 group">
+<!-- Image being cropped -->
+<div class="absolute inset-0 w-full h-full flex items-center justify-center">
+<img alt="Smiling man portrait used for profile picture preview" class="w-[120%] h-[120%] max-w-none object-cover opacity-90 transition-transform duration-300 group-hover:scale-105" data-alt="User uploaded profile portrait image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7oPtFMbA97NNeq7gcTK8EYb2cjNnDOKT80n1mFjpiqXevIQOHHO3gSpgoraN8SbyQ8t0sjYcdUr6SURrqvGP4lpk4N03u0em13oxUvwgLUIjqaRo7p21JzkYKgNVF75N75yJVL6KdS-NxqyuS5CQYSBfPSckJvGGTPbJ2sHiu_iMnNg8Yzd4MBiWsxJKb8bT_WFBDcRdQATH5-xBTlx9_eYUnOOUfixOkonu5L4Q0sQhy5x7kHejIcB032DJ4XBwSbqhogFWdO7hP"/>
+</div>
+<!-- Grid Overlay (Rule of Thirds) -->
+<div class="absolute inset-0 z-10 pointer-events-none opacity-30 flex flex-col w-full h-full">
+<div class="flex-1 border-b border-white/20"></div>
+<div class="flex-1 border-b border-white/20"></div>
+<div class="flex-1"></div>
+</div>
+<div class="absolute inset-0 z-10 pointer-events-none opacity-30 flex w-full h-full">
+<div class="flex-1 border-r border-white/20"></div>
+<div class="flex-1 border-r border-white/20"></div>
+<div class="flex-1"></div>
+</div>
+<!-- Crop Mask (Circle) -->
+<!-- We use a centered div with a huge shadow to create the 'mask' effect -->
+<div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+<div class="w-64 h-64 rounded-full border-2 border-primary crop-mask-circle relative">
+<!-- Corner Markers for luxury feel -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-3 bg-primary"></div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-3 bg-primary"></div>
+<div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-1 bg-primary"></div>
+<div class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-3 h-1 bg-primary"></div>
+</div>
+</div>
+</div>
+<!-- Editor Controls -->
+<div class="w-full space-y-8">
+<!-- Zoom Slider -->
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center text-xs font-medium text-white/60 uppercase tracking-wider px-1">
+<span>Uzak</span>
+<span>Yakınlaştır</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-white/40" style="font-size: 20px;">remove_circle_outline</span>
+<input class="w-full h-1 bg-surface-dark rounded-lg appearance-none cursor-pointer" max="100" min="1" type="range" value="50"/>
+<span class="material-symbols-outlined text-white/40" style="font-size: 20px;">add_circle_outline</span>
+</div>
+</div>
+<!-- Action Toolbar -->
+<div class="flex justify-center items-center gap-8 py-2">
+<button class="flex flex-col items-center gap-2 group">
+<div class="p-3 rounded-full bg-surface-dark group-hover:bg-surface-dark/80 transition-all border border-white/5 text-white/80 group-hover:text-primary">
+<span class="material-symbols-outlined" style="font-size: 24px;">rotate_left</span>
+</div>
+<span class="text-[10px] uppercase tracking-wider text-white/40 group-hover:text-white/60">Sola</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="p-3 rounded-full bg-surface-dark group-hover:bg-surface-dark/80 transition-all border border-white/5 text-white/80 group-hover:text-primary">
+<span class="material-symbols-outlined" style="font-size: 24px;">restart_alt</span>
+</div>
+<span class="text-[10px] uppercase tracking-wider text-white/40 group-hover:text-white/60">Sıfırla</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="p-3 rounded-full bg-surface-dark group-hover:bg-surface-dark/80 transition-all border border-white/5 text-white/80 group-hover:text-primary">
+<span class="material-symbols-outlined" style="font-size: 24px;">rotate_right</span>
+</div>
+<span class="text-[10px] uppercase tracking-wider text-white/40 group-hover:text-white/60">Sağa</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Sheet / Footer -->
+<footer class="p-6 bg-surface-dark border-t border-white/5 pb-10">
+<div class="flex gap-4 mb-6 justify-center">
+<!-- Secondary Actions (Change Source) -->
+<button class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
+<span class="material-symbols-outlined text-white/70" style="font-size: 20px;">photo_camera</span>
+<span class="text-sm font-medium text-white/90">Kamera</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
+<span class="material-symbols-outlined text-white/70" style="font-size: 20px;">image</span>
+<span class="text-sm font-medium text-white/90">Galeri</span>
+</button>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-gradient-to-r from-primary to-[#c59d2a] hover:to-[#b38b20] text-[#121212] font-bold text-base py-4 rounded-xl shadow-glow transition-all transform active:scale-[0.98] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 20px; font-weight: 600;">check</span>
+                Kırp ve Kaydet
+            </button>
+</footer>
+</div>
+</body></html>

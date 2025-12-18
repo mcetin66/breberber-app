@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Abonelik Durumu Ekranı</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#d4af35",
+              "background-light": "#f8f7f6",
+              "background-dark": "#201d12", // Kept from config, though body uses user requested #121212
+              "card-dark": "#1E1E1E",
+              "text-muted": "#b6b1a0",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#121212] font-display text-white min-h-screen flex flex-col antialiased selection:bg-primary selection:text-black">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-[#121212]/95 backdrop-blur-sm p-4 pb-2 justify-between border-b border-white/5">
+<button class="text-white flex size-12 shrink-0 items-center justify-start hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</button>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Abonelik Durumu</h2>
+<button class="flex w-12 items-center justify-end hover:opacity-80 transition-opacity">
+<p class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0">Yardım</p>
+</button>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col gap-6 p-4 overflow-y-auto pb-8">
+<!-- Current Plan Card -->
+<div class="relative overflow-hidden rounded-xl bg-card-dark p-0 shadow-[0_4px_20px_rgba(0,0,0,0.4)] border border-primary/20 group">
+<!-- Decorative Glow -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col md:flex-row items-stretch">
+<div class="flex flex-col justify-center gap-1 p-5 flex-[2]">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[20px] fill-1">verified</span>
+<p class="text-text-muted text-xs font-semibold uppercase tracking-wider">Mevcut Plan</p>
+</div>
+<h1 class="text-white text-2xl font-bold leading-tight mb-1">Gold Üyelik</h1>
+<p class="text-text-muted text-sm font-medium leading-normal mb-3">Lüks Salon Paketi</p>
+<div class="inline-flex items-center self-start px-2.5 py-1 rounded bg-green-500/10 border border-green-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+<span class="text-green-500 text-xs font-bold">Aktif • Sonraki ödeme 15 Ekim</span>
+</div>
+</div>
+<!-- Abstract luxury image -->
+<div class="w-full md:w-1/3 min-h-[140px] bg-center bg-no-repeat bg-cover relative" data-alt="Abstract dark luxury gold texture with geometric lines" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDct07jHc7DS3cP9knBRV_tvu070EvNyhHHG3gzfdZ2OfrMi88EUURbXmQIdTQKljV3kRKGZa5li_52hUPjiVJpmDjRpnzLJhHANWe1_RetCZcVxeKC05TArC9BVjrARWx-kUMX9OKCOHNNCAfOSfjlj_RtIlKeEJIajOwkonuixiTIGQUj9Ed-4Yh32uJoLI_qcr9zzMrixgHmSvp1gqY83KV5_feFDv8rREJXAHljSdztt1DaMBVw_Lgn6XPgBwRh-XeT6VKuELnm");'>
+<div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-card-dark via-card-dark/20 to-transparent"></div>
+</div>
+</div>
+</div>
+<!-- Usage Section -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-white text-lg font-bold leading-tight">Kullanım Özeti</h3>
+<span class="text-xs text-text-muted bg-[#2a2a2a] px-2 py-1 rounded">Ekim 2023</span>
+</div>
+<!-- Progress Bar: Appointments -->
+<div class="bg-card-dark rounded-lg p-4 border border-white/5">
+<div class="flex flex-col gap-3">
+<div class="flex gap-6 justify-between items-end">
+<div class="flex items-center gap-2">
+<div class="p-1.5 rounded bg-[#2a2a2a] text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+</div>
+<p class="text-white text-base font-medium leading-normal">Aylık Randevu</p>
+</div>
+<p class="text-white text-sm font-bold leading-normal">85%</p>
+</div>
+<div class="relative h-2 w-full rounded-full bg-[#333]">
+<div class="absolute top-0 left-0 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(212,175,53,0.4)]" style="width: 85%;"></div>
+</div>
+<div class="flex justify-between text-xs text-text-muted">
+<span>Kullanılan: 85</span>
+<span>Limit: 100</span>
+</div>
+</div>
+</div>
+<!-- Progress Bar: SMS -->
+<div class="bg-card-dark rounded-lg p-4 border border-white/5">
+<div class="flex flex-col gap-3">
+<div class="flex gap-6 justify-between items-end">
+<div class="flex items-center gap-2">
+<div class="p-1.5 rounded bg-[#2a2a2a] text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">sms</span>
+</div>
+<p class="text-white text-base font-medium leading-normal">SMS Bildirimleri</p>
+</div>
+<p class="text-white text-sm font-bold leading-normal">40%</p>
+</div>
+<div class="relative h-2 w-full rounded-full bg-[#333]">
+<div class="absolute top-0 left-0 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(212,175,53,0.4)]" style="width: 40%;"></div>
+</div>
+<div class="flex justify-between text-xs text-text-muted">
+<span>Gönderilen: 400</span>
+<span>Limit: 1000</span>
+</div>
+</div>
+</div>
+<!-- Progress Bar: Staff -->
+<div class="bg-card-dark rounded-lg p-4 border border-white/5">
+<div class="flex flex-col gap-3">
+<div class="flex gap-6 justify-between items-end">
+<div class="flex items-center gap-2">
+<div class="p-1.5 rounded bg-[#2a2a2a] text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">group</span>
+</div>
+<p class="text-white text-base font-medium leading-normal">Personel Sayısı</p>
+</div>
+<p class="text-yellow-500 text-sm font-bold leading-normal">80%</p>
+</div>
+<div class="relative h-2 w-full rounded-full bg-[#333]">
+<div class="absolute top-0 left-0 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(212,175,53,0.4)]" style="width: 80%;"></div>
+</div>
+<div class="flex justify-between text-xs text-text-muted">
+<span>Aktif: 4</span>
+<span>Limit: 5</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Upgrade Call to Action -->
+<div class="mt-2 bg-gradient-to-b from-[#2a271d] to-card-dark rounded-xl p-5 border border-primary/30 relative overflow-hidden">
+<!-- Shine effect -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<div class="flex items-start gap-3 mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">diamond</span>
+<div>
+<h3 class="text-white font-bold text-lg">Platinum'a Geçin</h3>
+<p class="text-text-muted text-sm mt-1">Sınırsız randevu ve gelişmiş raporlama özelliklerine erişin.</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-y-2 gap-x-4 mb-5">
+<div class="flex items-center gap-2 text-sm text-gray-300">
+<span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                    Sınırsız Randevu
+                </div>
+<div class="flex items-center gap-2 text-sm text-gray-300">
+<span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                    10 Personel
+                </div>
+<div class="flex items-center gap-2 text-sm text-gray-300">
+<span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                    Özel Müşteri Temsilcisi
+                </div>
+<div class="flex items-center gap-2 text-sm text-gray-300">
+<span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                    Gelişmiş Analitik
+                </div>
+</div>
+<button class="w-full bg-primary hover:bg-[#c29f2e] text-black font-bold text-base py-3.5 px-4 rounded-lg shadow-[0_4px_14px_rgba(212,175,53,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+<span>Paketi Yükselt</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<!-- Footer Links -->
+<div class="mt-auto py-4 flex flex-col items-center gap-4 border-t border-white/5 pt-6">
+<div class="flex gap-8">
+<a class="flex items-center gap-1.5 text-text-muted text-sm font-medium hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                    Fatura Geçmişi
+                </a>
+<a class="flex items-center gap-1.5 text-text-muted text-sm font-medium hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">description</span>
+                    Sözleşme
+                </a>
+</div>
+<p class="text-xs text-[#555]">Sürüm 2.4.1 • SalonApp Inc.</p>
+</div>
+</div>
+</body></html>

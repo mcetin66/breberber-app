@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Personel Seçim Ekranı</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Gold
+                        "primary-dark": "#b08d26",
+                        "background-light": "#f8f7f6", 
+                        "background-dark": "#121212", // Deep Black
+                        "surface-dark": "#1E1E1E", // Dark Gray
+                        "surface-light": "#ffffff",
+                        "text-secondary": "#b6b1a0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    boxShadow: {
+                        'glow': '0 0 15px rgba(212, 175, 55, 0.15)',
+                        'glow-active': '0 0 20px rgba(212, 175, 55, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for cleaner look on mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark border-x border-white/5">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 justify-between border-b border-white/5">
+<div class="text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white" style="font-size: 24px;">arrow_back</span>
+</div>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Personel Seçimi</h2>
+<div class="flex w-10 items-center justify-end">
+<span class="text-text-secondary text-sm font-semibold cursor-pointer hover:text-white transition-colors">İptal</span>
+</div>
+</div>
+<!-- Progress Indicators -->
+<div class="flex w-full flex-col items-center justify-center pt-4 pb-2">
+<div class="flex flex-row items-center gap-2">
+<div class="h-1.5 w-8 rounded-full bg-primary/30"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary shadow-glow"></div> <!-- Active Step -->
+<div class="h-1.5 w-8 rounded-full bg-primary/30"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary/30"></div>
+</div>
+<p class="text-text-secondary text-xs mt-2 font-medium">Adım 2 / 4</p>
+</div>
+<!-- Headline -->
+<div class="px-6 pt-6 pb-2">
+<h2 class="text-gray-900 dark:text-white tracking-tight text-2xl font-bold leading-tight text-left">
+                Uzmanınızı <span class="text-primary">Seçin</span>
+</h2>
+<p class="text-text-secondary text-sm font-normal leading-relaxed pt-2">
+                İlk müsait personeli seçebilir veya favori uzmanınızla devam edebilirsiniz.
+            </p>
+</div>
+<!-- Main Content List -->
+<div class="flex-1 flex flex-col gap-4 p-4 pb-24">
+<!-- Option 1: Any Staff (Highlighted) -->
+<div class="group relative overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark border border-primary/20 shadow-lg dark:shadow-none hover:border-primary transition-all duration-300 cursor-pointer">
+<!-- Golden Gradient Overlay on Hover/Active -->
+<div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex items-center p-4 gap-4">
+<div class="relative flex-shrink-0">
+<div class="size-16 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center border-2 border-primary/30 shadow-inner">
+<span class="material-symbols-outlined text-primary text-3xl">groups</span>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-surface-dark">
+                            HIZLI
+                        </div>
+</div>
+<div class="flex flex-col flex-1">
+<div class="flex justify-between items-start">
+<h3 class="text-gray-900 dark:text-white text-base font-bold">Herhangi Bir Personel</h3>
+<div class="size-5 rounded-full border-2 border-primary/50 group-hover:bg-primary group-hover:border-primary flex items-center justify-center transition-all">
+<!-- Checkmark visible only when selected/hovered in a real app logic -->
+<div class="size-2.5 rounded-full bg-background-dark opacity-0 group-hover:opacity-100"></div>
+</div>
+</div>
+<p class="text-text-secondary text-xs mt-1">En erken müsait olan uzmanımızla hemen randevunuzu oluşturun.</p>
+<div class="mt-2 flex items-center text-primary text-xs font-medium">
+<span class="material-symbols-outlined text-[14px] mr-1">schedule</span>
+                            Sonraki Müsaitlik: Bugün 14:30
+                        </div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 py-2">
+<div class="h-px bg-white/10 flex-1"></div>
+<span class="text-text-secondary text-xs uppercase tracking-wider font-semibold">Veya Uzman Seçin</span>
+<div class="h-px bg-white/10 flex-1"></div>
+</div>
+<!-- Staff Card 1 (Selected State Example) -->
+<div class="relative rounded-xl bg-surface-light dark:bg-surface-dark border-2 border-primary shadow-glow-active p-4 cursor-pointer transition-transform active:scale-[0.98]">
+<div class="absolute top-3 right-3">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+</div>
+<div class="flex gap-4">
+<div class="relative">
+<img class="size-20 rounded-xl object-cover border border-white/10 shadow-lg" data-alt="Portrait of a professional barber with a beard in a suit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0g4_NkVoW-Id-vFYhN8uXNj97yfYqlxzs2aNvva5Adkxewt6c7PsB3Y05M-nR30Xk6YzTuh0OQa5OBd23f5RosYdKXFeYX4HUtsDbzkUzD16z0Vift0mqMBnfWi4UhwGWdSQvkN-LasKdAHLrpgoUB0XR5RR8aBM17wOCrjeTKaJEkNfylhe7hn4XBNokHTKWBNXZE6b4gUNnNDuIG6unWx835xIWMV0W-3yvCOinbBzu7W16g7A8a-RA-FKeHNTp8hQO86q9qb-n"/>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-surface-dark text-primary text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/30 whitespace-nowrap flex items-center gap-0.5 shadow-md">
+<span class="material-symbols-outlined text-[10px] filled">star</span> 4.9
+                        </div>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-gray-900 dark:text-white text-lg font-bold">Ahmet Yılmaz</h3>
+<p class="text-primary text-xs font-medium mb-1">Kıdemli Berber</p>
+<p class="text-text-secondary text-xs line-clamp-2">Modern saç kesimi ve sakal tasarımında 10 yıllık deneyim.</p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-1 rounded bg-green-500/10 text-green-500 text-[10px] font-bold border border-green-500/20">MÜSAİT</span>
+<span class="text-text-secondary text-xs ml-1">Bugün 15:00</span>
+</div>
+<span class="text-white text-sm font-semibold">₺450</span>
+</div>
+</div>
+<!-- Staff Card 2 -->
+<div class="relative rounded-xl bg-surface-light dark:bg-surface-dark border border-white/5 hover:border-primary/50 shadow-sm p-4 cursor-pointer transition-all">
+<div class="absolute top-3 right-3 opacity-0 hover:opacity-100">
+<span class="material-symbols-outlined text-text-secondary hover:text-primary text-xl">radio_button_unchecked</span>
+</div>
+<div class="flex gap-4">
+<div class="relative">
+<img class="size-20 rounded-xl object-cover border border-white/10 grayscale-[0.3]" data-alt="Portrait of a female hair stylist smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBPVEnS7BccrOYZMO4_ck46zxM5ro8UG_dkS8_uusqG52Em14dfzZ9z1PzNUVGkXsT3cnbxKDiwhjjuZDFpuDjXa6eRsITHQfD1tlWiLVRMigECJ5JHkFw3XiXnQEVd78xflVEKlRCvi1pqN6K5SCJPbUr9jCx2tQIK_qpbwJ_KOE8ny_TKYrZ4JozECyrpuwY2T_BaiWcXAPTiG-86fb0NHIhxJnA-kNI0eS9RNOig4yiwP5uR7HcyxvLc8ue-IBd_uYRJ6VhAm3R"/>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-surface-dark text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/10 whitespace-nowrap flex items-center gap-0.5 shadow-md">
+<span class="material-symbols-outlined text-[10px] text-primary filled">star</span> 4.8
+                        </div>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-gray-900 dark:text-white text-lg font-bold">Elif Demir</h3>
+<p class="text-primary text-xs font-medium mb-1">Saç Boyama Uzmanı</p>
+<p class="text-text-secondary text-xs line-clamp-2">Renk uzmanı ve saç bakımı konusunda sertifikalı profesyonel.</p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-1 rounded bg-orange-500/10 text-orange-500 text-[10px] font-bold border border-orange-500/20">YARIN</span>
+<span class="text-text-secondary text-xs ml-1">09:30</span>
+</div>
+<span class="text-white text-sm font-semibold">₺600</span>
+</div>
+</div>
+<!-- Staff Card 3 -->
+<div class="relative rounded-xl bg-surface-light dark:bg-surface-dark border border-white/5 hover:border-primary/50 shadow-sm p-4 cursor-pointer transition-all opacity-80">
+<div class="flex gap-4">
+<div class="relative">
+<img class="size-20 rounded-xl object-cover border border-white/10 grayscale" data-alt="Portrait of a young male barber with tattoos" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANgsKK3Pzw6_wKD3Z7QawdEY40wUWEQj2SWTAW7LUpRVx-g2yFtj3LjYkBxRjRPgC_7DF3Pp10UVN0eUx15wHpMsLq2mT8aIahCKxGJZ78n8RDgcdoCBzNoQ9tmZFelY8KzzmRrV0z25m3Z0zUSWAjhW6Y1IMkoJ4ScEe7aR46Jfbz8mi9FgfNVhoeogWJdMLBHnatHbvt16SPVLHq0rtvsRA-EYeg0pkkAs9o-OkMIrK2N1n0vEHv3P2TgBAsGIDNUAYGNP8KjcIy"/>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-surface-dark text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/10 whitespace-nowrap flex items-center gap-0.5 shadow-md">
+<span class="material-symbols-outlined text-[10px] text-primary filled">star</span> 4.7
+                        </div>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-gray-900 dark:text-white text-lg font-bold">Mehmet Kaya</h3>
+<p class="text-primary text-xs font-medium mb-1">Berber</p>
+<p class="text-text-secondary text-xs line-clamp-2">Klasik tıraş teknikleri ve cilt bakımı uzmanı.</p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-1 rounded bg-red-500/10 text-red-500 text-[10px] font-bold border border-red-500/20">DOLU</span>
+<span class="text-text-secondary text-xs ml-1">En erken 3 gün sonra</span>
+</div>
+<span class="text-white text-sm font-semibold">₺350</span>
+</div>
+</div>
+</div>
+<!-- Bottom Action Bar (Floating) -->
+<div class="fixed bottom-0 left-0 right-0 z-40 p-4 max-w-md mx-auto">
+<!-- Blur background for floating feel -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent pointer-events-none"></div>
+<div class="relative flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<span class="text-text-secondary text-xs font-medium uppercase tracking-wide">Toplam Tutar</span>
+<span class="text-white text-xl font-bold">₺450</span>
+</div>
+<button class="flex-1 bg-primary hover:bg-primary-dark text-black text-base font-bold h-12 rounded-lg shadow-glow transition-all flex items-center justify-center gap-2">
+                    Devam Et
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<!-- iOS Home Indicator Safe Area spacing -->
+<div class="h-4 w-full"></div>
+</div>
+</div>
+</body></html>

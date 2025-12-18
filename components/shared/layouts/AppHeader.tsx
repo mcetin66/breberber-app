@@ -21,7 +21,7 @@ export const AppHeader = ({ title, subtitle, rightElement, showBack, children }:
                     {showBack && (
                         <Pressable
                             onPress={() => router.back()}
-                            className="w-10 h-10 rounded-full bg-[#1E293B] items-center justify-center border border-white/5 active:bg-white/10"
+                            className="w-10 h-10 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/5 active:bg-white/10"
                         >
                             <ChevronLeft size={24} color="white" />
                         </Pressable>

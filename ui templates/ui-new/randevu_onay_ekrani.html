@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Randevu Onay Ekranı</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Modified to specific Gold request
+                        "primary-dark": "#B5952F",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Modified to specific Black request
+                        "surface-dark": "#1E1E1E", // Modified for cards
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    backgroundImage: {
+                        'gold-gradient': 'linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #B5952F 100%)',
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 10px 40px -10px rgba(212, 175, 55, 0.2)',
+                        'card-glow': '0 0 20px -5px rgba(212, 175, 55, 0.15)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gold-text-gradient {
+            background: linear-gradient(to right, #D4AF37, #F3E5AB, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display antialiased selection:bg-primary selection:text-black">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto border-x border-white/5 shadow-2xl">
+<!-- Top Navigation -->
+<div class="sticky top-0 z-50 flex items-center bg-background-dark/80 backdrop-blur-md p-4 pb-2 justify-between border-b border-white/5">
+<button class="text-white/80 hover:text-primary transition-colors flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-white text-base font-medium tracking-wide flex-1 text-center pr-10 uppercase text-opacity-80">Rezervasyon</h2>
+</div>
+<!-- Success Hero Section -->
+<div class="flex flex-col items-center pt-8 pb-6 px-6">
+<div class="relative mb-6">
+<div class="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
+<div class="relative bg-gradient-to-br from-primary/10 to-transparent border border-primary/50 rounded-full p-5 shadow-gold-glow">
+<span class="material-symbols-outlined text-primary text-5xl">check_circle</span>
+</div>
+</div>
+<h1 class="text-3xl font-bold text-center leading-tight mb-3">
+<span class="gold-text-gradient">Randevunuz<br/>Onaylandı</span>
+</h1>
+<p class="text-white/60 text-center text-sm font-light leading-relaxed max-w-[280px]">
+                Teşekkürler Ahmet Bey, randevunuz sistemimize başarıyla kaydedilmiştir.
+            </p>
+</div>
+<!-- Ticket Card -->
+<div class="px-5 w-full mb-6">
+<div class="w-full bg-surface-dark rounded-2xl border border-primary/20 shadow-card-glow overflow-hidden relative group">
+<!-- Decorative Shine -->
+<div class="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors duration-500"></div>
+<!-- Card Header: Date & Time -->
+<div class="p-6 pb-4 flex flex-col items-center justify-center border-b border-white/5 relative z-10">
+<div class="text-primary text-xs font-semibold tracking-[0.2em] uppercase mb-2 opacity-80">TARİH VE SAAT</div>
+<div class="text-white text-2xl font-bold tracking-tight">12 Ekim, Cumartesi</div>
+<div class="text-white/80 text-xl font-light mt-1">14:30</div>
+</div>
+<!-- Ticket Notch -->
+<div class="relative h-1 w-full bg-surface-dark flex items-center justify-between px-[-10px]">
+<div class="w-4 h-8 bg-background-dark rounded-r-full -ml-2 absolute left-0 top-1/2 -translate-y-1/2 border-r border-primary/20"></div>
+<div class="w-full border-t-2 border-dashed border-white/10 mx-4"></div>
+<div class="w-4 h-8 bg-background-dark rounded-l-full -mr-2 absolute right-0 top-1/2 -translate-y-1/2 border-l border-primary/20"></div>
+</div>
+<!-- Card Body: Barber Info -->
+<div class="p-5 pt-4 relative z-10">
+<!-- Barber Profile -->
+<div class="flex items-center gap-4 mb-5 bg-white/5 p-3 rounded-xl border border-white/5">
+<div class="w-12 h-12 rounded-full bg-cover bg-center shrink-0 border border-primary/30 shadow-sm" data-alt="Portrait of a professional barber with beard trimming equipment" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAvWv7JZjP_KBuS8TxiXy-hTSbmbXMRpE9zqqwYC9VokxMsEiTD5l6_mihzpMr-ClD35o0UcOAmxE7tcLHOzB9qSAVyE-RrcO7cTytbKIdhWuljnPtAqMagk9_xg_th82DHuQ1PJcAxvKWogQVfcxlF110o1ix4-icqhZTiDf6TqqaamYGlBxjgNEOyDIXd02W42U5mawkqsD2amyTDPbyrY6zoX3XGnUh3IdnvDwtgcovB8rEXbHtO1SCHONrobKHKg-7UsAqoH1Jy");'>
+</div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-xs text-primary/80 font-medium uppercase tracking-wider mb-0.5">Uzman</span>
+<p class="text-white text-base font-semibold truncate">Mehmet Usta</p>
+<p class="text-white/40 text-xs truncate">Kral Tıraşı &amp; Bakım Paketi</p>
+</div>
+</div>
+<!-- Location Info -->
+<div class="flex items-start gap-3 px-1">
+<span class="material-symbols-outlined text-primary/70 mt-0.5 text-lg">location_on</span>
+<div>
+<p class="text-white text-sm font-medium">Levent Şubesi</p>
+<p class="text-white/50 text-xs leading-relaxed mt-1">Büyükdere Cd. No:123, Levent, İstanbul</p>
+<button class="text-primary text-xs font-medium mt-2 hover:underline flex items-center gap-1 group/btn">
+                                Yol Tarifi Al 
+                                <span class="material-symbols-outlined text-[14px] group-hover/btn:translate-x-0.5 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="px-5 w-full space-y-3 mb-6">
+<button class="w-full h-14 bg-gradient-to-r from-[#D4AF37] to-[#B5952F] hover:to-[#A38426] active:scale-[0.98] transition-all rounded-xl flex items-center justify-center gap-2 text-background-dark font-bold shadow-[0_4px_20px_-5px_rgba(212,175,55,0.4)]">
+<span class="material-symbols-outlined">calendar_add_on</span>
+                Takvime Ekle
+            </button>
+<button class="w-full h-12 bg-transparent border border-white/10 hover:bg-white/5 active:scale-[0.98] transition-all rounded-xl flex items-center justify-center gap-2 text-white/70 font-medium">
+<span class="material-symbols-outlined">home</span>
+                Ana Sayfaya Dön
+            </button>
+</div>
+<!-- Social Sharing -->
+<div class="mt-auto pb-8 px-6 flex flex-col items-center">
+<p class="text-white/40 text-xs font-medium uppercase tracking-widest mb-4">Deneyimi Paylaş</p>
+<div class="flex gap-6">
+<button class="group flex flex-col items-center gap-2">
+<div class="size-12 rounded-full bg-white/5 border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 flex items-center justify-center transition-all duration-300">
+<!-- Simplified Instagram Icon placeholder using Material Symbol for demo, ideally would be SVG -->
+<span class="material-symbols-outlined text-white/60 group-hover:text-primary transition-colors">share</span>
+</div>
+<span class="text-[10px] text-white/40 group-hover:text-primary/80 transition-colors">Hikaye</span>
+</button>
+<button class="group flex flex-col items-center gap-2">
+<div class="size-12 rounded-full bg-white/5 border border-white/10 group-hover:border-green-500/50 group-hover:bg-green-500/10 flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-white/60 group-hover:text-green-500 transition-colors">chat</span>
+</div>
+<span class="text-[10px] text-white/40 group-hover:text-green-500/80 transition-colors">WhatsApp</span>
+</button>
+<button class="group flex flex-col items-center gap-2">
+<div class="size-12 rounded-full bg-white/5 border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-white/60 group-hover:text-blue-500 transition-colors">content_copy</span>
+</div>
+<span class="text-[10px] text-white/40 group-hover:text-blue-500/80 transition-colors">Kopyala</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

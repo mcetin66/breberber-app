@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gelir Raporları</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D4AF37", // Gold
+                        "primary-dark": "#b08d26",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep black requested
+                        "surface-dark": "#1E1E1E", // Dark grey requested
+                        "surface-highlight": "#2A2A2A",
+                        "text-secondary": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "glow": "0 0 15px rgba(212, 175, 55, 0.15)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen flex justify-center overflow-hidden">
+<!-- Mobile Device Container -->
+<div class="w-full max-w-md h-full bg-background-light dark:bg-background-dark flex flex-col relative overflow-hidden shadow-2xl">
+<!-- Header -->
+<div class="flex items-center justify-between px-4 py-3 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight text-center flex-1">Gelir Raporları</h1>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">ios_share</span>
+</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto hide-scrollbar pb-24">
+<!-- Date Filter (Segmented Control) -->
+<div class="px-4 py-2">
+<div class="flex p-1 rounded-xl bg-gray-200 dark:bg-surface-dark border border-gray-300 dark:border-white/5 relative">
+<!-- Active Indicator Background (Visual trick for sliding effect could go here, simplified for static) -->
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="report_period" type="radio"/>
+<div class="py-1.5 text-center text-sm font-medium rounded-lg text-text-secondary peer-checked:bg-primary peer-checked:text-black peer-checked:shadow-sm transition-all duration-200">
+                            Günlük
+                        </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="report_period" type="radio"/>
+<div class="py-1.5 text-center text-sm font-medium rounded-lg text-text-secondary peer-checked:bg-primary peer-checked:text-black peer-checked:shadow-sm transition-all duration-200">
+                            Haftalık
+                        </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="report_period" type="radio"/>
+<div class="py-1.5 text-center text-sm font-medium rounded-lg text-text-secondary peer-checked:bg-primary peer-checked:text-black peer-checked:shadow-sm transition-all duration-200">
+                            Aylık
+                        </div>
+</label>
+</div>
+<div class="flex justify-center mt-2 items-center gap-1 opacity-60">
+<span class="text-xs text-text-secondary">1 Ekim - 31 Ekim 2023</span>
+<span class="material-symbols-outlined text-[14px] text-text-secondary">arrow_drop_down</span>
+</div>
+</div>
+<!-- Hero Stats -->
+<div class="px-4 py-4">
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-6 shadow-glow border border-gray-100 dark:border-white/5 relative overflow-hidden">
+<!-- Decorative gradient blur -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-2">
+<p class="text-text-secondary text-sm font-medium">Toplam Ciro</p>
+<button class="text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<h2 class="text-4xl font-bold tracking-tighter text-slate-900 dark:text-white">₺142.500</h2>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 bg-green-500/10 px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-green-500 text-sm">trending_up</span>
+<span class="text-green-500 text-xs font-bold">%15</span>
+</div>
+<span class="text-xs text-text-secondary">geçen aya göre</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart Section -->
+<div class="px-4 mb-6">
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-5 border border-gray-100 dark:border-white/5">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-slate-900 dark:text-white font-semibold text-sm">Ciro Trendi</h3>
+<button class="text-primary text-xs font-medium bg-primary/10 px-2 py-1 rounded border border-primary/20">Detaylar</button>
+</div>
+<!-- Chart Graphic -->
+<div class="relative h-40 w-full">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 400 150">
+<!-- Gradient Defs -->
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#D4AF37" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#D4AF37" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line class="opacity-20" stroke="#333" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="400" y1="150" y2="150"></line>
+<line class="opacity-20" stroke="#333" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="400" y1="100" y2="100"></line>
+<line class="opacity-20" stroke="#333" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="400" y1="50" y2="50"></line>
+<!-- Area Fill -->
+<path d="M0,120 C50,120 50,80 100,80 C150,80 150,40 200,40 C250,40 250,90 300,70 C350,50 350,10 400,10 V150 H0 Z" fill="url(#chartGradient)"></path>
+<!-- Stroke Line -->
+<path d="M0,120 C50,120 50,80 100,80 C150,80 150,40 200,40 C250,40 250,90 300,70 C350,50 350,10 400,10" fill="none" stroke="#D4AF37" stroke-linecap="round" stroke-width="3"></path>
+<!-- Current Point -->
+<circle cx="400" cy="10" fill="#121212" r="4" stroke="#D4AF37" stroke-width="2"></circle>
+<!-- Tooltip Dummy -->
+<g transform="translate(200, 20)">
+<rect fill="#D4AF37" height="24" rx="4" width="70" x="-35" y="-30"></rect>
+<text fill="#000" font-size="10" font-weight="bold" text-anchor="middle" x="0" y="-14">₺42.100</text>
+<path d="M-4 -6 L0 0 L4 -6 Z" fill="#D4AF37"></path>
+</g>
+</svg>
+</div>
+<!-- X Axis Labels -->
+<div class="flex justify-between mt-2 text-xs text-text-secondary font-medium px-1">
+<span>1 Eki</span>
+<span>8 Eki</span>
+<span>15 Eki</span>
+<span>22 Eki</span>
+<span>29 Eki</span>
+</div>
+</div>
+</div>
+<!-- Tabs Section -->
+<div class="px-4">
+<div class="flex border-b border-gray-200 dark:border-white/10 mb-4">
+<button class="flex-1 pb-3 text-sm font-bold border-b-2 border-primary text-slate-900 dark:text-white transition-all">
+                        Personel Bazlı
+                    </button>
+<button class="flex-1 pb-3 text-sm font-medium border-b-2 border-transparent text-text-secondary hover:text-slate-900 dark:hover:text-white transition-all">
+                        Hizmet Bazlı
+                    </button>
+</div>
+</div>
+<!-- List Content -->
+<div class="px-4 flex flex-col gap-3">
+<!-- Staff Item 1 -->
+<div class="bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-white/5 flex items-center gap-4">
+<img alt="Barber profile portrait" class="w-12 h-12 rounded-full object-cover border-2 border-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Z1zKSI4f1-tJgZW9u6rmfV9IVIQF-L2DFPZgBJAPYk4PrHWLBV_MdDzTjH5RGJJZo72jOTaLK4UOx2rlqP3ke8dNstdyvklRaCHrGyeSKq2nNRXwhtI6c_qAo9GVIjuMj0LiKw6w0Qq1mIb4dj1gYKkVqqq4Q7_VMGv76LN_kg_me80gfSPHVd4BgCt7HqTSbprFCFPB-QZJcKzcf5Up0xOHA4FaSINg_f3m9SCb9QFo0PTxA9jJ1WWxXC-fbRErduFAAN5l2APh"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">Ahmet Yılmaz</h4>
+<span class="text-sm font-bold text-primary">₺45.000</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+</div>
+<span class="text-xs text-text-secondary w-8 text-right">85%</span>
+</div>
+</div>
+</div>
+<!-- Staff Item 2 -->
+<div class="bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-white/5 flex items-center gap-4">
+<img alt="Stylist profile portrait" class="w-12 h-12 rounded-full object-cover border-2 border-transparent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX_DsWUQLEsjscNYXiXE1E976UbPvRk4sjzeupRbgpX8cRaLVXwqav_APrkWYnLMTsM91Z_iAPL5WvPA4qfG7QPf8eD1Rj49DqQZHqn0Fjb3sMuuScXh7ZETi0o0gdCvL5xGDKZkc5FZmuU2iFOqRtpWqXaMP0RxoGTtkVxYRboFqZMXXYYHpjGkG0rHYGUVOHsWibRoJLFpoIYq2DOJEYvAiq8a5q8qWFauSTA968TBQcjCBfknmUz-7SHNDnuQtYiA9ZUpPl1SyS"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">Mehmet Demir</h4>
+<span class="text-sm font-bold text-slate-900 dark:text-white">₺32.450</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary/70 rounded-full" style="width: 60%"></div>
+</div>
+<span class="text-xs text-text-secondary w-8 text-right">60%</span>
+</div>
+</div>
+</div>
+<!-- Staff Item 3 -->
+<div class="bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-white/5 flex items-center gap-4">
+<img alt="Hairdresser profile portrait" class="w-12 h-12 rounded-full object-cover border-2 border-transparent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC47eUwgDVF5EapO8Z_1QyDPYcxvYuKyC1c8bMgylintKXhqYpKI7hMm19jyMOx36xnpi3_jRJZX64T8_0jThMfnDMndg8tU6AhZh0M5DbwnrrDreSB7ZfCsAE_zA0yM4Ga3I2fecWDe6KkM78yGSw59MrSJsr7fnwop6eu-wLe3fc1Ppd-4FpZ_fJsbtFkLHXjtQlK1BDJ1i2J7cXy2XGZqQULvlj0KQvCrUMseWzESHcNqk5WqF8rZSRGZBBYnBxmcgMZZqAzS8A2"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">Ayşe Kaya</h4>
+<span class="text-sm font-bold text-slate-900 dark:text-white">₺28.100</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary/50 rounded-full" style="width: 45%"></div>
+</div>
+<span class="text-xs text-text-secondary w-8 text-right">45%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Spacer -->
+<div class="h-8"></div>
+</div>
+<!-- Floating Action Button (Optional Context) or Bottom Nav -->
+<div class="absolute bottom-6 right-6">
+<button class="bg-primary hover:bg-primary-dark text-black rounded-full p-4 shadow-lg shadow-primary/30 flex items-center justify-center transition-transform active:scale-95">
+<span class="material-symbols-outlined font-bold">download</span>
+</button>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-white/5 px-6 py-3 flex justify-between items-center z-20 absolute bottom-0 w-full">
+<button class="flex flex-col items-center gap-1 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">calendar_month</span>
+<span class="text-[10px] font-medium">Randevular</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">groups</span>
+<span class="text-[10px] font-medium">Personel</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl fill-1">bar_chart</span>
+<span class="text-[10px] font-medium">Raporlar</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<span class="text-[10px] font-medium">Ayarlar</span>
+</button>
+</div>
+</div>
+</body></html>

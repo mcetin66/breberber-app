@@ -30,7 +30,7 @@ export default function AdminBarberDetailScreen() {
     const scrollY = useRef(new Animated.Value(0)).current;
     const headerBg = scrollY.interpolate({
         inputRange: [0, 100],
-        outputRange: ['rgba(15, 23, 42, 0)', '#0F172A'], // Transparent to Dark Slate
+        outputRange: ['rgba(18, 18, 18, 0)', '#121212'], // Transparent to Dark
         extrapolate: 'clamp'
     });
     const headerTitleOpacity = scrollY.interpolate({
@@ -231,7 +231,7 @@ export default function AdminBarberDetailScreen() {
     };
 
     return (
-        <View className="flex-1 bg-[#0F172A]">
+        <View className="flex-1 bg-[#121212]">
             <Stack.Screen options={{ headerShown: false }} />
 
             {/* STICKY HEADER */}
@@ -273,7 +273,7 @@ export default function AdminBarberDetailScreen() {
                         resizeMode="cover"
                     />
                     <LinearGradient
-                        colors={['rgba(15, 23, 42, 0.3)', '#0F172A']}
+                        colors={['rgba(18, 18, 18, 0.3)', '#121212']}
                         className="absolute inset-0"
                     />
 
@@ -284,9 +284,9 @@ export default function AdminBarberDetailScreen() {
                         <View className="relative">
                             <Image
                                 source={{ uri: barber.coverImage || 'https://via.placeholder.com/150' }}
-                                className="w-28 h-28 rounded-full border-[6px] border-[#0F172A]"
+                                className="w-28 h-28 rounded-full border-[6px] border-[#121212]"
                             />
-                            <View className={`absolute bottom - 2 right - 2 w - 6 h - 6 rounded - full border - 4 border - [#0F172A] ${barber.isOpen ? 'bg-green-500' : 'bg-gray-500'} `} />
+                            <View className={`absolute bottom-2 right-2 w-6 h-6 rounded-full border-4 border-[#121212] ${barber.isOpen ? 'bg-green-500' : 'bg-gray-500'}`} />
                         </View>
                     </View>
                 </View>
@@ -322,17 +322,17 @@ export default function AdminBarberDetailScreen() {
 
                 {/* 3. Stats Grid */}
                 <View className="flex-row px-4 gap-4 mb-8">
-                    <View className="flex-1 bg-[#1E293B] p-5 rounded-2xl border border-white/5">
-                        <View className="w-10 h-10 rounded-xl bg-blue-500/10 items-center justify-center mb-3">
-                            <DollarSign size={20} color="#3B82F6" />
+                    <View className="flex-1 bg-[#1E1E1E] p-5 rounded-2xl border border-white/5">
+                        <View className="w-10 h-10 rounded-xl bg-[#d4af35]/10 items-center justify-center mb-3">
+                            <DollarSign size={20} color="#d4af35" />
                         </View>
                         <Text className="text-gray-400 text-xs font-medium mb-1">Toplam Gelir</Text>
                         <Text className="text-white text-xl font-bold">₺{stats.revenue.toLocaleString('tr-TR')}</Text>
                     </View>
 
-                    <View className="flex-1 bg-[#1E293B] p-5 rounded-2xl border border-white/5">
-                        <View className="w-10 h-10 rounded-xl bg-orange-500/10 items-center justify-center mb-3">
-                            <Calendar size={20} color="#F97316" />
+                    <View className="flex-1 bg-[#1E1E1E] p-5 rounded-2xl border border-white/5">
+                        <View className="w-10 h-10 rounded-xl bg-[#d4af35]/10 items-center justify-center mb-3">
+                            <Calendar size={20} color="#d4af35" />
                         </View>
                         <Text className="text-gray-400 text-xs font-medium mb-1">Randevular</Text>
                         <Text className="text-white text-xl font-bold">{stats.bookings}</Text>
@@ -342,11 +342,11 @@ export default function AdminBarberDetailScreen() {
                 {/* 4. Subscription & Limits Card */}
                 <View className="px-4 mb-4">
                     <View className="flex-row items-center gap-2 mb-4">
-                        <Check size={18} color="#3B82F6" strokeWidth={4} />
+                        <Check size={18} color="#d4af35" strokeWidth={4} />
                         <Text className="text-white text-base font-bold">Abonelik & Limitler</Text>
                     </View>
 
-                    <View className="bg-[#1E293B] rounded-2xl p-5 border border-white/5">
+                    <View className="bg-[#1E1E1E] rounded-2xl p-5 border border-white/5">
                         <View className="flex-row justify-between items-start mb-6">
                             <View>
                                 <Text className="text-gray-500 text-[10px] font-bold uppercase tracking-wider mb-1">MEVCUT PLAN</Text>
@@ -410,10 +410,10 @@ export default function AdminBarberDetailScreen() {
                             impersonateBusiness(barber.id, barber.name);
                             router.replace('/(business)/(tabs)/dashboard');
                         }}
-                        className="bg-[#10B981] rounded-xl py-4 flex-row items-center justify-center gap-3 mb-3 shadow-lg shadow-green-500/20 active:opacity-90"
+                        className="bg-[#d4af35] rounded-xl py-4 flex-row items-center justify-center gap-3 mb-3 shadow-lg shadow-[#d4af35]/20 active:opacity-90"
                     >
                         <UserCog size={18} color="white" />
-                        <Text className="text-white font-bold text-sm uppercase tracking-wide">Bu İşletmeyi Yönet</Text>
+                        <Text className="text-black font-bold text-sm uppercase tracking-wide">Bu İşletmeyi Yönet</Text>
                     </Pressable>
 
                     {/* Full Width Blue Button */}
@@ -545,9 +545,9 @@ export default function AdminBarberDetailScreen() {
                                     <Pressable
                                         key={tier.id}
                                         onPress={() => setSelectedTier(tier.id)}
-                                        className={`flex - 1 p - 3 rounded - xl border ${isSelected ? 'bg-white border-white' : 'bg-[#2a2a2a] border-transparent'} `}
+                                        className={`flex-1 p-3 rounded-xl border ${isSelected ? 'bg-[#d4af35] border-[#d4af35]' : 'bg-[#2a2a2a] border-transparent'}`}
                                     >
-                                        <Text className={`text - center font - bold text - xs ${isSelected ? 'text-black' : 'text-gray-400'} `}>{tier.label}</Text>
+                                        <Text className={`text-center font-bold text-xs ${isSelected ? 'text-[#121212]' : 'text-gray-400'}`}>{tier.label}</Text>
                                     </Pressable>
                                 );
                             })}
@@ -558,17 +558,17 @@ export default function AdminBarberDetailScreen() {
                                 <Pressable
                                     key={months}
                                     onPress={() => setExtensionMonths(months)}
-                                    className={`flex - 1 py - 3 rounded - xl border ${extensionMonths === months ? 'bg-green-600 border-green-600' : 'bg-[#2a2a2a] border-transparent'} `}
+                                    className={`flex-1 py-3 rounded-xl border ${extensionMonths === months ? 'bg-[#d4af35] border-[#d4af35]' : 'bg-[#2a2a2a] border-transparent'}`}
                                 >
-                                    <Text className="text-white text-center font-bold text-xs">+{months} Ay</Text>
+                                    <Text className={`text-center font-bold text-xs ${extensionMonths === months ? 'text-[#121212]' : 'text-white'}`}>+{months} Ay</Text>
                                 </Pressable>
                             ))}
                         </View>
                         <Pressable
                             onPress={handleUpdatePlan}
-                            className="bg-white py-4 rounded-xl items-center active:opacity-90"
+                            className="bg-[#d4af35] py-4 rounded-xl items-center active:opacity-90"
                         >
-                            <Text className="text-black font-bold text-base">Kaydet ve Onayla</Text>
+                            <Text className="text-[#121212] font-bold text-base">Kaydet ve Onayla</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -582,10 +582,10 @@ export default function AdminBarberDetailScreen() {
                 footer={
                     <Pressable
                         onPress={handleSaveInfo}
-                        className="bg-blue-600 rounded-xl py-4 flex-row items-center justify-center gap-3 active:opacity-90"
+                        className="bg-[#d4af35] rounded-xl py-4 flex-row items-center justify-center gap-3 active:opacity-90"
                     >
-                        <Check size={20} color="white" strokeWidth={2.5} />
-                        <Text className="text-white font-bold text-base">Değişiklikleri Kaydet</Text>
+                        <Check size={20} color="#121212" strokeWidth={2.5} />
+                        <Text className="text-[#121212] font-bold text-base">Değişiklikleri Kaydet</Text>
                     </Pressable>
                 }
             >

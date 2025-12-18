@@ -242,13 +242,16 @@ export const useAdminStore = create<AdminState>((set, get) => ({
     }
 
     try {
-      const LIMIT = 10;
+      const LIMIT = 100; // Increased to fetch all businesses
       const from = (page - 1) * LIMIT;
       const to = from + LIMIT - 1;
 
       const { data, error, count } = await supabase
         .from('businesses')
-        .select('*', { count: 'exact' })
+        .select(`
+          *,
+          staff:business_staff(id, profile:profiles(id, full_name, avatar_url))
+        `, { count: 'exact' })
         .order('created_at', { ascending: false })
         .range(from, to);
 
@@ -266,6 +269,13 @@ export const useAdminStore = create<AdminState>((set, get) => ({
         subscriptionEndDate: b.subscription_end_date,
         contactName: b.contact_name,
         createdAt: b.created_at, // Explicit mapping
+        // Staff data
+        staffList: (b.staff || []).map((s: any) => ({
+          id: s.id,
+          name: s.profile?.full_name || 'Personel',
+          avatarUrl: s.profile?.avatar_url
+        })),
+        staffCount: (b.staff || []).length
       }));
 
       const newHasMore = data.length === LIMIT;

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Personel Yönetimi</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", /* Override to match request */
+                        "surface-dark": "#1E1E1E",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Switch Styling for Gold Theme */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #d4af35;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #d4af35;
+        }
+        
+        /* Hide scrollbar for chips */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-white transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto overflow-hidden bg-[#121212]">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-[#121212]/95 backdrop-blur-md border-b border-white/5 px-4 pt-12 pb-4">
+<div class="flex items-center justify-between">
+<button class="flex size-10 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-white">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-white text-lg font-bold leading-tight tracking-wide flex-1 text-center pr-2">Personel Yönetimi</h1>
+<button class="flex size-10 items-center justify-center rounded-full bg-primary text-[#121212] shadow-[0_0_15px_rgba(212,175,53,0.4)] hover:shadow-[0_0_20px_rgba(212,175,53,0.6)] active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</header>
+<!-- Search & Filter Section -->
+<div class="px-4 py-4 space-y-4">
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+<span class="material-symbols-outlined text-gray-500 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full p-4 pl-12 text-sm text-white bg-[#1E1E1E] border border-white/5 rounded-2xl placeholder-gray-500 focus:ring-1 focus:ring-primary focus:border-primary transition-all shadow-lg shadow-black/20" placeholder="Personel ara..." type="text"/>
+</div>
+<!-- Chips -->
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+<button class="flex items-center justify-center h-9 px-5 rounded-full bg-primary text-[#121212] font-semibold text-sm shadow-[0_0_10px_rgba(212,175,53,0.3)] whitespace-nowrap transition-transform active:scale-95">
+                    Tümü
+                </button>
+<button class="flex items-center justify-center h-9 px-5 rounded-full bg-[#1E1E1E] border border-white/10 text-gray-300 font-medium text-sm hover:border-primary/50 whitespace-nowrap transition-colors active:scale-95">
+                    Berberler
+                </button>
+<button class="flex items-center justify-center h-9 px-5 rounded-full bg-[#1E1E1E] border border-white/10 text-gray-300 font-medium text-sm hover:border-primary/50 whitespace-nowrap transition-colors active:scale-95">
+                    Kuaförler
+                </button>
+<button class="flex items-center justify-center h-9 px-5 rounded-full bg-[#1E1E1E] border border-white/10 text-gray-300 font-medium text-sm hover:border-primary/50 whitespace-nowrap transition-colors active:scale-95">
+                    Manikür
+                </button>
+</div>
+</div>
+<!-- Staff List -->
+<div class="flex-1 px-4 space-y-4 pb-24">
+<p class="text-xs font-semibold text-gray-500 uppercase tracking-wider pl-1">Personel Listesi (4)</p>
+<!-- Card 1: Active -->
+<div class="relative group flex items-center justify-between p-3 bg-[#1E1E1E] rounded-2xl border border-white/5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)] hover:border-primary/30 transition-all duration-300">
+<!-- Shadow Glow Effect on Hover -->
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
+<div class="relative flex items-center gap-4 z-10 flex-1">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-[#2a2a2a]" data-alt="Portrait of Burak, a senior stylist with a beard" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDF94k3g_tCqVdydGb3CijXaO2LQGsLQCmF2yfgvjjqRfm9NsMWhjuvu3H4hN_vULQEX3ATvvmSM45tkgBhaEjn2UWbX3txJJPbnx2YTV-XeCGOnQntihbibCpBY58sdXhnH9EqOO_aO83vJuUZqu_IoYGiZzwptBlVuOWE_Jravzb0JS9FzTZJAv4v0NqVmlynn3nW9DVP80zxOd-VpwGeTP46lsOnLJAqqTYdv7TFhFRyFwHRN6PHdLajysa9RfYoFVSKK_8OTPcq');">
+</div>
+<div class="absolute bottom-0 right-0 size-3.5 bg-green-500 border-2 border-[#1E1E1E] rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h3 class="text-white text-base font-bold leading-tight">Burak Özçivit</h3>
+<p class="text-primary/80 text-xs font-medium">Kıdemli Stilist</p>
+</div>
+</div>
+<div class="relative flex items-center gap-3 z-10 pl-2">
+<!-- Edit Button -->
+<button class="p-2 text-gray-400 hover:text-primary transition-colors rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<!-- Toggle Switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+</div>
+<!-- Card 2: Active -->
+<div class="relative group flex items-center justify-between p-3 bg-[#1E1E1E] rounded-2xl border border-white/5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)] hover:border-primary/30 transition-all duration-300">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
+<div class="relative flex items-center gap-4 z-10 flex-1">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-[#2a2a2a]" data-alt="Portrait of Ahmet, a head barber looking professional" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBUIOjTmAnW1_uskueE9eAK_CAqurwXtCv3q8Yt6Y6A7TRvdEFnZFEWsAr_-mdWUbBfv7uVbnaDC01aVvudE047LCMDsVKs4aIxCloWhhpdSw-b-rn2w6SlpWH6SmqwkxOW72m8HC8CD3-ziBmebcKDSrtpJnYu3XngT-tPdro0jksU9nBs5u2JDmZhKwsbvmn7BbUJ8GM7kY9aOcs1oTSDwTTMjhPfszW_9ZnivDpwUmg98jI4E9lquXeJs0w5nbp0muJIRBaYCosg');">
+</div>
+<div class="absolute bottom-0 right-0 size-3.5 bg-green-500 border-2 border-[#1E1E1E] rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h3 class="text-white text-base font-bold leading-tight">Ahmet Yılmaz</h3>
+<p class="text-gray-400 text-xs font-medium">Baş Berber</p>
+</div>
+</div>
+<div class="relative flex items-center gap-3 z-10 pl-2">
+<button class="p-2 text-gray-400 hover:text-primary transition-colors rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+</div>
+<!-- Card 3: Inactive -->
+<div class="relative group flex items-center justify-between p-3 bg-[#1E1E1E] rounded-2xl border border-white/5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)] opacity-80 hover:opacity-100 transition-all duration-300">
+<div class="relative flex items-center gap-4 z-10 flex-1">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-[#2a2a2a] grayscale" data-alt="Portrait of Zeynep, a hair stylist" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKwBBnzWSvLrFr-7HHBdr8uDTRWJOxwOyMORKDGp0VYLyL1zr2KWxnd4xFfQAUW_N7DiL0hKpweQfSo2OXthYRkl4KHxSPd4R8NzH9vkqAN1HfuPyjwQlJn4dkYrW_Xy6ZZnM35hlvEL0ZhauoRLQnu85e3OpVDy2GMe58cQ_ZPJqPDV9jNUJsnA__AZVM6YzAulX1wg6-pIMg-bgcn1j42g-9HqFIaxhyCgumTM5w5tZG1fuaZeGsTDPToNk2NdShEVHupYmfnqa-');">
+</div>
+<div class="absolute bottom-0 right-0 size-3.5 bg-gray-500 border-2 border-[#1E1E1E] rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h3 class="text-gray-300 text-base font-bold leading-tight">Zeynep Demir</h3>
+<p class="text-gray-500 text-xs font-medium">Saç Uzmanı</p>
+</div>
+</div>
+<div class="relative flex items-center gap-3 z-10 pl-2">
+<button class="p-2 text-gray-400 hover:text-primary transition-colors rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-gray-400 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+</div>
+<!-- Card 4: Active (New hire) -->
+<div class="relative group flex items-center justify-between p-3 bg-[#1E1E1E] rounded-2xl border border-white/5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)] hover:border-primary/30 transition-all duration-300">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
+<div class="relative flex items-center gap-4 z-10 flex-1">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-[#2a2a2a]" data-alt="Portrait of Can, a barber apprentice" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDi06-x9ErWPI6WqGUKZnQe4F-POovsleFWfZ0cVK-8uOrsDs1CF4SiqCdgTNbL3NODLQSmwzIw_NAtH83Axgmd7Nkucrk3FBmcIMJheWjLq2NeQtjd2TqHKl71JRfBACJ3onbl_lYN0yCOxubPT61QRG3MaELJv9rcGRfAg2R4xp8bKCVpGYOIjbcmzv96EmOr6AntHt6QuwVj8co9RIHZ3QypfW4KwzdeixZi8NrTtTWdv4OWYnzkC1IN-gcCNiaTh1Y5ae7QsO_k');">
+</div>
+<!-- New Badge -->
+<div class="absolute -top-1 -left-1 bg-primary text-[#121212] text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm">YENİ</div>
+<div class="absolute bottom-0 right-0 size-3.5 bg-green-500 border-2 border-[#1E1E1E] rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h3 class="text-white text-base font-bold leading-tight">Can Yıldız</h3>
+<p class="text-gray-400 text-xs font-medium">Asistan</p>
+</div>
+</div>
+<div class="relative flex items-center gap-3 z-10 pl-2">
+<button class="p-2 text-gray-400 hover:text-primary transition-colors rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Floating Action Button (Alternative or Additional) -->
+<div class="fixed bottom-6 right-6 z-20">
+<!-- Using a gradient border effect for luxury feel -->
+<div class="p-[1px] rounded-full bg-gradient-to-b from-primary/60 to-primary/10">
+<button class="flex items-center justify-center size-14 rounded-full bg-[#1E1E1E] text-primary shadow-[0_4px_20px_rgba(212,175,53,0.3)] hover:shadow-[0_4px_25px_rgba(212,175,53,0.5)] active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl">person_add</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

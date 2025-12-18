@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bildirimler Ekranı</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "primary-dark": "#b59226",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", /* Override to match user request */
+                        "surface-dark": "#1E1E1E",
+                        "text-muted": "#9CA3AF",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    boxShadow: {
+                        'glow': '0 0 20px -5px rgba(212, 175, 53, 0.15)',
+                        'glow-active': '0 0 25px -5px rgba(212, 175, 53, 0.25)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-background-light/90 dark:bg-[#121212]/90 backdrop-blur-md border-b border-gray-200 dark:border-white/5 px-4 pt-4 pb-3 transition-colors duration-300">
+<div class="flex items-center justify-between h-12">
+<!-- Back Button -->
+<button class="size-10 flex items-center justify-center rounded-full active:bg-gray-200 dark:active:bg-white/10 text-gray-900 dark:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<!-- Title -->
+<h1 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Bildirimler</h1>
+<!-- Action -->
+<button class="text-primary text-sm font-semibold hover:text-primary-dark active:opacity-70 transition-colors">
+                Tümünü Oku
+            </button>
+</div>
+</header>
+<!-- Filter Chips -->
+<div class="sticky top-[69px] z-40 bg-background-light dark:bg-[#121212] pt-2 pb-4 pl-4">
+<div class="flex gap-3 overflow-x-auto no-scrollbar pr-4">
+<!-- Active Chip -->
+<button class="flex shrink-0 items-center gap-x-2 rounded-full bg-primary px-5 py-2.5 shadow-glow-active transition-all duration-300">
+<span class="material-symbols-outlined text-white text-[18px]">check</span>
+<span class="text-white text-sm font-semibold">Tümü</span>
+</button>
+<!-- Inactive Chip 1 -->
+<button class="flex shrink-0 items-center gap-x-2 rounded-full bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-white/10 px-5 py-2.5 active:scale-95 transition-all duration-300 group">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors text-[18px]">calendar_month</span>
+<span class="text-gray-700 dark:text-gray-300 text-sm font-medium">Randevular</span>
+</button>
+<!-- Inactive Chip 2 -->
+<button class="flex shrink-0 items-center gap-x-2 rounded-full bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-white/10 px-5 py-2.5 active:scale-95 transition-all duration-300 group">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors text-[18px]">percent</span>
+<span class="text-gray-700 dark:text-gray-300 text-sm font-medium">Kampanyalar</span>
+</button>
+<!-- Inactive Chip 3 -->
+<button class="flex shrink-0 items-center gap-x-2 rounded-full bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-white/10 px-5 py-2.5 active:scale-95 transition-all duration-300 group">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors text-[18px]">notifications</span>
+<span class="text-gray-700 dark:text-gray-300 text-sm font-medium">Sistem</span>
+</button>
+</div>
+</div>
+<!-- Notifications List -->
+<main class="flex-1 px-4 pb-8 space-y-4">
+<!-- Section Header: Bugün -->
+<h3 class="text-gray-500 dark:text-[#666666] text-xs font-bold uppercase tracking-wider pl-1 mt-2 mb-3">Bugün</h3>
+<!-- Card: Appointment Reminder (Unread) -->
+<div class="relative overflow-hidden group/card">
+<div class="relative bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-gray-100 dark:border-white/5 shadow-sm dark:shadow-glow flex gap-4 transition-all duration-300 active:scale-[0.99]">
+<!-- Unread Indicator (Dot) -->
+<div class="absolute top-4 right-4 size-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(212,175,53,0.6)] animate-pulse"></div>
+<!-- Icon Container -->
+<div class="shrink-0">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[24px]">schedule</span>
+</div>
+</div>
+<!-- Content -->
+<div class="flex flex-1 flex-col justify-center pr-4">
+<div class="flex justify-between items-start mb-0.5">
+<h4 class="text-gray-900 dark:text-white text-base font-semibold leading-tight">Randevu Hatırlatması</h4>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm leading-snug line-clamp-2">
+                        Bugün 14:00'te Ahmet Bey ile saç kesimi randevunuz var. Lütfen 10 dakika önce geliniz.
+                    </p>
+<p class="text-primary text-xs font-medium mt-2">2 saat önce</p>
+</div>
+</div>
+<!-- Swipe Actions simulated (visual cue) -->
+<div class="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-primary/20 to-transparent pointer-events-none rounded-r-2xl"></div>
+</div>
+<!-- Card: Promotion (Unread) -->
+<div class="relative bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-gray-100 dark:border-white/5 shadow-sm dark:shadow-glow flex gap-4 transition-all duration-300 active:scale-[0.99]">
+<!-- Unread Indicator -->
+<div class="absolute top-4 right-4 size-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(212,175,53,0.6)]"></div>
+<div class="shrink-0">
+<div class="size-12 rounded-xl bg-gradient-to-br from-primary to-[#b59226] flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-black text-[24px]">local_offer</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col justify-center pr-4">
+<h4 class="text-gray-900 dark:text-white text-base font-semibold leading-tight mb-1">%20 İndirim Fırsatı!</h4>
+<p class="text-gray-500 dark:text-gray-400 text-sm leading-snug">
+                    Sadece bu haftasonu geçerli özel "Royal Bakım" paketinde indirim kazandınız.
+                </p>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-xs text-gray-400 dark:text-gray-500 font-medium">4 saat önce</span>
+<span class="size-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
+<span class="text-xs text-primary font-bold">Kupon: GOLD20</span>
+</div>
+</div>
+</div>
+<!-- Section Header: Dün -->
+<h3 class="text-gray-500 dark:text-[#666666] text-xs font-bold uppercase tracking-wider pl-1 mt-6 mb-3">Dün</h3>
+<!-- Card: System Message (Read) -->
+<div class="relative bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-gray-100 dark:border-white/5 flex gap-4 opacity-80 hover:opacity-100 transition-opacity">
+<div class="shrink-0">
+<div class="size-12 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[24px]">check_circle</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<h4 class="text-gray-700 dark:text-gray-200 text-base font-medium leading-tight mb-1">Randevu Onaylandı</h4>
+<p class="text-gray-500 dark:text-gray-500 text-sm leading-snug">
+                    12 Temmuz Cuma günü için randevunuz başarıyla oluşturuldu.
+                </p>
+<p class="text-gray-400 dark:text-gray-600 text-xs font-medium mt-2">Dün 09:41</p>
+</div>
+</div>
+<!-- Card: Tip/Info (Read) -->
+<div class="relative bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-gray-100 dark:border-white/5 flex gap-4 opacity-80 hover:opacity-100 transition-opacity">
+<div class="shrink-0">
+<div class="size-12 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[24px]">lightbulb</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<h4 class="text-gray-700 dark:text-gray-200 text-base font-medium leading-tight mb-1">Saç Bakım Önerisi</h4>
+<p class="text-gray-500 dark:text-gray-500 text-sm leading-snug">
+                    Yaz aylarında saçlarınızı güneşten korumak için önerdiğimiz yeni seriyi inceleyin.
+                </p>
+<p class="text-gray-400 dark:text-gray-600 text-xs font-medium mt-2">Dün 18:20</p>
+</div>
+</div>
+<!-- Section Header: Geçen Hafta -->
+<h3 class="text-gray-500 dark:text-[#666666] text-xs font-bold uppercase tracking-wider pl-1 mt-6 mb-3">Geçen Hafta</h3>
+<!-- Card: Payment (Read) -->
+<div class="relative bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-gray-100 dark:border-white/5 flex gap-4 opacity-60 hover:opacity-100 transition-opacity">
+<div class="shrink-0">
+<div class="size-12 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[24px]">receipt_long</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex justify-between items-center">
+<h4 class="text-gray-700 dark:text-gray-300 text-base font-medium leading-tight mb-1">Ödeme Alındı</h4>
+</div>
+<p class="text-gray-500 dark:text-gray-500 text-sm leading-snug">
+                    750₺ tutarındaki işleminiz başarıyla gerçekleşti.
+                </p>
+<p class="text-gray-400 dark:text-gray-600 text-xs font-medium mt-2">05 Tem</p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Space (Simulated) -->
+<div class="h-6"></div>
+</body></html>

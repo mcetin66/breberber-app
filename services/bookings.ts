@@ -184,9 +184,9 @@ export const bookingService = {
   },
 
   async create(booking: BookingInsert) {
-    const { data, error } = await supabase
-      .from('bookings')
-      .insert(booking as any)
+    const { data, error } = await (supabase
+      .from('bookings') as any)
+      .insert(booking)
       .select()
       .single();
 
@@ -195,9 +195,9 @@ export const bookingService = {
   },
 
   async update(id: string, updates: BookingUpdate) {
-    const { data, error } = await supabase
-      .from('bookings')
-      .update(updates as any)
+    const { data, error } = await (supabase
+      .from('bookings') as any)
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
@@ -214,8 +214,8 @@ export const bookingService = {
   },
 
   async delete(id: string) {
-    const { error } = await supabase
-      .from('bookings')
+    const { error } = await (supabase
+      .from('bookings') as any)
       .delete()
       .eq('id', id);
 

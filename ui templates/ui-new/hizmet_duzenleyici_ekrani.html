@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hizmet Düzenleyici</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Gold/Bronze as requested
+                        "primary-dark": "#aa8c2c",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep black
+                        "surface-dark": "#1E1E1E", // Dark grey for cards
+                        "surface-light": "#ffffff",
+                        "text-secondary": "#9ca3af",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "glow": "0 0 15px -3px rgba(212, 175, 55, 0.15)",
+                        "glow-strong": "0 0 20px -5px rgba(212, 175, 55, 0.3)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for a premium feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37; 
+        }
+        
+        /* Hiding default appearance for custom styled selects */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        .glass-sheet {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-hidden">
+<!-- Main Container -->
+<div class="relative flex h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="flex items-center justify-between px-4 py-3 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 border-b border-gray-200 dark:border-white/5">
+<button class="flex items-center justify-center w-10 h-10 rounded-full text-gray-800 dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<h1 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Hizmet Yönetimi</h1>
+<button class="flex items-center justify-center w-10 h-10 rounded-full text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</header>
+<!-- Content Scroll Area -->
+<main class="flex-1 overflow-y-auto px-4 pb-32 pt-2">
+<!-- Section Title -->
+<div class="flex items-center justify-between py-4">
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Hizmet Listesi</h2>
+<span class="text-xs font-medium text-primary px-2 py-1 rounded bg-primary/10 border border-primary/20">3 Hizmet Aktif</span>
+</div>
+<!-- List Item 1 -->
+<div class="group relative mb-4 flex flex-col gap-3 rounded-xl bg-white dark:bg-surface-dark p-4 shadow-sm dark:shadow-glow border border-gray-100 dark:border-white/5 transition-all hover:border-primary/30">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 text-primary">
+<span class="material-symbols-outlined text-[28px]">content_cut</span>
+</div>
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white">Lüks Saç Kesimi</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary mt-0.5">Yıkama ve şekillendirme dahil</p>
+</div>
+</div>
+<button class="text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<div class="mt-2 flex items-center gap-4 border-t border-gray-100 dark:border-white/5 pt-3">
+<div class="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-[18px] text-primary">schedule</span>
+                        40 dk
+                    </div>
+<div class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
+<span class="material-symbols-outlined text-[18px] text-primary">payments</span>
+                        450 ₺
+                    </div>
+<div class="ml-auto flex items-center gap-2">
+<span class="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+<span class="text-xs text-gray-500">Aktif</span>
+</div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="group relative mb-4 flex flex-col gap-3 rounded-xl bg-white dark:bg-surface-dark p-4 shadow-sm dark:shadow-glow border border-gray-100 dark:border-white/5 transition-all hover:border-primary/30">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 text-primary">
+<span class="material-symbols-outlined text-[28px]">face</span>
+</div>
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white">Sakal Tıraşı &amp; Bakım</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary mt-0.5">Sıcak havlu ve buhar ile</p>
+</div>
+</div>
+<button class="text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<div class="mt-2 flex items-center gap-4 border-t border-gray-100 dark:border-white/5 pt-3">
+<div class="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-[18px] text-primary">schedule</span>
+                        20 dk
+                    </div>
+<div class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
+<span class="material-symbols-outlined text-[18px] text-primary">payments</span>
+                        200 ₺
+                    </div>
+<div class="ml-auto flex items-center gap-2">
+<span class="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+<span class="text-xs text-gray-500">Aktif</span>
+</div>
+</div>
+</div>
+<!-- List Item 3 (Editing Highlight) -->
+<div class="group relative mb-4 opacity-40 grayscale-[0.5]">
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-surface-dark p-4 border border-gray-100 dark:border-white/5">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 text-gray-500">
+<span class="material-symbols-outlined text-[28px]">brush</span>
+</div>
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white">Saç Boyama</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary mt-0.5">Organik boya seçenekleri</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Illustration for empty space or bottom padding -->
+<div class="flex flex-col items-center justify-center py-8 opacity-20">
+<span class="material-symbols-outlined text-6xl text-primary mb-2">spa</span>
+<p class="text-xs text-white uppercase tracking-widest">Premium Barber Club</p>
+</div>
+</main>
+<!-- Overlay / Backdrop -->
+<div class="absolute inset-0 bg-black/60 backdrop-blur-sm z-20"></div>
+<!-- Bottom Sheet (Edit Modal) -->
+<div class="absolute bottom-0 left-0 right-0 z-30 flex flex-col rounded-t-[32px] glass-sheet dark:bg-surface-dark border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transform transition-transform duration-300">
+<!-- Handle -->
+<div class="mx-auto mt-3 h-1.5 w-12 rounded-full bg-gray-300 dark:bg-white/20"></div>
+<div class="flex items-center justify-between px-6 py-4">
+<h2 class="text-xl font-bold text-white">Hizmeti Düzenle</h2>
+<button class="text-sm font-medium text-red-400 hover:text-red-300">Sil</button>
+</div>
+<!-- Form -->
+<div class="flex-1 overflow-y-auto px-6 pb-8">
+<div class="space-y-5">
+<!-- Service Name Input -->
+<div class="space-y-1.5">
+<label class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Hizmet Adı</label>
+<div class="relative">
+<input class="w-full rounded-xl bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-white/10 px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text" value="Saç Boyama"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 text-primary">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Price Input -->
+<div class="space-y-1.5">
+<label class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Fiyat (TL)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">₺</span>
+<input class="w-full rounded-xl bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-white/10 pl-8 pr-4 py-3 text-base font-bold text-gray-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="number" value="750"/>
+</div>
+</div>
+<!-- Duration Dropdown (The Task Requirement) -->
+<div class="space-y-1.5">
+<label class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Süre</label>
+<div class="relative group/select">
+<select class="w-full appearance-none rounded-xl bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-white/10 px-4 py-3 text-base text-gray-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer">
+<option value="10">10 dk</option>
+<option value="20">20 dk</option>
+<option value="30">30 dk</option>
+<option value="40">40 dk</option>
+<option value="50">50 dk</option>
+<option selected="" value="60">60 dk</option>
+<option value="70">70 dk</option>
+<option value="80">80 dk</option>
+<option value="90">90 dk</option>
+</select>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 group-hover/select:text-primary transition-colors pointer-events-none flex items-center">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Visibility Toggle -->
+<div class="flex items-center justify-between rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 p-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-gray-900 dark:text-white">Randevuya Açık</span>
+<span class="text-xs text-gray-500 dark:text-gray-400">Müşteriler bu hizmeti görebilir</span>
+</div>
+<label class="relative inline-flex cursor-pointer items-center">
+<input checked="" class="peer sr-only" type="checkbox"/>
+<div class="peer h-7 w-12 rounded-full bg-gray-700 after:absolute after:left-[2px] after:top-[2px] after:h-6 after:w-6 after:rounded-full after:bg-gray-300 after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:bg-white peer-focus:outline-none"></div>
+</label>
+</div>
+<!-- Action Button -->
+<button class="group relative mt-4 w-full overflow-hidden rounded-xl bg-primary p-4 transition-transform active:scale-[0.98]">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
+<div class="relative flex items-center justify-center gap-2">
+<span class="font-bold text-black text-base">Değişiklikleri Kaydet</span>
+<span class="material-symbols-outlined text-black">check</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

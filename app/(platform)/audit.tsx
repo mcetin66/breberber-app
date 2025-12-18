@@ -4,8 +4,8 @@ import { supabase } from '@/lib/supabase';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
-import { Shield, Clock, Search, Filter, AlertCircle, X } from 'lucide-react-native';
-import { AdminHeader } from '@/components/admin/AdminHeader';
+import { Shield, Clock, Search, Filter, AlertCircle, X, ChevronLeft } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
 
 // ... (keep interface ActionFilters etc)
 
@@ -125,42 +125,42 @@ export default function AuditLogScreen() {
         const subjectEmail = item.details?.owner_email || (item.details?.email !== subjectName ? item.details?.email : null);
 
         return (
-            <View className="bg-[#1E293B] rounded-xl mb-3 border border-white/5 overflow-hidden">
+            <View className="bg-[#1E1E1E] rounded-xl mb-3 border border-white/5 overflow-hidden">
                 <View className="flex-row items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
                     <View className="flex-row items-center gap-2">
                         <View className={`w-2 h-2 rounded-full ${item.action.includes('DELETE') ? 'bg-red-500' : item.action.includes('UPDATE') ? 'bg-orange-500' : 'bg-green-500'}`} />
                         <Text className="text-white font-bold text-sm">{formatActionName(item.action)}</Text>
                     </View>
-                    <Text className="text-slate-400 text-[10px] font-medium">
+                    <Text className="text-gray-400 text-[10px] font-medium">
                         {format(new Date(item.created_at), 'dd.MM.yyyy HH:mm', { locale: tr })}
                     </Text>
                 </View>
 
                 <View className="p-4 flex-row">
                     <View className="flex-1 pr-4 border-r border-white/5">
-                        <Text className="text-slate-500 text-[10px] uppercase font-bold mb-1">İŞLEMİ YAPAN</Text>
+                        <Text className="text-gray-500 text-[10px] uppercase font-bold mb-1">İŞLEMİ YAPAN</Text>
                         <View className="flex-row items-center gap-2 mb-1">
                             <Text className="text-white text-xs font-medium" numberOfLines={1}>
                                 {item.user?.full_name || 'Sistem'}
                             </Text>
                             {item.user?.role && (
-                                <View className="bg-blue-500/20 px-1.5 py-0.5 rounded">
+                                <View className="bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">
                                     <Text className="text-blue-400 text-[8px] font-bold uppercase">{item.user.role}</Text>
                                 </View>
                             )}
                         </View>
-                        <Text className="text-slate-500 text-[10px]" numberOfLines={1}>
+                        <Text className="text-gray-500 text-[10px]" numberOfLines={1}>
                             {item.user?.email || '-'}
                         </Text>
                     </View>
 
                     <View className="flex-1 pl-4">
-                        <Text className="text-slate-500 text-[10px] uppercase font-bold mb-1">İLGİLİ HESAP / İŞLETME</Text>
+                        <Text className="text-gray-500 text-[10px] uppercase font-bold mb-1">İLGİLİ HESAP / İŞLETME</Text>
                         <Text className="text-white text-xs font-medium mb-0.5" numberOfLines={1}>
                             {subjectName}
                         </Text>
                         {subjectEmail && (
-                            <Text className="text-slate-500 text-[10px]" numberOfLines={1}>
+                            <Text className="text-gray-500 text-[10px]" numberOfLines={1}>
                                 {subjectEmail}
                             </Text>
                         )}
@@ -176,8 +176,8 @@ export default function AuditLogScreen() {
                             : String(value);
 
                         return (
-                            <Text key={key} className="text-slate-500 text-[10px]">
-                                <Text className="font-medium text-slate-400">{formatKey(key)}:</Text> {displayValue}
+                            <Text key={key} className="text-gray-500 text-[10px]">
+                                <Text className="font-medium text-gray-400">{formatKey(key)}:</Text> {displayValue}
                             </Text>
                         );
                     })}
@@ -188,39 +188,58 @@ export default function AuditLogScreen() {
 
 
 
+    const router = useRouter();
+
     return (
-        <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-            <AdminHeader
-                title="İşlem Kayıtları"
-                subtitle="LOGLAR & AKTİVİTE"
-            >
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-2">
+        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
+            {/* Header */}
+            <View className="px-4 py-3 flex-row items-center gap-3 border-b border-white/5">
+                <Pressable
+                    onPress={() => router.back()}
+                    className="w-10 h-10 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/10"
+                >
+                    <ChevronLeft size={20} color="#fff" />
+                </Pressable>
+                <View className="flex-row items-center gap-3 flex-1">
+                    <View className="w-10 h-10 rounded-full bg-[#8B5CF6] items-center justify-center">
+                        <Shield size={20} color="#fff" />
+                    </View>
+                    <View>
+                        <Text className="text-white text-lg font-bold">Sistem Kayıtları</Text>
+                        <Text className="text-gray-500 text-xs">Log ve aktivite takibi</Text>
+                    </View>
+                </View>
+            </View>
+
+            {/* Filters */}
+            <View className="py-4 border-b border-white/5">
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16 }}>
                     {ACTION_FILTERS.map(filter => (
                         <Pressable
                             key={filter.id}
                             onPress={() => setActiveFilter(filter.id)}
-                            className={`mr-3 px-4 py-2 rounded-full border ${activeFilter === filter.id
-                                ? 'bg-blue-600 border-blue-500'
-                                : 'bg-slate-800 border-white/5'
+                            className={`mr-3 px-5 py-2.5 rounded-full ${activeFilter === filter.id
+                                ? 'bg-[#d4af35]'
+                                : 'bg-[#1E1E1E] border border-white/10'
                                 }`}
                         >
-                            <Text className={`text-xs font-medium ${activeFilter === filter.id ? 'text-white' : 'text-slate-400'
+                            <Text className={`text-sm font-medium ${activeFilter === filter.id ? 'text-[#121212]' : 'text-gray-400'
                                 }`}>
                                 {filter.label}
                             </Text>
                         </Pressable>
                     ))}
                 </ScrollView>
-            </AdminHeader>
+            </View>
 
             {loading ? (
                 <View className="flex-1 items-center justify-center">
-                    <ActivityIndicator size="large" color="#3B82F6" />
+                    <ActivityIndicator size="large" color="#d4af35" />
                 </View>
             ) : logs.length === 0 ? (
                 <View className="flex-1 items-center justify-center opacity-50">
                     <AlertCircle size={48} color="#64748B" />
-                    <Text className="text-slate-400 mt-4 text-center">Kayıt bulunamadı.</Text>
+                    <Text className="text-gray-400 mt-4 text-center">Kayıt bulunamadı.</Text>
                 </View>
             ) : (
                 <FlatList

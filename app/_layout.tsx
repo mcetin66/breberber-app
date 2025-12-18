@@ -58,7 +58,7 @@ export default function RootLayout() {
     console.log('ROOT LAYOUT: Segments', JSON.stringify(segments));
     console.log('ROOT LAYOUT: Auth State', { role: user?.role, isAuthenticated });
 
-    const isPublicRoute = segments[0] === 'barber' || segments[0] === 'detail' || segments[0] === 'business-role';
+    const isPublicRoute = segments[0] === 'barber' || segments[0] === 'detail' || segments[0] === 'business-role' || segments[0] === 'role-selection' || segments[0] === '(legal)';
     if (isPublicRoute) return;
 
     const { viewMode } = useAuthStore.getState(); // direct access to avoid stale closure
@@ -85,7 +85,7 @@ export default function RootLayout() {
       }
       else if (currentView === 'platform' && !inPlatformGroup) {
         console.log('Redirecting to /(platform)/dashboard');
-        router.replace('/(platform)/dashboard');
+        router.replace('/(platform)/(tabs)/dashboard');
       }
     }
   }, [isAuthenticated, user, segments, isLoading]); // removed viewMode from dep to avoid loops, access via getState

@@ -8,22 +8,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // EXACT PORT FROM HTML TEMPLATE
-        "primary": "#d4af37", // Gold
-        "background-light": "#f6f7f8",
-        "background-dark": "#0f0f0f",
-        "surface-dark": "#1a1a1a",
-        "surface-light": "#FFFFFF",
+        "primary": "#d4af35", // Gold from UI Templates
+        "background-light": "#f8f7f6",
+        "background-dark": "#121212",
+        "card-dark": "#1E1E1E",
+        "text-muted": "#b6b1a0",
 
-        // Mapping for legacy/shared components if needed
+        // Legacy/Shared mappings
         background: {
-          DEFAULT: '#0f0f0f',
-          card: '#1a1a1a',
+          DEFAULT: '#121212', // Matches background-dark
+          card: '#1E1E1E',   // Matches card-dark
           subtle: '#333333',
         },
         text: {
           DEFAULT: '#FFFFFF',
-          secondary: '#9dabb9',
+          secondary: '#b6b1a0', // Matches text-muted
           muted: '#6a7785',
         },
       },

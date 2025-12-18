@@ -2,6 +2,7 @@ import { View, Text, Pressable } from 'react-native';
 import { ReactNode } from 'react';
 import { useRouter } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AdminHeaderProps {
     title: string;
@@ -13,9 +14,10 @@ interface AdminHeaderProps {
 
 export const AdminHeader = ({ title, subtitle, rightElement, showBack, children }: AdminHeaderProps) => {
     const router = useRouter();
+    const insets = useSafeAreaInsets();
 
     return (
-        <View className="px-5 pt-2 pb-6 z-10">
+        <View style={{ paddingTop: insets.top }} className="px-5 pb-6 z-10 bg-[#121212]">
             <View className="flex-row items-center justify-between mb-2">
                 <View className="flex-row items-center gap-4">
                     {showBack && (

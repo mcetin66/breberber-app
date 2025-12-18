@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Salon Konumu - Tam Ekran Harita</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35", // Gold/Bronze
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#171612", // Deep dark background
+                        "surface-dark": "#25231d", // Slightly lighter for cards
+                        "surface-darker": "#201d12", // Even darker
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "gold": "0 4px 14px 0 rgba(212, 175, 53, 0.15)",
+                        "glow": "0 0 15px rgba(212, 175, 53, 0.3)"
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom map styling simulation */
+        .map-container {
+            filter: grayscale(100%) contrast(1.1) brightness(0.7);
+        }
+        
+        /* Map marker pulse animation */
+        @keyframes pulse-gold {
+            0% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 53, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(212, 175, 53, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 53, 0);
+            }
+        }
+        
+        .marker-pulse {
+            animation: pulse-gold 2s infinite;
+        }
+
+        /* Hide scrollbar for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-hidden h-screen w-full select-none text-white">
+<!-- Main Container -->
+<div class="relative flex h-full w-full flex-col">
+<!-- Full Screen Map Background -->
+<div class="absolute inset-0 z-0 bg-[#25231d]" data-location="Istanbul, Turkey" style="https://lh3.googleusercontent.com/aida-public/AB6AXuArPoYrovhY0NmaSiMU5F5hU1lpNK1NZxAnvB5elXw3EX5U8QgHyelB_PV8TCqjPdmFXHOdDLgrJjYBssnwKsvdRpnVDG50ll4wWX7HZ35j80A8ZZdytoSSwGt5m-6lVTSrmaYQnh93UfB_AZwUAS0gK-moEpW207MevSA2kZqDjfiavdoewIdYTJTlqQd5HdONZA2GjhbD-YO0UNKMI87U6ZTO59FU-pAyDGhXVdfx0bSEYSZyWGGt4kKTzVPiGYMYiTbk10XTFFUv">
+<!-- Simulated Dark Map Image -->
+<div class="w-full h-full bg-cover bg-center map-container" data-alt="Dark aesthetic map view of city streets" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDSQ5ElH01bYXahTYtCg6FFOamRU3qrWmQbJyCHseQ1tb5gOov6kT8tXLKtVkpQO_fG28ESqOOU0SvJ_vBn9rDdhSdl0mcLYgnTrIUhwdfLrRpG1NNYDnEar0w_9geZw-1RgjY26-Ld_BuMRo57m522wwGGfoIk6YS7lREB9UVYLlEINrjAWoE6KfwYz29qYgGz6kSTgabcG8oZqyQ0kf0v5DX44aVhYp233WaEEnt3v6k6V-OF0egbl3fp6QKsrkEMJlKpeu3kod5U');">
+</div>
+<!-- Route Path (Simulated SVG Overlay) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10 opacity-60" style="mix-blend-mode: screen;">
+<path d="M 120 120 Q 200 300 250 500 T 180 650" fill="none" stroke="#d4af35" stroke-dasharray="8 4" stroke-linecap="round" stroke-width="4"></path>
+<circle cx="180" cy="650" fill="#d4af35" r="6"></circle>
+</svg>
+<!-- Map Markers -->
+<!-- Salon Location Marker -->
+<div class="absolute top-[40%] left-[55%] -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-1">
+<div class="bg-surface-dark/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-primary/20 shadow-lg mb-2">
+<span class="text-xs font-bold text-primary whitespace-nowrap">Golden Scissors</span>
+</div>
+<div class="relative flex items-center justify-center">
+<div class="w-4 h-4 bg-primary rounded-full z-10 border-2 border-white shadow-lg"></div>
+<div class="absolute w-12 h-12 bg-primary/30 rounded-full marker-pulse"></div>
+<!-- Pin Icon -->
+<div class="absolute -top-[34px] text-primary drop-shadow-md">
+<span class="material-symbols-outlined text-[40px] font-variation-FILL">location_on</span>
+</div>
+</div>
+</div>
+<!-- User Location Marker -->
+<div class="absolute bottom-[35%] left-[20%] z-10">
+<div class="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+<div class="absolute -inset-4 bg-blue-500/20 rounded-full animate-pulse"></div>
+</div>
+</div>
+<!-- Top Header Overlay -->
+<div class="absolute top-0 left-0 right-0 z-30 pt-12 pb-4 px-4 bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
+<div class="flex items-center justify-between pointer-events-auto">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-dark/80 backdrop-blur-md text-white border border-white/10 shadow-lg hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<h1 class="text-white font-bold text-lg drop-shadow-md opacity-0 transition-opacity duration-300 hidden sm:block">Harita Görünümü</h1>
+<div class="flex gap-2">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-dark/80 backdrop-blur-md text-white border border-white/10 shadow-lg hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-dark/80 backdrop-blur-md text-white border border-white/10 shadow-lg hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Floating Action Buttons (Right Side) -->
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-30">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-dark/90 backdrop-blur text-white border border-white/10 shadow-lg hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[22px]">my_location</span>
+</button>
+<div class="flex flex-col rounded-xl bg-surface-dark/90 backdrop-blur border border-white/10 shadow-lg overflow-hidden">
+<button class="flex items-center justify-center w-10 h-10 text-white hover:bg-white/5 border-b border-white/5">
+<span class="material-symbols-outlined text-[22px]">add</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 text-white hover:bg-white/5">
+<span class="material-symbols-outlined text-[22px]">remove</span>
+</button>
+</div>
+</div>
+<!-- Bottom Sheet / Info Card -->
+<div class="absolute bottom-0 left-0 right-0 z-40 bg-transparent flex flex-col justify-end">
+<!-- Handle & Top Radius Container -->
+<div class="w-full bg-surface-dark rounded-t-[2rem] shadow-[0_-5px_20px_rgba(0,0,0,0.4)] border-t border-white/5 relative overflow-hidden">
+<!-- Subtle Gold Gradient Top Border -->
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<!-- Drag Handle -->
+<div class="flex justify-center pt-3 pb-2 w-full" id="bottom-sheet-handle">
+<div class="h-1.5 w-12 rounded-full bg-white/20"></div>
+</div>
+<!-- Content -->
+<div class="px-6 pb-8 pt-2">
+<!-- Title & Rating Header -->
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col">
+<h2 class="text-xl font-bold text-white leading-tight">Golden Scissors Istanbul</h2>
+<p class="text-gray-400 text-sm mt-1">Lüks Erkek Kuaförü &amp; Bakım</p>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-md border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[16px] font-variation-FILL">star</span>
+<span class="text-primary font-bold text-sm">4.9</span>
+</div>
+<span class="text-xs text-gray-500 mt-1">128 Değerlendirme</span>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-white/10 mb-4"></div>
+<!-- Location Info -->
+<div class="flex items-start gap-3 mb-6">
+<div class="flex-shrink-0 mt-1 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-300 text-[18px]">location_on</span>
+</div>
+<div class="flex-1">
+<p class="text-gray-300 text-sm leading-relaxed">Etiler, Nispetiye Cd No:12, 34340 Beşiktaş/İstanbul</p>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-primary text-xs font-semibold bg-primary/10 px-2 py-0.5 rounded">Açık</span>
+<span class="text-gray-500 text-xs">•</span>
+<span class="text-gray-400 text-xs">Kapanış: 22:00</span>
+</div>
+</div>
+<div class="flex-shrink-0 flex gap-2">
+<button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">call</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</button>
+</div>
+</div>
+<!-- Meta Info (Distance/Time) -->
+<div class="flex items-center justify-between bg-white/5 rounded-xl p-3 mb-5 border border-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">directions_car</span>
+<span class="text-gray-300 text-sm">Özel Araç</span>
+</div>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<div class="flex flex-col items-center">
+<span class="text-white font-bold text-sm">15 dk</span>
+<span class="text-gray-500 text-[10px]">TAHMİNİ SÜRE</span>
+</div>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<div class="flex flex-col items-center">
+<span class="text-white font-bold text-sm">2.4 km</span>
+<span class="text-gray-500 text-[10px]">MESAFE</span>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full h-14 bg-primary hover:bg-[#c29f2e] active:scale-[0.98] transition-all rounded-xl shadow-gold flex items-center justify-center gap-2 text-surface-darker font-bold text-base group">
+<span class="material-symbols-outlined group-hover:-translate-y-0.5 transition-transform">near_me</span>
+                        Yol Tarifi Al
+                    </button>
+<!-- Safe Area Spacer -->
+<div class="h-2"></div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

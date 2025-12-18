@@ -82,23 +82,23 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
     const currentTimeTop = getCurrentTimeTop();
 
     return (
-        <View className="flex-1 bg-[#0F172A]">
+        <View className="flex-1 bg-[#121212]">
 
             {/* Controls Row (Zoom) */}
             <View className="absolute right-4 bottom-36 z-50 flex-row gap-2">
-                <Pressable onPress={() => handleZoom(-0.2)} className="bg-[#1E293B] p-3 rounded-full border border-white/10 shadow-lg">
+                <Pressable onPress={() => handleZoom(-0.2)} className="bg-[#1E1E1E] p-3 rounded-full border border-white/10 shadow-lg">
                     <ZoomOut size={20} color="white" />
                 </Pressable>
-                <Pressable onPress={() => handleZoom(0.2)} className="bg-[#1E293B] p-3 rounded-full border border-white/10 shadow-lg">
+                <Pressable onPress={() => handleZoom(0.2)} className="bg-[#1E1E1E] p-3 rounded-full border border-white/10 shadow-lg">
                     <ZoomIn size={20} color="white" />
                 </Pressable>
             </View>
 
             {/* Header Row (Staff Columns) */}
-            <View style={{ height: HEADER_HEIGHT }} className="flex-row border-b border-white/10 bg-[#1E293B] z-10">
+            <View style={{ height: HEADER_HEIGHT }} className="flex-row border-b border-white/10 bg-[#1E1E1E] z-10">
                 {/* Empty Corner */}
                 <View style={{ width: TIME_COL_WIDTH }} className="border-r border-white/10 items-center justify-center">
-                    <Text className="text-slate-500 text-[10px] font-bold">SAAT</Text>
+                    <Text className="text-gray-400 text-[10px] font-bold">SAAT</Text>
                 </View>
 
                 {/* Scrollable Staff Headers */}
@@ -113,11 +113,10 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                         <View
                             key={staff.id}
                             style={{ width: COLUMN_WIDTH }}
-                            className={`items-center justify-center border-r border-white/10 px-2 ${idx % 2 === 0 ? 'bg-[#1E293B]' : 'bg-[#1E293B]/50'}`}
+                            className={`items-center justify-center border-r border-white/10 px-2 ${idx % 2 === 0 ? 'bg-[#1E1E1E]' : 'bg-[#1E1E1E]/50'}`}
                         >
                             {/* Staff Avatar or Initials */}
-                            {/* Staff Avatar or Initials */}
-                            <View className="w-14 h-14 rounded-full bg-slate-700 items-center justify-center mb-2 overflow-hidden border-2 border-white/10 shadow-sm">
+                            <View className="w-14 h-14 rounded-full bg-[#2A2A2A] items-center justify-center mb-2 overflow-hidden border-2 border-white/10 shadow-sm">
                                 {staff.avatar || (staff as any).avatar_url ? (
                                     <Image
                                         source={{ uri: staff.avatar || (staff as any).avatar_url }}
@@ -143,18 +142,18 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                 <View className="flex-row relative">
 
                     {/* Time Column (Fixed Left) */}
-                    <View style={{ width: TIME_COL_WIDTH }} className="bg-[#0F172A] border-r border-white/10 relative">
+                    <View style={{ width: TIME_COL_WIDTH }} className="bg-[#121212] border-r border-white/10 relative">
                         {hours.map(h => (
                             <View key={h} style={{ height: hourHeight }} className="border-b border-white/5 relative">
                                 {/* Hour Label */}
-                                <Text className="text-slate-500 text-xs font-mono absolute top-1 left-2">{h.toString().padStart(2, '0')}:00</Text>
+                                <Text className="text-gray-500 text-xs font-mono absolute top-1 left-2">{h.toString().padStart(2, '0')}:00</Text>
 
                                 {/* Minute Markers */}
                                 {[10, 20, 30, 40, 50].map(m => (
                                     <Text
                                         key={m}
                                         style={{ top: (m / 60) * hourHeight - 6 }}
-                                        className="text-slate-700 text-[9px] font-mono absolute right-1"
+                                        className="text-gray-700 text-[9px] font-mono absolute right-1"
                                     >
                                         {m}
                                     </Text>
@@ -172,7 +171,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                     zIndex: 60
                                 }}
                             >
-                                <View className="w-2 h-2 rounded-full bg-[#4ade80] shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+                                <View className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(212,175,53,0.8)]" />
                             </View>
                         )}
                     </View>
@@ -185,9 +184,8 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                         onScroll={(e) => handleScroll(e, headerScrollRef)}
                         showsHorizontalScrollIndicator={false}
                     >
-                        <View className="bg-[#0F172A] relative">
-                            {/* Background Grid Lines */}
-                            {/* Background Grid Lines & Interaction Layer */}
+                        <View className="bg-[#121212] relative">
+                            {/* Background Grid Lines && Interaction Layer */}
                             <View className="absolute inset-0 flex-row">
                                 {staffList.map((staff, idx) => (
                                     <Pressable
@@ -260,25 +258,23 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                 ))}
                             </View>
 
-                            {/* CURRENT TIME LINE (Neon Green) */}
+                            {/* CURRENT TIME LINE (Updated to Primary Gold) */}
                             {currentTimeTop !== null && (
                                 <View
                                     style={{
                                         position: 'absolute',
                                         top: currentTimeTop,
-                                        width: 2000, // Make it span wide enough
+                                        width: 2000,
                                         height: 2,
-                                        backgroundColor: '#4ade80', // Neon green
+                                        backgroundColor: COLORS.primary.DEFAULT,
                                         zIndex: 50,
-                                        shadowColor: '#4ade80',
+                                        shadowColor: COLORS.primary.DEFAULT,
                                         shadowOffset: { width: 0, height: 0 },
                                         shadowOpacity: 0.8,
                                         shadowRadius: 4,
-                                        elevation: 5 // Android shadow equivalent for "glow" (sort of)
+                                        elevation: 5
                                     }}
-                                >
-                                    {/* Optional: Add a small glowing gradient or effect if needed, but shadow does most work */}
-                                </View>
+                                />
                             )}
 
                             {/* Appointment Capsules */}
@@ -346,7 +342,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                     left: 0,
                                                     right: 0,
                                                     height: morningHeight,
-                                                    backgroundColor: 'rgba(15, 23, 42, 0.8)', // Darker overlay
+                                                    backgroundColor: 'rgba(18, 18, 18, 0.9)', // Darker overlay
                                                     zIndex: 5,
                                                     borderBottomWidth: 1,
                                                     borderBottomColor: 'rgba(255,255,255,0.05)',
@@ -354,9 +350,8 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                     alignItems: 'center',
                                                 }}
                                             >
-                                                {/* Hatch pattern css trick or just icon */}
                                                 <View className="opacity-20" style={{ transform: [{ rotate: '-45deg' }] }}>
-                                                    <Text className="text-xs font-bold text-slate-500">KAPALI</Text>
+                                                    <Text className="text-xs font-bold text-gray-600">KAPALI</Text>
                                                 </View>
                                             </View>
                                         )}
@@ -369,7 +364,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                 left: 0,
                                                 right: 0,
                                                 bottom: 0,
-                                                backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                                                backgroundColor: 'rgba(18, 18, 18, 0.9)',
                                                 zIndex: 5,
                                                 borderTopWidth: 1,
                                                 borderTopColor: 'rgba(255,255,255,0.05)',
@@ -378,7 +373,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                             }}
                                         >
                                             <View className="opacity-20" style={{ transform: [{ rotate: '-45deg' }] }}>
-                                                <Text className="text-xs font-bold text-slate-500">KAPALI</Text>
+                                                <Text className="text-xs font-bold text-gray-600">KAPALI</Text>
                                             </View>
                                         </View>
 
@@ -391,7 +386,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                     height: lunchHeight,
                                                     left: 0,
                                                     right: 0,
-                                                    backgroundColor: 'rgba(255, 255, 255, 0.03)', // Very subtle overlay
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
                                                     zIndex: 15, // Above standard grid but below appts
                                                     borderTopWidth: 1,
                                                     borderBottomWidth: 1,
@@ -401,7 +396,7 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                 }}
                                             >
                                                 <View className="flex-row items-center opacity-40 bg-black/40 px-2 py-0.5 rounded">
-                                                    <Text className="text-[9px] font-bold text-slate-300">ÖĞLE ARASI</Text>
+                                                    <Text className="text-[9px] font-bold text-gray-400">ÖĞLE ARASI</Text>
                                                 </View>
                                             </View>
                                         )}
@@ -421,10 +416,10 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                         height,
                                                         left: 4,
                                                         right: 4,
-                                                        backgroundColor: isBlocked ? '#334155' : COLORS.primary.DEFAULT + 'E6',
+                                                        backgroundColor: isBlocked ? '#2A2A2A' : COLORS.primary.DEFAULT + 'E6',
                                                         borderRadius: 6,
                                                         borderLeftWidth: 3,
-                                                        borderLeftColor: isBlocked ? '#94A3B8' : '#fff',
+                                                        borderLeftColor: isBlocked ? '#64748B' : '#fff',
                                                         shadowColor: "#000",
                                                         shadowOffset: {
                                                             width: 0,
@@ -439,9 +434,9 @@ export const SchedulerGrid = ({ staffList, appointments, onAppointmentPress, onS
                                                     <View className="flex-1 p-1.5 overflow-hidden">
                                                         {isBlocked ? (
                                                             <View className="flex-1 items-center justify-center opacity-70">
-                                                                <Text className="text-slate-300 font-bold text-[10px] tracking-widest uppercase mb-1">{apt.customerName || 'KAPALI'}</Text>
+                                                                <Text className="text-gray-300 font-bold text-[10px] tracking-widest uppercase mb-1">{apt.customerName || 'KAPALI'}</Text>
                                                                 <View className="bg-black/20 px-1.5 py-0.5 rounded">
-                                                                    <Text className="text-slate-200 text-[9px] font-bold">
+                                                                    <Text className="text-gray-200 text-[9px] font-bold">
                                                                         {apt.startTime?.slice(0, 5)} - {apt.endTime?.slice(0, 5)}
                                                                     </Text>
                                                                 </View>

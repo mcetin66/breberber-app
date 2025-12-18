@@ -1,167 +1,122 @@
-# BreBerber Master Plan
+# ⚓ BREBERBER: Ultimate Universal SaaS Master Plan (v4.0)
 
-> **STATUS:** ACTIVE & DEFINITIVE
-> **LAST UPDATED:** 15 Dec 2025
-> **ROLE:** Single Source of Truth
+## 1. STRATEJİK VİZYON & TEKNOLOJİ YIĞINI
 
----
+Breberber, berber ve güzellik merkezleri için geliştirilmiş, **React Native + Expo** altyapısıyla çalışan, web ve mobil uyumlu (Universal) bir **Multi-Tenant SaaS** platformudur.
 
-## 1. Project Overview
-
-**Mission:** Build a scalable, multi-tenant SaaS platform for the beauty and grooming industry (Barbershops, Salons) that seamlessly connects Platform Admins, Business Owners, Staff, and Customers.
-
-**Core Value:** A unified, premium ecosystem where:
-*   **Businesses** manage operations effortlessly.
-*   **Staff** focus on their craft and schedule.
-*   **Customers** enjoy a frictionless booking experience.
-*   **Platform Admins** oversee the entire SaaS lifecycle.
+*   **Platform:** Universal (iOS, Android, Web).
+*   **Core Tech:** React Native + Expo + Supabase.
+*   **State Management:** Zustand (`authStore`, `businessStore`, `calendarStore`, `viewModeStore` – işletme sahibinin personel moduna geçişi için).
+*   **Styling:** NativeWind (Tailwind CSS - Hızlı ve tutarlı UI).
+*   **Data Handling:** Supabase RLS (Tenant izolasyonu) + Realtime (Anlık takvim güncelleme).
+*   **Performance:** `@shopify/flash-list` (Mobil cihazlarda takılmayan takvim ve listeler).
 
 ---
 
-## 2. Definitive Role Hierarchy (5-Tier)
+## 2. KESİN ROL HİYERARŞİSİ (4-ROLE & CONTEXT)
 
-The system is strictly architected around these 5 distinct tiers. All logic, routing, and data security (RLS) must adhere to this hierarchy.
+Sistem, verinin kime ait olduğunu (**Tenant Context**) ve kimin neyi görebileceğini (**Role**) katı bir şekilde ayırır.
 
-### 1. Platform Admin (Super Admin)
-*   **Definition:** The owner/operator of the SaaS software.
-*   **Scope:** System-wide (All Tenants).
-*   **Responsibilities:**
-    *   Manage Subscriptions & Licensing.
-    *   Inspect Business Entities (Shadow view).
-    *   View Global Audit Logs.
-    *   Configure Platform Settings (Payment gateways, global rules).
-*   **Route:** `app/(platform)` (Target) / `app/(admin)` (Current)
-
-### 2. Business Entity (Tenant)
-*   **Definition:** The legal organization (e.g., "Kral Berber", "Elite Salon").
-*   **Scope:** Data Boundary.
-*   **Role:** Not a user, but the **Context** within which Owners and Staff operate. All business data (`bookings`, `services`, `revenue`) is scoped to a `business_id`.
-
-### 3. Business Owner (Tenant Admin)
-*   **Definition:** The primary administrator of a Business Entity.
-*   **Scope:** Single Tenant (Full Access).
-*   **Responsibilities:**
-    *   Manage Staff & Services.
-    *   Manage Financials & Settings.
-    *   Perform Services (Can act as a worker).
-    *   View Business-level Audit Logs.
-*   **Route:** `app/(business)`
-
-### 4. Staff (Employee)
-*   **Definition:** A worker employed by a Business Entity.
-*   **Scope:** Single Tenant (Restricted Access).
-*   **Responsibilities:**
-    *   Manage personal Calendar/Availability.
-    *   View assigned Bookings.
-    *   Manage Personal Profile.
-    *   **Restriction:** Cannot access Financials, Global Settings, or other Staff's data (unless explicitly allowed).
-*   **Route:** `app/(staff)`
-
-### 5. Customer (End User)
-*   **Definition:** The public user consuming services.
-*   **Scope:** Personal Data.
-*   **Responsibilities:**
-    *   Search & Discovery.
-    *   Booking & Cancellation.
-    *   Profile & Favorites management.
-*   **Route:** `app/(customer)`
+| Rol | Kapsam | Temel Sorumluluklar |
+| :--- | :--- | :--- |
+| **Platform Admin** (Super Admin) | Global Sistem | İşletme onayları, paket yönetimi, yasal metin (KVKK/TOS) versiyonlama. |
+| **İşletme Sahibi** (Tenant Admin) | İşletme (Tenant) | Personel/Hizmet yönetimi, ciro raporları, görsel galeri kontrolü. |
+| **Personel** (Staff) | Operasyonel | Kişisel takvim, 10dk slot bloklama, randevu tamamlama, ayak müşterisi girişi. |
+| **Müşteri** (Customer) | Son Kullanıcı | İşletme keşfi (Filtreli), randevu alma (Kayıtsız başlama), profil & sadakat. |
 
 ---
 
-## 3. Core Architectural Principles
+## 3. VERİTABANI & GÜVENLİK (SUPABASE STANDARDS)
 
-### 3.1 Unified Patterns & Contextual Content
-**Principle:** "Write once, render contextually."
-*   **Do NOT** build separate "Settings" pages for Admin, Owner, and Staff.
-*   **DO** build a shared `SettingsShell` layout that accepts a configuration object based on the User Role.
-*   **Implementation:** `components/shared/settings/SettingsLayout.tsx` driven by `SettingsConfig.ts`.
-
-### 3.2 Key Modules
-1.  **Services Module:**
-    *   **Owner:** Defines Service Menu (Duration, Price, Category).
-    *   **Logic:** Services are linked to eligible Staff.
-2.  **Calendar/Appointments Engine:**
-    *   **The Heart of the App.**
-    *   **Requirements:**
-        *   Rigorous Time Zone handling.
-        *   Double-booking prevention (Database constraints + App Logic).
-        *   Smart Availability (Staff Shift + Break Time + Existing Bookings).
-3.  **Audit Logging System:**
-    *   **Critical Requirement.**
-    *   Every mutation (Create/Update/Delete) by Admin or Staff must be logged.
-    *   **Structure:** `audit_logs` table (Who, What, When, IP, OldVal, NewVal).
+*   **10 Dakika Kuralı (DB Constraint):** `services` tablosunda `duration % 10 == 0` kontrolü veritabanı seviyesinde (Postgres CHECK) zorunludur.
+*   **Soft Delete:** Tüm tablolarda `deleted_at` kolonu ile veri güvenliği sağlanır.
+*   **Audit Log (JSONB):** Her değişim `old_values` ve `new_values` olarak kaydedilir.
+*   **Tenant Isolation (RLS):** Hiçbir işletme diğerinin verisini (müşteri listesi dahil) göremez.
+*   **Time Zone Integrity:** Tüm randevular `timestamptz` (Timezone aware) olarak saklanır.
 
 ---
 
-## 4. Technical Architecture
+## 4. TAKVİM & RANDEVU MOTORU (MHRS STYLE)
 
-### 4.1 Tech Stack
-*   **Framework:** React Native + Expo (Latest Stable).
-*   **Web Support:** Expo Web (Universal).
-*   **State:** Zustand (`authStore`, `businessStore`, `bookingStore`).
-*   **Data:** Supabase (PostgreSQL, Auth, Realtime, Storage).
-*   **UI:** NativeWind (Tailwind), Lucide Icons, Reanimated.
-*   **Lists:** `@shopify/flash-list` (Mandatory).
+Takvim, uygulamanın kalbidir ve React Native tarafında yüksek performanslı çalışmalıdır.
 
-### 4.2 Folder Structure (Ideal State)
-This structure reflects the definitive hierarchy.
+*   **MHRS Slot Mantığı:** Takvim 09:00, 09:10, 09:20 gibi **10 dakikalık kesin slotlar** üzerine kuruludur.
+*   **Çift Görünüm Desteği:**
+    *   **Grid View:** Çok personelli işletmeler için personel sütunları (Tablet ve Web için ideal).
+    *   **MHRS Style:** Tek personel odaklı 10dk liste görünüm (Mobil için varsayılan ve hızlı kullanım).
+*   **Hizmet Süreleri:** Tüm hizmetler 10 dakikanın katı (10, 20, 60 dk vb.) olmalıdır.
+
+### Renk Kodlu Operasyon
+
+*   🟢 **Yeşil:** Onaylı randevu.
+*   ⚪ **Gri:** Bloklanmış zaman (Mola/Kişisel).
+*   🟠 **Turuncu:** Ayak müşterisi (Müşteri tarafında sadece "Dolu" görünür).
+
+**Conflict Prevention:** Supabase DB trigger + RLS + uygulama katmanı çift kontrol (realtime çakışma önleyici). Aynı personele aynı slotta çakışan randevu verilmesi kesin olarak engellenir.
+
+**Önerilen Kütüphane:** `@schedule-x/react-native` veya `react-native-big-calendar` (FlashList entegrasyonlu custom slot rendering ile 10dk hücreler).
+
+---
+
+## 5. SAYFA YAPISI & UX (EXPO ROUTER)
 
 ```text
 app/
-├── (platform)/          # Platform Admin (Rename from 'admin')
-│   ├── _layout.tsx
-│   ├── dashboard.tsx    # Global Stats
-│   ├── tenants/         # Business Management
-│   ├── audit.tsx        # Global Logs
-│   └── settings.tsx     # Uses Shared SettingsShell
-│
-├── (business)/          # Business Owner
-│   ├── _layout.tsx
-│   ├── (tabs)/
-│   │   ├── dashboard.tsx
-│   │   ├── calendar.tsx
-│   │   ├── staff/
-│   │   └── services/
-│   └── settings.tsx     # Uses Shared SettingsShell
-│
-├── (staff)/             # Staff Workspace
-│   ├── _layout.tsx
-│   ├── (tabs)/
-│   │   ├── dashboard.tsx
-│   │   ├── calendar.tsx
-│   │   └── profile.tsx
-│   └── settings.tsx     # Uses Shared SettingsShell
-│
-├── (customer)/          # Customer App
-│   ├── _layout.tsx
-│   ├── home.tsx
-│   ├── booking/
-│   └── profile.tsx      # Uses Shared SettingsShell (or linked)
-│
-├── (auth)/              # Shared Authentication
-│   ├── login.tsx
-│   └── register.tsx
+├── (auth)/              # Giriş, Kayıt (OTP destekli), Yasal Onaylar
+├── (platform)/          # Super Admin (Global Dashboard & Onaylar)
+├── (business)/          # İşletme Sahibi (Yönetim, Personel, Raporlar)
+│   └── (tabs)/          # Calendar, Customers, Reports, Settings
+├── (staff)/             # Personel (Kişisel Takvim & Bloklama)
+│   └── (tabs)/          # My-Calendar, Performance, Profile
+├── (customer)/          # Müşteri (Keşif, Rezervasyon, Geçmiş)
+│   ├── home.tsx         # Şehir/İlçe/Hizmet filtreli keşif
+│   └── booking/         # 3 Adımlı Guest-Booking akışı
+└── (legal)/             # KVKK, TOS, Privacy sayfaları
 ```
 
 ---
 
-## 5. Consolidated Roadmap
+## 6. OTOMASYON & CRM (SAAS TIERS)
 
-### Phase 1: Architecture Cleanup & Consolidation (Immediate)
-*   [ ] **Delete Legacy Files:** Remove `master.md`, `todo.md`, etc. (Done).
-*   [ ] **Refactor Admin Route:** Rename `app/(admin)` to `app/(platform)` to match hierarchy.
-*   [ ] **Delete Legacy Staff File:** Remove `app/(business)/staff-dashboard.tsx` (Migrated to `(staff)`).
-*   [ ] **Implement Shared Settings:** Ensure `SettingsShell` is used across Platform, Business, and Staff.
+Sistem, paket seviyesine göre özellik açar.
 
-### Phase 2: Core Feature Hardening
-*   [ ] **Audit Logging:** Build `auditService` and connect to UI.
-*   [ ] **Image Storage:** Implement Supabase Storage for profile/business images.
-*   [ ] **Booking Conflict Logic:** Enhance `bookingStore` with robust availability checks.
-
-### Phase 3: Web & Scale
-*   [ ] **Web Compatibility Check:** Verify FlashList and Gestures on Web.
-*   [ ] **Performance:** Optimize re-renders in Calendar.
+*   **WhatsApp Hatırlatma:** Silver dahil tüm paketlerde en az 1 hatırlatıcı mesaj (2 saat kala). Gold ve Platinum'da tam otomasyon.
+*   **Geri Bildirim:** Randevu sonrası otomatik bildirim ve puanlama.
+*   **Görsel Merkezi:** Personel portfolyoları, hizmet görselleri ve müşteri onaylı Before-After slider (Reanimated animated compare).
 
 ---
 
-**CONFIRMATION:** This file supersedes all previous documentation.
+## 7. ABONELİK PAKETLERİ VE KISITLAMALAR
+
+| Özellik | Silver (Duo) | Gold (Team) | Platinum (Pro) |
+| :--- | :--- | :--- | :--- |
+| **Kapasite** | 1 Sahip + 1 Personel (2) | 1 Sahip + 2 Personel (3) | 1 Sahip + 4 Personel (5) |
+| **Hatırlatma** | Minimum 1 Mesaj | Tam Otomasyon | Sınırsız Senaryo |
+| **Raporlar** | Temel Liste | Standart Dashboard | Gelişmiş Grafik & Analiz |
+| **Ekstralar** | Temel Galeri | CRM + Galeri | Before-After + Segmentasyon |
+
+---
+
+## 8. YASAL UYUMLULUK (KVKK/GDPR)
+
+*   **Zorunlu Onaylar:** Kayıt aşamasında `kvkk`, `tos` ve `marketing_allowed` onayı.
+*   **Versiyonlama:** Yasal metin güncellendiğinde tüm kullanıcılardan (Admin tarafından tetiklenerek) yeniden onay alınması.
+*   **Data Portability:** Müşterinin kendi verisini talep etme/silme hakkı modülü.
+
+---
+
+## 9. KAPSAM DIŞI (OUT OF SCOPE)
+
+*   ❌ **Stok/Ürün Satışı:** Sadece hizmet odaklı.
+*   ❌ **Online Ödeme:** Sadece ciro raporlama (Manuel giriş).
+*   ❌ **Offline/PWA:** Uygulama aktif internet bağlantısı gerektirir.
+*   ❌ **Takvim Sync:** Google/iCal senkronizasyonu yoktur.
+*   ❌ **Multi-Branch:** Her şube bağımsız bir tenant'tır.
+
+---
+
+## 10. DEĞERLENDİRİLMEYEN ALANLAR (YENİ FİKİRLER)
+
+*   💡 Personel motivasyonu için ciro dışı (puanlama bazlı) prim sistemleri.
+*   💡 Müşteri tarafında "Sadık Müşteri" rozetleri.
+*   💡 Erkek/Kadın salonları için dinamik renk temaları.

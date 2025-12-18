@@ -1,281 +1,287 @@
-import { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Pressable, Image, FlatList, Switch, ActivityIndicator, RefreshControl } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { View, Text, TextInput, ScrollView, Pressable, Image, FlatList, RefreshControl, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, Plus, MapPin, ChevronRight, MoreHorizontal } from 'lucide-react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS } from '@/constants/theme';
+import { Search, MapPin, Star, ChevronRight, Plus, Store, Users, TrendingUp, Crown, ArrowRight } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { useAdminStore } from '@/stores/adminStore';
+import { LinearGradient } from 'expo-linear-gradient';
 import AddBusinessModal from '@/components/admin/AddBusinessModal';
-import { getPlanDetails } from '@/constants/plans';
-import { AdminHeader } from '@/components/admin/AdminHeader';
 
-// Mock Data Types
-type PlanType = 'Pro Plan' | 'Basic' | 'Gold Plan' | 'Starter';
-type BusinessStatus = 'active' | 'expired' | 'suspended' | 'passive';
-
-interface BusinessMock {
-    id: string;
-    name: string;
-    location: string;
-    plan: PlanType;
-    expiryDate: string;
-    status: BusinessStatus;
-    image: string;
-    isActiveToggle: boolean;
-}
-
-const FILTER_TABS = [
-    { id: 'all', label: 'Tümü' },
-    { id: 'active', label: 'Aktif' },
-    { id: 'expired', label: 'Süresi Doldu' },
-    { id: 'suspended', label: 'Askıda' },
-];
-
-const TYPE_TABS = [
+// İşletme Türü Filtreleri
+const TYPE_FILTERS = [
     { id: 'all', label: 'Tümü' },
     { id: 'berber', label: 'Berber' },
     { id: 'kuafor', label: 'Kuaför' },
     { id: 'guzellik_merkezi', label: 'Güzellik' },
 ];
 
-export default function AdminBarbersScreen() {
-    const router = useRouter();
-    const { barbers, fetchBarbers, loading, hasMore, page } = useAdminStore();
-    const [activeTab, setActiveTab] = useState('all');
-    const [activeTypeTab, setActiveTypeTab] = useState('all');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+// Paket Filtreleri
+const PLAN_FILTERS = [
+    { id: 'all', label: 'Tümü' },
+    { id: 'silver', label: 'Silver' },
+    { id: 'gold', label: 'Gold' },
+    { id: 'platinum', label: 'Platinum' },
+];
 
+// Contextual Default Images (Safe, Salon/Barber Focused)
+const DEFAULT_IMAGES: Record<string, string> = {
+    berber: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800&q=80', // Barber Interior
+    kuafor: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&q=80', // Salon Interior
+    guzellik_merkezi: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=800&q=80', // Spa Interior
+    default: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=800&q=80' // Generic Salon
+};
+
+export default function PlatformBusinessesScreen() {
+    const router = useRouter();
+    const { barbers, fetchBarbers, loading, updateBusinessStatus, hasMore, page } = useAdminStore();
+    const [typeFilter, setTypeFilter] = useState('all');
+    const [planFilter, setPlanFilter] = useState('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showAddModal, setShowAddModal] = useState(false);
+
+    // İlk yükleme - tüm sayfaları yükle
     useEffect(() => {
-        // Initial load (refresh)
-        fetchBarbers(1, true);
+        loadAllBusinesses();
     }, []);
 
-    const handleLoadMore = () => {
+    const loadAllBusinesses = async () => {
+        await fetchBarbers(1, true);
+    };
+
+    // Load more if needed
+    const loadMore = useCallback(() => {
         if (!loading && hasMore) {
             fetchBarbers(page + 1, false);
         }
-    };
+    }, [loading, hasMore, page]);
 
-    const handleRefresh = () => {
+    // Refresh
+    const onRefresh = useCallback(() => {
         fetchBarbers(1, true);
-    };
+    }, []);
 
-    // --- FILTERING LOGIC ---
-    const filteredBarbers = barbers.filter(barber => {
-        // 1. Search Filter
-        const query = searchQuery.toLowerCase();
-        const matchesSearch =
-            barber.name.toLowerCase().includes(query) ||
-            (barber.city || '').toLowerCase().includes(query) ||
-            (barber.subscriptionTier || '').toLowerCase().includes(query);
-
-        if (!matchesSearch) return false;
-
-        // 2. Tab Filter
-        const now = new Date();
-        const endDate = barber.subscriptionEndDate ? new Date(barber.subscriptionEndDate) : null;
-        const isExpired = endDate ? endDate < now : false;
-
-        // 3. Type Filter
-        const matchesType = activeTypeTab === 'all' || (barber as any).businessType === activeTypeTab;
-        if (!matchesType) return false;
-
-        switch (activeTab) {
-            case 'active':
-                return barber.isOpen && !isExpired;
-            case 'suspended': // Using 'suspended' for inactive/passive state
-                return !barber.isOpen;
-            case 'expired':
-                return isExpired;
-            case 'all':
-            default:
-                return true;
-        }
+    // Filter businesses - hem türe hem pakete göre
+    const displayData = barbers.filter(b => {
+        const matchesType = typeFilter === 'all' || b.businessType === typeFilter;
+        const matchesPlan = planFilter === 'all' || b.subscriptionTier === planFilter;
+        const matchesSearch = !searchQuery || b.name?.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesType && matchesPlan && matchesSearch;
     });
 
-    const renderBusinessCard = ({ item }: { item: any }) => {
-        const isExpired = false; // Logic needed if we had expiry date in DB
-        const expiryColor = isExpired ? 'text-red-400' : 'text-gray-400';
-
-        // Use shared helper for consistent display
-        const planDetails = getPlanDetails(item.subscriptionTier);
-
-        return (
-            <View className="bg-[#1E293B] rounded-2xl p-4 mb-4 border border-white/5 shadow-sm">
-                <View className="flex-row items-start mb-4">
-                    <View className="relative">
-                        <Image
-                            source={{ uri: item.coverImage || 'https://via.placeholder.com/150' }}
-                            className="w-16 h-16 rounded-xl bg-gray-800"
-                        />
-                        <View className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#1E293B] ${item.isOpen ? 'bg-green-500' : 'bg-gray-500'}`} />
-                    </View>
-
-                    <View className="flex-1 ml-4 justify-between min-h-[64px]">
-                        <View>
-                            <Text className="text-white text-lg font-bold leading-tight mb-1" numberOfLines={1}>{item.name}</Text>
-                            <View className="flex-row items-center">
-                                <MapPin size={12} color="#94A3B8" />
-                                <Text className="text-slate-400 text-xs ml-1 font-medium">{item.city || 'Konum Belirtilmemiş'}</Text>
-                                {item.businessType && (
-                                    <View className="ml-2 bg-blue-500/20 px-1.5 py-0.5 rounded ml-2 border border-blue-500/20">
-                                        <Text className="text-[10px] text-blue-400 font-bold uppercase">
-                                            {item.businessType === 'guzellik_merkezi' ? 'GÜZELLİK' : item.businessType === 'kuafor' ? 'KUAFÖR' : 'BERBER'}
-                                        </Text>
-                                    </View>
-                                )}
-                            </View>
-                        </View>
-
-                        {/* Old Plan Badge Location Removed */}
-                    </View>
-
-                    {/* New Switch Location (Top Right) */}
-                    <View className="items-end pl-2">
-                        <Switch
-                            value={item.isOpen}
-                            onValueChange={(val) => useAdminStore.getState().updateBusinessStatus(item.id, val)}
-                            trackColor={{ false: '#334155', true: COLORS.primary.DEFAULT }}
-                            thumbColor={'#fff'}
-                            ios_backgroundColor="#334155"
-                            style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }} // Slightly smaller
-                        />
-                        <Text className={`text-[10px] font-medium mt-1 ${item.isOpen ? 'text-primary' : 'text-gray-400'}`}>
-                            {item.isOpen ? 'Aktif' : 'Pasif'}
-                        </Text>
-                    </View>
-                </View>
-
-                <View className="h-[1px] bg-white/5 w-full mb-3" />
-
-                <View className="flex-row items-center justify-between">
-                    {/* New Plan Badge Location (Bottom Left) */}
-                    <View className="flex-row items-center gap-2">
-                        <View
-                            className="px-2 py-0.5 rounded-md border"
-                            style={{
-                                backgroundColor: planDetails.color + '20', // 20% opacity
-                                borderColor: planDetails.color + '30'
-                            }}
-                        >
-                            <Text
-                                className="text-[10px] font-bold"
-                                style={{ color: planDetails.color }}
-                            >
-                                {planDetails.label.toUpperCase()}
-                            </Text>
-                        </View>
-                    </View>
-
-                    <Pressable
-                        onPress={() => router.push(`/(platform)/business-detail/${item.id}`)}
-                        className="flex-row items-center active:opacity-70"
-                    >
-                        <Text className="text-primary text-sm font-semibold mr-1">Detayları Gör</Text>
-                        <ChevronRight size={16} color={COLORS.primary.DEFAULT} />
-                    </Pressable>
-                </View>
-            </View>
-        );
-    };
+    // Stats
+    const activeCount = barbers.filter(b => b.isOpen).length;
+    const totalCount = barbers.length;
 
     return (
-        <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-            {/* Header */}
-            <AdminHeader
-                title="İşletme Listesi"
-                subtitle="Platform Yönetimi"
-                rightElement={
-                    <Pressable
-                        onPress={() => setIsAddModalVisible(true)}
-                        className="w-10 h-10 rounded-full bg-primary items-center justify-center shadow-lg shadow-primary/30 active:scale-95"
-                    >
-                        <Plus size={24} color="white" />
-                    </Pressable>
-                }
-            />
+        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
+            {/* Standard Header (Matching Dashboard) */}
+            <View className="px-4 py-3 flex-row items-center justify-between border-b border-white/5">
+                <View className="flex-row items-center gap-3">
+                    <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
+                        <Store size={20} color="#121212" />
+                    </View>
+                    <View>
+                        <Text className="text-white text-lg font-bold">İşletmeler</Text>
+                        <Text className="text-gray-500 text-xs">{totalCount} kayıtlı • {activeCount} aktif</Text>
+                    </View>
+                </View>
+                <Pressable
+                    onPress={() => setShowAddModal(true)}
+                    className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center"
+                >
+                    <Plus size={20} color="#d4af35" />
+                </Pressable>
+            </View>
 
-            <View className="flex-1 px-4">
-                {/* Search Bar */}
-                <View className="bg-[#1E293B] border border-white/5 rounded-xl h-12 flex-row items-center px-4 mb-6">
-                    <Search size={20} color="#64748B" />
+            {/* Standard Search Bar */}
+            <View className="px-4 py-3">
+                <View className="bg-[#1E1E1E] rounded-xl h-11 flex-row items-center px-4 border border-white/5">
+                    <Search size={18} color="#6B7280" />
                     <TextInput
-                        className="flex-1 ml-3 text-white text-sm font-medium h-full"
-                        placeholder="Berber adı, şehir veya plan ara..."
-                        placeholderTextColor="#64748B"
+                        className="flex-1 ml-3 text-white text-sm h-full"
+                        placeholder="İşletme ara..."
+                        placeholderTextColor="#6B7280"
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                     />
                 </View>
-
-                {/* Filter Tabs */}
-                <View className="mb-6">
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
-                        {FILTER_TABS.map(tab => {
-                            const isActive = activeTab === tab.id;
-                            return (
-                                <Pressable
-                                    key={tab.id}
-                                    onPress={() => setActiveTab(tab.id)}
-                                    className={`px-5 py-2 rounded-full border ${isActive ? 'bg-primary border-primary' : 'bg-[#1E293B] border-white/5'}`}
-                                >
-                                    <Text className={`text-xs font-semibold ${isActive ? 'text-white' : 'text-slate-400'}`}>
-                                        {tab.label}
-                                    </Text>
-                                </Pressable>
-                            );
-                        })}
-                    </ScrollView>
-                </View>
-
-                {/* Type Filters */}
-                <View className="mb-4">
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
-                        {TYPE_TABS.map(tab => {
-                            const isActive = activeTypeTab === tab.id;
-                            return (
-                                <Pressable
-                                    key={tab.id}
-                                    onPress={() => setActiveTypeTab(tab.id)}
-                                    className={`px-4 py-1.5 rounded-full border ${isActive ? 'bg-blue-500 border-blue-500' : 'bg-[#1E293B] border-white/5'}`}
-                                >
-                                    <Text className={`text-xs font-semibold ${isActive ? 'text-white' : 'text-slate-400'}`}>
-                                        {tab.label}
-                                    </Text>
-                                </Pressable>
-                            );
-                        })}
-                    </ScrollView>
-                </View>
-
-                {/* List */}
-                <FlatList
-                    data={filteredBarbers}
-                    renderItem={renderBusinessCard}
-                    keyExtractor={item => item.id}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 100 }}
-                    style={{ flex: 1 }}
-                    onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0.8}
-                    refreshControl={
-                        <RefreshControl refreshing={loading && page === 1} onRefresh={handleRefresh} tintColor={COLORS.primary.DEFAULT} />
-                    }
-                    ListFooterComponent={
-                        loading && page > 1 ? (
-                            <View className="py-4">
-                                <ActivityIndicator color={COLORS.primary.DEFAULT} />
-                            </View>
-                        ) : null
-                    }
-                />
             </View>
 
+            {/* Standard Filters */}
+            <View className="px-4 mb-3">
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+                    {TYPE_FILTERS.map(filter => {
+                        const isActive = typeFilter === filter.id;
+                        return (
+                            <Pressable
+                                key={filter.id}
+                                onPress={() => setTypeFilter(filter.id)}
+                                className={`h-8 px-4 rounded-full items-center justify-center border ${isActive
+                                    ? 'bg-[#d4af35] border-[#d4af35]'
+                                    : 'bg-[#1E1E1E] border-white/10'
+                                    }`}
+                            >
+                                <Text className={`text-xs font-semibold ${isActive ? 'text-black' : 'text-gray-400'}`}>
+                                    {filter.label}
+                                </Text>
+                            </Pressable>
+                        )
+                    })}
+                </ScrollView>
+            </View>
+
+            {/* List */}
+            <FlatList
+                data={displayData}
+                keyExtractor={item => item.id}
+                contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={loading} onRefresh={onRefresh} tintColor="#d4af35" />
+                }
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.5}
+                ListEmptyComponent={
+                    <View className="items-center py-16 opacity-50">
+                        <Store size={48} color="#6B7280" />
+                        <Text className="text-gray-500 mt-4">Görüntülenecek işletme yok</Text>
+                    </View>
+                }
+                renderItem={({ item }) => {
+                    // Logic to select relevant default image
+                    const fallbackImage = DEFAULT_IMAGES[item.businessType || 'default'] || DEFAULT_IMAGES.default;
+
+                    return (
+                        <Pressable
+                            onPress={() => router.push(`/(platform)/business-detail/${item.id}`)}
+                            className="mb-6 bg-[#18181b] rounded-2xl overflow-hidden border border-white/5"
+                            style={{
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 10 },
+                                shadowOpacity: 0.3,
+                                shadowRadius: 15,
+                                elevation: 5
+                            }}
+                        >
+                            {/* Immersive Image Section - PRESERVED */}
+                            <View className="h-52 relative">
+                                <Image
+                                    source={{ uri: item.coverImage || fallbackImage }}
+                                    className="w-full h-full"
+                                    style={{ opacity: 1 }}
+                                    resizeMode="cover"
+                                />
+                                <LinearGradient
+                                    colors={['transparent', 'rgba(24,24,27,0.4)', 'rgba(24,24,27,1)']}
+                                    locations={[0, 0.6, 1]}
+                                    className="absolute inset-0"
+                                />
+
+                                {/* Status Badge - PRESERVED (Zinc for closed) */}
+                                <View className="absolute top-4 right-4">
+                                    <View className={`px-3 py-1.5 rounded-full backdrop-blur-md border shadow-lg ${item.isOpen ? 'bg-emerald-500/20 border-emerald-500/30' : 'bg-zinc-800/90 border-zinc-600/50'}`}>
+                                        <Text className={`text-[10px] font-black ${item.isOpen ? 'text-emerald-400' : 'text-zinc-400'} tracking-wider`}>
+                                            {item.isOpen ? 'AÇIK' : 'KAPALI'}
+                                        </Text>
+                                    </View>
+                                </View>
+
+                                {/* Plan Badge - PRESERVED (Solid background) */}
+                                <View className="absolute bottom-4 left-5">
+                                    <View
+                                        className="px-3 py-1.5 rounded-lg shadow-lg border border-white/10"
+                                        style={{
+                                            backgroundColor: '#09090b',
+                                            borderColor: item.subscriptionTier === 'platinum' ? '#22D3EE' : item.subscriptionTier === 'gold' ? '#fbbf24' : '#94A3B8',
+                                            borderWidth: 1.5
+                                        }}
+                                    >
+                                        <Text
+                                            className="text-[10px] font-black tracking-widest"
+                                            style={{ color: item.subscriptionTier === 'platinum' ? '#22D3EE' : item.subscriptionTier === 'gold' ? '#fbbf24' : '#94A3B8' }}
+                                        >
+                                            {(item.subscriptionTier || 'silver').toUpperCase()}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            {/* Content Body - PRESERVED */}
+                            <View className="px-4 pb-4 pt-2 bg-[#18181b]">
+                                <View className="flex-row justify-between items-start mb-4">
+                                    <View className="flex-1 mr-4">
+                                        <View className="flex-row items-center gap-2 mb-1.5">
+                                            <Text className="text-white text-xl font-bold tracking-tight leading-tight">{item.name}</Text>
+                                            {item.subscriptionTier === 'gold' && <Crown size={14} color="#d4af35" fill="#d4af35" />}
+                                        </View>
+                                        <View className="flex-row items-center gap-1.5">
+                                            <MapPin size={13} color="#71717a" />
+                                            <Text className="text-zinc-500 text-sm font-medium tracking-wide">{item.city || 'Merkez, İstanbul'}</Text>
+                                        </View>
+                                    </View>
+
+                                    {/* Right Side: Type & Rating - PRESERVED */}
+                                    <View className="items-end gap-2">
+                                        <View className="bg-zinc-800/80 px-2.5 py-1 rounded-md border border-white/10">
+                                            <Text className="text-[10px] font-bold text-zinc-300 tracking-wide uppercase">
+                                                {item.businessType === 'kuafor' ? 'KUAFÖR' : item.businessType === 'guzellik_merkezi' ? 'GÜZELLİK' : 'BERBER'}
+                                            </Text>
+                                        </View>
+                                        <View className="flex-row items-center gap-1.5">
+                                            <Text className="text-white text-xs font-bold">{item.rating?.toFixed(1) || '4.8'}</Text>
+                                            <Star size={14} color="#FCD34D" fill="#FCD34D" />
+                                        </View>
+                                    </View>
+                                </View>
+
+                                <View className="h-[1px] bg-zinc-800/50 mb-4" />
+
+                                <View className="flex-row items-center justify-between">
+                                    {/* Staff Avatars + Count Text - PRESERVED */}
+                                    <View className="flex-row items-center gap-3">
+                                        <View className="flex-row items-center">
+                                            {((item as any).staffList || []).slice(0, 4).map((staff: any, idx: number) => (
+                                                <Image
+                                                    key={staff.id || idx}
+                                                    source={{ uri: staff.avatarUrl || `https://ui-avatars.com/api/?name=${staff.name}&background=random` }}
+                                                    className="w-8 h-8 rounded-full border-2 border-[#18181b]"
+                                                    style={{ marginLeft: idx === 0 ? 0 : -10 }}
+                                                />
+                                            ))}
+                                            {((item as any).staffCount || 0) > 4 && (
+                                                <View className="w-8 h-8 rounded-full bg-zinc-800 border-2 border-[#18181b] items-center justify-center -ml-2.5">
+                                                    <Text className="text-zinc-400 text-[10px] font-bold">+{((item as any).staffCount || 0) - 4}</Text>
+                                                </View>
+                                            )}
+                                        </View>
+                                        <Text className="text-zinc-500 text-xs font-medium">
+                                            {(item as any).staffCount || 0} Personel
+                                        </Text>
+                                    </View>
+
+                                    <View className="flex-row items-center gap-4">
+                                        <Switch
+                                            value={item.isOpen}
+                                            onValueChange={(val) => updateBusinessStatus(item.id, val)}
+                                            trackColor={{ false: '#27272a', true: '#d4af35' }}
+                                            thumbColor={item.isOpen ? '#fff' : '#52525b'}
+                                            style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                                        />
+                                        <View className="w-8 h-8 rounded-full bg-zinc-800/50 items-center justify-center border border-white/5">
+                                            <ChevronRight size={16} color="#71717a" />
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        </Pressable>
+                    );
+                }}
+            />
+
+            {/* Add Business Modal */}
             <AddBusinessModal
-                visible={isAddModalVisible}
-                onClose={() => setIsAddModalVisible(false)}
+                visible={showAddModal}
+                onClose={() => setShowAddModal(false)}
             />
         </SafeAreaView>
     );

@@ -119,21 +119,21 @@ export default function AddBusinessModal({ visible, onClose }: AddBusinessModalP
                 <Pressable
                     onPress={handleSubmit}
                     disabled={loading}
-                    className={`${loading ? 'opacity-50' : 'active:opacity-90'} bg-[#3B82F6] rounded-xl py-4 flex-row items-center justify-center gap-3`}
+                    className={`${loading ? 'opacity-50' : 'active:opacity-90'} bg-[#d4af35] rounded-xl py-4 flex-row items-center justify-center gap-3`}
                 >
                     {loading ? (
-                        <ActivityIndicator color="white" />
+                        <ActivityIndicator color="#121212" />
                     ) : (
                         <>
-                            <Check size={20} color="white" strokeWidth={2.5} />
-                            <Text className="text-white font-bold text-base">İşletmeyi Oluştur</Text>
+                            <Check size={20} color="#121212" strokeWidth={2.5} />
+                            <Text className="text-[#121212] font-bold text-base">İşletmeyi Oluştur</Text>
                         </>
                     )}
                 </Pressable>
             }
         >
             {/* Section 1: Business Info */}
-            <Text className="text-[#3B82F6] text-xs font-bold mb-5 tracking-wider uppercase">İŞLETME BİLGİLERİ</Text>
+            <Text className="text-[#d4af35] text-xs font-bold mb-5 tracking-wider uppercase">İŞLETME BİLGİLERİ</Text>
 
             <View className="gap-4 mb-8">
                 {/* Name */}
@@ -159,7 +159,7 @@ export default function AddBusinessModal({ visible, onClose }: AddBusinessModalP
                             <Pressable
                                 key={type}
                                 onPress={() => setFormData(prev => ({ ...prev, businessType: type }))}
-                                className={`flex-1 py-3 px-2 rounded-xl border items-center ${formData.businessType === type ? 'bg-blue-600 border-blue-600' : 'bg-[#1E293B] border-white/5'}`}
+                                className={`flex-1 py-3 px-2 rounded-xl border items-center ${formData.businessType === type ? 'bg-[#d4af35] border-[#d4af35]' : 'bg-[#1E1E1E] border-white/5'}`}
                             >
                                 <Text className={`text-xs font-bold ${formData.businessType === type ? 'text-white' : 'text-gray-400'}`}>
                                     {type === 'berber' ? 'Berber' : type === 'kuafor' ? 'Kuaför' : 'Güzellik'}
@@ -255,7 +255,7 @@ export default function AddBusinessModal({ visible, onClose }: AddBusinessModalP
             </View>
 
             {/* Section 2: Account & Plan */}
-            <Text className="text-[#3B82F6] text-xs font-bold mb-5 tracking-wider uppercase border-t border-white/5 pt-8">HESAP & PLAN</Text>
+            <Text className="text-[#d4af35] text-xs font-bold mb-5 tracking-wider uppercase border-t border-white/5 pt-8">HESAP & PLAN</Text>
 
             <View className="gap-4">
                 {/* Plan Selection */}
@@ -308,8 +308,8 @@ export default function AddBusinessModal({ visible, onClose }: AddBusinessModalP
                                 key={dur.months}
                                 onPress={() => handleDurationSelect(dur.months)}
                                 className={`flex-1 py-3 rounded-xl border items-center justify-center ${activeDuration === dur.months
-                                    ? 'bg-[#3B82F6] border-[#3B82F6]'
-                                    : 'bg-[#1E293B] border-white/5'
+                                    ? 'bg-[#d4af35] border-[#d4af35]'
+                                    : 'bg-[#1E1E1E] border-white/5'
                                     }`}
                             >
                                 <Text className={`text-xs font-bold ${activeDuration === dur.months ? 'text-white' : 'text-slate-400'}`}>
@@ -321,7 +321,7 @@ export default function AddBusinessModal({ visible, onClose }: AddBusinessModalP
                 </View>
 
                 {/* Info Text */}
-                <Text className="text-slate-500 text-[10px] bg-blue-500/10 p-4 rounded-xl border border-blue-500/20 leading-5">
+                <Text className="text-slate-500 text-[10px] bg-[#d4af35]/10 p-4 rounded-xl border border-[#d4af35]/20 leading-5">
                     Başlangıç şifresi otomatik oluşturulacak ve "123456" olarak ayarlanacaktır.
                     Berber eklendikten sonra yönetici paneli giriş bilgileri e-posta ile gönderilecektir.
                 </Text>

@@ -49,9 +49,9 @@ export const servicesApi = {
   },
 
   async create(service: ServiceInsert) {
-    const { data, error } = await supabase
-      .from('services')
-      .insert(service as any)
+    const { data, error } = await (supabase
+      .from('services') as any)
+      .insert(service)
       .select()
       .single();
 
@@ -60,9 +60,9 @@ export const servicesApi = {
   },
 
   async update(id: string, updates: ServiceUpdate) {
-    const { data, error } = await supabase
-      .from('services')
-      .update(updates as any)
+    const { data, error } = await (supabase
+      .from('services') as any)
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
@@ -72,9 +72,9 @@ export const servicesApi = {
   },
 
   async delete(id: string) {
-    const { error } = await supabase
-      .from('services')
-      .update({ is_active: false } as any)
+    const { error } = await (supabase
+      .from('services') as any)
+      .update({ is_active: false })
       .eq('id', id);
 
     if (error) throw error;
@@ -91,9 +91,9 @@ export const servicesApi = {
   },
 
   async createCategory(category: Omit<ServiceCategory, 'id' | 'created_at'>) {
-    const { data, error } = await supabase
-      .from('service_categories')
-      .insert(category as any)
+    const { data, error } = await (supabase
+      .from('service_categories') as any)
+      .insert(category)
       .select()
       .single();
 

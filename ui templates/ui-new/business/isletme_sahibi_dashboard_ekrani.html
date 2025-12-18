@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>İşletme Sahibi Dashboard</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Overridden to match specific deep black request
+                        "surface-dark": "#1E1E1E",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display antialiased selection:bg-primary selection:text-black">
+<div class="relative flex h-full min-h-screen w-full flex-col pb-24 overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-[#121212]/95 backdrop-blur-md border-b border-white/5 px-4 pt-4 pb-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-12 rounded-full bg-surface-dark border border-primary/30 p-0.5">
+<img alt="Avatar of a professional business man in a suit" class="size-full rounded-full object-cover" data-alt="Avatar of a professional business man in a suit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkGtSyhdRu-4_l-9GgCg0Exp6NZTdUdzmcpvlCzus7XJMtU9gAzMm9v1O3OUfGibZcimln7ZQ-U_AGV4hkBp2tOiKJjABCzWykweuGr3UTXxm_ciP84CUawRZIEb9fQauoAPU_H7JyNd7sUAU1fXX2D04xSRp9cl-xoKy19eQ5g4oHWIVZzMXPfxL7uzEGAOFnVVL6gslTecijsKCsENsFQeXgqdcPaIJv1nWdjt5MuZC12t-_O6NlbM4GuAH7g9XgG57EUXhPcRDK"/>
+</div>
+<div class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-[#121212]"></div>
+</div>
+<div>
+<p class="text-xs text-primary font-medium tracking-wide uppercase">Hoş Geldiniz</p>
+<h1 class="text-white text-lg font-bold leading-tight">Ahmet Bey</h1>
+</div>
+</div>
+<button class="flex size-10 items-center justify-center rounded-full bg-surface-dark border border-white/10 text-white relative hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined filled text-primary" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="absolute top-2 right-2.5 size-2 bg-red-500 rounded-full"></span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex flex-col gap-6 p-4">
+<!-- Stats Carousel -->
+<section>
+<div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 snap-x">
+<!-- Daily Card -->
+<div class="snap-center shrink-0 min-w-[240px] flex-1 flex flex-col gap-3 rounded-2xl bg-surface-dark border border-white/5 p-5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-primary">payments</span>
+</div>
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+<div class="flex items-center justify-between z-10">
+<p class="text-gray-400 text-sm font-medium">Günlük Ciro</p>
+<span class="flex items-center text-[#0bda1d] text-xs font-bold bg-[#0bda1d]/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
+                                +15%
+                            </span>
+</div>
+<p class="text-white text-3xl font-bold tracking-tight z-10">₺12.450</p>
+<p class="text-xs text-gray-500 z-10">Düne göre +₺1.850 artış</p>
+</div>
+<!-- Weekly Card -->
+<div class="snap-center shrink-0 min-w-[240px] flex-1 flex flex-col gap-3 rounded-2xl bg-surface-dark border border-white/5 p-5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-white">date_range</span>
+</div>
+<div class="flex items-center justify-between z-10">
+<p class="text-gray-400 text-sm font-medium">Haftalık Ciro</p>
+<span class="flex items-center text-[#0bda1d] text-xs font-bold bg-[#0bda1d]/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
+                                +8%
+                            </span>
+</div>
+<p class="text-white text-3xl font-bold tracking-tight z-10">₺84.200</p>
+<p class="text-xs text-gray-500 z-10">Geçen haftaya göre</p>
+</div>
+</div>
+</section>
+<!-- Quick Access Grid -->
+<section>
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-white text-base font-bold">Hızlı Erişim</h3>
+<button class="text-xs text-primary font-medium">Düzenle</button>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Staff -->
+<button class="flex flex-col gap-3 rounded-xl bg-surface-dark border border-white/5 p-4 items-start hover:border-primary/40 hover:bg-primary/5 transition-all group">
+<div class="size-10 rounded-lg bg-[#2A2A2A] flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-colors text-white">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<span class="text-white text-sm font-semibold">Personel</span>
+</button>
+<!-- Services -->
+<button class="flex flex-col gap-3 rounded-xl bg-surface-dark border border-white/5 p-4 items-start hover:border-primary/40 hover:bg-primary/5 transition-all group">
+<div class="size-10 rounded-lg bg-[#2A2A2A] flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-colors text-white">
+<span class="material-symbols-outlined">content_cut</span>
+</div>
+<span class="text-white text-sm font-semibold">Hizmetler</span>
+</button>
+<!-- Calendar -->
+<button class="flex flex-col gap-3 rounded-xl bg-surface-dark border border-white/5 p-4 items-start hover:border-primary/40 hover:bg-primary/5 transition-all group">
+<div class="size-10 rounded-lg bg-[#2A2A2A] flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-colors text-white">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<span class="text-white text-sm font-semibold">Takvim</span>
+</button>
+<!-- Customers -->
+<button class="flex flex-col gap-3 rounded-xl bg-surface-dark border border-white/5 p-4 items-start hover:border-primary/40 hover:bg-primary/5 transition-all group">
+<div class="size-10 rounded-lg bg-[#2A2A2A] flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-colors text-white">
+<span class="material-symbols-outlined">person_search</span>
+</div>
+<span class="text-white text-sm font-semibold">Müşteriler</span>
+</button>
+</div>
+</section>
+<!-- Performance Chart -->
+<section class="rounded-2xl bg-surface-dark border border-white/5 p-5">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h3 class="text-white text-base font-bold">Gelir Analizi</h3>
+<p class="text-xs text-gray-400">Son 7 gün performansı</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary/10 text-primary px-3 py-1 rounded-md text-xs font-semibold border border-primary/20">Hafta</button>
+<button class="text-gray-400 px-3 py-1 rounded-md text-xs font-semibold hover:text-white">Ay</button>
+</div>
+</div>
+<div class="w-full h-[180px] relative">
+<!-- SVG Chart -->
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 300 100">
+<defs>
+<lineargradient id="goldGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#d4af35" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#d4af35" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid lines (subtle) -->
+<line stroke="#333" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="300" y1="0" y2="0"></line>
+<line stroke="#333" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="300" y1="50" y2="50"></line>
+<line stroke="#333" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="300" y1="100" y2="100"></line>
+<!-- Area Fill -->
+<path d="M0,70 C50,70 50,30 100,30 C150,30 150,80 200,60 C250,40 250,10 300,20 V100 H0 Z" fill="url(#goldGradient)"></path>
+<!-- Line Stroke -->
+<path d="M0,70 C50,70 50,30 100,30 C150,30 150,80 200,60 C250,40 250,10 300,20" fill="none" stroke="#d4af35" stroke-linecap="round" stroke-width="3"></path>
+<!-- Data Points -->
+<circle cx="100" cy="30" fill="#121212" r="4" stroke="#d4af35" stroke-width="2"></circle>
+<circle cx="200" cy="60" fill="#121212" r="4" stroke="#d4af35" stroke-width="2"></circle>
+<circle cx="300" cy="20" fill="#121212" r="4" stroke="#d4af35" stroke-width="2"></circle>
+</svg>
+</div>
+<div class="flex justify-between mt-4 text-xs text-gray-500 font-medium px-1">
+<span>Pzt</span>
+<span>Sal</span>
+<span>Çar</span>
+<span>Per</span>
+<span>Cum</span>
+<span>Cmt</span>
+<span>Paz</span>
+</div>
+</section>
+<!-- Upcoming Appointments -->
+<section>
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-white text-base font-bold">Yaklaşan Randevular</h3>
+<button class="text-xs text-primary font-medium">Tümünü Gör</button>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Item 1 -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+<div class="flex flex-col items-center justify-center bg-[#2A2A2A] rounded-lg h-12 w-12 shrink-0 border border-white/5">
+<span class="text-xs text-gray-400 font-bold uppercase">Bugün</span>
+<span class="text-sm text-white font-bold">14:30</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-white text-sm font-semibold truncate">Mehmet Yılmaz</h4>
+<p class="text-gray-400 text-xs truncate">Saç &amp; Sakal Kesimi • Volkan Bey</p>
+</div>
+<div class="shrink-0">
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded border border-primary/20">ONAYLI</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+<div class="flex flex-col items-center justify-center bg-[#2A2A2A] rounded-lg h-12 w-12 shrink-0 border border-white/5">
+<span class="text-xs text-gray-400 font-bold uppercase">Bugün</span>
+<span class="text-sm text-white font-bold">15:15</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-white text-sm font-semibold truncate">Caner Erkin</h4>
+<p class="text-gray-400 text-xs truncate">VIP Cilt Bakımı • Selim Bey</p>
+</div>
+<div class="shrink-0">
+<span class="bg-orange-500/10 text-orange-400 text-[10px] font-bold px-2 py-1 rounded border border-orange-500/20">BEKLİYOR</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+<div class="flex flex-col items-center justify-center bg-[#2A2A2A] rounded-lg h-12 w-12 shrink-0 border border-white/5">
+<span class="text-xs text-gray-400 font-bold uppercase">Yarın</span>
+<span class="text-sm text-white font-bold">09:00</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-white text-sm font-semibold truncate">Burak Özçivit</h4>
+<p class="text-gray-400 text-xs truncate">Saç Boyama • Ahmet Bey</p>
+</div>
+<div class="shrink-0">
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded border border-primary/20">ONAYLI</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 w-full bg-[#121212]/90 backdrop-blur-lg border-t border-white/10 pb-safe pt-2">
+<div class="flex items-center justify-around h-16 px-2">
+<button class="flex flex-1 flex-col items-center gap-1 text-primary group">
+<span class="material-symbols-outlined filled text-2xl group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-medium">Ana Sayfa</span>
+</button>
+<button class="flex flex-1 flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors group">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">calendar_month</span>
+<span class="text-[10px] font-medium">Takvim</span>
+</button>
+<!-- Floating Action Button effect for middle item if desired, but kept simple for now -->
+<button class="flex flex-1 flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors group">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">bar_chart</span>
+<span class="text-[10px] font-medium">Raporlar</span>
+</button>
+<button class="flex flex-1 flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors group">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">settings</span>
+<span class="text-[10px] font-medium">Ayarlar</span>
+</button>
+</div>
+<!-- Safe area spacer for iPhone home bar -->
+<div class="h-4"></div>
+</nav>
+</div>
+</body></html>

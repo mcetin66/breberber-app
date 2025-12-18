@@ -60,9 +60,9 @@ export const staffService = {
   },
 
   async create(staff: StaffInsert) {
-    const { data, error } = await supabase
-      .from('business_staff')
-      .insert(staff as any)
+    const { data, error } = await (supabase
+      .from('business_staff') as any)
+      .insert(staff)
       .select()
       .single();
 
@@ -71,9 +71,9 @@ export const staffService = {
   },
 
   async update(id: string, updates: StaffUpdate) {
-    const { data, error } = await supabase
-      .from('business_staff')
-      .update(updates as any)
+    const { data, error } = await (supabase
+      .from('business_staff') as any)
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
@@ -85,9 +85,9 @@ export const staffService = {
   async delete(id: string) {
     // Cast updates to any because Supabase types might be strict about what can be updated
     // or if the generated types don't match exactly.
-    const { error } = await supabase
-      .from('business_staff')
-      .update({ is_active: false } as any)
+    const { error } = await (supabase
+      .from('business_staff') as any)
+      .update({ is_active: false })
       .eq('id', id);
 
     if (error) throw error;
@@ -111,9 +111,9 @@ export const staffService = {
       .eq('staff_id', staffId);
 
     // Casting hours to any[] to bypass potential mismatch in generated types vs insert array
-    const { data, error } = await supabase
-      .from('staff_working_hours')
-      .insert(hours as any[])
+    const { data, error } = await (supabase
+      .from('staff_working_hours') as any)
+      .insert(hours)
       .select();
 
     if (error) throw error;
@@ -128,12 +128,12 @@ export const staffService = {
 
     if (serviceIds.length === 0) return [];
 
-    const { data, error } = await supabase
-      .from('staff_services')
+    const { data, error } = await (supabase
+      .from('staff_services') as any)
       .insert(serviceIds.map(serviceId => ({
         staff_id: staffId,
         service_id: serviceId,
-      })) as any[])
+      })))
       .select();
 
     if (error) throw error;

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>İşletme Bilgileri Ekranı</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#d4af35", // Gold
+              "primary-dark": "#b08d2b", // Darker Gold for hover/gradients
+              "background-light": "#f8f7f6", 
+              "background-dark": "#121212", // Deep Black
+              "surface-dark": "#1E1E1E", // Dark Grey for cards
+              "text-secondary": "#B0B0B0",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem", 
+              "lg": "0.75rem", 
+              "xl": "1rem", 
+              "2xl": "1.5rem",
+              "full": "9999px"
+            },
+            boxShadow: {
+              "gold-glow": "0 4px 20px -5px rgba(212, 175, 53, 0.3)",
+              "gold-glow-sm": "0 2px 10px -2px rgba(212, 175, 53, 0.2)",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for horizontal lists */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Metallic gradient text effect for premium feel */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #d4af35, #f3e5ab, #d4af35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-gray-900 dark:text-white antialiased selection:bg-primary selection:text-white">
+<div class="relative mx-auto flex h-full min-h-screen w-full max-w-md flex-col overflow-hidden shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-gray-900 dark:text-white" style="font-size: 24px;">arrow_back</span>
+</button>
+<h1 class="text-lg font-semibold tracking-tight text-center text-gray-900 dark:text-white">İşletme Bilgileri</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Page Indicators -->
+<div class="flex w-full flex-row items-center justify-center gap-2 py-2">
+<div class="h-1.5 w-6 rounded-full bg-primary shadow-gold-glow-sm"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-surface-dark"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-surface-dark"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-surface-dark"></div>
+</div>
+<main class="flex-1 px-5 pb-24 pt-4">
+<!-- Headline Text -->
+<div class="mb-8 text-center">
+<h2 class="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white mb-2">
+<span class="text-gradient-gold">Markanızı</span> Oluşturun
+                </h2>
+<p class="text-sm font-normal text-gray-500 dark:text-text-secondary">
+                    Müşterilerinizin sizi tanıması için temel bilgileri girin.
+                </p>
+</div>
+<!-- Profile/Logo Upload -->
+<div class="mb-8 flex flex-col items-center justify-center">
+<div class="group relative mb-4">
+<div class="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-primary/50 bg-surface-dark transition-all hover:border-primary hover:shadow-gold-glow cursor-pointer">
+<div class="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-20 transition-opacity" data-alt="Dark texture placeholder for logo upload" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBjYH4sjGVIe7Cm8AT0-IHqKYCw8CwBTy2RX9FwaQgzgf6ZhmbEPB7mtH1GeXgSYOvVVM-N8zaDNifjfh4G7EbhxIkdcj0E_P0SD40Wp03OYoRIdf2E4r5GULFkrFGcW2f4bE5kWC7bUy8wXrjaem-hg4NsJijJMlEFlPs_150id5iXdWnH_vx_e15vle_xFktCgb4kU7SRM7e1CT4mqbK9Fa4N7XCgrTFNtJlrZChVuS_n6-btjpYeIOPdnaR21NeHVgr9gOThv66p');"></div>
+<div class="z-10 flex flex-col items-center justify-center gap-1">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-background-dark shadow-lg">
+<span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+</div>
+</div>
+<p class="text-sm font-medium text-gray-900 dark:text-white">Logo Yükle</p>
+<p class="text-xs text-gray-500 dark:text-text-secondary mt-1">PNG veya JPG, max 5MB</p>
+</div>
+<!-- Form Fields -->
+<form class="space-y-6">
+<!-- Business Name Input -->
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="businessName">İşletme Adı</label>
+<div class="relative">
+<input class="block w-full rounded-xl border-0 bg-white dark:bg-surface-dark py-3.5 pl-4 pr-10 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" id="businessName" placeholder="Örn: Gold Makas VIP" type="text"/>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 20px;">storefront</span>
+</div>
+</div>
+</div>
+<!-- Slogan Input (Optional) -->
+<div class="space-y-1.5">
+<label class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300" for="slogan">
+<span>Slogan / Alt Başlık</span>
+<span class="text-xs font-normal text-gray-400 dark:text-gray-500">İsteğe bağlı</span>
+</label>
+<div class="relative">
+<input class="block w-full rounded-xl border-0 bg-white dark:bg-surface-dark py-3.5 pl-4 pr-10 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" id="slogan" placeholder="Örn: Tarzınızı Yansıtın" type="text"/>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 20px;">short_text</span>
+</div>
+</div>
+</div>
+<!-- Category Selection -->
+<div class="space-y-3">
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kategori Seçimi</label>
+<div class="grid grid-cols-2 gap-3">
+<!-- Active Item -->
+<div class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" id="cat_berber" name="category" type="radio"/>
+<label class="flex flex-col items-center justify-center gap-2 rounded-xl border border-transparent bg-white dark:bg-surface-dark p-4 text-center ring-1 ring-gray-200 dark:ring-white/5 transition-all hover:bg-gray-50 dark:hover:bg-white/5 peer-checked:bg-primary/10 peer-checked:ring-2 peer-checked:ring-primary" for="cat_berber">
+<span class="material-symbols-outlined text-gray-500 peer-checked:text-primary transition-colors" style="font-size: 28px;">content_cut</span>
+<span class="text-sm font-medium text-gray-900 dark:text-white peer-checked:text-primary">Erkek Berberi</span>
+</label>
+<div class="absolute -right-1 -top-1 hidden h-5 w-5 items-center justify-center rounded-full bg-primary text-background-dark peer-checked:flex shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 14px;">check</span>
+</div>
+</div>
+<!-- Item -->
+<div class="relative cursor-pointer group">
+<input class="peer sr-only" id="cat_kuafor" name="category" type="radio"/>
+<label class="flex flex-col items-center justify-center gap-2 rounded-xl border border-transparent bg-white dark:bg-surface-dark p-4 text-center ring-1 ring-gray-200 dark:ring-white/5 transition-all hover:bg-gray-50 dark:hover:bg-white/5 peer-checked:bg-primary/10 peer-checked:ring-2 peer-checked:ring-primary" for="cat_kuafor">
+<span class="material-symbols-outlined text-gray-500 peer-checked:text-primary transition-colors" style="font-size: 28px;">face_3</span>
+<span class="text-sm font-medium text-gray-900 dark:text-white peer-checked:text-primary">Kadın Kuaförü</span>
+</label>
+<div class="absolute -right-1 -top-1 hidden h-5 w-5 items-center justify-center rounded-full bg-primary text-background-dark peer-checked:flex shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 14px;">check</span>
+</div>
+</div>
+<!-- Item -->
+<div class="relative cursor-pointer group">
+<input class="peer sr-only" id="cat_guzellik" name="category" type="radio"/>
+<label class="flex flex-col items-center justify-center gap-2 rounded-xl border border-transparent bg-white dark:bg-surface-dark p-4 text-center ring-1 ring-gray-200 dark:ring-white/5 transition-all hover:bg-gray-50 dark:hover:bg-white/5 peer-checked:bg-primary/10 peer-checked:ring-2 peer-checked:ring-primary" for="cat_guzellik">
+<span class="material-symbols-outlined text-gray-500 peer-checked:text-primary transition-colors" style="font-size: 28px;">spa</span>
+<span class="text-sm font-medium text-gray-900 dark:text-white peer-checked:text-primary">Güzellik Merkezi</span>
+</label>
+<div class="absolute -right-1 -top-1 hidden h-5 w-5 items-center justify-center rounded-full bg-primary text-background-dark peer-checked:flex shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 14px;">check</span>
+</div>
+</div>
+<!-- Item -->
+<div class="relative cursor-pointer group">
+<input class="peer sr-only" id="cat_manikur" name="category" type="radio"/>
+<label class="flex flex-col items-center justify-center gap-2 rounded-xl border border-transparent bg-white dark:bg-surface-dark p-4 text-center ring-1 ring-gray-200 dark:ring-white/5 transition-all hover:bg-gray-50 dark:hover:bg-white/5 peer-checked:bg-primary/10 peer-checked:ring-2 peer-checked:ring-primary" for="cat_manikur">
+<span class="material-symbols-outlined text-gray-500 peer-checked:text-primary transition-colors" style="font-size: 28px;">pan_tool_alt</span>
+<span class="text-sm font-medium text-gray-900 dark:text-white peer-checked:text-primary">Manikür &amp; Pedikür</span>
+</label>
+<div class="absolute -right-1 -top-1 hidden h-5 w-5 items-center justify-center rounded-full bg-primary text-background-dark peer-checked:flex shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 14px;">check</span>
+</div>
+</div>
+</div>
+</div>
+</form>
+</main>
+<!-- Fixed Bottom Action Button -->
+<div class="fixed bottom-0 left-0 right-0 p-5 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-40 max-w-md mx-auto">
+<button class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r from-primary to-primary-dark p-[1px] shadow-gold-glow group active:scale-[0.98] transition-transform">
+<div class="relative flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3.5 transition-all group-hover:bg-primary-dark">
+<span class="text-base font-semibold text-background-dark">Kaydet ve Devam Et</span>
+<span class="material-symbols-outlined text-background-dark" style="font-size: 20px;">arrow_forward</span>
+</div>
+<!-- Shimmer Effect -->
+<div class="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+</button>
+</div>
+</div>
+</body></html>

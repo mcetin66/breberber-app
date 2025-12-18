@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lüks Berber Giriş</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "primary-dark": "#b08d1f",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // User requested #121212
+                        "surface-dark": "#1E1E1E", // User requested #1E1E1E
+                        "surface-light": "#FFFFFF",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "gold-glow": "0 4px 20px -2px rgba(212, 175, 53, 0.2)",
+                        "gold-glow-hover": "0 4px 25px 0px rgba(212, 175, 53, 0.4)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af35; 
+        }
+        
+        /* Input autofill styling override for dark mode */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #1E1E1E inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white font-display overflow-x-hidden antialiased selection:bg-primary selection:text-black">
+<div class="relative flex h-full min-h-screen w-full flex-col">
+<!-- Background decorative elements for luxury feel -->
+<div class="fixed top-0 left-0 w-full h-[400px] bg-gradient-to-b from-[#d4af35]/10 to-transparent pointer-events-none z-0"></div>
+<!-- Main Content Wrapper -->
+<div class="relative z-10 flex flex-col flex-1 w-full max-w-md mx-auto">
+<!-- Hero Image Section -->
+<div class="w-full h-[45vh] min-h-[360px] relative overflow-hidden rounded-b-[2rem]">
+<!-- Image -->
+<div class="absolute inset-0 bg-center bg-cover bg-no-repeat" data-alt="Barber using clippers on a client's hair in a dimly lit luxury shop" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5lEdXnk9GeBqiulCH5gRImC_H_JKt0va6P0Wj9mnBInP5KPFPCoPbC0g6O4dGMru0z5DZ8y1ee92aIUOoSi8dxR4omQ9O5x3L59aBfVHR1mH1x_yEC-rYnRXkpyT1B5J7N22W2Qfivk0f67exSZdA_2IaDVyiih7e3rRzkyhsePbr3zmPp241CPq8wvdaDdGwTJYNO4GQBBVdQ8w4E6PVGnCUekLvGj_AJfFOGHc4TaPTl-_pxRdc9ybU1AJX6mhOtCYufc0eg3_o");'>
+</div>
+<!-- Gradient Overlay for text readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
+<!-- Logo/Brand Top Area -->
+<div class="absolute top-0 w-full p-6 flex justify-center pt-12">
+<div class="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+<span class="material-symbols-outlined text-primary text-2xl">content_cut</span>
+</div>
+</div>
+</div>
+<!-- Content Body -->
+<div class="flex flex-col px-6 -mt-20 pb-8 flex-1 justify-between">
+<div class="flex flex-col gap-2">
+<!-- Headline -->
+<h1 class="font-serif text-white text-4xl leading-tight font-medium drop-shadow-lg">
+                        Lüks Deneyime <br/>
+<span class="text-primary italic">Hoş Geldiniz</span>
+</h1>
+<!-- Subtext -->
+<p class="text-gray-400 text-base font-normal leading-relaxed mt-2 max-w-[90%]">
+                        Randevunuzu planlamak ve ayrıcalıklı dünyaya adım atmak için giriş yapın.
+                    </p>
+</div>
+<!-- Login Form -->
+<div class="mt-8 flex flex-col gap-6">
+<!-- Phone Input -->
+<div class="flex flex-col gap-2 group">
+<label class="text-sm font-medium text-primary/80 uppercase tracking-wider ml-1">Telefon Numarası</label>
+<div class="relative flex items-center bg-surface-dark rounded-xl border border-[#333] focus-within:border-primary focus-within:shadow-gold-glow transition-all duration-300 h-16 overflow-hidden">
+<!-- Country Code -->
+<div class="flex items-center justify-center pl-4 pr-3 border-r border-[#333] h-full bg-[#252525]">
+<span class="material-symbols-outlined text-gray-500 mr-2 text-[20px]">public</span>
+<span class="text-white font-medium text-lg">+90</span>
+</div>
+<!-- Input Field -->
+<input class="w-full h-full bg-transparent border-none text-white text-lg placeholder:text-gray-600 focus:ring-0 px-4 font-display tracking-wide" placeholder="5XX XXX XX XX" type="tel" value=""/>
+<!-- Status Icon (Hidden by default, can be shown on valid input) -->
+<div class="pr-4 hidden group-focus-within:flex text-primary">
+<span class="material-symbols-outlined filled">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="relative w-full overflow-hidden rounded-xl bg-primary text-background-dark h-14 font-bold text-lg tracking-wide shadow-gold-glow hover:shadow-gold-glow-hover hover:bg-[#e6c44e] transition-all duration-300 flex items-center justify-center group active:scale-[0.98]">
+<span class="relative z-10 flex items-center gap-2">
+                            OTP Gönder
+                            <span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+</span>
+<!-- Shiny effect overlay -->
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+</button>
+<!-- Divider -->
+<div class="relative flex py-2 items-center">
+<div class="flex-grow border-t border-[#333]"></div>
+<span class="flex-shrink mx-4 text-gray-500 text-xs uppercase tracking-widest">veya</span>
+<div class="flex-grow border-t border-[#333]"></div>
+</div>
+<!-- Social Login (Optional but adds to premium feel) -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 h-12 rounded-lg bg-[#1E1E1E] border border-[#333] hover:border-primary/50 hover:bg-[#252525] transition-all duration-300 text-white text-sm font-medium">
+<!-- Apple Icon placeholder using text/symbol -->
+<span class="material-symbols-outlined text-[20px]">ios</span>
+<span>Apple</span>
+</button>
+<button class="flex items-center justify-center gap-2 h-12 rounded-lg bg-[#1E1E1E] border border-[#333] hover:border-primary/50 hover:bg-[#252525] transition-all duration-300 text-white text-sm font-medium">
+<!-- Google Icon SVG -->
+<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.766 12.2764C23.766 11.4607 23.6999 10.6406 23.5588 9.83807H12.24V14.4591H18.7217C18.4528 15.9494 17.5885 17.2678 16.323 18.1056V21.1039H20.19C22.4608 19.0139 23.766 15.9274 23.766 12.2764Z" fill="#4285F4"></path>
+<path d="M12.2401 24.0008C15.4766 24.0008 18.2059 22.9382 20.1945 21.1039L16.3275 18.1055C15.2517 18.8375 13.8627 19.252 12.2445 19.252C9.11388 19.252 6.45946 17.1399 5.50705 14.3003H1.5166V17.3912C3.55371 21.4434 7.7029 24.0008 12.2401 24.0008Z" fill="#34A853"></path>
+<path d="M5.50253 14.3003C5.00236 12.8099 5.00236 11.1961 5.50253 9.70575V6.61481H1.51649C-0.18551 10.0056 -0.18551 14.0004 1.51649 17.3912L5.50253 14.3003Z" fill="#FBBC05"></path>
+<path d="M12.2401 4.74966C13.9509 4.7232 15.6044 5.36697 16.8434 6.54867L20.2695 3.12262C18.1001 1.0855 15.2208 -0.034466 12.2401 0.000808666C7.7029 0.000808666 3.55371 2.55822 1.5166 6.61481L5.50264 9.70575C6.45064 6.86173 9.10947 4.74966 12.2401 4.74966Z" fill="#EA4335"></path>
+</svg>
+<span>Google</span>
+</button>
+</div>
+</div>
+<!-- Footer Legal -->
+<div class="mt-auto pt-8 text-center">
+<p class="text-[11px] text-gray-500 leading-normal">
+                        Devam ederek, 
+                        <a class="text-primary hover:underline" href="#">Hizmet Şartlarımızı</a> ve 
+                        <a class="text-primary hover:underline" href="#">Gizlilik Politikamızı</a> kabul etmiş olursunuz.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Tailwind Config Additions for animation -->
+<script>
+        tailwind.config.theme.extend.keyframes = {
+            ...tailwind.config.theme.extend.keyframes,
+            shimmer: {
+                '100%': { transform: 'translateX(100%)' },
+            }
+        }
+    </script>
+</body></html>

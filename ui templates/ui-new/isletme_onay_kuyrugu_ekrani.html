@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>İşletme Onay Kuyruğu</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35", // Gold
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep Black
+                        "surface-dark": "#1E1E1E", // Dark Grey Cards
+                        "surface-input": "#2A2A2A", 
+                        "text-secondary": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 0 15px -3px rgba(212, 175, 55, 0.25)',
+                        'gold-sm': '0 2px 10px -2px rgba(212, 175, 55, 0.15)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display antialiased selection:bg-primary selection:text-black">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden pb-20">
+<!-- Header -->
+<header class="sticky top-0 z-20 bg-background-dark/95 backdrop-blur-md border-b border-white/5">
+<div class="flex items-center px-4 pt-12 pb-4 justify-between">
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight flex-1">İşletme Onayları</h2>
+<div class="flex items-center justify-end gap-3">
+<button class="flex items-center justify-center rounded-full h-10 w-10 bg-surface-input text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="px-0 pt-2">
+<div class="flex border-b border-white/10 px-4 justify-between">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-white pb-3 pt-2 flex-1 transition-all" href="#">
+<p class="text-sm font-bold tracking-wide">Bekleyen</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-text-secondary hover:text-white pb-3 pt-2 flex-1 transition-all" href="#">
+<p class="text-sm font-medium tracking-wide">İncelenen</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-text-secondary hover:text-white pb-3 pt-2 flex-1 transition-all" href="#">
+<p class="text-sm font-medium tracking-wide">Geçmiş</p>
+</a>
+</div>
+</div>
+</header>
+<!-- Search & Filter Area -->
+<div class="px-4 py-4 space-y-4">
+<!-- Search Bar -->
+<label class="flex flex-col h-12 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full bg-surface-input focus-within:ring-1 focus-within:ring-primary/50 transition-all">
+<div class="text-text-secondary flex items-center justify-center pl-4 pr-2">
+<span class="material-symbols-outlined" style="font-size: 20px;">search</span>
+</div>
+<input class="flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-none placeholder:text-text-secondary/70 px-2 text-sm font-medium h-full" placeholder="İşletme adı veya ID ara..."/>
+</div>
+</label>
+<!-- Filter Chips -->
+<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-black px-4 shadow-gold-sm">
+<span class="text-xs font-bold">En Yeni</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-input border border-white/10 hover:border-primary/50 text-text-secondary hover:text-white px-4 transition-colors">
+<span class="text-xs font-medium">Acil Durum</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-input border border-white/10 hover:border-primary/50 text-text-secondary hover:text-white px-4 transition-colors">
+<span class="text-xs font-medium">Belge Eksik</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-input border border-white/10 hover:border-primary/50 text-text-secondary hover:text-white px-4 transition-colors">
+<span class="text-xs font-medium">VIP Başvuru</span>
+</button>
+</div>
+</div>
+<!-- Headline -->
+<div class="px-4 pb-2 flex items-center justify-between">
+<h3 class="text-white text-lg font-bold">12 Bekleyen Başvuru</h3>
+<span class="text-xs text-text-secondary bg-surface-input px-2 py-1 rounded">Bugün</span>
+</div>
+<!-- List Content -->
+<div class="flex flex-col gap-4 px-4 pb-4">
+<!-- Card 1: Standard Pending -->
+<div class="group relative flex flex-col gap-4 rounded-xl bg-surface-dark border border-white/5 p-4 shadow-lg transition-all hover:border-primary/30 hover:shadow-gold-glow">
+<div class="flex gap-4">
+<div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-gray-800 shadow-inner">
+<img alt="Barbershop" class="h-full w-full object-cover" data-alt="Modern barbershop interior with dark leather chairs and warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8pNMeroq8E41xrShID2XC2UcZ0dRpF70rMriOROXQLBpAbcGgTPBm3D8tnLTapCJvRJYPdEIjOYD2LqpGqMaZncBF3_Ik4ytZkS2NfOoe2T_iMzOggyb7ZzYlCx7S74I-vc_EUNOvIm4VAt_CySVJvDN74lWEvnE2enktMwvmFDDUAOJsGThDTvBNl_saV0g_dGrfwOLH26o6F_-0q9GvaeGRxVxJrZvBLx5Y4AcPOk6XtuG6Dq_Rm6wwnoyZsVOCmntICMBKjaqn"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+</div>
+<div class="flex flex-1 flex-col justify-between py-0.5">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-bold text-base leading-tight">Golden Makas Barber Club</h4>
+<span class="ml-2 inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-[10px] font-bold text-green-400 ring-1 ring-inset ring-green-500/20">Tamam</span>
+</div>
+<div class="flex flex-col gap-1 mt-1">
+<div class="flex items-center gap-1.5 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">location_on</span>
+<span class="truncate">Nişantaşı, Şişli • İstanbul</span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">schedule</span>
+<span>2 saat önce gönderildi</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Documents Preview Row -->
+<div class="flex items-center gap-3 py-2 border-t border-white/5 border-b border-white/5 border-dashed">
+<span class="text-[10px] uppercase tracking-wider text-text-secondary font-semibold">Belgeler:</span>
+<div class="flex gap-2">
+<div class="flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-xs text-white">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">description</span>
+<span>Vergi L.</span>
+</div>
+<div class="flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-xs text-white">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">workspace_premium</span>
+<span>Ustalık B.</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-3">
+<button class="flex-1 rounded-lg border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 py-3 text-sm font-bold text-red-400 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+                        Reddet
+                    </button>
+<button class="flex-1 rounded-lg bg-primary hover:bg-[#c29f2e] py-3 text-sm font-bold text-black shadow-gold-glow transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">check</span>
+                        Onayla
+                    </button>
+</div>
+</div>
+<!-- Card 2: Missing Documents -->
+<div class="group relative flex flex-col gap-4 rounded-xl bg-surface-dark border border-white/5 p-4 shadow-lg transition-all hover:border-primary/30">
+<div class="flex gap-4">
+<div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-gray-800 shadow-inner">
+<img alt="Salon" class="h-full w-full object-cover grayscale opacity-80" data-alt="Luxury salon interior with gold framed mirrors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFdco-5wT_6RP7GsCs-Zmr99OXzDo_XMR7Cl6IuZwkDjWGUNCEARCucesEqb5kGEqMNFGd0E07TBL8JHGgmx0Uzo3zA6_gvSXCGnMivk_2kGznmGPYVEKGKP20r7yUQHjFLF2ZCrKDiE961t-ObjRgbrdeSzlRGXtcFDgwyYMJ-BnrUK4msLyRwPuu7KDFNzqtQfLO-Iq4y37NT2mbU4065Cq6y4AJL76K9n10EiZ6X5eDPqaZgD5lRGLwBK1rI2354-xSidsRfmWw"/>
+</div>
+<div class="flex flex-1 flex-col justify-between py-0.5">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-bold text-base leading-tight">Royal Beard Lounge</h4>
+<span class="ml-2 inline-flex items-center rounded-md bg-yellow-500/10 px-2 py-1 text-[10px] font-bold text-yellow-500 ring-1 ring-inset ring-yellow-500/20 whitespace-nowrap">Eksik Belge</span>
+</div>
+<div class="flex flex-col gap-1 mt-1">
+<div class="flex items-center gap-1.5 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">location_on</span>
+<span class="truncate">Etiler, Beşiktaş • İstanbul</span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">schedule</span>
+<span>Dün, 14:30</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Documents Preview Row -->
+<div class="flex items-center gap-3 py-2 border-t border-white/5 border-b border-white/5 border-dashed">
+<span class="text-[10px] uppercase tracking-wider text-text-secondary font-semibold">Belgeler:</span>
+<div class="flex gap-2">
+<div class="flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-xs text-white opacity-50">
+<span class="material-symbols-outlined" style="font-size: 14px;">description</span>
+<span>Vergi L.</span>
+</div>
+<div class="flex items-center gap-1 rounded bg-red-500/10 px-2 py-1 text-xs text-red-400 border border-red-500/20">
+<span class="material-symbols-outlined" style="font-size: 14px;">warning</span>
+<span>Ustalık Eksik</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-3">
+<button class="flex-1 rounded-lg border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 py-3 text-sm font-bold text-red-400 transition-colors flex items-center justify-center gap-2">
+                        Reddet
+                    </button>
+<button class="flex-1 rounded-lg bg-surface-input hover:bg-white/10 border border-white/10 py-3 text-sm font-bold text-white transition-all flex items-center justify-center gap-2">
+                        İncele
+                    </button>
+</div>
+</div>
+<!-- Card 3: Urgent -->
+<div class="group relative flex flex-col gap-4 rounded-xl bg-surface-dark border border-primary/20 p-4 shadow-lg transition-all">
+<!-- Urgent Badge -->
+<div class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm z-10">ACİL</div>
+<div class="flex gap-4">
+<div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-gray-800 shadow-inner">
+<img alt="Ottoman Style" class="h-full w-full object-cover" data-alt="Vintage barber shop pole and tools" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPkwuJIQfNMlHc0YyyATAJXVEzogo7X0JCwnP6cXHglH_cZXPf0G4lDlrNKd75fm3jQGfsDtjp8gRlOPV03_Rehl2bkm6P6ecEhvgLnyITibUXWCR8oouNlpBatPnFrEcXEdDzEY_1poohfXdYvb5GPzZIYgVeV1RfWYYIOOtT6ddxB7-SLGCv9mUW_HO0fyZZhdvvbROh3XjS6TJCUEThYzWvI_EFXs9SRpQXE2n47wb3GFzdjUFHSuEzWP_R4mVT7FhiGs38R-tD"/>
+</div>
+<div class="flex flex-1 flex-col justify-between py-0.5">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-bold text-base leading-tight">Ottoman Style Kuaför</h4>
+<span class="ml-2 inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-[10px] font-bold text-green-400 ring-1 ring-inset ring-green-500/20">Tamam</span>
+</div>
+<div class="flex flex-col gap-1 mt-1">
+<div class="flex items-center gap-1.5 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">location_on</span>
+<span class="truncate">Kadıköy, Moda • İstanbul</span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-primary" style="font-size: 14px;">person</span>
+<span>Ahmet Yılmaz (Sahibi)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-3">
+<button class="flex-1 rounded-lg border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 py-3 text-sm font-bold text-red-400 transition-colors flex items-center justify-center gap-2">
+                        Reddet
+                    </button>
+<button class="flex-1 rounded-lg bg-primary hover:bg-[#c29f2e] py-3 text-sm font-bold text-black shadow-gold-glow transition-all flex items-center justify-center gap-2">
+                        Onayla
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 z-50 w-full bg-[#121212]/95 backdrop-blur-lg border-t border-white/10 pb-6 pt-3">
+<div class="flex justify-around items-center px-2">
+<a class="flex flex-col items-center gap-1 w-16 group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white transition-colors" style="font-size: 24px;">dashboard</span>
+<span class="text-[10px] font-medium text-text-secondary group-hover:text-white">Panel</span>
+</a>
+<a class="flex flex-col items-center gap-1 w-16 group relative" href="#">
+<div class="absolute -top-1 right-3 h-2 w-2 rounded-full bg-red-500 animate-pulse"></div>
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">fact_check</span>
+<span class="text-[10px] font-bold text-primary">Onaylar</span>
+</a>
+<a class="flex flex-col items-center gap-1 w-16 group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white transition-colors" style="font-size: 24px;">group</span>
+<span class="text-[10px] font-medium text-text-secondary group-hover:text-white">Üyeler</span>
+</a>
+<a class="flex flex-col items-center gap-1 w-16 group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white transition-colors" style="font-size: 24px;">settings</span>
+<span class="text-[10px] font-medium text-text-secondary group-hover:text-white">Ayarlar</span>
+</a>
+</div>
+</nav>
+</body></html>

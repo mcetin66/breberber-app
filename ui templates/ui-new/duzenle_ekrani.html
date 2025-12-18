@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Personel Ekle</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35", // Gold
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep black requested
+                        "surface-dark": "#1E1E1E", // Card color requested
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "gold-glow": "0 4px 20px -8px rgba(212, 175, 53, 0.25)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* Custom Scrollbar for sleek look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af35; 
+        }
+        
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #d4af35;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #d4af35;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display antialiased text-white overflow-x-hidden selection:bg-primary selection:text-black">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-dark group/design-root shadow-2xl shadow-black border-x border-[#222]">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-[#2a2a2a]">
+<div class="flex items-center p-4 justify-between h-14">
+<button class="w-16 flex items-center justify-start text-[#b6b1a0] active:text-white transition-colors">
+<span class="text-base font-normal leading-normal">İptal</span>
+</button>
+<h2 class="text-white text-[17px] font-semibold leading-tight flex-1 text-center">Personel Ekle</h2>
+<button class="w-16 flex items-center justify-end">
+<span class="text-primary text-base font-bold leading-normal tracking-wide hover:brightness-110">Kaydet</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col gap-6 p-5 pb-12">
+<!-- ProfileHeader -->
+<div class="flex flex-col items-center justify-center gap-4 py-2">
+<div class="relative group cursor-pointer">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-32 w-32 border-[3px] border-primary/30 shadow-gold-glow group-hover:border-primary transition-all duration-300" data-alt="Abstract dark gradient placeholder for staff profile photo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAav9vuwEQ1yGX0VcWPHRxg3sdvKCiVhz_7MidD6r4IuQZSK2TTGMoOS1aJpfSHu0Op2tr-hR6F7lXmGTRC6vkYWLiKSCWzt6GVOyZY8eSs1WaH3HoTsJJcwpsBx3rJr1iRdJFUeCPnW0LTEmK_RI2FbTfUstzG29wNaLVx2wGk6bAYlXA7yXqG0LwZMDglBeXKmLHuQdc1Jc7bGYhFilqVp5ebNBmsqP05kJsvBDN1vxY3Hni19aClaYM_k9Ts7jlu6Zf8NEkWcoGC");'>
+</div>
+<div class="absolute bottom-0 right-0 bg-primary h-10 w-10 rounded-full flex items-center justify-center border-[3px] border-[#121212] shadow-lg">
+<span class="material-symbols-outlined text-[#121212] text-[20px] font-bold">photo_camera</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center">
+<p class="text-primary text-sm font-semibold tracking-wide">PROFİL FOTOĞRAFI EKLE</p>
+</div>
+</div>
+<!-- Kişisel Bilgiler Section -->
+<div class="flex flex-col gap-3">
+<h3 class="text-[#888] text-xs font-bold uppercase tracking-widest px-1">Kişisel Bilgiler</h3>
+<div class="bg-surface-dark rounded-xl shadow-gold-glow overflow-hidden border border-[#333]">
+<!-- Ad Soyad -->
+<div class="flex items-center px-4 border-b border-[#333] focus-within:bg-[#252525] transition-colors">
+<span class="material-symbols-outlined text-[#666] mr-3">person</span>
+<div class="flex-1 py-3">
+<label class="block text-[#888] text-[10px] uppercase font-bold mb-1">Ad Soyad</label>
+<input class="w-full bg-transparent border-none p-0 text-white placeholder-[#555] focus:ring-0 text-[15px] font-medium leading-normal" placeholder="Örn: Ahmet Yılmaz" type="text"/>
+</div>
+</div>
+<!-- Telefon -->
+<div class="flex items-center px-4 border-b border-[#333] focus-within:bg-[#252525] transition-colors">
+<span class="material-symbols-outlined text-[#666] mr-3">call</span>
+<div class="flex-1 py-3">
+<label class="block text-[#888] text-[10px] uppercase font-bold mb-1">Telefon</label>
+<input class="w-full bg-transparent border-none p-0 text-white placeholder-[#555] focus:ring-0 text-[15px] font-medium leading-normal" placeholder="05XX XXX XX XX" type="tel"/>
+</div>
+</div>
+<!-- E-Posta -->
+<div class="flex items-center px-4 focus-within:bg-[#252525] transition-colors">
+<span class="material-symbols-outlined text-[#666] mr-3">mail</span>
+<div class="flex-1 py-3">
+<label class="block text-[#888] text-[10px] uppercase font-bold mb-1">E-Posta (İsteğe Bağlı)</label>
+<input class="w-full bg-transparent border-none p-0 text-white placeholder-[#555] focus:ring-0 text-[15px] font-medium leading-normal" placeholder="ahmet@ornek.com" type="email"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Hizmet Yetkinlikleri -->
+<div class="flex flex-col gap-3">
+<h3 class="text-[#888] text-xs font-bold uppercase tracking-widest px-1">Hizmet Yetkinlikleri</h3>
+<div class="bg-surface-dark rounded-xl p-4 shadow-gold-glow border border-[#333]">
+<p class="text-[#b6b1a0] text-sm mb-4">Personelin verebileceği hizmetleri seçiniz.</p>
+<div class="flex flex-wrap gap-2">
+<!-- Active Chip -->
+<button class="px-4 py-2 rounded-lg bg-primary text-black text-sm font-bold flex items-center gap-2 border border-primary shadow-[0_0_10px_rgba(212,175,53,0.4)]">
+<span class="material-symbols-outlined text-[18px]">content_cut</span>
+                            Saç Kesimi
+                        </button>
+<!-- Inactive Chip -->
+<button class="px-4 py-2 rounded-lg bg-[#2A2A2A] text-gray-400 text-sm font-medium border border-[#333] hover:border-[#666] hover:text-white transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">face</span>
+                            Sakal Tıraşı
+                        </button>
+<!-- Inactive Chip -->
+<button class="px-4 py-2 rounded-lg bg-[#2A2A2A] text-gray-400 text-sm font-medium border border-[#333] hover:border-[#666] hover:text-white transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">water_drop</span>
+                            Cilt Bakımı
+                        </button>
+<!-- Active Chip -->
+<button class="px-4 py-2 rounded-lg bg-primary text-black text-sm font-bold flex items-center gap-2 border border-primary shadow-[0_0_10px_rgba(212,175,53,0.4)]">
+<span class="material-symbols-outlined text-[18px]">palette</span>
+                            Boya
+                        </button>
+<!-- Inactive Chip -->
+<button class="px-4 py-2 rounded-lg bg-[#2A2A2A] text-gray-400 text-sm font-medium border border-[#333] hover:border-[#666] hover:text-white transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">air</span>
+                            Fön
+                        </button>
+<!-- Inactive Chip -->
+<button class="px-4 py-2 rounded-lg bg-[#2A2A2A] text-gray-400 text-sm font-medium border border-[#333] hover:border-[#666] hover:text-white transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">spa</span>
+                            Masaj
+                        </button>
+</div>
+</div>
+</div>
+<!-- Biyografi -->
+<div class="flex flex-col gap-3">
+<h3 class="text-[#888] text-xs font-bold uppercase tracking-widest px-1">Biyografi</h3>
+<div class="bg-surface-dark rounded-xl shadow-gold-glow overflow-hidden border border-[#333] focus-within:border-primary/50 transition-colors">
+<textarea class="w-full h-32 bg-[#1E1E1E] p-4 text-white placeholder-[#555] border-none focus:ring-0 resize-none text-[15px] leading-relaxed" placeholder="Müşterileriniz için personeli tanıtan kısa bir yazı giriniz..."></textarea>
+</div>
+</div>
+<!-- Ayarlar / Status -->
+<div class="flex flex-col gap-3 mb-8">
+<div class="bg-surface-dark rounded-xl px-4 py-3 shadow-gold-glow border border-[#333] flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-white font-medium text-[15px]">Randevu Alımına Açık</span>
+<span class="text-[#666] text-xs mt-0.5">Personel randevu sisteminde görünsün</span>
+</div>
+<!-- Toggle Switch -->
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-surface-dark appearance-none cursor-pointer translate-x-6" id="toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer" for="toggle"></label>
+</div>
+</div>
+</div>
+<!-- Delete Button (Only for Edit Mode) -->
+<button class="w-full py-4 rounded-xl text-red-500/80 font-medium text-sm hover:bg-red-500/10 hover:text-red-500 transition-all border border-transparent hover:border-red-500/20">
+                Personeli Sil
+            </button>
+</main>
+</div>
+</body></html>

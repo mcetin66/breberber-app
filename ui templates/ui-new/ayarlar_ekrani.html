@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ayarlar - Lüks Berber Uygulaması</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", /* Override to match user request #121212 */
+                        "card-dark": "#1E1E1E",
+                        "text-secondary": "#b6b1a0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    boxShadow: {
+                        'gold-glow': '0 4px 20px -5px rgba(212, 175, 53, 0.15)',
+                    }
+                },
+            },
+        }
+    </script>
+<!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Custom scrollbar for webkit if needed, though hidden in phone factor usually */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-white/5">
+<div class="flex items-center justify-between px-4 h-16 max-w-md mx-auto w-full">
+<button class="size-10 flex items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white" style="font-size: 24px;">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2">Ayarlar</h1>
+<div class="size-10"></div> <!-- Spacer for alignment -->
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-md mx-auto px-4 pb-8">
+<!-- Profile Header Section -->
+<section class="mt-6 mb-8">
+<div class="relative overflow-hidden rounded-2xl bg-card-dark shadow-gold-glow border border-white/5 p-4 flex items-center gap-4">
+<!-- Decorative background gradient inside card -->
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none"></div>
+<div class="relative shrink-0">
+<div class="size-16 rounded-full bg-cover bg-center border-2 border-primary" data-alt="Portrait of a well-groomed man with a beard looking professional" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDTXaO-uqsTY9ffNR2pWbaSkZci7-CEl7iXVf6zr1A7yJhOFJx79IHgc9reBYl7ko5tFiJ3KN-LAsrTCPljsDoR--W7qVQXs5fHZYBJxMe4YZe_D3-q0CFJIbmBxtEAdvtZLIhyDUNI6KnpNoIz92cyWOkoyjgFCpuXM9x2yx5MjCD0aroDb5mBOquU-Hefg_9uotN4yKYVHUcyCF6fQWqxfUGk1Rx1A_lk7-p41TsRBl3XgzVb_vHpxMvFtWYpCDGvNRbPOrtsLpb7");'>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-card-dark">
+                        GOLD
+                    </div>
+</div>
+<div class="flex flex-col flex-1 relative z-10">
+<h2 class="text-lg font-bold text-white leading-tight">Ahmet Yılmaz</h2>
+<p class="text-primary text-sm font-medium mb-0.5">Gold Üyelik</p>
+<button class="text-text-secondary text-xs hover:text-white transition-colors text-left flex items-center gap-1">
+                        Profili Düzenle <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section: Appearance -->
+<section class="mb-6">
+<h3 class="text-text-secondary text-xs font-bold uppercase tracking-wider ml-4 mb-2">Görünüm</h3>
+<div class="bg-card-dark rounded-xl overflow-hidden border border-white/5">
+<!-- Item: Dark Mode -->
+<div class="flex items-center justify-between p-4 min-h-[60px]">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-white/5 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">dark_mode</span>
+</div>
+<span class="text-base font-medium text-white">Karanlık Mod</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" disabled="" type="checkbox" value=""/> <!-- Disabled because the design is dark-only conceptually for this output, or it toggles state -->
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section: Notifications -->
+<section class="mb-6">
+<h3 class="text-text-secondary text-xs font-bold uppercase tracking-wider ml-4 mb-2">Bildirim Tercihleri</h3>
+<div class="bg-card-dark rounded-xl overflow-hidden border border-white/5 divide-y divide-white/5">
+<!-- Item: Appointment Reminders -->
+<div class="flex items-center justify-between p-4 min-h-[60px]">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-white/5 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">notifications_active</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-medium text-white">Randevu Hatırlatmaları</span>
+<span class="text-xs text-text-secondary">Yaklaşan randevular için bildirim</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Item: Campaigns -->
+<div class="flex items-center justify-between p-4 min-h-[60px]">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-white/5 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">percent</span>
+</div>
+<span class="text-base font-medium text-white">Kampanya ve Fırsatlar</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section: Legal -->
+<section class="mb-8">
+<h3 class="text-text-secondary text-xs font-bold uppercase tracking-wider ml-4 mb-2">Yasal &amp; Destek</h3>
+<div class="bg-card-dark rounded-xl overflow-hidden border border-white/5 divide-y divide-white/5">
+<!-- Item: KVKK -->
+<button class="w-full flex items-center justify-between p-4 min-h-[60px] hover:bg-white/5 transition-colors group">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined">gavel</span>
+</div>
+<span class="text-base font-medium text-white">KVKK Aydınlatma Metni</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary">chevron_right</span>
+</button>
+<!-- Item: Privacy Policy -->
+<button class="w-full flex items-center justify-between p-4 min-h-[60px] hover:bg-white/5 transition-colors group">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined">policy</span>
+</div>
+<span class="text-base font-medium text-white">Gizlilik Politikası</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary">chevron_right</span>
+</button>
+<!-- Item: Terms of Use -->
+<button class="w-full flex items-center justify-between p-4 min-h-[60px] hover:bg-white/5 transition-colors group">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined">description</span>
+</div>
+<span class="text-base font-medium text-white">Kullanım Koşulları</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary">chevron_right</span>
+</button>
+</div>
+<p class="text-center text-[10px] text-white/20 mt-2">Versiyon 2.4.0</p>
+</section>
+<!-- Footer Actions -->
+<div class="flex flex-col gap-4 mt-auto">
+<button class="w-full h-12 rounded-xl border border-primary text-primary font-bold text-base hover:bg-primary/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 20px;">logout</span>
+                Çıkış Yap
+            </button>
+<button class="w-full py-2 text-red-500/70 text-sm font-medium hover:text-red-500 transition-colors">
+                Hesabımı Sil
+            </button>
+</div>
+</main>
+</body></html>

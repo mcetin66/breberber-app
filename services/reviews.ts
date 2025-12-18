@@ -7,9 +7,9 @@ type ReviewUpdate = Database['public']['Tables']['reviews']['Update'];
 
 export const reviewService = {
   async create(review: ReviewInsert) {
-    const { data, error } = await supabase
-      .from('reviews')
-      .insert(review as any)
+    const { data, error } = await (supabase
+      .from('reviews') as any)
+      .insert(review)
       .select()
       .single();
 
@@ -18,9 +18,9 @@ export const reviewService = {
   },
 
   async update(id: string, updates: ReviewUpdate) {
-    const { data, error } = await supabase
-      .from('reviews')
-      .update(updates as any)
+    const { data, error } = await (supabase
+      .from('reviews') as any)
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
@@ -30,8 +30,8 @@ export const reviewService = {
   },
 
   async delete(id: string) {
-    const { error } = await supabase
-      .from('reviews')
+    const { error } = await (supabase
+      .from('reviews') as any)
       .delete()
       .eq('id', id);
 

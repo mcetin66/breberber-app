@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lüks Salon - Galeri</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#d4af35",
+              "background-light": "#f8f7f6",
+              "background-dark": "#121212", // Deep black requested
+              "surface-dark": "#1E1E1E", // Dark grey requested
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+              "serif": ["Playfair Display", "serif"],
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white antialiased overflow-x-hidden selection:bg-primary selection:text-black">
+<div class="relative flex h-full min-h-screen w-full max-w-md mx-auto flex-col bg-background-light dark:bg-background-dark shadow-2xl overflow-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-30 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-white/10">
+<div class="flex items-center p-4 pb-2 justify-between">
+<button class="text-gray-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</button>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center font-display">Barber King Salon</h2>
+<button class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">ios_share</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="w-full overflow-x-auto no-scrollbar">
+<div class="flex min-w-full px-4 border-b border-gray-200 dark:border-white/10">
+<a class="flex flex-col items-center justify-center min-w-[80px] pb-3 pt-2 group cursor-pointer" href="#">
+<p class="text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white text-sm font-medium transition-colors">Hizmetler</p>
+<div class="h-[2px] w-0 group-hover:w-full bg-primary mt-3 transition-all duration-300"></div>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[80px] pb-3 pt-2 group cursor-pointer" href="#">
+<p class="text-primary text-sm font-bold transition-colors">Galeri</p>
+<div class="h-[2px] w-full bg-primary mt-3 shadow-[0_0_10px_rgba(212,175,53,0.5)]"></div>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[80px] pb-3 pt-2 group cursor-pointer" href="#">
+<p class="text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white text-sm font-medium transition-colors">Yorumlar</p>
+<div class="h-[2px] w-0 group-hover:w-full bg-primary mt-3 transition-all duration-300"></div>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[80px] pb-3 pt-2 group cursor-pointer" href="#">
+<p class="text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white text-sm font-medium transition-colors">Hakkında</p>
+<div class="h-[2px] w-0 group-hover:w-full bg-primary mt-3 transition-all duration-300"></div>
+</a>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Before / After Section -->
+<section class="py-6 px-4">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-gray-900 dark:text-white font-serif text-2xl font-medium tracking-wide">Dönüşümler</h2>
+<span class="text-primary text-sm font-medium">Tümünü Gör</span>
+</div>
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-surface-dark shadow-lg ring-1 ring-white/10 group cursor-pointer select-none">
+<!-- Before Image (Base) -->
+<img alt="Unkempt beard and long hair before haircut" class="absolute inset-0 w-full h-full object-cover pointer-events-none" data-alt="Unkempt beard and long hair before haircut" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy_1YEMQ544yUC16tlRJgepoFYYzB04KNyCzOiSjwdfZ_DnoArWbD6Z9lZv8YklT_gnjBpi9u2kP_3nd1WYgFcsCkyEHMGYx30b5Njhu7tqd5RhTBRwaUn4zJtSXxj5UqjqVg35iJmfo6s85r2OMt0gJVDARjz1BeR8v8jA4WlCBKPgl0vePJi_M3UL_Ft0MZmf511dR0FX4PTcxa3whGZusxiuBvndu2kTdbxc-kdZJEmFwwb3CG31dvXL05mRXobbZTcc3Q8hubx"/>
+<!-- After Image (Clipped) -->
+<div class="absolute inset-0 w-1/2 h-full overflow-hidden border-r-2 border-primary bg-surface-dark">
+<img alt="Sharp fade haircut and trimmed beard styling" class="absolute inset-0 max-w-none w-[200%] h-full object-cover" data-alt="Sharp fade haircut and trimmed beard styling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQjxdxeQEOaf3Z4v2QAea1okRqG2hOlUag4m_y-UYmThCAsF8ZZpQJiaInHmpyMwbgj-B8HzGHe8Vcm6cS6aSaebviYstMUGnFH1lk5vf0lIpbEGFziB1UhphfyD2HrmpxxZZUNVkUcnkVxfIRqKmJESEssLlVl_WQPVwNSQg0W1wPTJT_5iRpPhUa8A1Q1OvRrdS1EAjOpnnKAsqcyC5WFwFCXw1a3maFTvb97kxi6w9KN_ebkrv442TnUabiB4YH59WFEmeaBhF9" style="transform: translateX(0);"/>
+</div>
+<!-- Slider Handle -->
+<div class="absolute inset-y-0 left-1/2 -ml-4 w-8 flex items-center justify-center pointer-events-none">
+<div class="size-8 rounded-full bg-primary shadow-[0_0_15px_rgba(212,175,53,0.6)] flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined text-sm font-bold">code</span>
+</div>
+</div>
+<!-- Labels -->
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-white uppercase tracking-wider">Sonrası</div>
+<div class="absolute top-4 right-4 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-white uppercase tracking-wider">Öncesi</div>
+<!-- Caption -->
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 to-transparent p-4 pt-12">
+<p class="text-white font-serif text-lg">Fade Kesim &amp; Sakal Şekillendirme</p>
+<p class="text-gray-300 text-sm">Stilist: Emre Yılmaz</p>
+</div>
+</div>
+</section>
+<!-- Gallery Grid Section -->
+<section class="px-4 pb-6">
+<!-- Filter Chips -->
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-6">
+<button class="shrink-0 px-5 py-2 rounded-full bg-primary text-background-dark text-sm font-bold shadow-md shadow-primary/20">Tümü</button>
+<button class="shrink-0 px-5 py-2 rounded-full bg-surface-dark border border-white/10 text-gray-300 text-sm font-medium hover:border-primary/50 transition-colors">Saç Kesimi</button>
+<button class="shrink-0 px-5 py-2 rounded-full bg-surface-dark border border-white/10 text-gray-300 text-sm font-medium hover:border-primary/50 transition-colors">Sakal</button>
+<button class="shrink-0 px-5 py-2 rounded-full bg-surface-dark border border-white/10 text-gray-300 text-sm font-medium hover:border-primary/50 transition-colors">Salon İçi</button>
+<button class="shrink-0 px-5 py-2 rounded-full bg-surface-dark border border-white/10 text-gray-300 text-sm font-medium hover:border-primary/50 transition-colors">Spa</button>
+</div>
+<!-- Masonry Layout -->
+<div class="columns-2 gap-4 space-y-4">
+<!-- Item 1 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden bg-surface-dark ring-1 ring-white/5 shadow-md">
+<img alt="Luxury barber chair in dark vintage interior" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Luxury barber chair in dark vintage interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK1rJnoWjNrty32UeHU9N5CAIgOfafdqFrmGszeWu7jDjfeVaSx5F5oIZY64RuCuABGM2hjteMEQ4LcnFWKz-lNuUHnStcwv55bJXHjWpQq80O9_zVz5N4tFZRTNDedAMDgoDPViFWqMs25w2cxGUoywrL5nh9rl5SejtzwsoqGTdwzRI_0h5bgr90Pxt5CfYF5kWmnAR5_O3k5fqT15EAB0CPWlPaPy5CyBux8OjdIHH_ZAKdPzU4IkV3XmMkPKMXq3vwkN3ufT41"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+<p class="text-white text-xs font-bold">VIP Bölümü</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden bg-surface-dark ring-1 ring-white/5 shadow-md">
+<img alt="Close up of barber shaving client with straight razor" class="w-full h-[220px] object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close up of barber shaving client with straight razor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdZV1L6WjuvWvDbM8jxFvutu_nVxsB_yg1PJK6_95FtcfwTfL_M7cLLXz633A9iAdZ8uj1jBK70PqXT4y7iQeM7kFLSgaptyKt-A7RHOw2AVs_LN4_RLmWPoDlv-k0KUMvESWfqQfuBbr2RF6hDQXSNW9ZcwPwfxAZmWnIg74554n9X9bQUDFNS41CQNVtIZwlzuD-tQkKBHpzcTnvp3bcZUENy2Rpe1e2ywpM4HiN94kyNz4f7P6aLH-38Bdkb9VhvbyjvqFvlOW0"/>
+<div class="absolute top-2 right-2 size-6 bg-primary/90 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-black text-[14px]">star</span>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+<p class="text-white text-xs font-bold">Kral Tıraşı</p>
+<p class="text-primary text-[10px]">Popüler</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden bg-surface-dark ring-1 ring-white/5 shadow-md">
+<img alt="Man getting hair washed at salon sink" class="w-full h-[160px] object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Man getting hair washed at salon sink" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvmOYfTBu3kIMM8SHlJyQEMxQ6VuMHD8ORmmQxSAwkeMkD4vw9mjnMG2VenAy1KYQXZwZUS_RgGBoiApkUo1Jw49oTRivMmLZ31w4N_RzCcTuQR-00fZtdGVE1O_7CWZtkV7xn2-CN8Y6jJOVrtJ1burlhlcNJqgQM5ojjNKhCKDzWGjvDiVMgOPNYbh4gHkDLAT3uIUDl7iZpG64UUz6NspRD0QiP12x-el9yHkzGK7RuWo7GoYeZDvbLl3NdHjHeRWozXpEGE6ri"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+<p class="text-white text-xs font-bold">Saç Bakımı</p>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden bg-surface-dark ring-1 ring-white/5 shadow-md">
+<img alt="Modern mens haircut with textured top" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern mens haircut with textured top" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr_jKKGmihXfNAbJyJxZLUtiek_KAIrXsxT8J-1b8UD3-fg9hcX2qxrTE5MJ9_mfADR1jomyT_JIUoDm5_rLlLupibZOrx-4f-7576Pbwm_f21AeBttZ1YQsZU-6Yrhx0S9LGxoVd3_A7fF2JhU--BbvhMj1pyCFaKBzFFC1_PFw_vdCpnjsLzZtHdug6ShtSmgTl_d8502h-_AHvbptuFQIKvLM7fntJYqRT1wwITZwSYhAesR3-WY-Yt3PCw-xb8QJGqDTzWFtTS"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+<p class="text-white text-xs font-bold">Modern Kesim</p>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden bg-surface-dark ring-1 ring-white/5 shadow-md">
+<img alt="Barber tools scissors and comb on table" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Barber tools scissors and comb on table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAfmKvYlFztKI9e4dl-fcT0PwdYuS639ubPtwUDfQO5Q7k6r-lOmjLz5ndLBVVhUcoFsnoGJG9GB2LcE_VfcFno8LFSiHTlxU1qVWrggFypzvXkCzEjCKDPWEKjsS7wT2ij2npqGNqpMmBa59vUSogM1DG-c64f917ffHlzDzgsUgC3nOrSg6uOTqTTWCU2PuYJhWNPNXkt0HGjR0BzqMPeORrMDf-UIP9V73AnbVvswMZI2VwW1BnAkntPR4yUsAKjzIyKoDtq8CV"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+<p class="text-white text-xs font-bold">Ekipmanlar</p>
+</div>
+</div>
+<!-- Item 6 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden bg-surface-dark ring-1 ring-white/5 shadow-md">
+<img alt="Beard trimming close up with electric razor" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Beard trimming close up with electric razor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyK8msmSDqAUSUtQk7U0EjG-zel4tEMv86iF6u-wvneEyY-5E0UgHNEA3X2gJDlajqF7tuNCccwm_xPqdSjGaDqSvtg2VVwbk4l41TG3oq0xmJ5pTvlbmg0z3PtSgR1CM-GCtWbOopjMx4qgAPp308gO3XrLpEfBTzMzdaIB5JLk6kcXO6zVaX2-lUp8gHkoy0IN4yUOO-UxzrsOP4uqllpVGYPqNYAtTWqGjsntI1o6jfH0VOnA1foNyiuMGs4AD8l1y9HD4EviWC"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+<p class="text-white text-xs font-bold">Sakal Dizayn</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-dark via-background-dark/90 to-transparent z-40 max-w-md mx-auto">
+<button class="w-full h-14 bg-primary hover:bg-[#c29d2b] active:scale-[0.98] transition-all text-background-dark font-bold text-lg rounded-xl shadow-[0_4px_20px_rgba(212,175,53,0.3)] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">calendar_month</span>
+                Randevu Oluştur
+            </button>
+</div>
+</div>
+</body></html>

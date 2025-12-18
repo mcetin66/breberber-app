@@ -1,163 +1,161 @@
-import { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Pressable, Image, TextInput, ActivityIndicator, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Search, Star, Edit, Trash2 } from 'lucide-react-native';
-import { useAuthStore } from '@/stores/authStore';
-import { useBusinessStore } from '@/stores/businessStore';
-import { useRouter } from 'expo-router';
+import { View, Text, TextInput, Pressable, Image, Switch, ScrollView } from 'react-native';
+import { StandardScreen } from '@/components/ui/StandardScreen';
 import { COLORS } from '@/constants/theme';
-import { AdminHeader } from '@/components/admin/AdminHeader';
+import { Search, Plus, Edit2, UserPlus, Filter } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function StaffScreen() {
-  const user = useAuthStore(state => state.user);
-  const router = useRouter();
-  const { barberData, loading, fetchStaff, removeStaff } = useBusinessStore();
-  const [searchQuery, setSearchQuery] = useState('');
+const FILTER_CHIPS = ['Tümü', 'Berberler', 'Kuaförler', 'Manikür'];
 
-  const staff = user?.barberId ? barberData[user.barberId]?.staff || [] : [];
-  const filteredStaff = staff.filter(s =>
-    s.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  useEffect(() => {
-    if (!user?.barberId) {
-      Alert.alert('Hata', 'İşletme bilgisi bulunamadı');
-      // Route guard will handle redirect if user is not authenticated
-      return;
-    }
-    fetchStaff(user.barberId);
-  }, [user]);
-
-  const handleDelete = (staffId: string, staffName: string) => {
-    if (!user?.barberId) return;
-
-    Alert.alert(
-      'Personel Sil',
-      `${staffName} adlı personeli silmek istediğinizden emin misiniz?`,
-      [
-        { text: 'İptal', style: 'cancel' },
-        {
-          text: 'Sil',
-          style: 'destructive',
-          onPress: async () => {
-            await removeStaff(user.barberId!, staffId);
-          },
-        },
-      ]
-    );
-  };
-
-  if (loading && staff.length === 0) {
-    return (
-      <SafeAreaView className="flex-1 bg-background">
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color={COLORS.primary.DEFAULT} />
-          <Text className="text-text-secondary font-poppins mt-4">Personel yükleniyor...</Text>
-        </View>
-      </SafeAreaView>
-    );
+const STAFF_DATA = [
+  {
+    id: '1',
+    name: 'Burak Özçivit',
+    role: 'Kıdemli Stilist',
+    image: 'https://randomuser.me/api/portraits/men/32.jpg',
+    isActive: true,
+    category: 'Berberler'
+  },
+  {
+    id: '2',
+    name: 'Ahmet Yılmaz',
+    role: 'Baş Berber',
+    image: 'https://randomuser.me/api/portraits/men/44.jpg',
+    isActive: true,
+    category: 'Berberler'
+  },
+  {
+    id: '3',
+    name: 'Zeynep Demir',
+    role: 'Saç Uzmanı',
+    image: 'https://randomuser.me/api/portraits/women/44.jpg',
+    isActive: false,
+    category: 'Kuaförler'
+  },
+  {
+    id: '4',
+    name: 'Can Yıldız',
+    role: 'Asistan',
+    image: 'https://randomuser.me/api/portraits/men/85.jpg',
+    isActive: true,
+    isNew: true,
+    category: 'Berberler'
   }
+];
+
+export default function BusinessStaffScreen() {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('Tümü');
+
+  const filteredStaff = STAFF_DATA.filter(staff => {
+    const matchesSearch = staff.name.toLowerCase().includes(searchQuery.toLowerCase()) || staff.role.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = activeFilter === 'Tümü' || staff.category === activeFilter || (activeFilter === 'Kuaförler' && staff.category === 'Kuaförler'); // simplified logic
+    return matchesSearch && matchesFilter;
+  });
 
   return (
-    <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-      {/* Header with Admin Standard */}
-      <AdminHeader
-        title="Personel Yönetimi"
-        subtitle="Ekibini ve yetkileri düzenle"
-        rightElement={
-          <Pressable
-            onPress={() => router.push('/(business)/(tabs)/staff/detail')}
-            className="w-10 h-10 rounded-full bg-primary items-center justify-center shadow-lg shadow-primary/30 active:scale-95"
-          >
-            <Plus size={24} color="white" />
-          </Pressable>
-        }
-      >
-        {/* Search Bar - Moved to Header for alignment */}
-        <View className="bg-[#1E293B] border border-white/5 rounded-xl h-12 flex-row items-center px-4 mt-2">
-          <Search size={20} color="#64748B" />
+    <StandardScreen
+      title="Personel Yönetimi"
+      rightElement={
+        <Pressable className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center shadow-[0_0_15px_rgba(212,175,53,0.4)] active:scale-95">
+          <Plus size={24} color="#121212" />
+        </Pressable>
+      }
+    >
+      {/* Search & Filter */}
+      <View className="mb-6 gap-4">
+        {/* Search Bar */}
+        <View className="relative">
+          <View className="absolute inset-y-0 left-0 flex items-center justify-center pl-4 pointer-events-none z-10">
+            <Search size={20} color="#6B7280" />
+          </View>
           <TextInput
-            className="flex-1 ml-3 text-white text-sm font-medium h-full"
+            className="w-full h-12 bg-[#1E1E1E] border border-white/5 rounded-2xl pl-12 pr-4 text-white text-sm placeholder-gray-500 shadow-sm"
             placeholder="Personel ara..."
-            placeholderTextColor="#64748B"
+            placeholderTextColor="#6B7280"
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
         </View>
-      </AdminHeader>
 
-      <View className="flex-1 px-4">
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-          {filteredStaff.length > 0 ? (
-            filteredStaff.map((member) => (
-              <View key={member.id} className="bg-[#1E293B] rounded-2xl p-4 mb-3 border border-white/5 shadow-sm">
-                <View className="flex-row items-start">
-                  <View className="relative">
-                    <Image
-                      source={{ uri: member.avatar || 'https://via.placeholder.com/150' }}
-                      className="w-16 h-16 rounded-xl bg-gray-800"
-                    />
-                    <View className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#1E293B] ${member.isActive ? 'bg-green-500' : 'bg-gray-500'}`} />
-                  </View>
-
-                  <View className="flex-1 ml-3">
-                    <View className="flex-row items-center justify-between mb-1">
-                      <Text className="text-white text-lg font-bold leading-tight">{member.name}</Text>
-                      {/* Status Badge is now integrated into Avatar dot, but can keep text if needed. Opting for clean Admin card style. */}
-                    </View>
-
-                    <View className="flex-row items-center mb-2">
-                      <Star size={14} color="#F59E0B" fill="#F59E0B" />
-                      <Text className="text-white font-bold text-xs ml-1">{member.rating.toFixed(1)}</Text>
-                      <Text className="text-slate-400 text-xs ml-1">({member.reviewCount} değerlendirme)</Text>
-                    </View>
-
-                    <View className="flex-row flex-wrap gap-1">
-                      {(member.expertise || []).map((exp, idx) => (
-                        <View key={idx} className="px-2 py-0.5 rounded border border-white/10 bg-white/5">
-                          <Text className="text-slate-300 text-[10px] font-medium">{exp}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-                </View>
-
-                {/* Actions Divider */}
-                <View className="h-[1px] bg-white/5 w-full my-3" />
-
-                <View className="flex-row gap-3">
-                  <Pressable
-                    onPress={() => router.push({ pathname: '/(business)/(tabs)/staff/detail', params: { id: member.id } })}
-                    className="flex-1 flex-row items-center justify-center py-2.5 rounded-xl bg-primary/10 border border-primary/20 active:bg-primary/20"
-                  >
-                    <Edit size={14} color={COLORS.primary.DEFAULT} />
-                    <Text className="text-primary text-xs font-bold ml-2">Düzenle</Text>
-                  </Pressable>
-                  <Pressable
-                    onPress={() => handleDelete(member.id, member.name)}
-                    className="flex-1 flex-row items-center justify-center py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 active:bg-red-500/20"
-                  >
-                    <Trash2 size={14} color="#EF4444" />
-                    <Text className="text-red-500 text-xs font-bold ml-2">Sil</Text>
-                  </Pressable>
-                </View>
-              </View>
-            ))
-          ) : (
-            <View className="flex-1 items-center justify-center py-12">
-              <View className="w-16 h-16 rounded-full bg-slate-800 items-center justify-center mb-4">
-                <Search size={24} color="#64748B" />
-              </View>
-              <Text className="text-white text-lg font-bold mb-2">
-                {searchQuery ? 'Sonuç Bulunamadı' : 'Personel Listeniz Boş'}
-              </Text>
-              <Text className="text-slate-400 text-sm text-center px-8">
-                {searchQuery ? 'Farklı bir arama yapmayı deneyin.' : 'Yeni personel ekleyerek ekibinizi kurmaya başlayın.'}
-              </Text>
-            </View>
-          )}
+        {/* Filter Chips */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+          {FILTER_CHIPS.map(chip => {
+            const isActive = activeFilter === chip;
+            return (
+              <Pressable
+                key={chip}
+                onPress={() => setActiveFilter(chip)}
+                className={`h-9 px-5 rounded-full items-center justify-center border ${isActive
+                    ? 'bg-[#d4af35] border-[#d4af35]'
+                    : 'bg-[#1E1E1E] border-white/10'
+                  }`}
+              >
+                <Text className={`text-sm font-semibold ${isActive ? 'text-[#121212]' : 'text-gray-300'}`}>
+                  {chip}
+                </Text>
+              </Pressable>
+            )
+          })}
         </ScrollView>
       </View>
-    </SafeAreaView>
+
+      {/* List */}
+      <View className="gap-4 pb-24">
+        <Text className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">
+          Personel Listesi ({filteredStaff.length})
+        </Text>
+
+        {filteredStaff.map((staff) => (
+          <View
+            key={staff.id}
+            className={`relative flex-row items-center p-3 bg-[#1E1E1E] rounded-2xl border border-white/5 shadow-sm ${!staff.isActive ? 'opacity-70' : ''}`}
+          >
+            {/* Glow effect for active items (simulated with standard view for now, could be gradient) */}
+            {staff.isActive && (
+              <View className="absolute -inset-0.5 bg-[#d4af35]/5 rounded-2xl -z-10" />
+            )}
+
+            <View className="relative">
+              <Image
+                source={{ uri: staff.image }}
+                className={`w-14 h-14 rounded-full border-2 ${staff.isActive ? 'border-[#2a2a2a]' : 'border-[#2a2a2a] grayscale'}`}
+              />
+              {staff.isNew && (
+                <View className="absolute -top-1 -left-1 bg-[#d4af35] px-1.5 py-0.5 rounded shadow-sm z-10">
+                  <Text className="text-[#121212] text-[9px] font-bold">YENİ</Text>
+                </View>
+              )}
+              <View className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-[#1E1E1E] ${staff.isActive ? 'bg-green-500' : 'bg-gray-500'}`} />
+            </View>
+
+            <View className="flex-1 ml-4 justify-center">
+              <Text className={`text-base font-bold leading-tight ${staff.isActive ? 'text-white' : 'text-gray-300'}`}>
+                {staff.name}
+              </Text>
+              <Text className={`text-xs font-medium ${staff.isActive ? 'text-[#d4af35]/80' : 'text-gray-500'}`}>
+                {staff.role}
+              </Text>
+            </View>
+
+            <View className="flex-row items-center gap-3 pl-2">
+              <Pressable className="p-2 rounded-full hover:bg-white/5 active:bg-white/10">
+                <Edit2 size={18} color="#9CA3AF" />
+              </Pressable>
+              <Switch
+                value={staff.isActive}
+                trackColor={{ false: '#374151', true: COLORS.primary.DEFAULT }}
+                thumbColor={staff.isActive ? '#121212' : '#f4f3f4'}
+                ios_backgroundColor="#374151"
+                style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+              />
+            </View>
+          </View>
+        ))}
+      </View>
+
+    </StandardScreen>
   );
 }

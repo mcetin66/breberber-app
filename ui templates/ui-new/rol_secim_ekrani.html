@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rol Seçimi - Luxury Barber App</title>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", /* Gold */
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", /* Deep Black */
+                        "surface-dark": "#1E1E1E", /* Dark Grey Card */
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    boxShadow: {
+                        "gold-glow": "0 0 15px -3px rgba(212, 175, 55, 0.3)",
+                        "gold-glow-hover": "0 0 25px -5px rgba(212, 175, 55, 0.5)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom styles for smooth radio interaction without JS */
+        input[type="radio"]:checked + div + div {
+            border-color: #D4AF37;
+            opacity: 1;
+        }
+        input[type="radio"]:checked + div {
+            opacity: 1;
+        }
+        /* Hide scrollbar for cleaner mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-white selection:bg-primary selection:text-black">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top App Bar Area -->
+<div class="flex items-center justify-between p-6 pb-2">
+<!-- Back Button (Optional context) -->
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-dark hover:bg-white/10 text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span>
+</button>
+<!-- Logo Placeholder -->
+<div class="h-10 w-10 flex items-center justify-center rounded-full border border-primary/30 text-primary shadow-gold-glow">
+<span class="material-symbols-outlined text-[24px]">diamond</span>
+</div>
+<!-- Help/Support -->
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-dark hover:bg-white/10 text-white transition-colors">
+<span class="material-symbols-outlined text-[22px]">help</span>
+</button>
+</div>
+<!-- Headline & Body Text -->
+<div class="px-6 py-4">
+<h2 class="text-white tracking-tight text-[32px] font-bold leading-tight mb-2">Hoş Geldiniz</h2>
+<p class="text-[#b6b1a0] text-base font-light leading-normal">Lüks deneyiminize başlamak için lütfen rolünüzü seçin.</p>
+</div>
+<!-- Cards Section -->
+<div class="flex-1 px-4 flex flex-col gap-4 pb-24">
+<!-- Card 1: Customer -->
+<label class="group relative cursor-pointer block">
+<input checked="" class="peer sr-only" name="user_role" type="radio" value="customer"/>
+<!-- Background Gradient Effect on Hover/Active -->
+<div class="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 to-transparent opacity-0 transition-opacity duration-300"></div>
+<!-- Border Effect -->
+<div class="absolute inset-0 rounded-xl border border-white/5 transition-all duration-300 peer-checked:border-primary peer-checked:shadow-gold-glow group-hover:border-primary/50"></div>
+<!-- Card Content -->
+<div class="relative flex items-stretch justify-between gap-4 rounded-xl bg-surface-dark p-4 z-10">
+<div class="flex flex-col justify-between py-1 flex-1">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[20px]">face</span>
+<span class="text-xs font-medium text-primary uppercase tracking-wider">Kişisel</span>
+</div>
+<p class="text-white text-lg font-bold leading-tight">Müşteri</p>
+<p class="text-[#b6b1a0] text-sm font-normal leading-relaxed mt-1">Randevu alın, stilistleri keşfedin ve tarzınızı yaratın.</p>
+</div>
+</div>
+<!-- Image -->
+<div class="w-24 shrink-0 rounded-lg bg-gray-800 overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Stylish man getting a haircut in a luxury barber shop" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_xkm_cy59UCEeES_oKWgKW0EvtSZ4OFovHrcZb18uuXkkkLK21Ua8hHMGF8PSC1CQDKDwzDGDNTvPmz8FS3FToTVCgqEXOFLfdPCr17FneqDfUCwFHUnJaR2zKx4shv9dGRYUnTay6EXDz_B8rePdqJSOnPhZSXxluORYlgGySDjvPXZykggrDCKJH0g3GawbCMHjH83U9cpUDUiYXDD_KrrNDUL4IEjkBjkvEjnjGof8dlBng0wptEQ4uOs7R56KTSDwqqi7f7Hx");'>
+</div>
+<!-- Checkmark Indicator -->
+<div class="absolute bottom-2 right-2 z-20 h-6 w-6 rounded-full bg-primary flex items-center justify-center opacity-0 scale-75 transition-all duration-300 peer-checked:opacity-100 peer-checked:scale-100 shadow-lg">
+<span class="material-symbols-outlined text-black text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</label>
+<!-- Card 2: Business Owner -->
+<label class="group relative cursor-pointer block">
+<input class="peer sr-only" name="user_role" type="radio" value="business"/>
+<div class="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 to-transparent opacity-0 transition-opacity duration-300"></div>
+<div class="absolute inset-0 rounded-xl border border-white/5 transition-all duration-300 peer-checked:border-primary peer-checked:shadow-gold-glow group-hover:border-primary/50"></div>
+<div class="relative flex items-stretch justify-between gap-4 rounded-xl bg-surface-dark p-4 z-10">
+<div class="flex flex-col justify-between py-1 flex-1">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[20px]">storefront</span>
+<span class="text-xs font-medium text-primary uppercase tracking-wider">Kurumsal</span>
+</div>
+<p class="text-white text-lg font-bold leading-tight">İşletme Sahibi</p>
+<p class="text-[#b6b1a0] text-sm font-normal leading-relaxed mt-1">Salonunuzu yönetin, ekibinizi kurun ve işinizi büyütün.</p>
+</div>
+</div>
+<div class="w-24 shrink-0 rounded-lg bg-gray-800 overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Modern barbershop interior with golden lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZvTmWlCqAKP-B_uAmMjgCcRzo3nq0v0V0Y4F5ku8pZqXl3bIaZl7OQMC5ANiIQn8Gu4GdqdDt14zOihdP5hicYpE3gpM_Z3L8vcnwKovu9lJ2iZfsYkzlqqwSowN8vcsOSrfQntPOli34If_rp3XkbPRsTmwPoKZ-p4ZxPDg1XJ8vOZaXXCyI1SIuOegjoc5mDe6YVd29wViw7LcU4e8rWxI6zvqxkeNnk-LUmTNysVwC-vTbrxRRjw27Cqok2Q7BPPcBjFYw3_x8");'>
+</div>
+<div class="absolute bottom-2 right-2 z-20 h-6 w-6 rounded-full bg-primary flex items-center justify-center opacity-0 scale-75 transition-all duration-300 peer-checked:opacity-100 peer-checked:scale-100 shadow-lg">
+<span class="material-symbols-outlined text-black text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</label>
+<!-- Card 3: Staff -->
+<label class="group relative cursor-pointer block">
+<input class="peer sr-only" name="user_role" type="radio" value="staff"/>
+<div class="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 to-transparent opacity-0 transition-opacity duration-300"></div>
+<div class="absolute inset-0 rounded-xl border border-white/5 transition-all duration-300 peer-checked:border-primary peer-checked:shadow-gold-glow group-hover:border-primary/50"></div>
+<div class="relative flex items-stretch justify-between gap-4 rounded-xl bg-surface-dark p-4 z-10">
+<div class="flex flex-col justify-between py-1 flex-1">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[20px]">content_cut</span>
+<span class="text-xs font-medium text-primary uppercase tracking-wider">Ekip</span>
+</div>
+<p class="text-white text-lg font-bold leading-tight">Personel</p>
+<p class="text-[#b6b1a0] text-sm font-normal leading-relaxed mt-1">Programınızı takip edin ve randevularınızı yönetin.</p>
+</div>
+</div>
+<div class="w-24 shrink-0 rounded-lg bg-gray-800 overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Professional barber holding scissors and comb" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdljpth89xTQj6mUBeeBSW6r_1B8BA2fyhGWhRzpftzXep9zk7sUgrRH_SZkW4ugSRS9Lj5YrEh2s3ffmZIXdWI6MyYg7-rPq9DT1JcyxfYbCI06_4f9lO8NYvR1iAXhO53wJbGhxYl4Dx-CHxuK2Tv2KHTSy1USJfkrATcZkQmUWL_jyaN241eWD_lol8V2fumtBKJ0dROZWg4rHNl_lwf6K59HHbpOQO3gEeVvpmeaQqW4v1reduTSwIa6zl-aCRPI3t7PrlpLuk");'>
+</div>
+<div class="absolute bottom-2 right-2 z-20 h-6 w-6 rounded-full bg-primary flex items-center justify-center opacity-0 scale-75 transition-all duration-300 peer-checked:opacity-100 peer-checked:scale-100 shadow-lg">
+<span class="material-symbols-outlined text-black text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</label>
+</div>
+<!-- Sticky Footer Action -->
+<div class="fixed bottom-0 left-0 w-full p-4 bg-background-dark/90 backdrop-blur-lg border-t border-white/10 z-50">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 bg-gradient-to-br from-[#D4AF37] to-[#B59021] hover:from-[#E5C048] hover:to-[#C6A132] text-black shadow-gold-glow transition-all active:scale-[0.98]">
+<span class="text-base font-bold tracking-wide">Devam Et</span>
+<span class="material-symbols-outlined ml-2 font-bold" style="font-size: 20px;">arrow_forward</span>
+</button>
+<div class="flex justify-center mt-4">
+<a class="text-sm text-gray-400 hover:text-white transition-colors" href="#">Hesabınız var mı? <span class="text-primary font-medium">Giriş Yap</span></a>
+</div>
+</div>
+</div>
+</body></html>

@@ -20,23 +20,23 @@ const DATES = [
 const TIME_SLOTS = {
     morning: [
         { time: '09:00', disabled: true },
-        { time: '09:45', disabled: false },
+        { time: '09:40', disabled: false },
         { time: '10:30', disabled: true },
-        { time: '11:15', disabled: false },
+        { time: '11:10', disabled: false },
     ],
     afternoon: [
         { time: '13:00', disabled: false },
-        { time: '13:45', disabled: false, selected: true }, // Default selected
+        { time: '13:40', disabled: false, selected: true }, // Default selected
         { time: '14:30', disabled: false },
-        { time: '15:15', disabled: true },
+        { time: '15:10', disabled: true },
         { time: '16:00', disabled: false },
-        { time: '16:45', disabled: false },
+        { time: '16:40', disabled: false },
     ],
     evening: [
         { time: '18:00', disabled: false },
-        { time: '18:45', disabled: false },
+        { time: '18:40', disabled: false },
         { time: '19:30', disabled: true },
-        { time: '20:15', disabled: true },
+        { time: '20:10', disabled: true },
     ]
 };
 
@@ -74,8 +74,8 @@ export default function TimeSlotSelectionScreen() {
                             key={item.id}
                             onPress={() => setSelectedDate(item.date)}
                             className={`flex-col items-center justify-center gap-1 rounded-[1.25rem] min-w-[4.5rem] h-20 transition-all active:scale-95 ${selectedDate === item.date
-                                    ? 'bg-primary shadow-lg shadow-primary/40'
-                                    : 'bg-white dark:bg-[#283039] active:bg-gray-100 dark:active:bg-[#323b46]'
+                                ? 'bg-primary shadow-lg shadow-primary/40'
+                                : 'bg-white dark:bg-[#283039] active:bg-gray-100 dark:active:bg-[#323b46]'
                                 }`}
                         >
                             <Text className={`text-xs font-medium ${selectedDate === item.date ? 'text-white/90' : 'text-gray-500 dark:text-gray-300'}`}>{item.day}</Text>

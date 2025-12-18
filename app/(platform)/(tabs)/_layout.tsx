@@ -8,38 +8,30 @@ export default function PlatformLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#1E293B',
-          borderTopWidth: 0,
-          position: 'absolute',
-          bottom: 30,
-          left: 15,
-          right: 15,
-          borderRadius: 25,
-          height: 80,
-          paddingBottom: 0,
-          paddingHorizontal: 5,
-          alignItems: 'center',
-          justifyContent: 'center',
+          backgroundColor: '#1E1E1E', // Dark Card Background
+          borderTopWidth: 1,
+          borderTopColor: 'rgba(212, 175, 53, 0.2)', // Subtle Gold
+          height: 90, // Taller footer
+          paddingTop: 10,
+          paddingBottom: 30, // Handle bottom inset manually for control or rely on Safe Area
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
-            height: 10,
+            height: -4,
           },
-          shadowOpacity: 0.5,
+          shadowOpacity: 0.3,
           shadowRadius: 10,
-          elevation: 20,
+          elevation: 10,
         },
         tabBarItemStyle: {
-          height: 80,
-          paddingTop: 15,
+          height: 50,
         },
-        tabBarActiveTintColor: '#3B82F6',
+        tabBarActiveTintColor: '#d4af35', // Gold
         tabBarInactiveTintColor: '#64748B',
         tabBarLabelStyle: {
           fontFamily: 'Poppins_500Medium',
-          fontSize: 9,
-          marginTop: 5,
-          marginBottom: 15,
+          fontSize: 10,
+          marginTop: 4,
         },
       }}
     >
@@ -63,10 +55,16 @@ export default function PlatformLayout() {
           title: '',
           tabBarIcon: ({ focused }) => (
             <View
-              className="w-[72px] h-[72px] rounded-full items-center justify-center -mt-4 shadow-xl border-[4px] border-[#0F172A]"
-              style={{ backgroundColor: focused ? '#3B82F6' : '#334155' }}
+              className="w-[64px] h-[64px] rounded-full items-center justify-center -mt-6 shadow-lg shadow-black/50 border-[4px] border-[#121212]"
+              style={{
+                backgroundColor: focused ? '#d4af35' : '#1E1E1E',
+                shadowColor: focused ? '#d4af35' : '#000',
+                shadowOpacity: focused ? 0.4 : 0.2,
+                shadowRadius: 10,
+                elevation: 8
+              }}
             >
-              <LayoutDashboard size={32} color={focused ? 'white' : '#94A3B8'} />
+              <LayoutDashboard size={28} color={focused ? '#121212' : '#64748B'} />
             </View>
           ),
           tabBarLabelStyle: { display: 'none' },
@@ -88,6 +86,7 @@ export default function PlatformLayout() {
       />
 
       {/* Hidden Screens */}
+      <Tabs.Screen name="reports-new" options={{ href: null }} />
     </Tabs>
   );
 }

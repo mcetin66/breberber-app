@@ -36,13 +36,13 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
             onRequestClose={onClose}
         >
             <Pressable className="flex-1 bg-black/60 justify-center items-center p-4" onPress={onClose}>
-                <Pressable className="bg-[#1E293B] w-full max-w-sm rounded-2xl border border-white/10 overflow-hidden" onPress={(e) => e.stopPropagation()}>
+                <Pressable className="bg-[#1E1E1E] w-full max-w-sm rounded-2xl border border-white/10 overflow-hidden" onPress={(e) => e.stopPropagation()}>
 
                     {/* Header */}
-                    <View className="px-5 py-4 border-b border-white/10 flex-row items-center justify-between bg-[#0F172A]">
+                    <View className="px-5 py-4 border-b border-white/10 flex-row items-center justify-between bg-[#121212]">
                         <View>
                             <Text className="text-white text-lg font-poppins-bold">Randevu Detayı</Text>
-                            <Text className="text-slate-400 text-xs font-poppins">{formatDate(appointment.bookingDate || appointment.date)}</Text>
+                            <Text className="text-gray-400 text-xs font-poppins">{formatDate(appointment.bookingDate || appointment.date)}</Text>
                         </View>
                         <Pressable onPress={onClose} className="w-8 h-8 rounded-full bg-white/5 items-center justify-center">
                             <X size={18} color="white" />
@@ -53,12 +53,12 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
                     <View className="p-5 gap-4">
                         {appointment.status === 'blocked' ? (
                             <View className="items-center justify-center py-4">
-                                <View className="w-16 h-16 rounded-full bg-slate-800 items-center justify-center mb-4 border border-white/10">
+                                <View className="w-16 h-16 rounded-full bg-[#2A2A2A] items-center justify-center mb-4 border border-white/10">
                                     <Clock size={32} color={COLORS.text.secondary} />
                                 </View>
                                 {/* Display Block Reason */}
                                 <Text className="text-white text-xl font-bold text-center">{appointment.customerName || 'Saat Kapalı'}</Text>
-                                <Text className="text-slate-400 text-center mt-2 mb-6">
+                                <Text className="text-gray-400 text-center mt-2 mb-6">
                                     {formatTime(appointment.startTime)} - {formatTime(appointment.endTime)} arası kapatılmıştır.
                                 </Text>
 
@@ -94,7 +94,7 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
                                         <Clock size={20} color="#3b82f6" />
                                     </View>
                                     <View>
-                                        <Text className="text-slate-400 text-xs font-poppins">Saat</Text>
+                                        <Text className="text-gray-400 text-xs font-poppins">Saat</Text>
                                         <Text className="text-white text-base font-poppins-semibold">
                                             {formatTime(appointment.startTime)} - {formatTime(appointment.endTime)}
                                         </Text>
@@ -107,12 +107,12 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
                                         <User size={20} color="#a855f7" />
                                     </View>
                                     <View className="flex-1">
-                                        <Text className="text-slate-400 text-xs font-poppins">Müşteri</Text>
+                                        <Text className="text-gray-400 text-xs font-poppins">Müşteri</Text>
                                         <Text className="text-white text-base font-poppins-semibold">{appointment.customerName || 'Misafir'}</Text>
                                         {appointment.customerPhone && (
                                             <View className="flex-row items-center mt-1">
                                                 <Phone size={12} color="#94a3b8" />
-                                                <Text className="text-slate-400 text-xs ml-1">{appointment.customerPhone}</Text>
+                                                <Text className="text-gray-400 text-xs ml-1">{appointment.customerPhone}</Text>
                                             </View>
                                         )}
                                     </View>
@@ -124,9 +124,9 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
                                         <Scissors size={20} color="#f97316" />
                                     </View>
                                     <View className="flex-1">
-                                        <Text className="text-slate-400 text-xs font-poppins">Hizmet & Personel</Text>
+                                        <Text className="text-gray-400 text-xs font-poppins">Hizmet & Personel</Text>
                                         <Text className="text-white text-base font-poppins-semibold">{appointment.serviceName}</Text>
-                                        <Text className="text-slate-400 text-sm mt-0.5">{appointment.staffName}</Text>
+                                        <Text className="text-gray-400 text-sm mt-0.5">{appointment.staffName}</Text>
                                     </View>
                                     <View className="items-end">
                                         <Text className="text-primary text-lg font-poppins-bold">₺{appointment.totalPrice}</Text>

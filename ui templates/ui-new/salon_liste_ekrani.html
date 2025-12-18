@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Salon Liste Ekranı</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "primary-dark": "#b08d2b",
+                        "background-light": "#f8f7f6", // Not used in this specific dark-only request but kept for theme consistency
+                        "background-dark": "#121212",
+                        "surface-dark": "#1E1E1E",
+                        "surface-dark-lighter": "#2a2a2a",
+                        "text-secondary": "#B0B0B0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'glow-gold': '0 0 15px -3px rgba(212, 175, 53, 0.15)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for horizontal scrolling areas */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display text-white antialiased selection:bg-primary selection:text-black">
+<div class="relative mx-auto flex h-full min-h-screen w-full max-w-md flex-col overflow-hidden bg-background-dark shadow-2xl">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-dark/95 backdrop-blur-sm border-b border-white/5">
+<div class="flex items-center justify-between px-4 py-4">
+<div class="flex flex-col">
+<span class="text-xs font-medium text-text-secondary uppercase tracking-wider">Konum</span>
+<div class="flex items-center gap-1 text-primary cursor-pointer group">
+<span class="material-symbols-outlined text-[20px] group-hover:animate-bounce">location_on</span>
+<h1 class="text-base font-bold text-white leading-tight">İstanbul, Beşiktaş</h1>
+<span class="material-symbols-outlined text-[18px] text-text-secondary">expand_more</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center size-10 rounded-full bg-surface-dark border border-white/10 text-white hover:border-primary/50 transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="relative flex items-center justify-center size-10 rounded-full bg-surface-dark border border-white/10 text-white hover:border-primary/50 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full"></span>
+</button>
+</div>
+</div>
+<!-- Categories / Chips -->
+<div class="flex gap-3 overflow-x-auto hide-scrollbar px-4 pb-4 pt-1">
+<button class="shrink-0 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-black shadow-lg shadow-primary/20">
+                    Tümü
+                </button>
+<button class="shrink-0 rounded-full bg-surface-dark border border-white/10 px-5 py-2 text-sm font-medium text-text-secondary hover:text-white hover:border-primary/50 transition-colors">
+                    Berber
+                </button>
+<button class="shrink-0 rounded-full bg-surface-dark border border-white/10 px-5 py-2 text-sm font-medium text-text-secondary hover:text-white hover:border-primary/50 transition-colors">
+                    Kuaför
+                </button>
+<button class="shrink-0 rounded-full bg-surface-dark border border-white/10 px-5 py-2 text-sm font-medium text-text-secondary hover:text-white hover:border-primary/50 transition-colors">
+                    Cilt Bakımı
+                </button>
+<button class="shrink-0 rounded-full bg-surface-dark border border-white/10 px-5 py-2 text-sm font-medium text-text-secondary hover:text-white hover:border-primary/50 transition-colors">
+                    Spa &amp; Masaj
+                </button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto pb-24 px-4 pt-4 space-y-6">
+<!-- Section Title -->
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold tracking-tight text-white">Özel Salonlar</h2>
+<button class="text-xs font-medium text-primary hover:text-white transition-colors">Tümünü Gör</button>
+</div>
+<!-- Salon Card 1 -->
+<div class="group relative flex flex-col overflow-hidden rounded-2xl bg-surface-dark border border-white/5 shadow-lg hover:shadow-glow-gold transition-all duration-300">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+<!-- Favorite Button -->
+<button class="absolute top-3 right-3 z-20 flex size-8 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<!-- Badge -->
+<div class="absolute top-3 left-3 z-20 flex items-center justify-center rounded-md bg-primary/90 px-2 py-1 backdrop-blur-md">
+<span class="text-[10px] font-bold text-black uppercase tracking-wider">Popüler</span>
+</div>
+<div class="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Luxury dark interior barber shop with leather chairs" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQBouqkBC5UZ_9Pl2si0CXJ-7D84uo8Cn46sGc8msdIp9VvLgbANt4xcVNBEpfoIsCszsynKxVbMhMDHOXnvzK01VRNEqa-ukTQQLsZ0UQrh1lHZRP0x4cvyDwcee7m-JCPkOP7zLaMekxzvr9Vn51kXVKLlW8ephcGPVy4fPHg4KR2X-KoVmXw8ikkbtswOByDCPOiLvpKrD9SFiZLOzMMULAPS7nVuVbICY-kcJ53PLgoiEOTxk7RS8ysYIb5rzgfmbDmlbVc6Dd');">
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-lg font-bold text-white group-hover:text-primary transition-colors">Gentleman's Lounge</h3>
+<div class="flex items-center gap-1 mt-1 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+<span>Nişantaşı, İstanbul • 1.2 km</span>
+</div>
+</div>
+<div class="flex items-center gap-1 rounded-lg bg-surface-dark-lighter px-2 py-1 border border-white/5">
+<span class="material-symbols-outlined text-[16px] text-primary fill-current">star</span>
+<span class="text-sm font-bold text-white">4.9</span>
+<span class="text-xs text-text-secondary">(120)</span>
+</div>
+</div>
+<hr class="border-white/5"/>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary">Başlangıç Fiyatı</span>
+<span class="text-sm font-semibold text-primary">₺500</span>
+</div>
+<button class="rounded-lg bg-white px-4 py-2 text-sm font-bold text-black hover:bg-primary transition-colors">
+                            Randevu Al
+                        </button>
+</div>
+</div>
+</div>
+<!-- Salon Card 2 -->
+<div class="group relative flex flex-col overflow-hidden rounded-2xl bg-surface-dark border border-white/5 shadow-lg hover:shadow-glow-gold transition-all duration-300">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+<button class="absolute top-3 right-3 z-20 flex size-8 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Modern hair salon interior with mirrors and warm lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2ZMHodnG8Fef359jq82RUehihQPjENMaxjXeSq3o7eYakp6B9hs-G1RZamr-TTM53-wzZSnSJyys_CSzPK4YOANcE5D2BuBrVINpU20JhKlQonoXMbWcEahi-iLc_3a8EgyihgTR6JvVmtilZpTNJ2bemAy7qvfb7eHBEuh4rHpa3-R3BY8DjCUHZK6NJ_qCPOaxZZMVUumB0MGF-O8d_oQDf-qEEeVF6aGeawfRuKe4mHc5D0FlxammTVVCk9LyII3DCCfqAJrxo');">
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-lg font-bold text-white group-hover:text-primary transition-colors">Golden Scissors Etiler</h3>
+<div class="flex items-center gap-1 mt-1 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+<span>Etiler, İstanbul • 3.5 km</span>
+</div>
+</div>
+<div class="flex items-center gap-1 rounded-lg bg-surface-dark-lighter px-2 py-1 border border-white/5">
+<span class="material-symbols-outlined text-[16px] text-primary fill-current">star</span>
+<span class="text-sm font-bold text-white">4.8</span>
+<span class="text-xs text-text-secondary">(85)</span>
+</div>
+</div>
+<hr class="border-white/5"/>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary">Başlangıç Fiyatı</span>
+<span class="text-sm font-semibold text-primary">₺300</span>
+</div>
+<button class="rounded-lg bg-white px-4 py-2 text-sm font-bold text-black hover:bg-primary transition-colors">
+                            Randevu Al
+                        </button>
+</div>
+</div>
+</div>
+<!-- Salon Card 3 -->
+<div class="group relative flex flex-col overflow-hidden rounded-2xl bg-surface-dark border border-white/5 shadow-lg hover:shadow-glow-gold transition-all duration-300">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+<button class="absolute top-3 right-3 z-20 flex size-8 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Barber using straight razor on client beard" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMTI96vq6WGTUI9K_xkVwRqP1KsjGigUiWBoSZIKqkC2wC0wskmXsA1aDkZF1eQKZl-OpNhY1ScC32wOtFPe9rKKGxlxBwySEywMhOjVh-L7iLHBj8nf8b51k0dXFeSRln_Yl3HhIv7aInKvic2ue63Sy65Ajaybo_BmYlnxlWXwGPgymh14xQ25n2c269UU2-vkqQoN5Rh8mVz10V_MrGrFeZMeg0X7Jed9pZe_ZIHOVvsoopHctdi-XlobyFdVfJEMQR1ltzBjc3');">
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-lg font-bold text-white group-hover:text-primary transition-colors">Blackbeard Karaköy</h3>
+<div class="flex items-center gap-1 mt-1 text-text-secondary text-xs">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+<span>Karaköy, İstanbul • 5.1 km</span>
+</div>
+</div>
+<div class="flex items-center gap-1 rounded-lg bg-surface-dark-lighter px-2 py-1 border border-white/5">
+<span class="material-symbols-outlined text-[16px] text-primary fill-current">star</span>
+<span class="text-sm font-bold text-white">4.7</span>
+<span class="text-xs text-text-secondary">(210)</span>
+</div>
+</div>
+<hr class="border-white/5"/>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary">Başlangıç Fiyatı</span>
+<span class="text-sm font-semibold text-primary">₺450</span>
+</div>
+<button class="rounded-lg bg-white px-4 py-2 text-sm font-bold text-black hover:bg-primary transition-colors">
+                            Randevu Al
+                        </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 z-50 w-full max-w-md border-t border-white/10 bg-surface-dark/95 backdrop-blur-lg">
+<div class="flex items-center justify-around pb-6 pt-3">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[24px]">explore</span>
+<span class="text-[10px] font-medium">Keşfet</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">calendar_month</span>
+<span class="text-[10px] font-medium">Randevular</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">favorite</span>
+<span class="text-[10px] font-medium">Favoriler</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="text-[10px] font-medium">Profil</span>
+</button>
+</div>
+</nav>
+</div>
+</body></html>

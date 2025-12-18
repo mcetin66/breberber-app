@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Salon Detayı - Yorumlar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", 
+                        "surface-dark": "#1E1E1E",
+                        "surface-border": "#333333",
+                        "text-secondary": "#B0B0B0"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for horizontal scroll areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-dark/95 backdrop-blur-sm p-4 pb-2 justify-between border-b border-[#2A2A2A]">
+<div class="text-white flex size-12 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined text-white" style="font-size: 24px;">arrow_back_ios_new</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center font-serif">Salon Detayı</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex items-center justify-center bg-transparent text-white p-0">
+<span class="material-symbols-outlined text-white" style="font-size: 24px;">share</span>
+</button>
+</div>
+</div>
+<!-- Header Image & Info (Collapsed View) -->
+<div class="relative w-full h-48 shrink-0">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark to-transparent z-10"></div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Dark luxury barbershop interior with golden lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDymKldrRxFWMI0IIUN8JcMts8dDMsOFWR5cs9f3rnz_5wwD_CJ9BRhmdzWY1a2MVojO8_PIT5Z305yHVi6bHbi24lO0wcqWA6-I9Rz0a7JIHMVr0jihFw47fZrgP9kBO5mN5R1LW5gsBYtiW0AmezIFsi9CloVo984-n-TT5tw9DDqd9MuyiYzJ2v7rGaoxjksm-aR6nquXqj0PZHZeLk4mpA7moh6CGwltXE3EwfyUd5hDhVlwr-lG07yNdn-Z8fbNcyiIaw9zRZb");'></div>
+<div class="absolute bottom-4 left-4 right-4 z-20">
+<h1 class="text-white text-2xl font-serif font-bold mb-1">Royal Gentleman Barber</h1>
+<p class="text-primary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                    Nişantaşı, İstanbul
+                </p>
+</div>
+</div>
+<!-- Tabs -->
+<div class="sticky top-[60px] z-40 bg-background-dark border-b border-[#333333]">
+<div class="flex px-4 justify-between">
+<a class="flex flex-col items-center justify-center border-b-[2px] border-b-transparent text-text-secondary pb-3 pt-4 flex-1 transition-colors hover:text-white" href="#">
+<p class="text-sm font-medium tracking-wide">Hizmetler</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[2px] border-b-primary text-primary pb-3 pt-4 flex-1" href="#">
+<p class="text-sm font-bold tracking-wide">Yorumlar</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[2px] border-b-transparent text-text-secondary pb-3 pt-4 flex-1 transition-colors hover:text-white" href="#">
+<p class="text-sm font-medium tracking-wide">Hakkında</p>
+</a>
+</div>
+</div>
+<!-- Rating Summary Section -->
+<div class="p-5 flex flex-col gap-6 bg-background-dark">
+<div class="flex items-start justify-between gap-6">
+<!-- Score -->
+<div class="flex flex-col items-center justify-center min-w-[100px]">
+<p class="text-white text-5xl font-serif font-bold leading-none tracking-tight">4.9</p>
+<div class="flex gap-0.5 my-2">
+<span class="material-symbols-outlined text-primary text-[18px] fill-current" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[18px] fill-current" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[18px] fill-current" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[18px] fill-current" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[18px] fill-current" style="font-variation-settings: 'FILL' 1">star_half</span>
+</div>
+<p class="text-text-secondary text-xs font-medium text-center">128 Değerlendirme</p>
+</div>
+<!-- Bars -->
+<div class="flex-1 flex flex-col gap-1.5 pt-1">
+<div class="flex items-center gap-3">
+<span class="text-text-secondary text-xs w-2">5</span>
+<div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-[#333333]">
+<div class="rounded-full bg-primary" style="width: 85%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-text-secondary text-xs w-2">4</span>
+<div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-[#333333]">
+<div class="rounded-full bg-primary/60" style="width: 10%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-text-secondary text-xs w-2">3</span>
+<div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-[#333333]">
+<div class="rounded-full bg-primary/40" style="width: 3%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-text-secondary text-xs w-2">2</span>
+<div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-[#333333]">
+<div class="rounded-full bg-primary/20" style="width: 1%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-text-secondary text-xs w-2">1</span>
+<div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-[#333333]">
+<div class="rounded-full bg-primary/10" style="width: 1%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="px-5 pb-4 overflow-x-auto no-scrollbar flex gap-3">
+<button class="flex items-center justify-center px-4 h-9 rounded-full bg-primary text-background-dark text-sm font-bold border border-primary shrink-0 transition-transform active:scale-95">
+                Tümü
+            </button>
+<button class="flex items-center justify-center px-4 h-9 rounded-full bg-surface-dark text-text-secondary border border-surface-border text-sm font-medium shrink-0 transition-colors hover:border-primary hover:text-primary active:scale-95">
+                Fotoğraflı
+            </button>
+<button class="flex items-center justify-center px-4 h-9 rounded-full bg-surface-dark text-text-secondary border border-surface-border text-sm font-medium shrink-0 transition-colors hover:border-primary hover:text-primary active:scale-95">
+                En Yeni
+            </button>
+<button class="flex items-center justify-center px-4 h-9 rounded-full bg-surface-dark text-text-secondary border border-surface-border text-sm font-medium shrink-0 transition-colors hover:border-primary hover:text-primary active:scale-95">
+                En Düşük
+            </button>
+</div>
+<!-- Reviews List -->
+<div class="flex flex-col px-5 gap-4 pb-24">
+<!-- Review Card 1 -->
+<div class="bg-surface-dark rounded-xl p-4 border border-surface-border shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<div class="flex gap-3 items-center">
+<div class="size-10 rounded-full bg-gray-600 bg-cover bg-center" data-alt="Portrait of a young man smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDP6BjnvDEZ2ZuBAc5OJCFZ1S-aAfUDcFyMRW3cTzzN04Y1KShIAEXdHWOMl2tjFWfGhyOs-1r8Pf4SJu3dEfcUM07VmCcckEDZAHQn3itvzlj83A6ykYLPnDhQWIQE-9nnQxzapQtOJKPO7HAxZxBGSXD4daZ2DqGlqZHq7HVOovwJ8XjSCYYoSNNQP7aFNkVCHSqUCtkYUF0LgA8pvjAExMXsOyjqfSv-KNdLZc5lEmVeaDW-YOZh735TJffB6g8vQwu900qx_WMd");'></div>
+<div class="flex flex-col">
+<h4 class="text-white text-sm font-bold">Caner Demir</h4>
+<span class="text-text-secondary text-xs">2 gün önce</span>
+</div>
+</div>
+<div class="flex items-center bg-[#2A2A2A] px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-primary text-[14px] mr-1 fill-current" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="text-white text-xs font-bold">5.0</span>
+</div>
+</div>
+<div class="mb-3">
+<span class="inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-primary/20 text-primary mb-2 border border-primary/20">Saç &amp; Sakal Kesimi</span>
+<p class="text-gray-300 text-sm leading-relaxed">
+                        Mükemmel bir deneyimdi. Randevu saatine tam uyuldu ve Mehmet bey işinin ehli. Ortam çok nezih ve temiz. Kesinlikle tavsiye ediyorum.
+                    </p>
+</div>
+<!-- Attached Photos -->
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+<div class="h-20 w-20 shrink-0 rounded-lg bg-cover bg-center border border-surface-border" data-alt="Close up of a fresh haircut" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD40djSEMuM81gXEVIWFJ6An6nwKbTCTdNqbggMwb5imdJfJ83Q0NMqThcwW3BLDe2UslNuV85wMQBcUfMOHbwUWrARZ3Za-_T_ZfRJtV9RvwTR5GAchiR_BdgnbQAPbSfud99StCmdHQGUP7GhIFO7C1F6QrmaTu-4zSTtaY6Fc7K3YtwuC-bZYnkoqqYB1GfG1F67Tt_1iUq21BLbDcNQ0RU1PqydOi0ahxRnY_-NFUyp6cp_GA8EQrcvZeYrbkV1Lqk_PfOVqLtD");'></div>
+<div class="h-20 w-20 shrink-0 rounded-lg bg-cover bg-center border border-surface-border" data-alt="Barber tools on a table" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6xRLGl5qrK7w_2Sei08nnxG32LKPWFYe0WT2uLiKKphvZfzqCIrDOzXqv7UGemUAm45MkDpLoZ8Vu_KoKZ4xxwuPP1rVQ2CtEGNVLJe09SNmXf-0KPGZJYC3ToBtV9bcYpwGlZAf1tkTCm0hgi1LLfJP7gKUeJmhWLA-cSDfDmm8bxpesCSzzrivTcJOBZMFOsb3JaMd50S4RBAhPY1LKZ1AVApgGWucVXfbT1qGMWYf_H4GgZZaCf2IWNEpwuY-M5W6Rp-fJ03pD");'></div>
+</div>
+<div class="mt-3 pt-3 border-t border-[#333333] flex items-center gap-4">
+<button class="flex items-center gap-1.5 text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+<span class="text-xs font-medium">Faydalı (12)</span>
+</button>
+</div>
+</div>
+<!-- Review Card 2 -->
+<div class="bg-surface-dark rounded-xl p-4 border border-surface-border shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<div class="flex gap-3 items-center">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
+                            ME
+                        </div>
+<div class="flex flex-col">
+<h4 class="text-white text-sm font-bold">Mert Erdoğan</h4>
+<span class="text-text-secondary text-xs">1 hafta önce</span>
+</div>
+</div>
+<div class="flex items-center bg-[#2A2A2A] px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-primary text-[14px] mr-1 fill-current" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="text-white text-xs font-bold">4.0</span>
+</div>
+</div>
+<div class="mb-2">
+<span class="inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-primary/20 text-primary mb-2 border border-primary/20">Cilt Bakımı</span>
+<p class="text-gray-300 text-sm leading-relaxed">
+                        Hizmet kalitesi çok iyi ancak biraz beklemek zorunda kaldım. Onun dışında her şey harikaydı, özellikle kullandıkları ürünler çok kaliteli.
+                    </p>
+</div>
+<div class="mt-3 pt-3 border-t border-[#333333] flex items-center gap-4">
+<button class="flex items-center gap-1.5 text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+<span class="text-xs font-medium">Faydalı (4)</span>
+</button>
+</div>
+</div>
+<!-- Review Card 3 -->
+<div class="bg-surface-dark rounded-xl p-4 border border-surface-border shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<div class="flex gap-3 items-center">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Portrait of a bearded man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdE3gDWKf6yHdfsuIZU2n0IxA7UpKmxH4fyVFeepk37ufg-0t-ca_PAObpWg6etULxqL8jhJygFxt0GZ8gNpqEjyWB1utL9IwjcQ0orR-uQNNB5c7wqmaIsyhezXmbo_SPdWcxQlgDBadyT07Ah9IC3n8CUGrFYfoJfZiqOO34nNCA5xqC2Q_zlCtgo5gThB2_5ZzH29HnZ36QW8snzOZKAH37cGjFXAxz34MfB8eW904HZEZj59uuo2iAg2_nQICxWFx_JfDtMk75");'></div>
+<div class="flex flex-col">
+<h4 class="text-white text-sm font-bold">Burak Yılmaz</h4>
+<span class="text-text-secondary text-xs">2 hafta önce</span>
+</div>
+</div>
+<div class="flex items-center bg-[#2A2A2A] px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-primary text-[14px] mr-1 fill-current" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="text-white text-xs font-bold">5.0</span>
+</div>
+</div>
+<div class="mb-2">
+<span class="inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-primary/20 text-primary mb-2 border border-primary/20">VIP Tıraş</span>
+<p class="text-gray-300 text-sm leading-relaxed">
+                        İstanbul'daki en iyi berber deneyimi. VIP oda servisi gerçekten ayrıcalıklı hissettiriyor. İçecek ikramları ve ilgi mükemmel.
+                    </p>
+</div>
+<div class="mt-3 pt-3 border-t border-[#333333] flex items-center gap-4">
+<button class="flex items-center gap-1.5 text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px] fill-current" style="font-variation-settings: 'FILL' 1">thumb_up</span>
+<span class="text-xs font-medium">Faydalı (28)</span>
+</button>
+</div>
+</div>
+<button class="w-full py-4 text-primary text-sm font-medium hover:text-white transition-colors flex items-center justify-center gap-2">
+                Daha Fazla Yorum Gör
+                <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+<!-- Sticky Bottom CTA -->
+<div class="fixed bottom-0 left-0 right-0 z-50 p-4 bg-background-dark/95 backdrop-blur-md border-t border-[#2A2A2A] max-w-md mx-auto">
+<div class="flex gap-4">
+<button class="flex-1 h-12 flex items-center justify-center gap-2 bg-surface-dark text-white rounded-lg border border-surface-border font-bold text-sm hover:bg-[#2A2A2A] transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+                    Yorum Yap
+                </button>
+<button class="flex-[2] h-12 flex items-center justify-center gap-2 bg-primary text-background-dark rounded-lg font-bold text-base shadow-[0_0_15px_rgba(212,175,53,0.3)] hover:bg-[#C09A25] transition-colors">
+                    Randevu Al
+                </button>
+</div>
+</div>
+</div>
+</body></html>

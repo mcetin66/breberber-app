@@ -1,160 +1,231 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Store, Phone, MapPin, Mail, Save, Clock, ChevronLeft } from 'lucide-react-native';
+import { ChevronLeft, Camera, Edit2, Store, Type, Check, Briefcase } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { COLORS } from '@/constants/theme';
-import { AdminHeader } from '@/components/admin/AdminHeader';
 import { useAuthStore } from '@/stores/authStore';
 import { useBusinessStore } from '@/stores/businessStore';
-import MaskInput from 'react-native-mask-input';
-
-const InputGroup = ({ label, icon: Icon, children }: { label: string, icon: any, children: React.ReactNode }) => (
-    <View className="mb-4">
-        <Text className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 ml-1">{label}</Text>
-        <View className="bg-[#1E293B] border border-white/5 rounded-2xl flex-row items-center px-4 h-14">
-            <Icon size={18} color="#64748B" />
-            <View className="ml-3 flex-1 h-full justify-center">
-                {children}
-            </View>
-        </View>
-    </View>
-);
+import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function BusinessProfileScreen() {
     const router = useRouter();
-    const user = useAuthStore(state => state.user);
-    const { currentBusiness, getBusinessById, updateBusiness, loading } = useBusinessStore();
+    const { user } = useAuthStore();
+    const { businesses, fetchBusinesses, updateBusiness } = useBusinessStore();
 
-    // Form State
-    const [formData, setFormData] = useState({
-        name: '',
-        phone: '',
-        address: '',
-        description: '',
+    // Safety check
+    const businessId = user?.barberId;
+    const myBusiness = businesses.find(b => b.id === businessId);
+
+    const [loading, setLoading] = useState(false);
+    const [form, setForm] = useState({
+        businessName: '',
+        slogan: '',
+        category: 'Erkek Berberi' as 'Erkek Berberi' | 'Kadın Kuaförü' | 'Güzellik Merkezi' | 'Manikür & Pedikür',
+        logo: null as string | null,
     });
-    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        if (user?.barberId) {
-            getBusinessById(user.barberId).then(business => {
-                if (business) {
-                    setFormData({
-                        name: business.name || '',
-                        phone: business.phone || '',
-                        address: business.address || '',
-                        description: business.description || '',
-                    });
-                }
+        if (businesses.length === 0) {
+            fetchBusinesses();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (myBusiness) {
+            setForm({
+                businessName: myBusiness.name || '',
+                slogan: myBusiness.description || '',
+                // @ts-ignore
+                category: myBusiness.subscriptionTier === 'basic' ? 'Erkek Berberi' : 'Erkek Berberi', // Placeholder mapping
+                logo: myBusiness.coverImage || null,
             });
         }
-    }, [user]);
+    }, [myBusiness]);
 
-    const handleSave = async () => {
-        if (!user?.barberId) return;
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
 
-        setIsSaving(true);
-        try {
-            await updateBusiness(user.barberId, {
-                ...formData,
-                phone: formData.phone.replace(/[^0-9]/g, ''), // Strip mask chars if needed, but keeping mask format is usually better for display. Use unmask if DB requires clean phone. User probably wants raw for now or clean. existing uses mask. I'll save as is or clean.
-                // Actually, DB phone is usually string.
-            });
-            Alert.alert('Başarılı', 'İşletme bilgileri güncellendi.');
-        } catch (error: any) {
-            console.error(error);
-            Alert.alert('Hata', 'Güncelleme başarısız: ' + error.message);
-        } finally {
-            setIsSaving(false);
+        if (!result.canceled) {
+            setForm(prev => ({ ...prev, logo: result.assets[0].uri }));
         }
     };
 
+    const handleSave = async () => {
+        if (!businessId) return;
+        if (!form.businessName.trim()) {
+            Alert.alert('Hata', 'İşletme adı zorunludur.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await updateBusiness(businessId, {
+                name: form.businessName,
+                description: form.slogan,
+                // businessType mapping if needed, omitting for now as DB might not support it directly or it's 'category'
+                coverImage: form.logo || undefined
+            });
+            Alert.alert('Başarılı', 'Profil güncellendi.');
+            router.back();
+        } catch (error) {
+            Alert.alert('Hata', 'Güncelleme başarısız oldu.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const categories = [
+        { id: 'Erkek Berberi', icon: 'content-cut', label: 'Erkek Berberi' }, // Using text or different icon lib if needed, sticking to lucide
+        { id: 'Kadın Kuaförü', icon: 'face-3', label: 'Kadın Kuaförü' },
+        { id: 'Güzellik Merkezi', icon: 'spa', label: 'Güzellik Merkezi' },
+        { id: 'Manikür & Pedikür', icon: 'pan-tool-alt', label: 'Manikür & Pedikür' },
+    ];
+
     return (
-        <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{ flex: 1 }}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-            >
-                <AdminHeader
-                    title="İşletme Profili"
-                    subtitle="Bilgilerini Düzenle"
-                    showBack
-                />
+        <View className="flex-1 bg-[#121212]">
+            <SafeAreaView edges={['top']} className="bg-[#121212] z-10 px-4 py-3 border-b border-white/5">
+                <View className="flex-row items-center justify-between">
+                    <Pressable onPress={() => router.back()} className="w-10 h-10 items-center justify-center rounded-full active:bg-white/5">
+                        <ChevronLeft size={24} color="white" />
+                    </Pressable>
+                    <Text className="text-white text-lg font-bold">İşletme Bilgileri</Text>
+                    <View className="w-10" />
+                </View>
+            </SafeAreaView>
 
-                <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+            {/* Steps Indicator (Mock) */}
+            <View className="flex-row justify-center gap-2 py-4">
+                <View className="h-1.5 w-6 rounded-full bg-primary shadow-[0_0_10px_rgba(212,175,53,0.3)]" />
+                <View className="h-1.5 w-1.5 rounded-full bg-[#333]" />
+                <View className="h-1.5 w-1.5 rounded-full bg-[#333]" />
+            </View>
 
-                    {/* Banner Preview (Static for now) */}
-                    <View className="h-40 bg-slate-800 rounded-2xl mb-6 items-center justify-center border border-white/5 border-dashed">
-                        <Store size={40} color="#475569" />
-                        <Text className="text-slate-500 text-xs mt-2">Kapak Fotoğrafı (Galeri'den Yönet)</Text>
+            <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false}>
+                <View className="items-center mb-8">
+                    <Text className="text-2xl font-bold text-white mb-2 text-center">
+                        <Text className="text-primary">Markanızı</Text> Oluşturun
+                    </Text>
+                    <Text className="text-gray-500 text-sm text-center">
+                        Müşterilerinizin sizi tanıması için temel bilgileri girin.
+                    </Text>
+                </View>
+
+                {/* Logo Upload */}
+                <View className="items-center mb-8">
+                    <Pressable onPress={pickImage} className="relative group mb-3">
+                        <View className="w-32 h-32 rounded-full border-2 border-dashed border-primary/50 bg-[#1E1E1E] items-center justify-center overflow-hidden">
+                            {form.logo ? (
+                                <Image source={{ uri: form.logo }} className="w-full h-full" resizeMode="cover" />
+                            ) : (
+                                <View className="items-center justify-center gap-1 opacity-50">
+                                    <Camera size={24} color={COLORS.primary.DEFAULT} />
+                                </View>
+                            )}
+                        </View>
+                        <View className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-primary items-center justify-center shadow-lg">
+                            <Edit2 size={14} color="#121212" />
+                        </View>
+                    </Pressable>
+                    <Text className="text-white font-medium text-sm">Logo Yükle</Text>
+                    <Text className="text-gray-500 text-xs mt-1">PNG veya JPG, max 5MB</Text>
+                </View>
+
+                {/* Form */}
+                <View className="gap-6 mb-20">
+                    {/* Name */}
+                    <View className="gap-2">
+                        <Text className="text-gray-400 text-sm font-medium">İşletme Adı</Text>
+                        <View className="relative">
+                            <TextInput
+                                className="w-full bg-[#1E1E1E] text-white rounded-xl border border-white/10 px-4 py-3.5 pr-10 text-base focus:border-primary/50"
+                                placeholder="Örn: Gold Makas VIP"
+                                placeholderTextColor="#666"
+                                value={form.businessName}
+                                onChangeText={(t) => setForm(prev => ({ ...prev, businessName: t }))}
+                            />
+                            <View className="absolute right-4 top-1/2 -translate-y-1/2">
+                                <Store size={20} color="#666" />
+                            </View>
+                        </View>
                     </View>
 
-                    {/* Form */}
-                    <InputGroup label="İşletme Adı" icon={Store}>
-                        <TextInput
-                            className="text-white font-medium text-base h-full"
-                            placeholder="İşletme Adınız"
-                            placeholderTextColor="#475569"
-                            value={formData.name}
-                            onChangeText={t => setFormData({ ...formData, name: t })}
-                        />
-                    </InputGroup>
+                    {/* Slogan */}
+                    <View className="gap-2">
+                        <View className="flex-row justify-between">
+                            <Text className="text-gray-400 text-sm font-medium">Slogan / Alt Başlık</Text>
+                            <Text className="text-gray-600 text-xs">İsteğe bağlı</Text>
+                        </View>
+                        <View className="relative">
+                            <TextInput
+                                className="w-full bg-[#1E1E1E] text-white rounded-xl border border-white/10 px-4 py-3.5 pr-10 text-base focus:border-primary/50"
+                                placeholder="Örn: Tarzınızı Yansıtın"
+                                placeholderTextColor="#666"
+                                value={form.slogan}
+                                onChangeText={(t) => setForm(prev => ({ ...prev, slogan: t }))}
+                            />
+                            <View className="absolute right-4 top-1/2 -translate-y-1/2">
+                                <Type size={20} color="#666" />
+                            </View>
+                        </View>
+                    </View>
 
-                    <InputGroup label="Telefon" icon={Phone}>
-                        <MaskInput
-                            className="text-white font-medium text-base h-full"
-                            placeholder="(555) 123 45 67"
-                            placeholderTextColor="#475569"
-                            value={formData.phone}
-                            onChangeText={(masked) => setFormData({ ...formData, phone: masked })}
-                            mask={['(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/]}
-                            keyboardType="phone-pad"
-                        />
-                    </InputGroup>
+                    {/* Category */}
+                    <View className="gap-3">
+                        <Text className="text-gray-400 text-sm font-medium">Kategori Seçimi</Text>
+                        <View className="flex-row flex-wrap gap-3">
+                            {categories.map((cat) => (
+                                <Pressable
+                                    key={cat.id}
+                                    onPress={() => setForm(prev => ({ ...prev, category: cat.id as any }))}
+                                    className={`w-[48%] p-4 rounded-xl border items-center justify-center gap-2 ${form.category === cat.id ? 'bg-primary/10 border-primary' : 'bg-[#1E1E1E] border-transparent'}`}
+                                >
+                                    {/* Using Briefcase as generic icon since we don't have all specific ones in lucide import readily available matching exactly material symbols */}
+                                    <Briefcase size={24} color={form.category === cat.id ? COLORS.primary.DEFAULT : '#666'} />
+                                    <Text className={`text-sm font-medium text-center ${form.category === cat.id ? 'text-primary' : 'text-gray-400'}`}>
+                                        {cat.label}
+                                    </Text>
+                                    {form.category === cat.id && (
+                                        <View className="absolute top-1 right-1 w-5 h-5 rounded-full bg-primary items-center justify-center">
+                                            <Check size={12} color="#121212" />
+                                        </View>
+                                    )}
+                                </Pressable>
+                            ))}
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
 
-                    <InputGroup label="Adres" icon={MapPin}>
-                        <TextInput
-                            className="text-white font-medium text-base h-full"
-                            placeholder="Açık Adres"
-                            placeholderTextColor="#475569"
-                            value={formData.address}
-                            onChangeText={t => setFormData({ ...formData, address: t })}
-                        />
-                    </InputGroup>
-
-                    <InputGroup label="Hakkında" icon={Store}>
-                        <TextInput
-                            className="text-white font-medium text-sm h-full py-3"
-                            placeholder="İşletmeniz hakkında kısa bilgi..."
-                            placeholderTextColor="#475569"
-                            multiline
-                            numberOfLines={3}
-                            style={{ textAlignVertical: 'top' }}
-                            value={formData.description}
-                            onChangeText={t => setFormData({ ...formData, description: t })}
-                        />
-                    </InputGroup>
-
-                    {/* Save Button */}
-                    <Pressable
-                        onPress={handleSave}
-                        disabled={isSaving}
-                        className={`mt-4 bg-primary rounded-2xl h-14 flex-row items-center justify-center gap-3 active:opacity-90 ${isSaving ? 'opacity-70' : ''}`}
+            {/* Bottom Action */}
+            <View className="absolute bottom-0 left-0 right-0 p-5 bg-[#121212]/90 border-t border-white/5 blur-md">
+                <Pressable
+                    onPress={handleSave}
+                    disabled={loading}
+                    className="w-full rounded-xl overflow-hidden"
+                >
+                    <LinearGradient
+                        colors={[COLORS.primary.DEFAULT, '#b08d2b']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        className="py-3.5 items-center justify-center flex-row gap-2"
                     >
-                        {isSaving ? (
-                            <ActivityIndicator color="white" />
+                        {loading ? (
+                            <ActivityIndicator color="#121212" />
                         ) : (
                             <>
-                                <Save size={20} color="white" />
-                                <Text className="text-white font-bold text-base">Kaydet</Text>
+                                <Text className="text-[#121212] font-bold text-base">Kaydet ve Devam Et</Text>
                             </>
                         )}
-                    </Pressable>
-
-                    <View className="h-24" />
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+                    </LinearGradient>
+                </Pressable>
+            </View>
+        </View>
     );
 }

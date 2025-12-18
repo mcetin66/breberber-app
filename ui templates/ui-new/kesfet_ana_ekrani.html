@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Keşfet Ana Ekranı - Lüks Kuaför Randevu</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35", // Gold/Bronze
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep Black as requested
+                        "card-dark": "#1E1E1E", // Dark Grey
+                        "gray-text": "#B0B0B0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                    boxShadow: {
+                        "gold-glow": "0 4px 20px -5px rgba(212, 175, 53, 0.15)",
+                    }
+                },
+            },
+        }
+    </script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary selection:text-white pb-24">
+<!-- Header Section -->
+<header class="sticky top-0 z-40 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-transparent dark:border-white/5 transition-all duration-300">
+<div class="px-5 pt-6 pb-2 flex items-center justify-between">
+<!-- User Profile & Greeting -->
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-12 rounded-full bg-cover bg-center border-2 border-primary/30" data-alt="Portrait of a young man with a stylish haircut" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqKPx3c4ULkzmrddYa3HrI69g9H1w67ZdYAmDLCmmZrUwkn5haoS7lnHGXeOAOoNmz4zAvXm-HDS6RvPm6tKb1vba9aHI0uByMxvfuPPwP-aKIVO6Tb6SvtCHrIvhuUreg4qxGF_NUEzIMcDfyGbswNzR2dbi_3p50OH4p0F2A2sqbb5pe8z85-qUlEWH3FLNBUwT_4F1ko36s2zmVw89wizEaRNecmUejuVlJ58SlLcne1z_HUNimLdFmZaDpDb7dENXE8Gq2ngtS');"></div>
+<div class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-[#121212]"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-gray-text font-medium uppercase tracking-wider">Hoş geldin</span>
+<h2 class="text-white text-lg font-bold font-display leading-tight">Mert Yılmaz</h2>
+</div>
+</div>
+<!-- Notification Bell -->
+<button class="relative size-10 flex items-center justify-center rounded-full bg-card-dark border border-white/5 hover:bg-white/10 transition-colors group">
+<span class="material-symbols-outlined text-white group-hover:text-primary transition-colors !text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full animate-pulse"></span>
+</button>
+</div>
+<!-- Greeting Headline -->
+<div class="px-5 pb-4 pt-2">
+<h1 class="font-serif text-3xl text-white font-semibold leading-tight tracking-tight">Bugün ne arıyorsun?</h1>
+</div>
+<!-- Search Bar -->
+<div class="px-5 pb-5">
+<div class="flex gap-3">
+<div class="flex-1 relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-gray-text group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full pl-11 pr-4 py-3.5 bg-card-dark border-transparent rounded-xl text-sm text-white placeholder-gray-text focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:bg-[#252525] transition-all shadow-lg" placeholder="Salon, hizmet veya konum ara..." type="text"/>
+</div>
+<button class="size-[50px] shrink-0 flex items-center justify-center rounded-xl bg-card-dark border border-transparent text-white hover:bg-[#252525] hover:border-primary/30 active:scale-95 transition-all shadow-lg">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex flex-col w-full">
+<!-- Categories -->
+<section class="py-4">
+<div class="flex overflow-x-auto no-scrollbar px-5 gap-5 pb-2">
+<!-- Category Item: Haircut -->
+<button class="flex flex-col items-center gap-2 group min-w-[72px]">
+<div class="size-[72px] rounded-full p-[2px] bg-gradient-to-tr from-primary to-transparent group-hover:from-primary group-hover:to-primary transition-all duration-300">
+<div class="h-full w-full rounded-full bg-card-dark flex items-center justify-center border-4 border-[#121212] overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Close up of a man getting a haircut with scissors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUlliX_skW_dIZOPOyM468OFBWnbcXCLkmGMe9cSgmovdZUjyl0oiyBhy7oPzxG17K9AzqM579iPNbo6luLqMVhzANddiiwILdq9jz6dS4WciqrcKpEPoxBojhhSHMmnsO6Ysm68Cb0pT7-hygg6B6jbzvbxht21ww3aFPOZCgjzW_c8qTxTmJR9igtG8eZuY0mk3I2zo1Z4zSA-rbn378M8iLud1P2VnubvReWCxKox3Uwem0CQaGJbhH_VUGxhIycw70zTB6M2Z_"/>
+</div>
+</div>
+<span class="text-xs font-medium text-white/90 group-hover:text-primary transition-colors">Saç Kesimi</span>
+</button>
+<!-- Category Item: Beard -->
+<button class="flex flex-col items-center gap-2 group min-w-[72px]">
+<div class="size-[72px] rounded-full p-[2px] bg-card-dark border border-white/10 group-hover:border-primary/50 transition-all">
+<div class="h-full w-full rounded-full bg-card-dark flex items-center justify-center border-4 border-[#121212] overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Man with shaving foam on face getting a shave" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-i200IqBxBf45i0a6ZhZXz6n5PIdDacwkx12jDRBDAffDqWnD072CxBxaFt1r-Sb9S_3kmmsv-zZkUe-mx4nC-8cCzy_jVYboHBWNonj3Latq8XmF4OlIxcaugmQLNJ5GYHkwuEjHoW-Bdumw6DSMSCnQpSXJeaSiZ-RgIOIhE4hLrEw223-IbjyZIUqY0dm2N29-eefNrTFfLXlRV3ivXNG_z80vpkbTlk0HtdDOzNDEfsyltznw6BgMK5GkSVw_xX25bageHaiX"/>
+</div>
+</div>
+<span class="text-xs font-medium text-gray-text group-hover:text-white transition-colors">Sakal</span>
+</button>
+<!-- Category Item: Facial -->
+<button class="flex flex-col items-center gap-2 group min-w-[72px]">
+<div class="size-[72px] rounded-full p-[2px] bg-card-dark border border-white/10 group-hover:border-primary/50 transition-all">
+<div class="h-full w-full rounded-full bg-card-dark flex items-center justify-center border-4 border-[#121212] overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Person receiving a relaxing facial massage" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfzvBurS34EdGmbwZxNuuZMOF3VIqeC5lMWROgy1OIOK4ST9YJ_dVzwumhLCAG-l8kvYBdleBtxkbtEYmRUiwy3epQpSDMnA3ELUcBJBnf_k4OvhTAOck-7Yp8PDn0fvv3Zf3sDwm5FMzQN_Y3C8BDEwIYQO0-Ho8CTU5_YjEktNmXXKBqOaIxWstxGlfeGAWnsMUJtoUPq6rg_LH4q7V6DwElntGY32Oc8878HaMIlf7ApQwfz20hmhDZR2HpPgZYdA3HlmATHcSI"/>
+</div>
+</div>
+<span class="text-xs font-medium text-gray-text group-hover:text-white transition-colors">Cilt Bakımı</span>
+</button>
+<!-- Category Item: VIP -->
+<button class="flex flex-col items-center gap-2 group min-w-[72px]">
+<div class="size-[72px] rounded-full p-[2px] bg-card-dark border border-white/10 group-hover:border-primary/50 transition-all">
+<div class="h-full w-full rounded-full bg-card-dark flex items-center justify-center border-4 border-[#121212] overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Luxury private salon room interior with leather chair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQZAYmdbknhL4mKJZ4-W1QNA1QZPO5t8PpQg5aLgfVtEZpoFmn7MUEl34jPMz0P6vGocBnJ3tnV6QCLJJqtyD_798D5uF1YMl_Hb-1iKbFSCB2iLKsd-lAwNPgwjNUXjaTmtp_6bkZwWgQgfzBjPh5VqvUFGaS1-TCgUm4OETdnSBBd8M2e89m3LaGEBYHkHBTm1ORMhVgwCOZVMRsWztIvIARfI44z4U9Zk-BApFbjD0i_zir_I4lZKjbsJ4Y-EfHU12jXctoxW5Z"/>
+</div>
+</div>
+<span class="text-xs font-medium text-gray-text group-hover:text-white transition-colors">VIP Odalar</span>
+</button>
+<!-- Category Item: Coloring -->
+<button class="flex flex-col items-center gap-2 group min-w-[72px]">
+<div class="size-[72px] rounded-full p-[2px] bg-card-dark border border-white/10 group-hover:border-primary/50 transition-all">
+<div class="h-full w-full rounded-full bg-card-dark flex items-center justify-center border-4 border-[#121212] overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Close up of hair coloring process" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd9qDHeMQbpsOvOcQz-zSA0UbcyGR2fdJdVvgq20DMNSokFzKOtWQLK580EZw9Yjr8WOq5Gcd4r_TPhyyzkUqWoZgvNtfxLaIZydLQVEjKX97B2SCTaK7z1mO6TbxC8OWKBo-b9kjRuhLKq7A1t4A0EPPh5fmc6aRQmGjJ2594xJUehG3KFuYLos13JeVS-EQt4LfQTWn6DL28o2Vbz_jCtv_XaVixyxHVCMsZNaj0umW3Vxs5QfrxoCP7m8x3sAdGBhG2jHKfZy6y"/>
+</div>
+</div>
+<span class="text-xs font-medium text-gray-text group-hover:text-white transition-colors">Boyama</span>
+</button>
+</div>
+</section>
+<!-- Featured Section (Öne Çıkanlar) -->
+<section class="mt-6 mb-2">
+<div class="px-5 flex items-end justify-between mb-4">
+<h2 class="text-xl font-bold text-white tracking-tight">Öne Çıkanlar</h2>
+<a class="text-primary text-sm font-medium hover:text-white transition-colors" href="#">Tümünü gör</a>
+</div>
+<div class="flex overflow-x-auto no-scrollbar px-5 gap-4 pb-4">
+<!-- Card 1 -->
+<div class="min-w-[280px] w-[280px] bg-card-dark rounded-2xl overflow-hidden shadow-gold-glow border border-white/5 relative group">
+<div class="absolute top-3 right-3 z-10 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-primary text-[14px]">star</span>
+<span class="text-xs font-bold text-white">4.9</span>
+</div>
+<div class="h-40 w-full bg-gray-800 relative">
+<img class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" data-alt="Stylish dark barbershop interior with vintage chairs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO0HRW17wGlB3mjQeONplpgk0ClE0ln2lNOzuil5MTHXbwRzPy4Oxsyq-Wq4CxU7YZDbK5zaOyCSf5jXFUxmm224ISKeG7tuNqBLm5tYVx2nt0HiF8j_k9q_5jYswroyM0tDVShpM63tA5EE7kCV8L5D5SJqRtRmCwEu2P3AWLgQu8K1sddG9mxmeDsDWozOZ4-nyrD9zV2rswENJRZoHtf1RO03_G5SQ8hhYMvXw1zG2adq9lLdnvV2P7VgHtWRZBHrNERW5zHuYD"/>
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-card-dark via-transparent to-transparent"></div>
+</div>
+<div class="p-4 relative">
+<div class="flex items-center justify-between mb-1">
+<h3 class="text-white font-bold text-lg truncate pr-2">Gold Makas Etiler</h3>
+<span class="material-symbols-outlined text-primary text-[20px]" title="Doğrulanmış">verified</span>
+</div>
+<p class="text-gray-text text-sm flex items-center gap-1 mb-3">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                            Etiler, İstanbul • 1.2 km
+                        </p>
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded-md bg-[#2A2A2A] text-xs text-white/70 border border-white/5">Saç</span>
+<span class="px-2 py-1 rounded-md bg-[#2A2A2A] text-xs text-white/70 border border-white/5">Sakal</span>
+<span class="px-2 py-1 rounded-md bg-[#2A2A2A] text-xs text-white/70 border border-white/5">Cilt</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[280px] w-[280px] bg-card-dark rounded-2xl overflow-hidden shadow-lg border border-white/5 relative group">
+<div class="absolute top-3 right-3 z-10 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-primary text-[14px]">star</span>
+<span class="text-xs font-bold text-white">4.8</span>
+</div>
+<div class="h-40 w-full bg-gray-800 relative">
+<img class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" data-alt="Modern barbershop with industrial design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMsTuVJ6RCJvEb1WnKRKA24zYv5IBHk70w8uTABmn3uOdWvK2GEx3F08sbTsRWPPupJlBJ5iePodPatwb0FuVxQm3xmnDoo8NBUTrzjfT-c8MAkZgNTlwy9VtCUWqszW-4J2NmUmYHF3Q2Ycn5layTiHCAgeSkPaLuuiY3fyEbJEYPbGJ1bKMLCxiIj58LhahgEKh750HjG7KvJjBpFFWhLbWKuN8OUvaQJdmv-DzQhzRbnzXfw7xEASqzsX9FC-SRw2qaCLHROWwY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-card-dark via-transparent to-transparent"></div>
+</div>
+<div class="p-4 relative">
+<div class="flex items-center justify-between mb-1">
+<h3 class="text-white font-bold text-lg truncate pr-2">Barber King</h3>
+<span class="material-symbols-outlined text-primary text-[20px]" title="Doğrulanmış">verified</span>
+</div>
+<p class="text-gray-text text-sm flex items-center gap-1 mb-3">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                            Nişantaşı, İstanbul • 2.5 km
+                        </p>
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded-md bg-[#2A2A2A] text-xs text-white/70 border border-white/5">VIP</span>
+<span class="px-2 py-1 rounded-md bg-[#2A2A2A] text-xs text-white/70 border border-white/5">Masaj</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Near You Section (Yakınındakiler) -->
+<section class="mt-4 px-5">
+<div class="flex items-end justify-between mb-4">
+<h2 class="text-xl font-bold text-white tracking-tight">Yakınındakiler</h2>
+<a class="text-primary text-sm font-medium hover:text-white transition-colors" href="#">Haritada gör</a>
+</div>
+<div class="flex flex-col gap-4">
+<!-- List Item 1 -->
+<div class="flex bg-card-dark rounded-xl p-3 border border-white/5 hover:border-primary/30 transition-colors">
+<div class="size-20 rounded-lg bg-gray-700 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Barber tools on a table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUU9WynapXIEt1-0Xxi3n0tKZ3zqgpI4S6d5gqtkCm6FC4If_Ts2cuN4vgc0iEKyrmsDHP4Pt04SDY5-iywfTK0sTfOSpVWQrmDaQ95-kljh_lt3V7-A3_srW5rF2FlUBQ3im63J3xm1ea6rHsLD4B-VuxRpXheUtCk9a2juQb06GMek2FeU-Fu_o0psEXiJLJ1ZULDv0Az_LTS4hDlnH8CP3vtaDeoOwbCbmlGhNoLebe2tzpicGr6PGn0tRXjXilfvGwhBZUIuvc"/>
+</div>
+<div class="ml-4 flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-white font-bold text-base leading-tight">Legendary Cuts</h4>
+<p class="text-gray-text text-xs mt-1">Beşiktaş, İstanbul</p>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">star</span>
+<span class="text-xs font-bold">4.7</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs text-white/60 bg-white/5 px-2 py-1 rounded">0.8 km</span>
+<span class="text-xs text-primary font-medium">Müsait: 14:30</span>
+</div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex bg-card-dark rounded-xl p-3 border border-white/5 hover:border-primary/30 transition-colors">
+<div class="size-20 rounded-lg bg-gray-700 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Classic barber chair in retro style shop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOWevR4phtsaoo45oDaBEuSPhXztSJeB9x-g4ggDwxX9EhoKDQSDqtKVxAyAx4_gKhEjc2VamCho2c5PzI3I4_1oRXL2S7Kon2uSUmjHU7ZZpb993kCs1qX8qVeBPFs1y_YVR9Lj0FnxYBbJBFULDkcWbKFNDPlzocIhzKB5iSM1pd3o8DW0hCp_W40KCh3XhJsYsxE0SaM2-qcYRDyF8US6CapsoL5K3n0EpT8l6mTMIBSkJztOnYZmoPWXs-5pBrITm9IQBBZ87t"/>
+</div>
+<div class="ml-4 flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-white font-bold text-base leading-tight">Ottoman Style</h4>
+<p class="text-gray-text text-xs mt-1">Kadıköy, İstanbul</p>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">star</span>
+<span class="text-xs font-bold">4.6</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs text-white/60 bg-white/5 px-2 py-1 rounded">3.4 km</span>
+<span class="text-xs text-primary font-medium">Müsait: Yarın 10:00</span>
+</div>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex bg-card-dark rounded-xl p-3 border border-white/5 hover:border-primary/30 transition-colors">
+<div class="size-20 rounded-lg bg-gray-700 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Minimalist men's grooming salon interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyo2vIX-8pOseDvV7GyQsNFNzVsuS13v4OSZxlLTKSyy0iBffS3IWR0JevNp7B1MVp3IYX0vlVyarPwGEn6aXym3GpjebGCIViUjy16LKLSguWcWjUSgLFQqOxovi3gEeJs5SnG7dKgh_QQova7wJChMLBTfD4XhES7oZVsti9eDOex-2BVYRuA-H104YmrPOOMfaDA7Zm7SN1YSwahKYDdvTeXsfVjY7RSZTEuQWlIa3FCLIF8BLW9tmQD5s_hb87b6S5YE5Epjhj"/>
+</div>
+<div class="ml-4 flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-white font-bold text-base leading-tight">The Gentlemen</h4>
+<p class="text-gray-text text-xs mt-1">Levent, İstanbul</p>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">star</span>
+<span class="text-xs font-bold">5.0</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between">
+<span class="text-xs text-white/60 bg-white/5 px-2 py-1 rounded">1.5 km</span>
+<span class="text-xs text-primary font-medium">Müsait: 16:00</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Spacer for Bottom Nav -->
+<div class="h-8"></div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#121212]/95 backdrop-blur-lg border-t border-white/5 pb-6 pt-3 px-6 z-50">
+<ul class="flex items-center justify-between">
+<li>
+<a class="flex flex-col items-center gap-1 text-primary group" href="#">
+<span class="material-symbols-outlined !text-[28px] font-variation-settings-fill">home</span>
+<span class="text-[10px] font-medium">Keşfet</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined !text-[28px]">calendar_month</span>
+<span class="text-[10px] font-medium">Randevular</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined !text-[28px]">favorite</span>
+<span class="text-[10px] font-medium">Favoriler</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined !text-[28px]">person</span>
+<span class="text-[10px] font-medium">Profil</span>
+</a>
+</li>
+</ul>
+</nav>
+</body></html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Uygunluk Ayarları</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "primary-dark": "#b08d1f",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1E1E1E",
+                        "surface-dark-highlight": "#2A2A2A",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "gold-glow": "0 4px 20px -5px rgba(212, 175, 53, 0.15)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hide for cleaner UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Wheel Picker Gradients */
+        .wheel-mask {
+            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-x-hidden antialiased selection:bg-primary/30 selection:text-primary">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto bg-background-dark shadow-2xl pb-24">
+<!-- Sticky Header -->
+<div class="sticky top-0 z-50 flex flex-col gap-2 bg-background-dark/95 backdrop-blur-md p-4 pb-2 border-b border-white/5">
+<div class="flex items-center h-12 justify-between">
+<button class="text-white flex size-12 shrink-0 items-center justify-center hover:bg-white/5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span>
+</button>
+<h1 class="text-white text-lg font-bold leading-normal tracking-wide">Uygunluk</h1>
+<button class="flex h-12 items-center justify-end px-2">
+<p class="text-primary hover:text-primary-dark transition-colors text-base font-bold leading-normal tracking-[0.015em] shrink-0">Kaydet</p>
+</button>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex flex-col px-4 pt-6 gap-6">
+<!-- Headline -->
+<div class="flex flex-col gap-1">
+<h2 class="text-white tracking-tight text-[28px] font-bold leading-tight">Çalışma Saatleri</h2>
+<p class="text-gray-400 text-sm">Haftalık müsaitlik durumunuzu düzenleyin.</p>
+</div>
+<!-- Days List -->
+<div class="flex flex-col gap-4">
+<!-- Expanded Day Card (Pazartesi / Monday) -->
+<div class="relative flex flex-col rounded-2xl bg-surface-dark border border-primary/20 shadow-gold-glow overflow-hidden transition-all duration-300">
+<!-- Card Header -->
+<div class="flex items-center justify-between p-4 pb-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<span class="text-white text-lg font-semibold">Pazartesi</span>
+</div>
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-white/5 my-2"></div>
+<!-- Time Picker Area -->
+<div class="px-4 py-2">
+<div class="flex justify-between items-center mb-4">
+<div class="flex flex-col items-center w-1/2 border-r border-white/5">
+<span class="text-xs uppercase tracking-widest text-primary font-bold mb-2">Başlangıç</span>
+<div class="relative h-32 w-full overflow-hidden wheel-mask">
+<!-- Selection Highlight Bar -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-10 bg-white/5 rounded-lg border-y border-primary/30 pointer-events-none z-10"></div>
+<!-- Scroll Content -->
+<div class="flex flex-col items-center py-10 gap-1">
+<div class="h-10 flex items-center justify-center text-gray-600 text-lg">08:00</div>
+<div class="h-10 flex items-center justify-center text-white text-xl font-bold">09:00</div>
+<div class="h-10 flex items-center justify-center text-gray-600 text-lg">10:00</div>
+<div class="h-10 flex items-center justify-center text-gray-600 text-lg">11:00</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center w-1/2">
+<span class="text-xs uppercase tracking-widest text-primary font-bold mb-2">Bitiş</span>
+<div class="relative h-32 w-full overflow-hidden wheel-mask">
+<!-- Selection Highlight Bar -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-10 bg-white/5 rounded-lg border-y border-primary/30 pointer-events-none z-10"></div>
+<!-- Scroll Content -->
+<div class="flex flex-col items-center py-10 gap-1">
+<div class="h-10 flex items-center justify-center text-gray-600 text-lg">17:00</div>
+<div class="h-10 flex items-center justify-center text-gray-600 text-lg">18:00</div>
+<div class="h-10 flex items-center justify-center text-white text-xl font-bold">19:00</div>
+<div class="h-10 flex items-center justify-center text-gray-600 text-lg">20:00</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Breaks Section -->
+<div class="bg-[#181818] p-4 border-t border-white/5">
+<div class="flex items-center justify-between mb-3">
+<span class="text-sm font-medium text-gray-300">Molalar</span>
+<button class="flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-wide hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+                                Mola Ekle
+                            </button>
+</div>
+<!-- Break Item -->
+<div class="flex items-center justify-between bg-surface-dark p-3 rounded-lg border border-white/5 mb-2 group">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Öğle Molası</span>
+<span class="text-primary text-xs">12:30 - 13:30</span>
+</div>
+<button class="text-gray-500 hover:text-red-400 transition-colors p-2">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Collapsed Day Card (Salı / Tuesday) - Active -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/20 transition-all cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-white text-base font-medium">Salı</span>
+<span class="text-primary text-sm font-medium">09:00 - 19:00</span>
+</div>
+<div class="flex items-center gap-4">
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+<span class="material-symbols-outlined text-gray-500">expand_more</span>
+</div>
+</div>
+<!-- Collapsed Day Card (Çarşamba / Wednesday) - Inactive -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-dark border border-white/5 opacity-70 hover:opacity-100 transition-all cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-gray-400 text-base font-medium">Çarşamba</span>
+<span class="text-gray-600 text-sm font-medium">Kapalı</span>
+</div>
+<div class="flex items-center gap-4">
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+<span class="material-symbols-outlined text-gray-600">expand_more</span>
+</div>
+</div>
+<!-- Other Days (Simplified visual) -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-dark border border-white/5 cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-white text-base font-medium">Perşembe</span>
+<span class="text-primary text-sm font-medium">09:00 - 19:00</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-11 h-6 bg-primary rounded-full relative after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:rounded-full after:h-5 after:w-5"></div>
+<span class="material-symbols-outlined text-gray-500">expand_more</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-dark border border-white/5 cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="text-white text-base font-medium">Cuma</span>
+<span class="text-primary text-sm font-medium">09:00 - 20:00</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-11 h-6 bg-primary rounded-full relative after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:rounded-full after:h-5 after:w-5"></div>
+<span class="material-symbols-outlined text-gray-500">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Spacer -->
+<div class="h-8"></div>
+</div>
+<!-- Sticky Footer Action -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-dark/80 backdrop-blur-lg border-t border-white/10 flex justify-center max-w-md mx-auto">
+<button class="w-full flex items-center justify-center gap-2 bg-surface-dark hover:bg-surface-dark-highlight text-primary border border-primary/30 font-semibold py-3 px-6 rounded-xl transition-all shadow-lg active:scale-95">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+                Tüm haftaya uygula
+            </button>
+</div>
+</div>
+</body></html>

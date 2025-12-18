@@ -1,171 +1,207 @@
-import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, Pressable, ActivityIndicator, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, Image, Pressable, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Calendar, Clock, MapPin, User } from 'lucide-react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
-import { useAuthStore } from '@/stores/authStore';
-import { useBookingStore } from '@/stores/bookingStore';
 import { useRouter } from 'expo-router';
+import { Skeleton } from '@/components/ui/Skeleton';
 
-const STATUS_CONFIG = {
-  confirmed: { label: 'Onaylandı', color: COLORS.status.success },
-  pending: { label: 'Beklemede', color: COLORS.status.warning },
-  completed: { label: 'Tamamlandı', color: COLORS.text.secondary },
-  cancelled: { label: 'İptal Edildi', color: COLORS.status.error },
-};
+// Mock Data
+const UPCOMING_APPOINTMENTS = [
+  {
+    id: 1,
+    barberName: 'Mehmet Yılmaz',
+    service: 'Lüks Sakal Tıraşı',
+    date: 12,
+    month: 'Eki',
+    time: '14:00',
+    location: 'Levent Şubesi',
+    status: 'Onaylandı',
+    barberImage: 'https://randomuser.me/api/portraits/men/32.jpg',
+    isPending: false
+  },
+  {
+    id: 2,
+    barberName: 'Ali Demir',
+    service: 'Saç Kesimi & Yıkama',
+    date: 18,
+    month: 'Eki',
+    time: '10:30',
+    location: 'Etiler Şubesi',
+    status: 'Beklemede',
+    barberImage: 'https://randomuser.me/api/portraits/men/44.jpg',
+    isPending: true
+  }
+];
+
+const PAST_APPOINTMENTS = [
+  {
+    id: 3,
+    barberName: 'Ahmet Kaya',
+    service: 'Kral Bakımı Paketi',
+    date: 5,
+    month: 'Eyl',
+    time: '16:00',
+    location: 'Nişantaşı Şubesi',
+    status: 'Tamamlandı',
+    barberImage: 'https://randomuser.me/api/portraits/men/86.jpg',
+    isPending: false
+  }
+];
 
 export default function AppointmentsScreen() {
   const router = useRouter();
-  const user = useAuthStore(state => state.user);
-  const { appointments, loading, fetchUserAppointments, cancelAppointment } = useBookingStore();
-  const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
 
-  useEffect(() => {
-    if (user) {
-      fetchUserAppointments(user.id);
-    }
-    // If no user, route guard in _layout.tsx will redirect
-  }, [user]);
+  const renderAppointmentCard = (item: any) => (
+    <View key={item.id} className={`bg-[#1E1E1E] rounded-xl overflow-hidden border ${item.isPending ? 'border-white/5' : 'border-white/5 hover:border-primary/30'} mb-4`}>
+      {/* Status Strip */}
+      <View className={`absolute top-0 left-0 w-1 h-full ${item.isPending ? 'bg-neutral-600' : 'bg-primary'}`} />
 
-  const handleCancelAppointment = (appointmentId: string) => {
-    Alert.alert(
-      'Randevuyu İptal Et',
-      'Bu randevuyu iptal etmek istediğinizden emin misiniz?',
-      [
-        { text: 'Vazgeç', style: 'cancel' },
-        {
-          text: 'İptal Et',
-          style: 'destructive',
-          onPress: async () => {
-            setCancellingId(appointmentId);
-            await cancelAppointment(appointmentId);
-            setCancellingId(null);
-          },
-        },
-      ]
-    );
-  };
-
-  if (loading && appointments.length === 0) {
-    return (
-      <SafeAreaView className="flex-1 bg-background">
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color={COLORS.primary.DEFAULT} />
-          <Text className="text-text-secondary font-poppins mt-4">Randevular yükleniyor...</Text>
+      <View className="flex-row p-4 gap-4 items-center">
+        {/* Date Block */}
+        <View className="items-center justify-center bg-[#2A2A2A] rounded-lg h-16 w-14 border border-white/5">
+          <Text className={`font-bold text-lg leading-none ${item.isPending ? 'text-white' : 'text-primary'}`}>{item.date}</Text>
+          <Text className="text-[#A0A0A0] text-xs font-medium uppercase mt-1">{item.month}</Text>
         </View>
-      </SafeAreaView>
-    );
-  }
 
-  return (
-    <SafeAreaView className="flex-1 bg-background" edges={['top']} style={{ flex: 1 }}>
-      <View className="px-4 py-4 border-b border-background-card">
-        <Text className="text-white text-2xl font-poppins-bold">Randevularım</Text>
-        <Text className="text-text-secondary text-sm font-poppins mt-1">
-          {appointments.length} randevu
-        </Text>
+        {/* Details */}
+        <View className="flex-1">
+          <View className="flex-row justify-between items-start">
+            <Text className="text-white font-bold text-base">{item.barberName}</Text>
+            <View className={`px-2 py-0.5 rounded border ${item.isPending ? 'bg-neutral-800 border-neutral-700' : 'bg-primary/10 border-primary/20'}`}>
+              <Text className={`text-[10px] font-bold uppercase tracking-wider ${item.isPending ? 'text-neutral-400' : 'text-primary'}`}>{item.status}</Text>
+            </View>
+          </View>
+          <Text className="text-[#A0A0A0] text-sm mt-0.5">{item.service}</Text>
+          <View className="flex-row items-center gap-3 mt-1.5">
+            <View className="flex-row items-center gap-1">
+              <MaterialIcons name="schedule" size={14} color={item.isPending ? '#d4d4d4' : COLORS.primary.DEFAULT} />
+              <Text className={`text-xs font-medium ${item.isPending ? 'text-neutral-300' : 'text-primary'}`}>{item.time}</Text>
+            </View>
+            <View className="flex-row items-center gap-1">
+              <MaterialIcons name="location-on" size={14} color="#A0A0A0" />
+              <Text className="text-[#A0A0A0] text-xs">{item.location}</Text>
+            </View>
+          </View>
+        </View>
       </View>
 
-      <ScrollView className="flex-1 px-4 py-4" showsVerticalScrollIndicator={false}>
-        {appointments.map((appointment) => {
-          const statusConfig = STATUS_CONFIG[appointment.status as keyof typeof STATUS_CONFIG];
-          const isCancelling = cancellingId === appointment.id;
-
-          return (
-            <Pressable
-              key={appointment.id}
-              className="bg-background-card rounded-2xl p-4 mb-4"
-            >
-              <View className="flex-row items-start justify-between mb-3">
-                <View className="flex-1">
-                  <Text className="text-white text-lg font-poppins-bold mb-1">
-                    Randevu #{appointment.id.slice(0, 8)}
-                  </Text>
-                  <View
-                    className="self-start px-2 py-1 rounded-md"
-                    style={{ backgroundColor: statusConfig.color }}
-                  >
-                    <Text className="text-white text-xs font-poppins-semibold">
-                      {statusConfig.label}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View className="space-y-2">
-                <View className="flex-row items-center">
-                  <Calendar size={16} color={COLORS.text.secondary} />
-                  <Text className="text-text-secondary font-poppins ml-2">
-                    {appointment.date}
-                  </Text>
-                </View>
-
-                <View className="flex-row items-center">
-                  <Clock size={16} color={COLORS.text.secondary} />
-                  <Text className="text-text-secondary font-poppins ml-2">
-                    {appointment.startTime} - {appointment.endTime}
-                  </Text>
-                </View>
-
-                <View className="flex-row items-center">
-                  <User size={16} color={COLORS.text.secondary} />
-                  <Text className="text-text-secondary font-poppins ml-2">
-                    {appointment.totalDuration} dakika
-                  </Text>
-                </View>
-              </View>
-
-              {appointment.notes && (
-                <View className="border-t border-background mt-3 pt-3">
-                  <Text className="text-text-secondary text-sm font-poppins mb-1">
-                    Not
-                  </Text>
-                  <Text className="text-white font-poppins">
-                    {appointment.notes}
-                  </Text>
-                </View>
-              )}
-
-              <View className="flex-row justify-between items-center mt-3 pt-3 border-t border-background">
-                <Text className="text-text-secondary font-poppins">Toplam</Text>
-                <Text className="text-primary text-xl font-poppins-bold">
-                  ₺{appointment.totalPrice}
-                </Text>
-              </View>
-
-              {(appointment.status === 'confirmed' || appointment.status === 'pending') && (
-                <View className="mt-4">
-                  <Pressable
-                    onPress={() => handleCancelAppointment(appointment.id)}
-                    disabled={isCancelling}
-                    className="rounded-xl py-3 border"
-                    style={{ borderColor: COLORS.status.error, opacity: isCancelling ? 0.5 : 1 }}
-                  >
-                    <Text
-                      className="text-center font-poppins-semibold"
-                      style={{ color: COLORS.status.error }}
-                    >
-                      {isCancelling ? 'İptal Ediliyor...' : 'Randevuyu İptal Et'}
-                    </Text>
-                  </Pressable>
-                </View>
-              )}
+      {/* Action Footer */}
+      <View className="bg-[#2A2A2A]/50 px-4 py-3 flex-row items-center justify-between border-t border-white/5">
+        <View className="flex-row items-center gap-2">
+          <Image source={{ uri: item.barberImage }} className="h-6 w-6 rounded-full border border-white/10" resizeMode="cover" />
+          <Text className="text-xs text-[#A0A0A0]">Barber</Text>
+        </View>
+        <View className="flex-row gap-3">
+          {item.isPending && (
+            <Pressable>
+              <Text className="text-xs text-red-400">İptal Et</Text>
             </Pressable>
-          );
-        })}
+          )}
+          <Pressable className="flex-row items-center gap-1">
+            <Text className="text-white text-xs font-medium">Detaylar</Text>
+            <MaterialIcons name="chevron-right" size={16} color="white" />
+          </Pressable>
+        </View>
+      </View>
+    </View>
+  );
 
-        {appointments.length === 0 && (
-          <View className="flex-1 items-center justify-center py-12">
-            <Calendar size={64} color={COLORS.text.muted} />
-            <Text className="text-text-secondary text-lg font-poppins-semibold mt-4 mb-2">
-              Henüz randevunuz yok
-            </Text>
-            <Text className="text-text-muted text-sm font-poppins text-center px-8">
-              Randevu oluşturmak için berber aramaya başlayın
-            </Text>
-          </View>
+  return (
+    <View className="flex-1 bg-[#121212]">
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+
+      <SafeAreaView edges={['top']} className="bg-[#121212]/95 backdrop-blur-md border-b border-white/5 z-50">
+        <View className="flex-row items-center justify-between px-4 py-3">
+          <View className="w-10" />
+          <Text className="text-white text-lg font-bold tracking-wide uppercase text-primary">RANDEVULARIM</Text>
+          <Pressable className="w-10 items-end">
+            <MaterialIcons name="notifications" size={24} color="white" />
+          </Pressable>
+        </View>
+
+        {/* Tabs */}
+        <View className="bg-[#121212] pt-2 px-4 flex-row border-b border-white/10">
+          <Pressable
+            className="flex-1 pb-3 items-center relative"
+            onPress={() => setActiveTab('upcoming')}
+          >
+            <Text className={`font-bold text-sm tracking-wide ${activeTab === 'upcoming' ? 'text-primary' : 'text-[#A0A0A0]'}`}>YAKLAŞAN</Text>
+            {activeTab === 'upcoming' && (
+              <View className="absolute bottom-0 w-full h-[2px] bg-primary shadow-lg" />
+            )}
+          </Pressable>
+          <Pressable
+            className="flex-1 pb-3 items-center relative"
+            onPress={() => setActiveTab('past')}
+          >
+            <Text className={`font-medium text-sm tracking-wide ${activeTab === 'past' ? 'text-primary' : 'text-[#A0A0A0]'}`}>GEÇMİŞ</Text>
+            {activeTab === 'past' && (
+              <View className="absolute bottom-0 w-full h-[2px] bg-primary shadow-lg" />
+            )}
+          </Pressable>
+        </View>
+      </SafeAreaView>
+
+      <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+        {activeTab === 'upcoming' ? (
+          UPCOMING_APPOINTMENTS.length > 0 ? (
+            <>
+              {UPCOMING_APPOINTMENTS.map(renderAppointmentCard)}
+
+              {/* Promo Banner */}
+              <LinearGradient
+                colors={['rgba(212, 175, 53, 0.2)', 'transparent']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                className="mt-4 rounded-xl p-4 border border-primary/20 relative overflow-hidden"
+              >
+                <View className="absolute right-0 bottom-0 opacity-10 translate-x-4 translate-y-4">
+                  <MaterialIcons name="content-cut" size={120} color={COLORS.primary.DEFAULT} />
+                </View>
+                <Text className="text-primary font-bold text-sm mb-1">VIP Üyelik</Text>
+                <Text className="text-[#A0A0A0] text-xs max-w-[80%]">Sonraki randevunuzda %20 indirim kazanmak için VIP üyelik avantajlarını inceleyin.</Text>
+                <Pressable className="mt-3">
+                  <Text className="text-xs font-bold text-white underline decoration-primary underline-offset-4">İncele</Text>
+                </Pressable>
+              </LinearGradient>
+            </>
+          ) : (
+            <View className="flex-1 items-center justify-center py-20">
+              <View className="w-20 h-20 rounded-3xl bg-[#1E1E1E] items-center justify-center mb-6 shadow-2xl shadow-black border border-white/5 rotate-3">
+                <MaterialIcons name="event-note" size={40} color={COLORS.primary.DEFAULT} />
+              </View>
+              <Text className="text-white text-xl font-bold mb-2">Henüz Randevunuz Yok</Text>
+              <Text className="text-[#A0A0A0] text-center px-10 mb-8 leading-relaxed">
+                Kendinizi şımartmaya hazır mısınız? Size özel hizmetlerimizden dilediğinizi seçin.
+              </Text>
+              <Pressable
+                onPress={() => router.push('/(customer)/search')}
+                className="bg-primary px-8 py-3.5 rounded-xl flex-row items-center gap-2 shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+              >
+                <MaterialIcons name="add-circle-outline" size={20} color="black" />
+                <Text className="text-black font-bold text-base">Randevu Oluştur</Text>
+              </Pressable>
+            </View>
+          )
+        ) : (
+          PAST_APPOINTMENTS.length > 0 ? (
+            PAST_APPOINTMENTS.map(renderAppointmentCard)
+          ) : (
+            <View className="flex-1 items-center justify-center py-20">
+              <View className="w-20 h-20 rounded-full bg-[#1E1E1E] items-center justify-center mb-4 border border-white/5">
+                <MaterialIcons name="history" size={32} color="#64748B" />
+              </View>
+              <Text className="text-white text-lg font-bold mb-2">Geçmiş Randevu Yok</Text>
+              <Text className="text-[#A0A0A0] text-sm text-center">
+                Tamamlanan randevularınız burada listelenecektir.
+              </Text>
+            </View>
+          )
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

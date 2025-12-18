@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Randevu Detay Ekranı</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#171612", /* Using the component example dark background */
+                        "surface-dark": "#201d12", /* Slightly lighter for cards */
+                        "surface-highlight": "#2a271d", /* Highlight state */
+                        "text-secondary": "#b6b1a0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased">
+<!-- Main Container -->
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 pb-2 justify-between border-b border-[#37342a]/30">
+<button class="text-black dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h2 class="text-black dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Randevu Detayı</h2>
+<div class="flex w-10 items-center justify-end">
+<span class="material-symbols-outlined text-black dark:text-white text-[24px]">more_horiz</span>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 flex flex-col gap-6 p-4 pb-32">
+<!-- Status & Date Header -->
+<div class="flex flex-col items-center gap-2">
+<div class="flex items-center gap-x-2 rounded-full bg-green-500/10 border border-green-500/20 px-3 py-1">
+<span class="material-symbols-outlined text-green-500 text-[18px]">check_circle</span>
+<p class="text-green-500 text-xs font-semibold uppercase tracking-wide">Onaylandı</p>
+</div>
+<h1 class="text-2xl font-bold text-black dark:text-white mt-1">24 Ekim 2023, 14:30</h1>
+<p class="text-text-secondary text-sm">Randevu ID: #829102</p>
+</div>
+<!-- Professional Profile Card -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-[#37342a]/30 flex items-center gap-4">
+<div class="relative">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-16 w-16 border-2 border-primary" data-alt="Close up portrait of a professional barber with a beard" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6rGgHnX35JG2i2MqEkFdYU9dE-huyiTsUtMxhy7csL3DFNj4dDa924z3ky3JEHsv5QoVNK3JIuXhbxkOZ0_jdyX1PJAZoA1COJkich1X77qH-RXRPIRY_2iNPXfGxCSUnlpPEfT-pzxD1ZbGJi_vW64fJU-Aa4ktxFAyzC4NKf1VNvEKCcNWs0yDoQ9tXLAe8Fg4ziAbz2sBxuwwRvBaD6PyQNWlzmCkvBy0kIPVuVLmqhBoyp5dHIvbVWqRbTt3oqpUhieBGSWOC");'>
+</div>
+<div class="absolute bottom-0 right-0 bg-primary rounded-full p-0.5 border border-surface-dark">
+<span class="material-symbols-outlined text-surface-dark text-[12px] block">content_cut</span>
+</div>
+</div>
+<div class="flex flex-col flex-1">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-black dark:text-white text-lg font-bold leading-tight">Ahmet Yılmaz</p>
+<p class="text-primary text-sm font-medium">Senior Barber</p>
+</div>
+<div class="flex items-center gap-1 bg-[#37342a]/40 px-2 py-0.5 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[14px] fill-1">star</span>
+<span class="text-white text-xs font-bold">4.9</span>
+</div>
+</div>
+<p class="text-text-secondary text-xs mt-1">Barber King Nişantaşı</p>
+</div>
+</div>
+<!-- Services List -->
+<div class="bg-white dark:bg-surface-dark rounded-xl overflow-hidden border border-[#37342a]/30">
+<div class="px-4 py-3 border-b border-[#37342a]/30 flex justify-between items-center bg-surface-highlight/30">
+<h3 class="text-black dark:text-white font-bold text-sm">Hizmetler</h3>
+<span class="text-text-secondary text-xs">2 Hizmet</span>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<!-- Service Item 1 -->
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-0.5">
+<p class="text-black dark:text-white font-medium text-sm">Lüks Saç Kesimi</p>
+<p class="text-text-secondary text-xs">45 Dakika</p>
+</div>
+<p class="text-black dark:text-white font-semibold text-sm">450 TL</p>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-[#37342a]/20"></div>
+<!-- Service Item 2 -->
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-0.5">
+<p class="text-black dark:text-white font-medium text-sm">Sıcak Havlu &amp; Sakal Tıraşı</p>
+<p class="text-text-secondary text-xs">30 Dakika</p>
+</div>
+<p class="text-black dark:text-white font-semibold text-sm">300 TL</p>
+</div>
+</div>
+<div class="px-4 py-3 bg-[#37342a]/20 flex justify-between items-center border-t border-[#37342a]/30">
+<p class="text-text-secondary text-sm font-medium">Toplam Tutar</p>
+<p class="text-primary text-lg font-bold">750 TL</p>
+</div>
+</div>
+<!-- Location Section -->
+<div class="bg-white dark:bg-surface-dark rounded-xl overflow-hidden border border-[#37342a]/30">
+<div class="p-4 pb-2">
+<h3 class="text-black dark:text-white font-bold text-sm mb-1">Konum</h3>
+<div class="flex items-start gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">location_on</span>
+<p class="text-text-secondary text-sm">Teşvikiye, Vali Konağı Cd. No:14, 34365 Şişli/İstanbul</p>
+</div>
+</div>
+<!-- Static Map Image -->
+<div class="w-full h-32 bg-gray-700 relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Dark stylized map of Istanbul streets" data-location="Istanbul" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCARASkoDoWgVYkc7yhHyGdBRInLthoIH4vg3mCknItUiHoJWpvIDPQ_67_VYYDw5Fp9k28YnqxHfgKxxtkYpy_HYK1TmoMlZWAl_HoF6CMKCq6NitmHVdxBTQhbYiQ8D450SReZOJyiynFlj2Liu9db7bHJQ4IXoRBO0IRKbx5hmSPBy_3LYGSJDxaxJfaaizYk-D9olel7K_YMj_4znrZkc00Xl2MMb4C38tSscDQ4_JQb-D2e2_tTSHvbcgcHLbTBP3U-f5_4osg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60"></div>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+<div class="bg-primary/20 p-2 rounded-full animate-pulse">
+<div class="bg-primary p-1 rounded-full shadow-lg border-2 border-white dark:border-surface-dark">
+<span class="material-symbols-outlined text-surface-dark text-[16px] block font-bold">content_cut</span>
+</div>
+</div>
+</div>
+<button class="absolute bottom-2 right-2 bg-white dark:bg-surface-dark text-black dark:text-white text-xs px-2 py-1 rounded shadow border border-[#37342a]/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">directions</span>
+                        Yol Tarifi
+                    </button>
+</div>
+</div>
+<!-- Info Grid (Duration & Payment Method) -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-surface-dark p-3 rounded-xl border border-[#37342a]/30 flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[18px]">schedule</span>
+<span class="text-xs text-text-secondary uppercase font-semibold">Toplam Süre</span>
+</div>
+<p class="text-black dark:text-white font-medium pl-1">1 Saat 15 Dk</p>
+</div>
+<div class="bg-white dark:bg-surface-dark p-3 rounded-xl border border-[#37342a]/30 flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[18px]">credit_card</span>
+<span class="text-xs text-text-secondary uppercase font-semibold">Ödeme</span>
+</div>
+<p class="text-black dark:text-white font-medium pl-1">Kredi Kartı</p>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Actions -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-t border-[#37342a]/30 z-50 max-w-md mx-auto">
+<div class="flex flex-col gap-3">
+<button class="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-surface-dark font-bold text-sm flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                    Yeniden Planla
+                </button>
+<button class="w-full h-12 rounded-lg border border-[#37342a] text-text-secondary hover:text-white hover:border-white/50 font-medium text-sm flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[20px]">close</span>
+                    Randevuyu İptal Et
+                </button>
+</div>
+<!-- Bottom safe area spacer -->
+<div class="h-1"></div>
+</div>
+</div>
+</body></html>

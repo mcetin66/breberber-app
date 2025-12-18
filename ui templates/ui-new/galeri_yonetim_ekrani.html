@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Galeri Yönetim Ekranı</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35", // Gold accent
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // User requested deep black
+                        "surface-dark": "#1E1E1E", // User requested dark grey
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal scroll areas if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto border-x border-white/5 shadow-2xl">
+<!-- TopAppBar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-dark/95 backdrop-blur-md p-4 pb-2 justify-between border-b border-white/5">
+<div class="text-white flex size-10 shrink-0 items-center justify-center rounded-full active:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Galeri Yönetimi</h2>
+<div class="flex w-10 items-center justify-center">
+<span class="material-symbols-outlined text-[#b6b1a0]" style="font-size: 24px;">settings</span>
+</div>
+</div>
+<!-- Tabs -->
+<div class="bg-background-dark pt-2 sticky top-[60px] z-40">
+<div class="flex border-b border-white/10 px-4 justify-between">
+<button class="flex flex-col items-center justify-center border-b-[2px] border-primary text-primary pb-3 pt-2 flex-1 transition-all group">
+<span class="text-sm font-bold leading-normal tracking-[0.015em]">Yükleme</span>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[2px] border-transparent text-[#777] pb-3 pt-2 flex-1 hover:text-white transition-all group">
+<span class="text-sm font-bold leading-normal tracking-[0.015em] group-hover:text-gray-300">Onay Bekleyen</span>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[2px] border-transparent text-[#777] pb-3 pt-2 flex-1 hover:text-white transition-all group">
+<span class="text-sm font-bold leading-normal tracking-[0.015em] group-hover:text-gray-300">Yayınlanan</span>
+</button>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 flex flex-col p-4 pb-24">
+<!-- Headline -->
+<div class="mb-4">
+<h2 class="text-white tracking-light text-[24px] font-bold leading-tight text-left">Yeni Dönüşüm</h2>
+<p class="text-gray-400 text-sm mt-1">Öncesi ve sonrası fotoğraflarını seçerek başlayın.</p>
+</div>
+<!-- Client Selector (TextField Variant) -->
+<div class="mb-6">
+<label class="block text-[#b6b1a0] text-sm font-medium mb-2 pl-1">Müşteri Seçimi</label>
+<div class="relative">
+<select class="appearance-none flex w-full min-w-0 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-1 focus:ring-primary/50 border border-white/10 bg-surface-dark h-14 placeholder:text-gray-500 pl-4 pr-10 text-base font-normal leading-normal shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)]">
+<option disabled="" selected="" value="">Müşteri arayın veya seçin...</option>
+<option value="ahmet">Ahmet Yılmaz - 14:30</option>
+<option value="mehmet">Mehmet Demir - 15:45</option>
+<option value="can">Can Kaya - 17:00</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-primary">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Upload Area (ImageGrid Variant) -->
+<div class="grid grid-cols-2 gap-4 mb-6">
+<!-- Before Image (Uploaded State) -->
+<div class="group relative aspect-[3/4] w-full rounded-xl overflow-hidden border border-white/10 bg-surface-dark shadow-lg">
+<div class="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-white border border-white/10 uppercase tracking-wider">Öncesi</div>
+<div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Man with long messy beard before haircut" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPKUcGnLBBkB5NRGW-aMtOWyhQdOeMwa4yaxWPf7hd3HV2AlhmGBGkSUNeKAFgfCoocb_Ryrc6kwsDLDFWklracrj_T84XsCUhg_mcl44AxQG8sFxY5qqZoPj85XUBL6RFqnAxTbNKV7YlspZCslfboXxi-hSXS3wLbbRcr4oPTxZrRl96S4J15Brg4tjHOU-gKfEIyTwQDwTqYuvwfe3H2dKp68LKKUf-j0KOJj7jiaN_9S1HLR6XmuoZLCgUN6YO40Cwxjq2R6dL");'></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer">
+<div class="bg-white/20 backdrop-blur-md p-3 rounded-full text-white">
+<span class="material-symbols-outlined">edit</span>
+</div>
+</div>
+</div>
+<!-- After Image (Empty State) -->
+<div class="relative aspect-[3/4] w-full rounded-xl border-2 border-dashed border-white/10 bg-surface-dark hover:border-primary/50 hover:bg-white/5 transition-all cursor-pointer flex flex-col items-center justify-center group gap-2">
+<div class="absolute top-3 left-3 z-10 bg-primary/20 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-primary border border-primary/20 uppercase tracking-wider">Sonrası</div>
+<div class="size-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary" style="font-size: 28px;">add_a_photo</span>
+</div>
+<p class="text-gray-500 text-xs font-medium group-hover:text-gray-300">Fotoğraf Yükle</p>
+</div>
+</div>
+<!-- Tags Section -->
+<div class="mb-6">
+<label class="block text-[#b6b1a0] text-sm font-medium mb-3 pl-1">Yapılan İşlemler</label>
+<div class="flex flex-wrap gap-2">
+<label class="cursor-pointer group">
+<input checked="" class="peer sr-only" type="checkbox"/>
+<div class="px-4 py-2 rounded-lg bg-surface-dark border border-white/10 text-gray-400 text-sm font-medium transition-all peer-checked:bg-primary peer-checked:text-black peer-checked:border-primary group-hover:border-white/30">
+                            Saç Kesimi
+                        </div>
+</label>
+<label class="cursor-pointer group">
+<input checked="" class="peer sr-only" type="checkbox"/>
+<div class="px-4 py-2 rounded-lg bg-surface-dark border border-white/10 text-gray-400 text-sm font-medium transition-all peer-checked:bg-primary peer-checked:text-black peer-checked:border-primary group-hover:border-white/30">
+                            Sakal
+                        </div>
+</label>
+<label class="cursor-pointer group">
+<input class="peer sr-only" type="checkbox"/>
+<div class="px-4 py-2 rounded-lg bg-surface-dark border border-white/10 text-gray-400 text-sm font-medium transition-all peer-checked:bg-primary peer-checked:text-black peer-checked:border-primary group-hover:border-white/30">
+                            Cilt Bakımı
+                        </div>
+</label>
+<label class="cursor-pointer group">
+<input class="peer sr-only" type="checkbox"/>
+<div class="px-4 py-2 rounded-lg bg-surface-dark border border-white/10 text-gray-400 text-sm font-medium transition-all peer-checked:bg-primary peer-checked:text-black peer-checked:border-primary group-hover:border-white/30">
+                            Boya
+                        </div>
+</label>
+</div>
+</div>
+<!-- Consent Section -->
+<div class="mb-8 rounded-xl bg-surface-dark p-4 border border-white/5 flex items-start gap-4 shadow-lg">
+<div class="mt-1 rounded-full bg-primary/10 p-2 text-primary shrink-0">
+<span class="material-symbols-outlined">privacy_tip</span>
+</div>
+<div class="flex-1">
+<h3 class="text-white text-sm font-bold mb-1">Müşteri İzni</h3>
+<p class="text-xs text-gray-400 leading-relaxed mb-3">Fotoğrafların sosyal medyada ve uygulama galerisinde paylaşılması için müşteriden sözlü/yazılı izin alındığını onaylıyorum.</p>
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+<span class="ms-3 text-sm font-medium text-white">İzin Alındı</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-4 bg-background-dark/90 backdrop-blur-xl border-t border-white/5 z-50">
+<button class="w-full h-14 rounded-xl bg-gradient-to-r from-primary to-[#b8952b] text-black font-bold text-lg shadow-[0_0_20px_-5px_rgba(212,175,53,0.4)] hover:shadow-[0_0_25px_-5px_rgba(212,175,53,0.6)] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span>Galeriye Yayınla</span>
+<span class="material-symbols-outlined font-bold">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

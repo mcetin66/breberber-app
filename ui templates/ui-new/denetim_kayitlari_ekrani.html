@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Denetim Kayıtları - Lüks Berber Uygulaması</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Gold
+                        "primary-dark": "#B5952F",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#121212", // Deep Black as requested
+                        "surface-dark": "#1E1E1E", // Dark Grey for cards
+                        "surface-light": "#FFFFFF",
+                        "text-secondary": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 4px 20px -8px rgba(212, 175, 55, 0.25)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for clean UI */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            background-color: #121212; /* Fallback */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display antialiased text-white selection:bg-primary selection:text-black">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-background-dark border-x border-white/5 shadow-2xl">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-20 bg-background-dark/95 backdrop-blur-md border-b border-white/5 px-4 pt-12 pb-4">
+<div class="flex items-center justify-between">
+<button class="text-white hover:text-primary transition-colors flex size-10 items-center justify-center rounded-full active:bg-white/5">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="text-white text-lg font-bold tracking-tight">Denetim Kayıtları</h1>
+<div class="flex items-center gap-2">
+<button class="text-white hover:text-primary transition-colors flex size-10 items-center justify-center rounded-full active:bg-white/5">
+<span class="material-symbols-outlined text-[24px]">download</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Search & Filter Area -->
+<div class="px-4 py-4 space-y-4">
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-text-secondary group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full rounded-xl border-none bg-surface-dark py-3 pl-10 pr-4 text-white placeholder-text-secondary focus:ring-1 focus:ring-primary focus:bg-[#252525] transition-all shadow-lg shadow-black/20" placeholder="İşlem ID veya kullanıcı ara..." type="text"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+<span class="material-symbols-outlined text-text-secondary">tune</span>
+</div>
+</div>
+<!-- Chips -->
+<div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-primary px-5 shadow-gold-glow">
+<span class="text-black text-sm font-bold">Tümü</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50">
+<span class="text-text-secondary text-sm font-medium">Hatalar</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50">
+<span class="text-text-secondary text-sm font-medium">Ödemeler</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50">
+<span class="text-text-secondary text-sm font-medium">Randevular</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-surface-dark border border-white/10 px-5 transition-colors hover:border-primary/50">
+<span class="text-text-secondary text-sm font-medium">Sistem</span>
+</button>
+</div>
+</div>
+<!-- Content List -->
+<div class="flex-1 flex flex-col pb-20">
+<!-- Section: Today -->
+<div class="px-4 py-2">
+<h4 class="text-primary text-xs font-bold uppercase tracking-wider mb-3 ml-1 flex items-center gap-2 opacity-80">
+                    Bugün
+                    <div class="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
+</h4>
+<!-- Log Item 1: Payment Success -->
+<div class="group relative mb-3 cursor-pointer">
+<div class="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 blur-sm"></div>
+<div class="relative flex items-center gap-4 bg-surface-dark p-4 rounded-xl border border-white/5 shadow-lg">
+<div class="relative shrink-0">
+<div class="bg-gradient-to-br from-green-900 to-green-700 size-12 rounded-full flex items-center justify-center text-white shadow-inner border border-green-500/20">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-background-dark rounded-full p-0.5">
+<span class="material-symbols-outlined text-green-500 text-[14px] bg-green-950/50 rounded-full">check_circle</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-white text-base font-semibold truncate pr-2">Ödeme Alındı</p>
+<span class="text-primary font-mono text-xs font-bold bg-primary/10 px-1.5 py-0.5 rounded border border-primary/20">350₺</span>
+</div>
+<p class="text-text-secondary text-sm truncate">Ahmet Yılmaz • ID #TRX-9821</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-xs text-text-secondary font-medium">14:30</span>
+<span class="material-symbols-outlined text-text-secondary/50 text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Log Item 2: Appointment Warning -->
+<div class="group relative mb-3 cursor-pointer">
+<div class="relative flex items-center gap-4 bg-surface-dark p-4 rounded-xl border border-white/5 shadow-lg hover:border-primary/30 transition-colors">
+<div class="relative shrink-0">
+<div class="size-12 rounded-full overflow-hidden border border-white/10">
+<img class="h-full w-full object-cover" data-alt="Portrait of a young man with a beard, side profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXsGV4U4fYwmVdq6ubCS3mqIdTZJtcVBRWDZXn8CElXXnpM0r5v77bhRKrccrh3ImmHX7qTbi3_T5693_iQ0tqYUcdam26J_Y_lzhkq2yXM-gZddnQYzGzglswou1gmAlfoLeWG_4x2rQzA_ZuNapJtwORvx92YAzJZNYQeLXNwPsQfP7pRCNd6wZyShzCpFjUeDu919V5P74LCoRr5anCtj8lHQK216JRaqX_M2advZG5Y_iiO4lSyWpwgfFOxlESLYZ0qiJBLhGK"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-background-dark rounded-full p-0.5">
+<span class="material-symbols-outlined text-primary text-[14px] bg-yellow-900/50 rounded-full">priority_high</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-white text-base font-semibold truncate pr-2">Randevu İptali</p>
+</div>
+<p class="text-text-secondary text-sm truncate">Mehmet Demir • Son Dakika</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-xs text-text-secondary font-medium">12:15</span>
+<span class="material-symbols-outlined text-text-secondary/50 text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Log Item 3: System Error -->
+<div class="group relative mb-3 cursor-pointer">
+<div class="relative flex items-center gap-4 bg-surface-dark p-4 rounded-xl border border-red-900/30 shadow-lg hover:bg-[#251e1e] transition-colors">
+<div class="relative shrink-0">
+<div class="bg-gradient-to-br from-red-900/80 to-red-800/50 size-12 rounded-full flex items-center justify-center text-red-200 shadow-inner border border-red-500/20">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-background-dark rounded-full p-0.5">
+<span class="material-symbols-outlined text-red-500 text-[14px] bg-red-950/50 rounded-full">error</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-red-200 text-base font-semibold truncate pr-2">Başarısız Giriş</p>
+<span class="text-red-400 font-mono text-[10px] bg-red-900/20 px-1.5 py-0.5 rounded border border-red-500/20">CRITICAL</span>
+</div>
+<p class="text-text-secondary text-sm truncate">Admin Paneli • IP: 192.168.1.5</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-xs text-text-secondary font-medium">09:42</span>
+<span class="material-symbols-outlined text-text-secondary/50 text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Yesterday -->
+<div class="px-4 py-2 mt-2">
+<h4 class="text-primary text-xs font-bold uppercase tracking-wider mb-3 ml-1 flex items-center gap-2 opacity-80">
+                    Dün
+                    <div class="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
+</h4>
+<!-- Log Item 4: Profile Update -->
+<div class="group relative mb-3 cursor-pointer">
+<div class="relative flex items-center gap-4 bg-surface-dark p-4 rounded-xl border border-white/5 shadow-lg hover:border-primary/30 transition-colors">
+<div class="relative shrink-0">
+<div class="size-12 rounded-full overflow-hidden border border-white/10">
+<img class="h-full w-full object-cover" data-alt="Portrait of a smiling man with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSA9NBJa9eQAzURTS4Uftkg68mRXAXJPXbdefndVwHRG5xGelQQkw2tgNNcJXfEMpmXGkwKt4pso_I8REIixUkAvLxsxj9mBNdwrTQFbzPZSJsngc_l4z_f4wFQj-JyRR7StIwUvstxvymEj7kDbKcToOrgfwU4kdvcx-BfpwQip1gh4iMeN0VUI6_oY-ymCOFfLLIwmXIvMJfgqGmmKuYrm1eAzAOYLV6zRrrc7EnQcQ4L5gU_mPyjTioRxiuSbOQReIeIw1d1Xen"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-background-dark rounded-full p-0.5">
+<span class="material-symbols-outlined text-blue-400 text-[14px] bg-blue-950/50 rounded-full">edit</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-white text-base font-semibold truncate pr-2">Profil Güncelleme</p>
+</div>
+<p class="text-text-secondary text-sm truncate">Caner Erkin • Telefon Değişikliği</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-xs text-text-secondary font-medium">18:15</span>
+<span class="material-symbols-outlined text-text-secondary/50 text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Log Item 5: Export Data -->
+<div class="group relative mb-3 cursor-pointer">
+<div class="relative flex items-center gap-4 bg-surface-dark p-4 rounded-xl border border-white/5 shadow-lg hover:border-primary/30 transition-colors">
+<div class="relative shrink-0">
+<div class="bg-gradient-to-br from-gray-800 to-gray-700 size-12 rounded-full flex items-center justify-center text-white shadow-inner border border-white/10">
+<span class="material-symbols-outlined text-[20px]">cloud_download</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-white text-base font-semibold truncate pr-2">Rapor İndirildi</p>
+</div>
+<p class="text-text-secondary text-sm truncate">Sistem Yöneticisi • Aylık Rapor</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-xs text-text-secondary font-medium">10:00</span>
+<span class="material-symbols-outlined text-text-secondary/50 text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button / Navigation Hint (Optional) -->
+<div class="fixed bottom-6 right-6 z-30">
+<button class="flex items-center justify-center size-14 rounded-full bg-primary shadow-[0_0_20px_rgba(212,175,55,0.4)] text-black hover:bg-white transition-all transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined text-[28px]">filter_list</span>
+</button>
+</div>
+</div>
+</body></html>

@@ -1,221 +1,166 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, Image, Dimensions } from 'react-native';
+import { View, Text, Pressable, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Store, TrendingUp, Users, Wallet, CreditCard, ChevronRight, CheckCircle2, Briefcase, CalendarCheck2, Plus } from 'lucide-react-native';
+import { Store, TrendingUp, Wallet, Clock, ChevronRight, Bell, Users, Calendar, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 import { useAdminStore } from '@/stores/adminStore';
-import AddBusinessModal from '@/components/admin/AddBusinessModal';
-
-// Improved Bar Component
-const SimpleBar = ({ height, label, isToday }: { height: number, label: string, isToday?: boolean }) => (
-  <View className="flex-1 items-center gap-2">
-    {/* Bar Track */}
-    <View
-      className="w-3 bg-slate-700/30 rounded-full h-full relative overflow-hidden"
-    >
-      {/* Fill */}
-      <View
-        className={`w-full rounded-full absolute bottom-0 ${isToday ? 'bg-primary' : 'bg-blue-500'}`}
-        style={{
-          height: `${Math.max(height, 5)}%`,
-          opacity: height === 0 ? 0.3 : 1
-        }}
-      />
-    </View>
-    {/* Label */}
-    <Text
-      className={`text-[10px] text-center ${isToday ? 'text-white font-bold' : 'text-slate-500 font-medium'}`}
-      numberOfLines={1}
-    >
-      {label}
-    </Text>
-  </View>
-);
-
-import { AdminHeader } from '@/components/admin/AdminHeader';
-
-// ... (keep existing imports)
 
 export default function AdminDashboardScreen() {
   const router = useRouter();
-  const screenWidth = Dimensions.get('window').width;
   const { aggregateStats, fetchDashboardStats, loading } = useAdminStore();
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
   useEffect(() => {
     fetchDashboardStats();
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
-      {/* Header */}
-      <AdminHeader
-        title="Hoşgeldin, Admin"
-        subtitle="İşte platformunun güncel durumu."
-        rightElement={
-          <Image
-            source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
-            className="w-10 h-10 rounded-full border border-white/20"
-          />
-        }
-      />
+    <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
+      {/* Simple Header */}
+      <View className="px-4 py-3 flex-row items-center justify-between border-b border-white/5">
+        <View className="flex-row items-center gap-3">
+          <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
+            <Sparkles size={20} color="#121212" />
+          </View>
+          <View>
+            <Text className="text-white text-lg font-bold">Platform Yönetimi</Text>
+            <Text className="text-gray-500 text-xs">Hoş geldiniz</Text>
+          </View>
+        </View>
+        <Pressable className="relative">
+          <Bell size={24} color="#6B7280" />
+          <View className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full items-center justify-center">
+            <Text className="text-white text-[10px] font-bold">3</Text>
+          </View>
+        </Pressable>
+      </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
 
-        {/* Big Stats Card - Active Businesses */}
-        <View className="px-5 mb-4">
-          <View className="bg-[#1E293B] rounded-3xl p-5 relative overflow-hidden">
-            <View className="flex-row justify-between items-start mb-6">
-              <View className="w-10 h-10 rounded-xl bg-blue-500/20 items-center justify-center">
-                <Store size={20} color="#3B82F6" />
+        {/* Key Metrics */}
+        <View className="px-4 py-4 flex-row gap-3">
+          {/* Active Businesses */}
+          <View className="flex-1 bg-[#1E1E1E] p-4 rounded-xl border border-white/5">
+            <View className="flex-row items-center justify-between mb-2">
+              <View className="w-9 h-9 rounded-lg bg-[#d4af35]/10 items-center justify-center">
+                <Store size={18} color="#d4af35" />
               </View>
-              <View className="bg-green-500/10 px-2 py-1 rounded-full">
-                <Text className="text-green-400 text-xs font-bold">Aktif</Text>
+              <View className="flex-row items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                <TrendingUp size={10} color="#10b981" />
+                <Text className="text-emerald-400 text-[10px] font-bold">+12%</Text>
               </View>
             </View>
-            <Text className="text-slate-400 text-sm font-medium mb-1">Aktif İşletmeler</Text>
-            <Text className="text-white text-4xl font-bold">{aggregateStats.totalActiveBusinesses}</Text>
+            <Text className="text-gray-500 text-[10px] font-semibold uppercase tracking-wider">Aktif İşletme</Text>
+            <Text className="text-white text-2xl font-bold">{aggregateStats.totalActiveBusinesses}</Text>
+          </View>
+
+          {/* Total Revenue */}
+          <View className="flex-1 bg-[#1E1E1E] p-4 rounded-xl border border-white/5">
+            <View className="flex-row items-center justify-between mb-2">
+              <View className="w-9 h-9 rounded-lg bg-[#d4af35]/10 items-center justify-center">
+                <Wallet size={18} color="#d4af35" />
+              </View>
+              <View className="flex-row items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                <TrendingUp size={10} color="#10b981" />
+                <Text className="text-emerald-400 text-[10px] font-bold">+5%</Text>
+              </View>
+            </View>
+            <Text className="text-gray-500 text-[10px] font-semibold uppercase tracking-wider">Gelir</Text>
+            <Text className="text-[#d4af35] text-xl font-bold">₺{(aggregateStats.totalRevenue || 0).toLocaleString('tr-TR')}</Text>
           </View>
         </View>
 
-        {/* Breakdown by Type */}
-        <View className="px-5 flex-row gap-3 mb-4">
-          {/* Berber */}
-          <View className="flex-1 bg-[#1E293B] rounded-2xl p-4 border border-white/5">
-            <Text className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">BERBER</Text>
-            <Text className="text-white text-xl font-bold">{aggregateStats.typeDistribution?.berber || 0}</Text>
-          </View>
-          {/* Kuaför */}
-          <View className="flex-1 bg-[#1E293B] rounded-2xl p-4 border border-white/5">
-            <Text className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">KUAFÖR</Text>
-            <Text className="text-white text-xl font-bold">{aggregateStats.typeDistribution?.kuafor || 0}</Text>
-          </View>
-          {/* Güzellik */}
-          <View className="flex-1 bg-[#1E293B] rounded-2xl p-4 border border-white/5">
-            <Text className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">GÜZELLİK</Text>
-            <Text className="text-white text-xl font-bold">{aggregateStats.typeDistribution?.guzellik_merkezi || 0}</Text>
-          </View>
-        </View>
-
-        {/* Secondary Stats Grid */}
-        <View className="px-5 flex-row gap-4 mb-8">
-          {/* Total Businesses */}
-          <View className="flex-1 bg-[#1E293B] rounded-3xl p-5">
-            <View className="w-10 h-10 rounded-xl bg-purple-500/20 items-center justify-center mb-4">
-              <Briefcase size={20} color="#A855F7" />
-            </View>
-            <Text className="text-slate-400 text-xs font-medium mb-1">Toplam İşletme</Text>
-            <Text className="text-white text-2xl font-bold mb-1">{aggregateStats.totalBusinesses}</Text>
-            <Text className="text-green-400 text-[10px]">Tüm kayıtlı işletmeler</Text>
-          </View>
-
-          {/* Appointments */}
-          <View className="flex-1 bg-[#1E293B] rounded-3xl p-5">
-            <View className="w-10 h-10 rounded-xl bg-orange-500/20 items-center justify-center mb-4">
-              <CalendarCheck2 size={20} color="#F97316" />
-            </View>
-            <Text className="text-slate-400 text-xs font-medium mb-1">Toplam Randevu</Text>
-            <Text className="text-white text-2xl font-bold mb-1">{aggregateStats.totalAppointments}</Text>
-            <Text className="text-green-400 text-[10px]">Bugüne kadar</Text>
+        {/* Type Breakdown */}
+        <View className="px-4 mb-4">
+          <View className="flex-row gap-2">
+            {[
+              { label: 'Berber', key: 'berber', color: '#f97316' },
+              { label: 'Kuaför', key: 'kuafor', color: '#8b5cf6' },
+              { label: 'Güzellik', key: 'guzellik_merkezi', color: '#ec4899' },
+            ].map((type) => (
+              <View key={type.key} className="flex-1 bg-[#1E1E1E] rounded-xl p-3 border border-white/5">
+                <View className="flex-row items-center gap-2 mb-1">
+                  <View className="w-2 h-2 rounded-full" style={{ backgroundColor: type.color }} />
+                  <Text className="text-gray-500 text-[10px] font-semibold uppercase">{type.label}</Text>
+                </View>
+                <Text className="text-white text-lg font-bold">
+                  {aggregateStats.typeDistribution?.[type.key] || 0}
+                </Text>
+              </View>
+            ))}
           </View>
         </View>
 
         {/* Quick Actions */}
-        <View className="px-5 mb-8">
-          <Text className="text-white text-lg font-bold mb-4">Hızlı İşlemler</Text>
-          <View className="flex-row gap-4">
-            <Pressable
-              onPress={() => router.push('/(platform)/tenants')}
-              className="flex-1 bg-primary rounded-2xl h-24 items-center justify-center active:scale-95 ease-in-out duration-300"
-            >
-              <View className="items-center gap-2">
-                <Store size={24} color="white" />
-                <Text className="text-white font-bold text-sm">İşletmeleri Yönet</Text>
-              </View>
-            </Pressable>
-            <Pressable
-              onPress={() => setIsAddModalVisible(true)}
-              className="flex-1 bg-[#1E293B] border border-white/5 rounded-2xl h-24 items-center justify-center active:scale-95 ease-in-out duration-300"
-            >
-              <View className="items-center gap-2">
-                <Plus size={24} color="#10B981" />
-                <Text className="text-white font-bold text-sm">Yeni İşletme Ekle</Text>
-              </View>
-            </Pressable>
-          </View>
-        </View>
-
-        {/* Revenue Chart Section */}
-        <View className="px-5 mb-8">
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-white text-lg font-bold">Gelir Özeti</Text>
-            <Text className="text-primary text-xs font-bold">Raporu Gör</Text>
-          </View>
-
-          <View className="bg-[#1E293B] rounded-3xl p-5">
-            <View className="h-32 flex-row justify-between items-end mb-6 px-2">
-
+        <View className="px-4 mb-4">
+          <LinearGradient
+            colors={['#d4af35', '#b89528']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            className="rounded-xl p-4 flex-row items-center justify-between"
+          >
+            <View>
+              <Text className="text-black font-bold text-base">Aylık Rapor Hazır</Text>
+              <Text className="text-black/70 text-xs">Platform performans analizi</Text>
             </View>
-
-            <View className="flex-row justify-between items-end">
-              <View>
-                <Text className="text-slate-400 text-xs mb-1">Toplam Gelir</Text>
-                <Text className="text-white text-xl font-bold">₺{aggregateStats.totalRevenue.toLocaleString('tr-TR')}</Text>
-              </View>
-              <View className="bg-green-500/10 px-2 py-1 rounded-md">
-                <Text className="text-green-400 text-xs font-bold">+12.5%</Text>
-              </View>
-            </View>
-          </View>
+            <Pressable
+              onPress={() => router.push('/(platform)/(tabs)/reports')}
+              className="bg-[#121212] px-4 py-2 rounded-lg"
+            >
+              <Text className="text-[#d4af35] text-xs font-bold">Görüntüle</Text>
+            </Pressable>
+          </LinearGradient>
         </View>
 
         {/* Recent Activity */}
-        <View className="px-5 mb-24">
-          <Text className="text-white text-lg font-bold mb-4">Son Aktiviteler</Text>
+        <View className="px-4">
+          <View className="flex-row items-center justify-between mb-3">
+            <Text className="text-white text-base font-bold">Son İşlemler</Text>
+            <Pressable onPress={() => router.push('/(platform)/(tabs)/businesses')} className="flex-row items-center gap-1">
+              <Text className="text-[#d4af35] text-xs font-semibold">Tümünü Gör</Text>
+              <ChevronRight size={14} color="#d4af35" />
+            </Pressable>
+          </View>
 
-
-          {aggregateStats.recentActivity?.map((item, index) => (
-            <Pressable key={index} className="bg-[#1E293B] rounded-2xl p-4 mb-3 flex-row items-center border border-white/5">
-              {item.type === 'business' ? (
+          {(aggregateStats.recentActivity || []).slice(0, 5).map((item, index) => (
+            <Pressable
+              key={index}
+              onPress={() => item.type === 'business' && router.push(`/(platform)/business-detail/${item.id}`)}
+              className="flex-row items-center gap-3 bg-[#1E1E1E] p-3 rounded-xl border border-white/5 mb-2 active:border-[#d4af35]/30"
+            >
+              <View className="w-10 h-10 rounded-lg overflow-hidden bg-white/5">
                 <Image
                   source={{ uri: item.cover_url || 'https://via.placeholder.com/100' }}
-                  className="w-10 h-10 rounded-full bg-gray-700"
+                  className="w-full h-full"
                 />
-              ) : (
-                <View className="w-10 h-10 rounded-full bg-orange-500/20 items-center justify-center">
-                  <CheckCircle2 size={18} color="#F97316" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-white font-semibold text-sm" numberOfLines={1}>{item.name}</Text>
+                <View className="flex-row items-center gap-1 mt-0.5">
+                  <Clock size={10} color="#6B7280" />
+                  <Text className="text-gray-500 text-[10px]">
+                    {new Date(item.created_at).toLocaleDateString('tr-TR')}
+                  </Text>
                 </View>
-              )}
-
-              <View className="flex-1 ml-3">
-                <Text className="text-white font-bold text-sm">
-                  {item.type === 'business' ? 'Yeni Berber' : 'Yeni Randevu'}
-                </Text>
-                <Text className="text-slate-400 text-xs" numberOfLines={1}>
-                  {item.type === 'business'
-                    ? `${item.name} sisteme katıldı.`
-                    : `${item.business?.name} - ${item.service?.name}`}
+              </View>
+              <View className="px-2 py-1 rounded-md bg-[#d4af35]/10 border border-[#d4af35]/20">
+                <Text className="text-[#d4af35] text-[10px] font-bold">
+                  {item.type === 'business' ? 'YENİ' : 'İŞLEM'}
                 </Text>
               </View>
-              <Text className="text-slate-500 text-xs">
-                {new Date(item.created_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}
-              </Text>
             </Pressable>
           ))}
 
           {(!aggregateStats.recentActivity || aggregateStats.recentActivity.length === 0) && (
-            <Text className="text-slate-500 text-center py-4">Henüz aktivite yok.</Text>
+            <View className="bg-[#1E1E1E] p-6 rounded-xl border border-white/5 items-center">
+              <Clock size={32} color="#6B7280" />
+              <Text className="text-gray-500 text-sm mt-2">Henüz işlem yok</Text>
+            </View>
           )}
         </View>
 
+        <View className="h-24" />
       </ScrollView>
-
-      <AddBusinessModal
-        visible={isAddModalVisible}
-        onClose={() => setIsAddModalVisible(false)}
-      />
     </SafeAreaView>
   );
 }
