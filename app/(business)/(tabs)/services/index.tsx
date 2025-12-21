@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Clock, Edit, Trash2, Users } from 'lucide-react-native';
+import { Plus, Clock, Edit, Trash2, Users, Scissors } from 'lucide-react-native';
 import { useAuthStore } from '@/stores/authStore';
 import { useBusinessStore } from '@/stores/businessStore';
 import { useRouter } from 'expo-router';
@@ -63,16 +63,17 @@ export default function ServicesScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
       <AdminHeader
         title="Hizmetler"
         subtitle="Servislerinizi yönetin"
+        headerIcon={<Scissors size={20} color="#121212" />}
         rightElement={
           <Pressable
             onPress={() => router.push('/(business)/(tabs)/services/detail')}
-            className="w-10 h-10 rounded-full bg-primary items-center justify-center shadow-lg shadow-primary/30 active:scale-95"
+            className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center shadow-lg shadow-[#d4af35]/30 active:scale-95"
           >
-            <Plus size={24} color="white" />
+            <Plus size={24} color="#121212" />
           </Pressable>
         }
       >
@@ -82,10 +83,10 @@ export default function ServicesScreen() {
               <Pressable
                 key={cat}
                 onPress={() => setSelectedCategory(cat)}
-                className={`rounded-xl px-4 py-2 mr-2 border ${selectedCategory === cat ? 'bg-primary border-primary' : 'bg-[#1E293B] border-white/5'}`}
+                className={`rounded-xl px-4 py-2 mr-2 border ${selectedCategory === cat ? 'bg-[#d4af35] border-[#d4af35]' : 'bg-[#1E1E1E] border-white/5'}`}
               >
                 <Text
-                  className={`font-poppins-semibold text-xs ${selectedCategory === cat ? 'text-white' : 'text-slate-400'}`}
+                  className={`font-poppins-semibold text-xs ${selectedCategory === cat ? 'text-black' : 'text-zinc-400'}`}
                 >
                   {cat}
                 </Text>
@@ -98,21 +99,21 @@ export default function ServicesScreen() {
       <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
         {filteredServices.length > 0 ? (
           filteredServices.map((service) => (
-            <View key={service.id} className="bg-[#1E293B] rounded-2xl border border-white/5 p-4 mb-3 shadow-sm">
+            <View key={service.id} className="bg-[#1E1E1E] rounded-2xl border border-white/5 p-4 mb-3 shadow-sm">
 
               {/* Header: Name and Price */}
               <View className="flex-row justify-between items-start mb-2">
                 <Text className="text-white text-lg font-poppins-bold flex-1 mr-3 leading-tight">
                   {service.name}
                 </Text>
-                <View className="px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20 shadow-sm shadow-primary/5">
-                  <Text className="text-primary font-poppins-bold text-base">{formatCurrency(service.price)}</Text>
+                <View className="px-3 py-1.5 rounded-xl bg-[#d4af35]/10 border border-[#d4af35]/20 shadow-sm shadow-[#d4af35]/5">
+                  <Text className="text-[#d4af35] font-poppins-bold text-base">{formatCurrency(service.price)}</Text>
                 </View>
               </View>
 
               {/* Description */}
               {service.description && (
-                <Text className="text-slate-400 text-sm font-poppins mb-3 leading-relaxed" numberOfLines={2}>
+                <Text className="text-zinc-400 text-sm font-poppins mb-3 leading-relaxed" numberOfLines={2}>
                   {service.description}
                 </Text>
               )}
@@ -121,22 +122,22 @@ export default function ServicesScreen() {
               <View className="flex-row flex-wrap gap-2 mb-4">
                 {/* Category */}
                 {service.category && (
-                  <View className="bg-[#0F172A] px-2.5 py-1.5 rounded-lg border border-white/5">
-                    <Text className="text-slate-300 text-xs font-poppins-medium">{service.category}</Text>
+                  <View className="bg-[#121212] px-2.5 py-1.5 rounded-lg border border-white/5">
+                    <Text className="text-zinc-400 text-xs font-poppins-medium">{service.category}</Text>
                   </View>
                 )}
 
                 {/* Duration */}
-                <View className="flex-row items-center bg-[#0F172A] px-2.5 py-1.5 rounded-lg border border-white/5">
+                <View className="flex-row items-center bg-[#121212] px-2.5 py-1.5 rounded-lg border border-white/5">
                   <Clock size={12} color="#94a3b8" />
-                  <Text className="text-slate-300 text-xs font-poppins-medium ml-1.5">{service.duration} dk</Text>
+                  <Text className="text-zinc-400 text-xs font-poppins-medium ml-1.5">{service.duration} dk</Text>
                 </View>
 
                 {/* Staff Count */}
                 {service.staffIds && service.staffIds.length > 0 && (
-                  <View className="flex-row items-center bg-[#0F172A] px-2.5 py-1.5 rounded-lg border border-white/5">
+                  <View className="flex-row items-center bg-[#121212] px-2.5 py-1.5 rounded-lg border border-white/5">
                     <Users size={12} color="#94a3b8" />
-                    <Text className="text-slate-300 text-xs font-poppins-medium ml-1.5">{service.staffIds.length} Per.</Text>
+                    <Text className="text-zinc-400 text-xs font-poppins-medium ml-1.5">{service.staffIds.length} Per.</Text>
                   </View>
                 )}
               </View>

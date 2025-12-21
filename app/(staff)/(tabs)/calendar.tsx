@@ -1,237 +1,247 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, Image, Dimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Calendar as CalendarIcon, Clock, MoreHorizontal, User, Filter, ChevronLeft, ChevronRight, Plus } from 'lucide-react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, Pressable, Image, ActivityIndicator } from 'react-native';
+import { Calendar as CalendarIcon, Clock, ChevronLeft, ChevronRight, User, Filter } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-
-const STAFF_MEMBERS = [
-  { id: 'all', name: 'Tümü', image: null },
-  { id: '1', name: 'Ahmet', image: 'https://randomuser.me/api/portraits/men/32.jpg', status: 'online' },
-  { id: '2', name: 'Selin', image: 'https://randomuser.me/api/portraits/women/44.jpg', status: 'offline' },
-  { id: '3', name: 'Mehmet', image: 'https://randomuser.me/api/portraits/men/86.jpg', status: 'busy' },
-];
-
-const APPOINTMENTS = [
-  {
-    id: '1',
-    startTime: '10:00',
-    endTime: '11:00',
-    customer: 'Ali Yılmaz',
-    service: 'Saç Kesimi',
-    status: 'confirmed', // confirmed, in_progress, completed, break
-    price: '350₺',
-    duration: '60 dk',
-    staffId: '1'
-  },
-  {
-    id: '2',
-    startTime: '12:30',
-    endTime: '13:30',
-    status: 'break',
-    title: 'Öğle Arası',
-    subtitle: 'Personel Molası',
-    staffId: '1'
-  },
-  {
-    id: '3',
-    startTime: '15:00',
-    endTime: '16:30',
-    customer: 'Canan Demir',
-    service: 'Saç Boyama & Bakım',
-    status: 'in_progress',
-    price: '',
-    duration: '90 dk',
-    isVip: true,
-    staffId: '2'
-  }
-];
-
-const TIME_SLOTS = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
+import { StandardScreen } from '@/components/ui/StandardScreen';
+import { useAuthStore } from '@/stores/authStore';
+import { useBusinessStore } from '@/stores/businessStore';
 
 export default function StaffCalendarScreen() {
-  const [viewMode, setViewMode] = useState<'daily' | 'weekly'>('daily');
-  const [selectedStaff, setSelectedStaff] = useState('1'); // Default to Ahmet
-  const router = useRouter();
+  const { user } = useAuthStore();
+  const { fetchAppointments, getAppointments, loading, fetchStaff, staff = [] } = useBusinessStore();
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  /* 
+     RESTORING TOGGLE FUNCTIONALITY:
+     The user confirmed this page originally had BOTH Daily and Weekly views.
+     We are re-implementing the toggle and the logic for both modes.
+  */
+  const [viewMode, setViewMode] = useState<'day' | 'week'>('day');
 
-  const renderAppointmentCard = (apt: any) => {
-    if (apt.status === 'break') {
-      return (
-        <View className="flex-row items-center bg-[#1E1E1E]/50 rounded-xl p-3 border border-white/5 border-dashed">
-          <View className="w-8 h-8 rounded-full bg-white/5 items-center justify-center mr-3">
-            <Clock size={16} color="#9ca3af" />
-          </View>
-          <View>
-            <Text className="text-gray-300 font-medium text-sm">{apt.title}</Text>
-            <Text className="text-gray-500 text-xs">{apt.subtitle}</Text>
-          </View>
-        </View>
-      );
+  // --- WEEK VIEW HELPER (Re-integrated) ---
+  const getWeekDays = (startDate: Date) => {
+    const days = [];
+    const dayNames = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+    const currentDay = startDate.getDay();
+    const diff = currentDay === 0 ? 6 : currentDay - 1;
+    const monday = new Date(startDate);
+    monday.setDate(startDate.getDate() - diff);
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      days.push({
+        dayName: dayNames[d.getDay()],
+        dayNumber: d.getDate(),
+        fullDate: new Date(d),
+        isToday: new Date().toDateString() === d.toDateString()
+      });
     }
-
-    const isConfirm = apt.status === 'confirmed';
-    const isInProgress = apt.status === 'in_progress';
-
-    return (
-      <View className={`bg-[#1E1E1E] rounded-xl p-3 border ${isInProgress ? 'border-primary/50' : 'border-l-4 border-l-primary border-t border-r border-b border-white/5'} shadow-sm relative overflow-hidden`}>
-        {isInProgress && (
-          <View className="absolute bottom-0 left-0 h-0.5 w-full bg-primary/20">
-            <View className="h-full bg-primary w-1/3" />
-          </View>
-        )}
-
-        <View className="flex-row justify-between items-start mb-2">
-          <View>
-            <Text className="text-white font-bold text-base leading-tight">{apt.customer}</Text>
-            <Text className="text-primary text-xs font-medium mt-0.5">{apt.service}</Text>
-          </View>
-          <View className={`px-2 py-0.5 rounded border ${isInProgress ? 'bg-green-500/10 border-green-500/20' : 'bg-primary/20 border-primary/20'}`}>
-            <Text className={`text-[10px] font-bold uppercase tracking-wide ${isInProgress ? 'text-green-400' : 'text-primary'}`}>
-              {isInProgress ? 'İşlemde' : 'Onaylandı'}
-            </Text>
-          </View>
-        </View>
-
-        <View className="flex-row items-center gap-4 mt-2">
-          <View className="flex-row items-center gap-1.5">
-            <Clock size={14} color="#9ca3af" />
-            <Text className="text-xs text-gray-400">{apt.duration}</Text>
-          </View>
-          {apt.price && (
-            <View className="flex-row items-center gap-1.5">
-              <Text className="text-xs text-gray-400 font-medium">{apt.price}</Text>
-            </View>
-          )}
-          {apt.isVip && (
-            <View className="flex-row items-center gap-1.5">
-              <User size={14} color="#9ca3af" />
-              <Text className="text-xs text-gray-400">VIP</Text>
-            </View>
-          )}
-        </View>
-      </View>
-    );
+    return days;
   };
 
+  const TIME_SLOTS = Array.from({ length: 15 }, (_, i) => `${(i + 9).toString().padStart(2, '0')}:00`);
+
+  // --- DAY VIEW HELPER ---
+  const generateDays = () => {
+    const days = [];
+    for (let i = -2; i <= 4; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      days.push(d);
+    }
+    return days;
+  };
+  const days = generateDays();
+
+  // State for Week View navigation
+  const [weekStartDate, setWeekStartDate] = useState(new Date());
+
+  // Render Week Cell
+  const renderWeekCell = (day: any, timeSlot: string) => {
+    const dateStr = day.fullDate.toISOString().split('T')[0];
+    // In week view, show all appointments for the logged-in user (filtered by staffId if needed, but usually staff sees their own)
+    const weekAppt = appointments.find(a => {
+      if (a.date !== dateStr) return false;
+      const aHour = parseInt(a.startTime?.split(':')[0] || '0');
+      const sHour = parseInt(timeSlot.split(':')[0]);
+      return aHour === sHour;
+    });
+
+    if (weekAppt) {
+      return (
+        <Pressable className="bg-primary/20 border-l-2 border-primary p-1 absolute top-0 left-0 right-0 bottom-1 rounded overflow-hidden">
+          <Text className="text-[8px] font-bold text-white" numberOfLines={1}>{weekAppt.customerName}</Text>
+        </Pressable>
+      );
+    }
+    return null;
+  };
+
+
   return (
-    <View className="flex-1 bg-[#121212]">
-      {/* Header */}
-      <SafeAreaView edges={['top']} className="bg-[#121212] z-20">
-        <View className="flex-row justify-between items-center px-5 py-4">
-          <View>
-            <Text className="text-primary text-xs font-bold tracking-widest uppercase mb-0.5">BUGÜN</Text>
-            <View className="flex-row items-center gap-2">
-              <Text className="text-2xl font-bold tracking-tight text-white">24 Ekim, Salı</Text>
-            </View>
-          </View>
-          <Pressable className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center">
-            <CalendarIcon size={20} color={COLORS.primary.DEFAULT} />
+    <StandardScreen
+      title="Randevu Takvimi"
+      subtitle={viewMode === 'day' ? "Günlük Liste" : "Haftalık Görünüm"}
+      rightElement={
+        <View className="flex-row bg-[#1E1E1E] rounded-lg border border-white/10 p-1">
+          <Pressable
+            onPress={() => setViewMode('day')}
+            className={`px-3 py-1.5 rounded-md ${viewMode === 'day' ? 'bg-[#333]' : 'bg-transparent'}`}
+          >
+            <Text className={`text-xs font-bold ${viewMode === 'day' ? 'text-primary' : 'text-gray-400'}`}>Gün</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setViewMode('week')}
+            className={`px-3 py-1.5 rounded-md ${viewMode === 'week' ? 'bg-[#333]' : 'bg-transparent'}`}
+          >
+            <Text className={`text-xs font-bold ${viewMode === 'week' ? 'text-primary' : 'text-gray-400'}`}>Hafta</Text>
           </Pressable>
         </View>
+      }
+    >
+      <View className="flex-col gap-4">
 
-        {/* View Toggle */}
-        <View className="px-5 pb-3">
-          <View className="flex-row bg-[#1E1E1E] p-1 rounded-lg border border-white/5">
-            <Pressable
-              onPress={() => setViewMode('daily')}
-              className={`flex-1 items-center justify-center py-1.5 rounded-[4px] ${viewMode === 'daily' ? 'bg-primary' : 'bg-transparent'}`}
-            >
-              <Text className={`text-sm font-semibold ${viewMode === 'daily' ? 'text-[#121212]' : 'text-gray-400'}`}>Günlük</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setViewMode('weekly')}
-              className={`flex-1 items-center justify-center py-1.5 rounded-[4px] ${viewMode === 'weekly' ? 'bg-primary' : 'bg-transparent'}`}
-            >
-              <Text className={`text-sm font-semibold ${viewMode === 'weekly' ? 'text-[#121212]' : 'text-gray-400'}`}>Haftalık</Text>
-            </Pressable>
-          </View>
-        </View>
-
-        {/* Staff Selector */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 20, paddingBottom: 15 }} className="border-b border-white/5">
-          {STAFF_MEMBERS.map((staff) => (
-            <Pressable
-              key={staff.id}
-              onPress={() => setSelectedStaff(staff.id)}
-              className={`items-center gap-2 ${selectedStaff !== staff.id && 'opacity-60'}`}
-            >
-              <View className={`w-[60px] h-[60px] rounded-full justify-center items-center ${staff.id === selectedStaff ? 'border-2 border-primary p-0.5' : 'bg-[#1E1E1E] border-2 border-transparent'}`}>
-                {staff.image ? (
-                  <Image source={{ uri: staff.image }} className="w-full h-full rounded-full" />
-                ) : (
-                  <User size={24} color="#9ca3af" />
-                )}
-                {staff.status && staff.id !== 'all' && (
-                  <View className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#121212] ${staff.status === 'online' ? 'bg-green-500' : staff.status === 'busy' ? 'bg-red-500' : 'bg-gray-500'}`} />
-                )}
-              </View>
-              <Text className={`text-xs font-medium ${selectedStaff === staff.id ? 'text-primary' : 'text-gray-400'}`}>{staff.name}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-      </SafeAreaView>
-
-      {/* Timeline */}
-      <ScrollView className="flex-1 px-4 py-4" showsVerticalScrollIndicator={false}>
-        {/* Current Time Line */}
-        <View className="absolute left-0 right-0 top-[380px] z-10 flex-row items-center opacity-80 pointer-events-none">
-          <Text className="w-14 text-right pr-3 text-[10px] font-bold text-primary">13:45</Text>
-          <View className="flex-1 h-[1px] bg-primary" />
-          <View className="w-2 h-2 rounded-full bg-primary -ml-1" />
-        </View>
-
-        <View className="relative">
-          <View className="absolute left-[56px] top-2 bottom-0 w-[1px] bg-white/5" />
-
-          {/* 09:00 - Store Open */}
-          <View className="flex-row w-full mb-6">
-            <View className="w-14 items-end pr-3 pt-1">
-              <Text className="text-sm font-medium text-white">09:00</Text>
+        {/* --- DAY VIEW UI --- */}
+        {viewMode === 'day' && (
+          <>
+            {/* Horizontal Date Selector */}
+            <View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} className="pb-2">
+                {days.map((date, index) => {
+                  const isSelected = date.toDateString() === selectedDate.toDateString();
+                  return (
+                    <Pressable
+                      key={index}
+                      onPress={() => setSelectedDate(date)}
+                      className={`mr-3 rounded-2xl p-3 w-[70px] items-center border ${isSelected ? 'bg-primary border-primary' : 'bg-[#1E1E1E] border-white/10'}`}
+                    >
+                      <Text className={`text-xs mb-1 font-medium ${isSelected ? 'text-black' : 'text-gray-400'}`}>
+                        {date.toLocaleDateString('tr-TR', { weekday: 'short' })}
+                      </Text>
+                      <Text className={`text-xl font-bold ${isSelected ? 'text-black' : 'text-white'}`}>
+                        {date.getDate()}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
             </View>
-            <View className="flex-1 pl-4 relative">
-              <View className="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full border-2 border-[#1E1E1E] bg-white z-10" />
-              <View className="flex-row items-center gap-3 opacity-60 mt-1">
-                <Clock size={18} color={COLORS.primary.DEFAULT} />
-                <Text className="text-sm text-gray-300">Mağaza Açılış ve Hazırlık</Text>
+
+            {/* Staff Filter */}
+            <View>
+              <View className="flex-row items-center gap-2 mb-2 px-1">
+                <Filter size={14} color="#64748B" />
+                <Text className="text-gray-400 text-xs font-medium">Personel Filtrele</Text>
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <Pressable
+                  onPress={() => setSelectedStaffId(null)}
+                  className={`mr-3 px-4 py-2 rounded-full border ${!selectedStaffId ? 'bg-primary border-primary' : 'bg-[#1E1E1E] border-white/10'}`}
+                >
+                  <Text className={`text-xs font-bold ${!selectedStaffId ? 'text-black' : 'text-white'}`}>Tümü</Text>
+                </Pressable>
+                {staff.map((s, idx) => (
+                  <Pressable
+                    key={idx}
+                    onPress={() => setSelectedStaffId(s.id)}
+                    className={`mr-3 px-4 py-2 rounded-full border ${selectedStaffId === s.id ? 'bg-primary border-primary' : 'bg-[#1E1E1E] border-white/10'}`}
+                  >
+                    <Text className={`text-xs font-bold ${selectedStaffId === s.id ? 'text-black' : 'text-white'}`}>{s.name.split(' ')[0]}</Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+
+            {/* Day View List */}
+            <View className="pb-20">
+              <Text className="text-white font-bold text-lg mb-3">
+                {selectedDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })} Randevuları
+              </Text>
+
+              {loading ? (
+                <ActivityIndicator size="large" color={COLORS.primary.DEFAULT} className="mt-10" />
+              ) : filteredAppointments.length > 0 ? (
+                filteredAppointments.map((appt, i) => (
+                  <View key={i} className="mb-3 bg-[#1E1E1E] p-4 rounded-2xl border-l-4 border-l-[#d4af35] border border-white/5">
+                    <View className="flex-row justify-between items-start mb-3">
+                      <View className="flex-row gap-3 items-center">
+                        <View className="w-12 h-12 rounded-full bg-[#2A2A2A] overflow-hidden border border-white/10 items-center justify-center">
+                          {/* Use Initials if no image, or standard user icon */}
+                          <Text className="text-[#d4af35] font-bold text-lg">{appt.customerName.charAt(0)}</Text>
+                        </View>
+                        <View>
+                          <Text className="text-base font-bold text-white">{appt.customerName}</Text>
+                          <Text className="text-xs font-medium text-[#d4af35] mt-0.5">{appt.serviceName}</Text>
+                        </View>
+                      </View>
+                      <View className="items-end">
+                        <Text className="text-xl font-black text-white tracking-tight">{appt.startTime ? appt.startTime.slice(0, 5) : '--:--'}</Text>
+                        <Text className="text-xs font-medium text-gray-400">45 dk</Text>
+                      </View>
+                    </View>
+
+                    <View className="h-[1px] bg-white/5 my-2" />
+
+                    <View className="flex-row justify-between items-center">
+                      <View className="flex-row items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20">
+                        <View className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        <Text className="text-[10px] font-bold text-green-500 uppercase">Onaylandı</Text>
+                      </View>
+                      <View className="flex-row items-center gap-2">
+                        <Text className="text-xs text-gray-500">{appt.staffName || 'Atanmamış'}</Text>
+                        <Text className="text-sm font-bold text-white">₺{appt.totalPrice}</Text>
+                      </View>
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <View className="items-center justify-center py-10 opacity-50">
+                  <Clock size={40} color="#64748B" />
+                  <Text className="text-gray-400 mt-3 font-medium">Bu tarih için randevu bulunamadı.</Text>
+                </View>
+              )}
+            </View>
+          </>
+        )}
+
+        {/* --- WEEK VIEW UI (Restored Grid) --- */}
+        {viewMode === 'week' && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View className="flex-col pb-20">
+              {/* Header Row */}
+              <View className="flex-row border-b border-white/10 pb-2 mb-2">
+                <View className="w-12" />
+                {getWeekDays(weekStartDate).map((d, i) => (
+                  <View key={i} className={`w-24 items-center gap-1 ${d.isToday ? 'opacity-100' : 'opacity-60'}`}>
+                    <Text className={`text-xs font-medium ${d.isToday ? 'text-primary' : 'text-gray-400'}`}>{d.dayName}</Text>
+                    <View className={`w-8 h-8 rounded-full items-center justify-center ${d.isToday ? 'bg-primary' : 'bg-transparent'}`}>
+                      <Text className={`text-sm font-bold ${d.isToday ? 'text-black' : 'text-white'}`}>{d.dayNumber}</Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+
+              {/* Grid */}
+              <View>
+                {TIME_SLOTS.map((time, tIndex) => (
+                  <View key={time} className="flex-row h-16 border-b border-white/5">
+                    <View className="w-12 items-end pr-2 -mt-2">
+                      <Text className="text-[10px] text-gray-500 font-medium">{time}</Text>
+                    </View>
+                    {getWeekDays(weekStartDate).map((day, dIndex) => (
+                      <View key={dIndex} className="w-24 border-r border-white/5 relative p-0.5">
+                        {renderWeekCell(day, time)}
+                      </View>
+                    ))}
+                  </View>
+                ))}
               </View>
             </View>
-          </View>
+          </ScrollView>
+        )}
 
-          {/* Appointments Loop */}
-          {APPOINTMENTS.map((apt) => (
-            <View key={apt.id} className="flex-row w-full mb-6">
-              <View className="w-14 items-end pr-3 pt-1">
-                <Text className="text-sm font-medium text-white">{apt.startTime}</Text>
-                <Text className="text-xs text-gray-500">{apt.endTime}</Text>
-              </View>
-              <View className="flex-1 pl-4 relative">
-                <View className={`absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full border-2 border-[#1E1E1E] z-10 ${apt.status === 'confirmed' ? 'bg-primary' : apt.status === 'in_progress' ? 'bg-green-500' : 'bg-gray-600'}`} />
-                {renderAppointmentCard(apt)}
-              </View>
-            </View>
-          ))}
-
-          {/* 17:00 Empty Slot */}
-          <View className="flex-row w-full pb-8">
-            <View className="w-14 items-end pr-3 pt-1">
-              <Text className="text-sm font-medium text-white">17:00</Text>
-            </View>
-            <Pressable className="flex-1 pl-4 relative h-20 border-t border-dashed border-white/10 justify-center rounded-r-lg hover:bg-white/5 active:bg-white/5">
-              <View className="pl-2 flex-row items-center gap-2">
-                <Plus size={16} color={COLORS.primary.DEFAULT} />
-                <Text className="text-primary text-sm font-medium">Randevu Ekle</Text>
-              </View>
-            </Pressable>
-          </View>
-
-        </View>
-      </ScrollView>
-
-      {/* FAB */}
-      <Pressable className="absolute bottom-6 right-5 w-14 h-14 bg-primary rounded-full items-center justify-center shadow-lg active:scale-95">
-        <Plus size={28} color="#121212" />
-      </Pressable>
-    </View>
+      </View>
+    </StandardScreen>
   );
 }

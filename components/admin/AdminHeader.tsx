@@ -2,41 +2,45 @@ import { View, Text, Pressable } from 'react-native';
 import { ReactNode } from 'react';
 import { useRouter } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AdminHeaderProps {
     title: string;
     subtitle?: string;
     rightElement?: ReactNode;
     showBack?: boolean;
+    headerIcon?: ReactNode;
     children?: ReactNode;
 }
 
-export const AdminHeader = ({ title, subtitle, rightElement, showBack, children }: AdminHeaderProps) => {
+export const AdminHeader = ({ title, subtitle, rightElement, showBack, headerIcon, children }: AdminHeaderProps) => {
     const router = useRouter();
-    const insets = useSafeAreaInsets();
 
     return (
-        <View style={{ paddingTop: insets.top }} className="px-5 pb-6 z-10 bg-[#121212]">
-            <View className="flex-row items-center justify-between mb-2">
-                <View className="flex-row items-center gap-4">
+        <View className="px-5 py-4 border-b border-white/5 bg-[#121212]">
+            <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center gap-3">
                     {showBack && (
                         <Pressable
                             onPress={() => router.back()}
-                            className="w-10 h-10 rounded-full bg-[#1E293B] items-center justify-center border border-white/5 active:bg-white/10"
+                            className="w-8 h-8 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/10 active:bg-white/10 mr-1"
                         >
-                            <ChevronLeft size={24} color="white" />
+                            <ChevronLeft size={18} color="#9CA3AF" />
                         </Pressable>
                     )}
+                    {headerIcon && (
+                        <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
+                            {headerIcon}
+                        </View>
+                    )}
                     <View>
+                        <Text className="text-white text-2xl font-bold tracking-tight">
+                            {title}
+                        </Text>
                         {subtitle && (
-                            <Text className="text-slate-400 text-xs font-poppins-bold uppercase tracking-wider mb-1">
+                            <Text className="text-zinc-500 text-xs mt-1">
                                 {subtitle}
                             </Text>
                         )}
-                        <Text className="text-white text-3xl font-poppins-bold tracking-tight">
-                            {title}
-                        </Text>
                     </View>
                 </View>
 
@@ -46,7 +50,7 @@ export const AdminHeader = ({ title, subtitle, rightElement, showBack, children 
                     </View>
                 )}
             </View>
-            {children}
+            {children && <View className="mt-4">{children}</View>}
         </View>
     );
 };

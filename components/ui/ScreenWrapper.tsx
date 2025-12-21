@@ -1,5 +1,5 @@
-import React from 'react';
-import { SafeAreaView, StatusBar, View, ViewStyle } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar, View, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface ScreenWrapperProps {
@@ -15,7 +15,7 @@ export const ScreenWrapper = ({ children, style, noPadding, className }: ScreenW
             colors={['#121212', '#0a0a0a']} // Main dark theme gradient
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
                 <StatusBar barStyle="light-content" />
                 <View
                     className={`flex-1 ${noPadding ? '' : 'px-4'} ${className || ''}`}

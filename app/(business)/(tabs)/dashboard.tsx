@@ -1,6 +1,7 @@
 import { View, Text, Pressable, ScrollView, Dimensions } from 'react-native';
 import { StandardScreen } from '@/components/ui/StandardScreen';
 import { useRouter } from 'expo-router';
+import { useAuthStore } from '@/stores/authStore';
 import {
   Bell,
   Wallet,
@@ -11,7 +12,8 @@ import {
   Calendar,
   UserSearch,
   ChevronRight,
-  MoreHorizontal
+  MoreHorizontal,
+  LayoutDashboard
 } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -19,11 +21,13 @@ import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Path, Circle, Lin
 
 export default function BusinessDashboardScreen() {
   const router = useRouter();
+  const { user } = useAuthStore();
 
   return (
     <StandardScreen
-      title="Ahmet Bey"
+      title={user?.fullName || 'İşletme Sahibi'}
       subtitle="Hoş Geldiniz"
+      headerIcon={<LayoutDashboard size={20} color="#121212" />}
       rightElement={
         <Pressable className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center relative">
           <Bell size={20} color={COLORS.primary.DEFAULT} />

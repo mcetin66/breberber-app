@@ -19,7 +19,6 @@ export const servicesApi = {
         )
       `)
       .eq('business_id', businessId)
-      .eq('is_active', true)
       .order('name', { ascending: true });
 
     if (error) throw error;

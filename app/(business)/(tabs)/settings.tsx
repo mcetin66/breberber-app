@@ -3,24 +3,45 @@ import { View, Text, Pressable, Switch, Image, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/stores/authStore';
 import { useBusinessStore } from '@/stores/businessStore';
-import { ChevronRight, LogOut, Moon, Bell, User, Clock, Image as ImageIcon, Scissors, Users, Wallet, UserCog, Store } from 'lucide-react-native';
+import { ChevronRight, LogOut, Moon, Bell, User, Clock, Image as ImageIcon, Scissors, Users, Wallet, UserCog, Store, Settings } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { StandardScreen } from '@/components/ui/StandardScreen';
 
 export default function BusinessSettingsScreen() {
     const router = useRouter();
     const { user, signOut, switchViewMode } = useAuthStore();
-    const { businesses, fetchBusinesses } = useBusinessStore();
+    const { businesses, fetchBusinesses, currentBusiness, getBusinessById } = useBusinessStore();
 
     useEffect(() => {
-        if (businesses.length === 0) {
-            fetchBusinesses();
+        if (user?.barberId) {
+            console.log('Settings: User Barber ID:', user.barberId);
+            if (!currentBusiness || currentBusiness.id !== user.barberId) {
+                console.log('Settings: Fetching fresh business data...');
+                getBusinessById(user.barberId);
+            }
         }
-    }, []);
+        if (businesses.length === 0) fetchBusinesses(); // Fetch all as backup for other screens?
+    }, [user?.barberId]);
 
-    const myBusiness = businesses.find(b => b.id === user?.barberId);
-    const businessName = myBusiness?.name || 'İşletme Adı';
-    const businessLogo = myBusiness?.coverImage;
+    const activeBusiness = (currentBusiness && currentBusiness.id === user?.barberId)
+        ? currentBusiness
+        : businesses.find(b => b.id === user?.barberId);
+
+    const businessName = activeBusiness?.name || 'Yükleniyor...';
+    const businessLogo = activeBusiness?.coverImage;
+
+    // Debug Log
+    useEffect(() => {
+        if (user?.barberId) {
+            console.log('[Settings] Debug:', {
+                userId: user.id,
+                wantedBarberId: user.barberId,
+                currentBusinessId: currentBusiness?.id,
+                foundInList: !!businesses.find(b => b.id === user?.barberId),
+                activeName: activeBusiness?.name
+            });
+        }
+    }, [user, currentBusiness, businesses, activeBusiness]);
 
     const handleLogout = () => {
         Alert.alert('Çıkış Yap', 'Çıkış yapmak istediğinize emin misiniz?', [
@@ -39,7 +60,11 @@ export default function BusinessSettingsScreen() {
     ];
 
     return (
-        <StandardScreen title="Ayarlar" noPadding>
+        <StandardScreen
+            title="Ayarlar"
+            headerIcon={<Settings size={20} color="#121212" />}
+            noPadding
+        >
             <View className="px-4 py-6">
 
                 {/* Profile Card */}

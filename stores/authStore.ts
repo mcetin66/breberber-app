@@ -91,6 +91,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
               user.barberId = staffData.business_id;
             }
           }
+          // If Business Owner, fetch their Business ID
+          else if (user.role === 'business_owner') {
+            const { data: businessData } = await supabase
+              .from('businesses')
+              .select('id')
+              .eq('owner_id', user.id)
+              .maybeSingle();
+
+            if (businessData?.id) {
+              user.barberId = businessData.id;
+            }
+          }
 
           set({
             user,
@@ -134,6 +146,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
               if (staffData?.business_id) {
                 user.barberId = staffData.business_id;
+              }
+            }
+            // If Business Owner, fetch their Business ID
+            else if (user.role === 'business_owner') {
+              const { data: businessData } = await supabase
+                .from('businesses')
+                .select('id')
+                .eq('owner_id', user.id)
+                .maybeSingle();
+
+              if (businessData?.id) {
+                user.barberId = businessData.id;
               }
             }
 
@@ -274,6 +298,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ isLoading: true });
       logAudit('AUTH_LOGOUT', {});
       await supabase.auth.signOut();
+
+      // Reset other stores
+      const { useBusinessStore } = require('@/stores/businessStore'); // Dynamic import to avoid cycle
+      useBusinessStore.getState().resetState();
+
       set({
         user: null,
         token: null,

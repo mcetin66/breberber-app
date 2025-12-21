@@ -56,6 +56,8 @@ interface BusinessState {
     transactions: Appointment[];
   };
   fetchFinanceStats: (barberId: string, period: 'day' | 'week' | 'month') => Promise<void>;
+  resetState: () => void;
+  staff: Staff[]; // Exposed staff list
 }
 
 const initializeBarberData = (): BusinessData => ({
@@ -77,6 +79,12 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
     customers: 0,
     customerChange: 0,
     transactions: [],
+  },
+
+  // Derived state for easier access
+  get staff() {
+    const state = get();
+    return state.currentBarberId && state.barberData[state.currentBarberId]?.staff ? state.barberData[state.currentBarberId].staff : [];
   },
 
   fetchBusinesses: async () => {
@@ -814,5 +822,23 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
     } catch (error: any) {
       set({ error: error.message, loading: false });
     }
+  },
+
+  resetState: () => {
+    set({
+      businesses: [],
+      currentBusiness: null,
+      barberData: {},
+      currentBarberId: null,
+      loading: false,
+      error: null,
+      financeStats: {
+        revenue: 0,
+        revenueChange: 0,
+        customers: 0,
+        customerChange: 0,
+        transactions: [],
+      },
+    });
   },
 }));

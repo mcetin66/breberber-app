@@ -18,6 +18,7 @@ interface StandardScreenProps {
     title: string;
     subtitle?: string;
     showBack?: boolean;
+    headerIcon?: React.ReactNode;
     rightElement?: React.ReactNode;
 
     // Body Props
@@ -38,6 +39,7 @@ export const StandardScreen = ({
     title,
     subtitle,
     showBack,
+    headerIcon,
     rightElement,
     isScrollable = true,
     children,
@@ -61,6 +63,7 @@ export const StandardScreen = ({
                     title={title}
                     subtitle={subtitle}
                     showBack={showBack}
+                    headerIcon={headerIcon}
                     rightElement={rightElement}
                 />
             </View>

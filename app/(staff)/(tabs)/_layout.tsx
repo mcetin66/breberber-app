@@ -8,35 +8,22 @@ export default function StaffTabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#1E293B',
-          borderTopWidth: 0,
-          position: 'absolute',
-          bottom: 30,
-          left: 15,
-          right: 15,
-          borderRadius: 25,
-          height: 80,
-          paddingBottom: 0,
-          paddingHorizontal: 5,
-          alignItems: 'center',
-          justifyContent: 'center',
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 10 },
-          shadowOpacity: 0.5,
-          shadowRadius: 10,
-          elevation: 20,
+          backgroundColor: '#1E1E1E', // Dark Card Background
+          borderTopWidth: 1,
+          borderTopColor: 'rgba(212, 175, 53, 0.2)', // Subtle Gold
+          height: 90,
+          paddingTop: 10,
+          paddingBottom: 30,
         },
         tabBarItemStyle: {
-          height: 80,
-          paddingTop: 15,
+          height: 50,
         },
-        tabBarActiveTintColor: '#3B82F6',
+        tabBarActiveTintColor: '#d4af35', // Gold
         tabBarInactiveTintColor: '#64748B',
         tabBarLabelStyle: {
           fontFamily: 'Poppins_500Medium',
-          fontSize: 9,
-          marginTop: 5,
-          marginBottom: 15,
+          fontSize: 10,
+          marginTop: 4,
         },
       }}
     >
@@ -50,16 +37,8 @@ export default function StaffTabsLayout() {
       <Tabs.Screen
         name="dashboard"
         options={{
-          title: '',
-          tabBarIcon: ({ focused }) => (
-            <View
-              className="w-[72px] h-[72px] rounded-full items-center justify-center -mt-4 shadow-xl border-[4px] border-[#0F172A]"
-              style={{ backgroundColor: focused ? '#3B82F6' : '#334155' }}
-            >
-              <LayoutDashboard size={32} color={focused ? 'white' : '#94A3B8'} />
-            </View>
-          ),
-          tabBarLabelStyle: { display: 'none' },
+          title: 'Panel',
+          tabBarIcon: ({ color }) => <LayoutDashboard size={24} color={color} />,
         }}
       />
       <Tabs.Screen

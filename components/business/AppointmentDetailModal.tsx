@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Modal, Pressable } from 'react-native';
-import { X, Clock, User, Scissors, DollarSign, Calendar as CalendarIcon, Phone, Lock } from 'lucide-react-native';
+import { X, Clock, User, Scissors, DollarSign, Calendar as CalendarIcon, Phone, Lock, Check } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 
 interface AppointmentDetailModalProps {
@@ -8,9 +8,12 @@ interface AppointmentDetailModalProps {
     appointment: any;
     onClose: () => void;
     onDelete?: (id: string) => void;
+    onEdit?: (appointment: any) => void;
+    onStatusChange?: (id: string, newStatus: string) => void;
 }
 
-export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete }: AppointmentDetailModalProps) => {
+export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete, onEdit, onStatusChange }: AppointmentDetailModalProps) => {
+    // ... existing helpers ...
     if (!appointment) return null;
 
     // Format Time: Remove seconds (09:00:00 -> 09:00)
@@ -51,13 +54,13 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
 
                     {/* Content */}
                     <View className="p-5 gap-4">
-                        {appointment.status === 'blocked' ? (
+                        {appointment.status === 'blocked' || appointment.type === 'block' ? (
                             <View className="items-center justify-center py-4">
                                 <View className="w-16 h-16 rounded-full bg-[#2A2A2A] items-center justify-center mb-4 border border-white/10">
                                     <Clock size={32} color={COLORS.text.secondary} />
                                 </View>
                                 {/* Display Block Reason */}
-                                <Text className="text-white text-xl font-bold text-center">{appointment.customerName || 'Saat Kapalı'}</Text>
+                                <Text className="text-white text-xl font-bold text-center">{appointment.note || appointment.customerName || 'Saat Kapalı'}</Text>
                                 <Text className="text-gray-400 text-center mt-2 mb-6">
                                     {formatTime(appointment.startTime)} - {formatTime(appointment.endTime)} arası kapatılmıştır.
                                 </Text>
@@ -125,7 +128,7 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
                                     </View>
                                     <View className="flex-1">
                                         <Text className="text-gray-400 text-xs font-poppins">Hizmet & Personel</Text>
-                                        <Text className="text-white text-base font-poppins-semibold">{appointment.serviceName}</Text>
+                                        <Text className="text-white text-base font-poppins-semibold">{appointment.serviceName || 'Hizmet Seçilmedi'}</Text>
                                         <Text className="text-gray-400 text-sm mt-0.5">{appointment.staffName}</Text>
                                     </View>
                                     <View className="items-end">
@@ -137,11 +140,36 @@ export const AppointmentDetailModal = ({ visible, appointment, onClose, onDelete
                     </View>
 
                     {/* Footer Actions */}
-                    <View className="p-5 pt-0">
+                    <View className="p-5 pt-0 gap-3">
                         {appointment.status !== 'blocked' && (
-                            <Pressable onPress={onClose} className="w-full bg-primary py-3 rounded-xl items-center active:scale-95 transition-transform">
-                                <Text className="text-white font-poppins-bold">Tamam</Text>
-                            </Pressable>
+                            <>
+                                {appointment.status === 'pending' && onStatusChange && (
+                                    <Pressable
+                                        onPress={() => onStatusChange(appointment.id, 'confirmed')}
+                                        className="w-full bg-green-500 py-3 rounded-xl items-center active:scale-95 transition-transform flex-row justify-center gap-2 mb-2"
+                                    >
+                                        <Check size={20} color="white" />
+                                        <Text className="text-white font-bold text-base">Onayla</Text>
+                                    </Pressable>
+                                )}
+
+                                {onEdit && (
+                                    <Pressable
+                                        onPress={() => onEdit(appointment)}
+                                        className="w-full bg-[#d4af35] py-3 rounded-xl items-center active:scale-95 transition-transform"
+                                    >
+                                        <Text className="text-black font-bold text-base">Düzenle</Text>
+                                    </Pressable>
+                                )}
+                                {onDelete && (
+                                    <Pressable
+                                        onPress={() => onDelete(appointment.id)}
+                                        className="w-full bg-red-500/10 border border-red-500/20 py-3 rounded-xl items-center active:scale-95 transition-transform"
+                                    >
+                                        <Text className="text-red-500 font-bold text-base">İptal Et / Sil</Text>
+                                    </Pressable>
+                                )}
+                            </>
                         )}
                     </View>
 

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Switch, Modal, FlatList, Platform, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft, Camera, Clock, Check, ChevronDown, X, Coffee } from 'lucide-react-native';
+import { ChevronLeft, Camera, Clock, Check, ChevronDown, X, Coffee, Users } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLORS } from '@/constants/theme';
 import { useBusinessStore } from '@/stores/businessStore';
 import { useAuthStore } from '@/stores/authStore';
+import { AdminHeader } from '@/components/admin/AdminHeader';
 
 export default function StaffDetailScreen() {
     const router = useRouter();
@@ -168,16 +169,13 @@ export default function StaffDetailScreen() {
             {/* Hide Native Header */}
             <Stack.Screen options={{ headerShown: false }} />
 
-            {/* Custom Header */}
-            <View className="flex-row items-center justify-between px-4 py-4 border-b border-white/5 bg-[#0F172A] z-10">
-                <Pressable onPress={() => router.back()} className="p-2 -ml-2 rounded-full active:bg-white/5">
-                    <ChevronLeft size={24} color="white" />
-                </Pressable>
-                <Text className="text-white text-lg font-bold">
-                    {isEditing ? 'Personeli Düzenle' : 'Yeni Personel'}
-                </Text>
-                <View className="w-10" />
-            </View>
+            {/* Standard Header */}
+            <AdminHeader
+                title={isEditing ? 'Personeli Düzenle' : 'Yeni Personel'}
+                headerIcon={<Users size={20} color="#121212" />}
+                showBack
+                rightElement={<View className="w-10" />}
+            />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

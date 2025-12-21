@@ -172,8 +172,17 @@ export default function LoginScreen() {
 
   return (
     <ScreenWrapper noPadding>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1"
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+          className="flex-1"
+        >
           {/* Hero Section */}
           <View className="h-[35vh] w-full bg-[#121212] relative overflow-hidden">
             <Image
@@ -195,7 +204,7 @@ export default function LoginScreen() {
             </View>
           </View>
 
-          <View className="flex-1 px-6 -mt-10 bg-[#121212] rounded-t-[32px] pt-8">
+          <View className="flex-1 px-6 -mt-10 bg-[#121212] rounded-t-[32px] pt-8 pb-10">
             {/* Title & Subtitle */}
             <Text className="text-white text-[32px] font-serif font-medium leading-[40px]">
               {currentRole === 'customer' ? (
@@ -375,10 +384,9 @@ export default function LoginScreen() {
                 </Pressable>
               </View>
             )}
-
           </View>
-        </View>
-      </TouchableWithoutFeedback>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ScreenWrapper>
   );
 }

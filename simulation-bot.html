@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breberber - Müşteri Simülasyon Botu 🤖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e4e4e7;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid #27272a;
+            font-size: 13px;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        .info {
+            color: #60a5fa;
+        }
+
+        .warning {
+            color: #facc15;
+        }
+    </style>
+    <script>
+        // Placeholder for Server Injection
+        window.SERVER_CONFIG = window.SERVER_CONFIG || null;
+    </script>
+</head>
+
+<body class="h-screen flex flex-col p-4 w-full bg-[#121212]">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-4 border-b border-zinc-800 pb-4 px-2">
+        <div class="flex items-center gap-3">
+            <div
+                class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-lg shadow-yellow-500/20">
+                <span class="text-xl">🤖</span>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-tight">Breberber Simülasyon Botu</h1>
+                <div class="flex items-center gap-2 mt-0.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-500" id="status-dot"></span>
+                    <span id="connection-status" class="text-xs text-zinc-400 font-mono">Bağlantı Bekleniyor...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex flex-col gap-4 flex-1 min-h-0">
+
+        <!-- Top Row: Settings (70%) & Business Status (30%) -->
+        <div class="flex gap-4 h-[55%]">
+
+            <!-- Settings Panel (Flex Grow ~70%) -->
+            <div
+                class="flex-[0.7] bg-[#09090b] rounded-xl border border-zinc-800 flex flex-col shadow-xl overflow-hidden min-w-0">
+                <div class="p-3 border-b border-zinc-800 bg-zinc-900/30">
+                    <h2 class="text-xs font-bold text-zinc-400 tracking-wider">AYARLAR</h2>
+                </div>
+
+                <div class="p-4 space-y-5 overflow-y-auto flex-1 custom-scrollbar">
+
+                    <!-- Inner Grid for Wide Layout -->
+                    <div class="grid grid-cols-2 gap-6">
+
+                        <!-- Left Sub-Col -->
+                        <div class="space-y-5">
+                            <!-- Connection -->
+                            <div id="auth-panel" class="space-y-2">
+                                <label class="block text-[10px] font-bold text-zinc-500">BAĞLANTI</label>
+                                <input type="text" id="supa-url" placeholder="Supabase URL"
+                                    class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-white focus:border-yellow-600 outline-none">
+                                <input type="password" id="supa-key" placeholder="Supabase Anon Key"
+                                    class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-white focus:border-yellow-600 outline-none">
+                                <button onclick="initSupabase()"
+                                    class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 py-1.5 rounded text-xs font-bold transition">Manüel
+                                    Bağlan</button>
+                            </div>
+                            <div id="auth-success"
+                                class="hidden bg-green-900/10 border border-green-900/30 p-2 rounded text-center">
+                                <span class="text-green-500 text-xs font-bold">✅ Env Otomatik Yüklendi</span>
+                            </div>
+
+                            <hr class="border-zinc-800/50">
+
+                            <!-- Target Business -->
+                            <div class="space-y-2">
+                                <label class="block text-[10px] font-bold text-zinc-500">HEDEF İŞLETME</label>
+                                <div class="flex gap-2">
+                                    <select id="target-business"
+                                        class="flex-1 bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-white outline-none focus:border-yellow-600">
+                                        <option value="random">🎲 Rastgele İşletme</option>
+                                        <option value="specific">🎯 Spesifik ID</option>
+                                    </select>
+                                    <input type="number" id="pool-business-limit" placeholder="Max" value="5" min="1"
+                                        class="w-16 bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-white text-center"
+                                        title="Havuzdan kaç işletme kullanılsın?">
+                                </div>
+                                <input type="text" id="specific-business-id" placeholder="Business ID Girin"
+                                    class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-zinc-400 hidden">
+                            </div>
+                        </div>
+
+                        <!-- Right Sub-Col -->
+                        <div class="space-y-5">
+                            <!-- Target Customer -->
+                            <div class="space-y-2">
+                                <label class="block text-[10px] font-bold text-zinc-500">HEDEF MÜŞTERİ</label>
+                                <div class="flex gap-2">
+                                    <select id="target-customer"
+                                        class="flex-1 bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-white outline-none focus:border-yellow-600">
+                                        <option value="proxy" selected>📋 Listeden Seç (Sağ Panel)</option>
+                                        <option value="random">🎲 Rastgele (Sanal)</option>
+                                        <option value="specific">👤 Manuel ID</option>
+                                    </select>
+                                    <input type="number" id="pool-customer-limit" placeholder="Max" value="50" min="1"
+                                        class="w-16 bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-white text-center"
+                                        title="Havuzdan kaç müşteri kullanılsın?">
+                                </div>
+                                <input type="text" id="specific-customer-id" placeholder="Müşteri ID Girin"
+                                    class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-zinc-400 hidden">
+                                <select id="customer-list-select" class="hidden"></select>
+                            </div>
+
+                            <hr class="border-zinc-800/50">
+
+                            <!-- Params Grid -->
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-zinc-500 mb-1">MİN HİZMET</label>
+                                    <input type="number" id="min-services" value="1" min="1" max="5"
+                                        class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-xs text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-zinc-500 mb-1">MAKS HİZMET</label>
+                                    <input type="number" id="max-services" value="3" min="1" max="5"
+                                        class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-xs text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-zinc-500 mb-1">ADET</label>
+                                    <input type="number" id="appointment-count" value="50" min="1" max="1000"
+                                        class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-xs text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-zinc-500 mb-1">GÜN ARALIĞI</label>
+                                    <input type="number" id="day-range" value="7" min="1" max="30"
+                                        class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-xs text-white">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 mt-2">
+                                <label class="block text-[10px] font-bold text-zinc-500">DURUM</label>
+                                <select id="appt-status"
+                                    class="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-xs text-white outline-none">
+                                    <option value="pending" selected>⏳ Onay Bekliyor</option>
+                                    <option value="confirmed">✅ Onaylanmış</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="p-4 border-t border-zinc-800 bg-zinc-900/30 flex gap-3">
+                    <button onclick="startSimulation()" id="start-btn" disabled
+                        class="flex-1 bg-yellow-600 hover:bg-yellow-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-black py-3 rounded-lg font-bold text-sm transition shadow-lg shadow-yellow-900/20 flex items-center justify-center gap-2 group">
+                        <span>SİMÜLASYONU BAŞLAT</span>
+                        <span class="group-hover:translate-x-1 transition-transform">🚀</span>
+                    </button>
+                    <button onclick="clearPendingData()"
+                        class="px-6 bg-red-900/20 hover:bg-red-900/40 text-red-400 rounded-lg font-bold text-xs transition border border-red-900/50 flex flex-col items-center justify-center gap-0.5">
+                        <span>🗑️</span>
+                        <span class="text-[10px]">Temizle</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Business Leaderboard (Flex Grow ~30%) -->
+            <div
+                class="flex-[0.3] bg-[#09090b] rounded-xl border border-zinc-800 flex flex-col shadow-xl overflow-hidden min-w-[250px]">
+                <div class="bg-zinc-900/50 p-3 border-b border-zinc-800 flex justify-between items-center h-[52px]">
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-xs font-bold text-zinc-300 tracking-wider">CANLI DURUM</h2>
+                        <span id="business-count-badge"
+                            class="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full font-mono">0</span>
+                    </div>
+                    <button onclick="loadBusinessPanel()" class="text-[10px] hover:text-white text-zinc-400 transition"
+                        title="Yenile">🔄</button>
+                </div>
+                <div id="business-list-container"
+                    class="flex-1 p-2 overflow-y-auto space-y-1 custom-scrollbar bg-black/20">
+                    <div class="text-zinc-600 text-xs text-center mt-10 italic px-4">Yükleniyor...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Row: Full Width Logs -->
+        <div
+            class="flex-1 bg-[#09090b] rounded-xl border border-zinc-800 flex flex-col shadow-xl overflow-hidden relative min-h-0">
+            <div class="bg-zinc-900/50 p-3 border-b border-zinc-800 flex justify-between items-center h-[40px]">
+                <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                    <h2 class="text-xs font-bold text-zinc-300 tracking-wider">CANLI LOGLAR</h2>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="copyLogs()" id="copy-btn"
+                        class="text-[10px] bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2 py-0.5 rounded transition flex gap-1 items-center">
+                        <span>📋</span> <span>Kopyala</span>
+                    </button>
+                    <button onclick="clearLogs()"
+                        class="text-[10px] bg-red-900/20 hover:bg-red-900/40 text-red-400 px-2 py-0.5 rounded transition">🗑️
+                        Temizle</button>
+                </div>
+            </div>
+
+            <div id="logs" class="flex-1 p-3 overflow-y-auto font-mono text-sm space-y-0.5 bg-black/50 scroll-smooth">
+                <div id="log-output">
+                    <div class="text-zinc-600 italic">Sistem başlatılıyor...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let supabaseClient = null;
+
+        // --- UTILS ---
+        function log(msg, type = 'default') {
+            const el = document.getElementById('log-output');
+            const time = new Date().toLocaleTimeString();
+            let color = 'zinc';
+            if (type === 'success') color = 'green';
+            if (type === 'error') color = 'red';
+            if (type === 'warning') color = 'yellow';
+            if (type === 'info') color = 'blue';
+
+            const entry = `<div class="text-${color}-400 text-xs mb-1 font-mono hover:bg-zinc-900/50 -mx-2 px-2 py-0.5 rounded">
+                <span class="font-bold border-r border-zinc-800 pr-2 mr-2 opacity-40 select-none">[${time}]</span><span class="font-normal opacity-90">${msg}</span>
+            </div>`;
+            el.innerHTML += entry;
+
+            const logsContainer = document.getElementById('logs');
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('log-output').innerHTML = '';
+        }
+
+        async function copyLogs() {
+            const text = document.getElementById('log-output').innerText;
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.getElementById('copy-btn');
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<span class="text-green-400">✅</span>`;
+                setTimeout(() => btn.innerHTML = originalHtml, 1500);
+            } catch (err) { console.error(err); }
+        }
+
+        // --- UI LOGIC ---
+        document.getElementById('target-business').addEventListener('change', (e) => {
+            document.getElementById('specific-business-id').classList.toggle('hidden', e.target.value !== 'specific');
+        });
+
+        document.getElementById('target-customer').addEventListener('change', (e) => {
+            document.getElementById('specific-customer-id').classList.toggle('hidden', e.target.value !== 'specific');
+        });
+
+        // Moved business panel logic to loadBusinessPanel
+        let globalBusinessList = []; // {id, name, email, count, el}
+
+        async function initSupabase() {
+            let url, key;
+            if (window.SERVER_CONFIG) {
+                url = window.SERVER_CONFIG.url;
+                key = window.SERVER_CONFIG.key;
+                document.getElementById('auth-panel').classList.add('hidden');
+                document.getElementById('auth-success').classList.remove('hidden');
+            } else {
+                url = document.getElementById('supa-url').value;
+                key = document.getElementById('supa-key').value;
+            }
+
+            if (!url || !key) return;
+
+            try {
+                supabaseClient = window.supabase.createClient(url, key);
+                // Test connection
+                await supabaseClient.from('businesses').select('count', { count: 'exact', head: true });
+
+                document.getElementById('connection-status').innerText = 'Bağlandı';
+                document.getElementById('connection-status').classList.replace('text-zinc-400', 'text-green-500');
+                document.getElementById('status-dot').classList.replace('bg-zinc-500', 'bg-green-500');
+                document.getElementById('status-dot').classList.add('animate-pulse');
+                document.getElementById('start-btn').disabled = false;
+
+                log('Veritabanı bağlantısı kuruldu.', 'success');
+
+                if (window.SERVER_CONFIG && window.SERVER_CONFIG.hasProxy) {
+                    loadBusinessPanel(); // Init visual panel
+                }
+            } catch (err) {
+                log('Bağlantı Hatası: ' + err.message, 'error');
+                if (window.SERVER_CONFIG) {
+                    document.getElementById('auth-panel').classList.remove('hidden');
+                    document.getElementById('auth-success').classList.add('hidden');
+                }
+            }
+        }
+
+        window.onload = () => {
+            loadConfig(); // Restore settings
+            if (window.SERVER_CONFIG) {
+                initSupabase();
+            } else {
+                log('Config bulunamadı, manuel bağlantı bekleniyor.', 'warning');
+            }
+
+            // Bind Auto-Save
+            const inputs = [
+                'pool-business-limit', 'pool-customer-limit', 'appointment-count',
+                'min-services', 'max-services', 'day-range',
+                'target-business', 'target-customer', 'appt-status',
+                'specific-business-id', 'specific-customer-id' // Added specific IDs
+            ];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('change', saveConfig);
+                    el.addEventListener('input', saveConfig); // Also save on typing
+                }
+            });
+        };
+
+        // --- PERSISTENCE ---
+        function saveConfig() {
+            const config = {
+                businessLimit: document.getElementById('pool-business-limit').value,
+                customerLimit: document.getElementById('pool-customer-limit').value,
+                count: document.getElementById('appointment-count').value,
+                minServices: document.getElementById('min-services').value,
+                maxServices: document.getElementById('max-services').value,
+                dayRange: document.getElementById('day-range').value,
+                targetBusiness: document.getElementById('target-business').value,
+                targetCustomer: document.getElementById('target-customer').value,
+                status: document.getElementById('appt-status').value,
+                specificBusinessId: document.getElementById('specific-business-id').value,
+                specificCustomerId: document.getElementById('specific-customer-id').value
+            };
+            localStorage.setItem('bot_config', JSON.stringify(config));
+        }
+
+        function loadConfig() {
+            const saved = localStorage.getItem('bot_config');
+            if (!saved) return;
+            try {
+                const config = JSON.parse(saved);
+                if (config.businessLimit) document.getElementById('pool-business-limit').value = config.businessLimit;
+                if (config.customerLimit) document.getElementById('pool-customer-limit').value = config.customerLimit;
+                if (config.count) document.getElementById('appointment-count').value = config.count;
+                if (config.minServices) document.getElementById('min-services').value = config.minServices;
+                if (config.maxServices) document.getElementById('max-services').value = config.maxServices;
+                if (config.dayRange) document.getElementById('day-range').value = config.dayRange;
+
+                if (config.targetBusiness) {
+                    document.getElementById('target-business').value = config.targetBusiness;
+                    document.getElementById('specific-business-id').classList.toggle('hidden', config.targetBusiness !== 'specific');
+                }
+                if (config.specificBusinessId) document.getElementById('specific-business-id').value = config.specificBusinessId;
+
+                if (config.targetCustomer) {
+                    document.getElementById('target-customer').value = config.targetCustomer;
+                    document.getElementById('specific-customer-id').classList.toggle('hidden', config.targetCustomer !== 'specific');
+                }
+                if (config.specificCustomerId) document.getElementById('specific-customer-id').value = config.specificCustomerId;
+
+                if (config.status) document.getElementById('appt-status').value = config.status;
+
+                log('⚙️ Ayarlar yüklendi.', 'default');
+            } catch (e) {
+                console.error("Config restore failed", e);
+            }
+        }
+
+        async function loadBusinessPanel() {
+            const listContainer = document.getElementById('business-list-container');
+            const badge = document.getElementById('business-count-badge');
+
+            try {
+                // Fetch businesses via Proxy
+                const res = await fetch('/api/businesses');
+                if (!res.ok) throw new Error("Proxy response not ok");
+                const businesses = await res.json();
+
+                listContainer.innerHTML = '';
+
+                if (!businesses.length) {
+                    listContainer.innerHTML = '<div class="text-zinc-500 text-xs text-center mt-10">İşletme bulunamadı.</div>';
+                    badge.innerText = '0';
+                    return;
+                }
+
+                badge.innerText = businesses.length;
+                globalBusinessList = businesses.map(b => ({ ...b, count: 0 }));
+
+                // Initial Render (A-Z or default)
+                renderBusinessList();
+
+            } catch (err) {
+                listContainer.innerHTML = '<div class="text-red-500 text-xs text-center mt-10">Yüklenemedi<br>' + err.message + '</div>';
+            }
+        }
+
+        function renderBusinessList() {
+            const listContainer = document.getElementById('business-list-container');
+            listContainer.innerHTML = '';
+
+            // Sort by Count Descending
+            const sorted = [...globalBusinessList].sort((a, b) => b.count - a.count);
+
+            sorted.forEach(b => {
+                const item = document.createElement('div');
+                item.className = 'group flex items-center justify-between p-1.5 rounded border border-zinc-800/50 bg-zinc-900/40 hover:bg-zinc-800 transition mb-1 relative';
+                item.id = `biz-item-${b.id}`;
+
+                // Tooltip for Email
+                const hasEmail = b.email && b.email !== 'N/A';
+                const emailTooltip = hasEmail ? `title="${b.email}"` : '';
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-2 flex-1 min-w-0" ${emailTooltip}>
+                        <div class="w-6 h-6 rounded bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-500 border border-zinc-700">
+                           ${b.name.slice(0, 1).toUpperCase()}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[11px] text-zinc-300 font-medium truncate">${b.name}</div>
+                            ${hasEmail ? `<div class="text-[10px] text-zinc-500 font-mono truncate cursor-pointer hover:text-white transition" onclick="navigator.clipboard.writeText('${b.email}'); alert('Email kopyalandı: ${b.email}')" title="Kopyalamak için tıkla">📧 ${b.email}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="px-2 py-0.5 rounded bg-zinc-950 text-xs font-mono font-bold ${b.count > 0 ? 'text-yellow-500' : 'text-zinc-600'}" id="count-${b.id}">
+                        ${b.count}
+                    </div>
+                `;
+                listContainer.appendChild(item);
+
+                // Save Ref
+                const globalItem = globalBusinessList.find(g => g.id === b.id);
+                if (globalItem) globalItem.el = item;
+            });
+        }
+
+        function updateBusinessCountUI(businessId) {
+            const biz = globalBusinessList.find(b => b.id === businessId);
+            if (biz) {
+                biz.count++;
+                // Update specific DOM element for instant feedback
+                const countEl = document.getElementById(`count-${biz.id}`);
+                if (countEl) {
+                    countEl.innerText = biz.count;
+                    countEl.classList.replace('text-zinc-600', 'text-yellow-500');
+                }
+            }
+        }
+
+
+        // --- SIMULATION LOGIC ---
+        async function startSimulation() {
+            if (!supabaseClient) return;
+            const btn = document.getElementById('start-btn');
+            btn.disabled = true;
+
+            try {
+                // Reset Counts
+                globalBusinessList.forEach(b => b.count = 0);
+                renderBusinessList(); // Reset UI
+
+                // Config
+                const config = {
+                    count: parseInt(document.getElementById('appointment-count').value),
+                    minServices: parseInt(document.getElementById('min-services').value),
+                    maxServices: parseInt(document.getElementById('max-services').value),
+                    dayRange: parseInt(document.getElementById('day-range').value),
+                    status: document.getElementById('appt-status').value,
+
+                    targetBusinessMode: document.getElementById('target-business').value, // random | specific
+                    businessLimit: parseInt(document.getElementById('pool-business-limit').value) || 10,
+                    specificBusinessId: document.getElementById('specific-business-id').value,
+
+                    targetCustomerMode: document.getElementById('target-customer').value, // proxy | random | specific
+                    customerLimit: parseInt(document.getElementById('pool-customer-limit').value) || 50,
+                    specificCustomerId: document.getElementById('specific-customer-id').value,
+                };
+
+                log(`🚀 Simülasyon Başlatılıyor... (${config.count} randevu)`, 'info');
+
+                // --- 1. PREPARE CUSTOMER POOL ---
+                let activeCustomers = [];
+                // ... (Keep existing customer fetching logic)
+                if (config.targetCustomerMode === 'specific') {
+                    if (!config.specificCustomerId) throw new Error("Müşteri ID giriniz.");
+                    activeCustomers = [{ id: config.specificCustomerId, name: 'Manuel Müşteri' }];
+                }
+                else if (config.targetCustomerMode === 'proxy') {
+                    const res = await fetch('/api/customers');
+                    if (!res.ok) throw new Error("Müşteri listesi çekilemedi (Proxy).");
+                    const allReal = await res.json();
+                    if (!allReal.length) throw new Error("Veritabanında hiç müşteri yok.");
+                    if (allReal.length > 0) {
+                        console.log("Debug Customer [0]:", allReal[0]);
+                        log(`[DEBUG] İlk Müşteri Verisi: ${JSON.stringify(allReal[0])}`, 'info');
+                    }
+                    const shuffled = allReal.sort(() => 0.5 - Math.random());
+                    const selected = shuffled.slice(0, config.customerLimit);
+                    activeCustomers = selected.map(c => ({
+                        ...c,
+                        name: c.full_name || 'İsimsiz'
+                    }));
+                    log(`Müşteri Havuzu: ${allReal.length} içinden ${activeCustomers.length} kişi seçildi.`, 'default');
+                } else {
+                    const limit = config.customerLimit;
+                    activeCustomers = Array.from({ length: limit }, (_, i) => ({
+                        id: crypto.randomUUID(),
+                        name: `Sanal Müşteri ${i + 1}`,
+                        email: `sanal.musteri.${i + 1}@generated.com`
+                    }));
+                    log(`Sanal Havuz: ${limit} adet bot oluşturuldu.`, 'warning');
+                }
+
+                if (!activeCustomers.length) throw new Error("Aktif müşteri havuzu boş!");
+
+
+                // --- 2. PREPARE BUSINESS POOL ---
+                let activeBusinesses = [];
+
+                if (config.targetBusinessMode === 'specific') {
+                    // Force Specific (fetch from global list for email if possible)
+                    const found = globalBusinessList.find(b => b.id === config.specificBusinessId);
+                    activeBusinesses = [found || { id: config.specificBusinessId, name: 'Hedef İşletme', email: 'Specific ID' }];
+                } else {
+                    // Use Global List created by loadBusinessPanel if available
+                    if (globalBusinessList.length > 0) {
+                        const shuffled = [...globalBusinessList].sort(() => 0.5 - Math.random());
+                        activeBusinesses = shuffled.slice(0, config.businessLimit);
+                        log(`İşletme Havuzu: ${globalBusinessList.length} içinden ${activeBusinesses.length} işletme seçildi.`, 'default');
+                    } else {
+                        throw new Error("İşletme listesi yüklenemedi, lütfen sayfayı yenileyin.");
+                    }
+                }
+
+                if (!activeBusinesses.length) throw new Error("Aktif işletme havuzu boş!");
+
+
+                // --- 3. EXECUTE LOOP ---
+                let success = 0;
+                let attempts = 0;
+                const maxAttempts = config.count * 10;
+                const customerHistory = {};
+
+                log(`🔄 Döngü Başlıyor: ${config.count} randevu dağıtılacak...`, 'info');
+
+                while (success < config.count && attempts < maxAttempts) {
+                    attempts++;
+                    const customer = activeCustomers[Math.floor(Math.random() * activeCustomers.length)];
+                    const business = activeBusinesses[Math.floor(Math.random() * activeBusinesses.length)];
+
+                    if (!customerHistory[customer.id]) customerHistory[customer.id] = { count: 0, dates: new Set() };
+                    const history = customerHistory[customer.id];
+                    if (history.count >= 3) continue;
+
+                    const { data: staffList } = await supabaseClient.from('business_staff').select('id, name, email').eq('business_id', business.id);
+                    const { data: serviceList } = await supabaseClient.from('services').select('*').eq('business_id', business.id);
+                    if (!staffList?.length || !serviceList?.length) continue;
+                    const staff = staffList[Math.floor(Math.random() * staffList.length)];
+
+                    const serviceCount = Math.floor(Math.random() * (config.maxServices - config.minServices + 1)) + config.minServices;
+                    const pickedServices = serviceList.sort(() => 0.5 - Math.random()).slice(0, serviceCount);
+                    if (!pickedServices.length) continue;
+
+                    const totalPrice = pickedServices.reduce((sum, s) => sum + (s.price || 0), 0);
+                    // Determine date...
+                    let dateString = '', datePayload = null, dateFound = false;
+                    for (let d = 0; d < 5; d++) {
+                        const randomDay = Math.floor(Math.random() * config.dayRange);
+                        const date = new Date();
+                        date.setDate(date.getDate() + randomDay);
+                        dateString = date.toISOString().split('T')[0];
+                        if (!history.dates.has(dateString)) {
+                            dateFound = true; datePayload = dateString; break;
+                        }
+                    }
+                    if (!dateFound) continue;
+
+                    const hour = 9 + Math.floor(Math.random() * 11); // 9 to 19
+                    const minOptions = ['00', '10', '20', '30', '40', '50'];
+                    const min = minOptions[Math.floor(Math.random() * minOptions.length)];
+                    const startTime = `${hour.toString().padStart(2, '0')}:${min}`;
+
+                    // Round Duration to nearest 10 minutes
+                    let rawDuration = pickedServices.reduce((sum, s) => sum + (s.duration_minutes || 10), 0); // Default to 10
+                    const remainder = rawDuration % 10;
+                    if (remainder !== 0) {
+                        rawDuration += (10 - remainder);
+                    }
+                    const totalDuration = rawDuration;
+
+                    // Calculate End Time
+                    const startMins = hour * 60 + parseInt(min);
+                    const endH = Math.floor((startMins + totalDuration) / 60);
+                    const endM = (startMins + totalDuration) % 60;
+                    const endTime = `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`;
+
+                    const payload = {
+                        business_id: business.id, staff_id: staff.id, customer_id: customer.id, service_id: pickedServices[0].id,
+                        booking_date: datePayload, start_time: startTime, end_time: endTime, total_price: totalPrice, status: config.status, created_at: new Date().toISOString()
+                    };
+
+                    let err = null;
+                    if (window.SERVER_CONFIG?.hasProxy) {
+                        try {
+                            await fetch('/api/create-booking', { method: 'POST', body: JSON.stringify(payload) });
+                        } catch (e) { err = e; }
+                    } else {
+                        const { error } = await supabaseClient.from('bookings').insert(payload);
+                        err = error;
+                    }
+
+                    if (err) {
+                        log(`HATA: ${err.message}`, 'error');
+                    } else {
+                        history.count++;
+                        history.dates.add(datePayload);
+
+                        // Update Live UI
+                        updateBusinessCountUI(business.id);
+
+                        const bizEmail = business.email && business.email !== 'N/A' ? `(${business.email})` : '';
+                        const custEmail = customer.email ? `(${customer.email})` : '';
+                        const staffEmail = staff.email ? `(${staff.email})` : '';
+
+                        // Clean Single Line Format
+                        const logMsg = `🏢 <b>${business.name}</b> <span class="opacity-50 select-text">${bizEmail}</span> | 🧑 <b>${customer.name}</b> <span class="opacity-50 select-text">${custEmail}</span> | 👤 <b>${staff.name || 'Personel'}</b> <span class="opacity-50 select-text">${staffEmail}</span> | 📅 ${datePayload} ${startTime}`;
+
+                        // We pass raw HTML to log function by modifyng log function or just passing string? 
+                        // The log function escapes? No, it uses innerHTML += entry. 
+                        // But entry wraps msg in span. 
+                        // Let's assume msg is treated as text inside the span usually, but here I'll pass clean text for now to be safe, 
+                        // OR update log function to handle HTML.
+                        // Actually, looking at log function: `<span class="font-normal opacity-90">${msg}</span>`.
+                        // It injects msg directly. So HTML tags will work!
+
+                        log(logMsg, 'success');
+                        success++;
+
+                        // Resort UI every 5 successes to avoid jitter
+                        if (success % 5 === 0) renderBusinessList();
+                    }
+                    await new Promise(r => setTimeout(r, 50));
+                }
+
+                // Final Sort
+                renderBusinessList();
+
+                if (success < config.count) {
+                    log(`⚠️ Hedef sayıya ulaşılamadı. Başarılı: ${success}/${config.count}`, 'warning');
+                } else {
+                    log(`🏁 Bitti: ${success} işlem tamamlandı.`, 'info');
+                }
+
+            } catch (err) {
+                log('Kritik Hata: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function clearPendingData() {
+            if (!supabaseClient) {
+                log('Önce Supabase bağlantısını kurun.', 'error');
+                return;
+            }
+
+            const targetMode = document.getElementById('target-business').value;
+            const specificId = document.getElementById('specific-business-id').value;
+
+            let confirmMsg = "Tüm 'Onay Bekleyen' (Pending) randevular silinecek. Emin misiniz?";
+            let query = supabaseClient.from('bookings').delete().eq('status', 'pending');
+
+            if (targetMode === 'specific') {
+                if (!specificId) {
+                    log('Spesifik İşletme ID girilmedi.', 'error');
+                    return;
+                }
+                confirmMsg = `Bu işletme (${specificId}) için 'Onay Bekleyen' randevular silinecek. Emin misiniz?`;
+                query = query.eq('business_id', specificId);
+            } else {
+                confirmMsg += " (DİKKAT: Spesifik işletme seçili değil, tüm veritabanı taranacak!)";
+            }
+
+            if (!confirm(confirmMsg)) return;
+
+            log('🧹 Temizlik Başlatılıyor...', 'info');
+
+            // Select count first to show user? Or just delete. select count is better for log.
+            // But delete returns count in v2 if specified.
+            const { data, error, count } = await query.select(); // Delete returns created rows if select() is chained usually? 
+            // Wait, supabase delete returns data if select() is used.
+
+            if (error) {
+                log('Silme Hatası: ' + error.message, 'error');
+            } else {
+                log(`🗑️ Temizlendi: ${data.length} adet bekleyen randevu silindi.`, 'success');
+                // Update UI counts potentially?
+                // Recount business list?
+                globalBusinessList.forEach(b => b.count = 0); // Reset visual counters as they might be wrong now
+                renderBusinessList();
+            }
+        }
+    </script>
+</body>
+
+</html>

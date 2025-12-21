@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Switch, Platform, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft, Clock, DollarSign, AlignLeft } from 'lucide-react-native';
+import { ChevronLeft, Clock, DollarSign, AlignLeft, Scissors } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import { COLORS } from '@/constants/theme';
 import { useBusinessStore } from '@/stores/businessStore';
 import { useAuthStore } from '@/stores/authStore';
+import { AdminHeader } from '@/components/admin/AdminHeader';
 
 export default function ServiceDetailScreen() {
     const router = useRouter();
@@ -66,19 +67,16 @@ export default function ServiceDetailScreen() {
     const categories = ['Saç Kesimi', 'Sakal Tıraşı', 'Saç Bakımı', 'Cilt Bakımı', 'Diğer'];
 
     return (
-        <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
             <Stack.Screen options={{ headerShown: false }} />
 
-            {/* Custom Header */}
-            <View className="flex-row items-center justify-between px-4 py-4 border-b border-white/5 bg-[#0F172A] z-10">
-                <Pressable onPress={() => router.back()} className="p-2 -ml-2 rounded-full active:bg-white/5">
-                    <ChevronLeft size={24} color="white" />
-                </Pressable>
-                <Text className="text-white text-lg font-bold">
-                    {isEditing ? 'Hizmeti Düzenle' : 'Yeni Hizmet'}
-                </Text>
-                <View className="w-10" />
-            </View>
+            {/* Standard Header */}
+            <AdminHeader
+                title={isEditing ? 'Hizmeti Düzenle' : 'Yeni Hizmet'}
+                headerIcon={<Scissors size={20} color="#121212" />}
+                showBack
+                rightElement={<View className="w-10" />}
+            />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -89,9 +87,9 @@ export default function ServiceDetailScreen() {
 
                         {/* Name Input */}
                         <View className="gap-2">
-                            <Text className="text-[#94A3B8] text-sm font-medium ml-1">Hizmet Adı</Text>
+                            <Text className="text-zinc-400 text-sm font-medium ml-1">Hizmet Adı</Text>
                             <TextInput
-                                className="bg-[#1E293B] text-white p-4 rounded-xl font-medium border border-white/5 focus:border-primary/50 h-[56px]"
+                                className="bg-[#1E1E1E] text-white p-4 rounded-xl font-medium border border-white/5 focus:border-[#d4af35]/50 h-[56px]"
                                 placeholder="Örn: Saç Kesimi"
                                 placeholderTextColor="#64748B"
                                 value={name}
@@ -101,15 +99,15 @@ export default function ServiceDetailScreen() {
 
                         {/* Category Selection */}
                         <View className="gap-2">
-                            <Text className="text-[#94A3B8] text-sm font-medium ml-1">Kategori</Text>
+                            <Text className="text-zinc-400 text-sm font-medium ml-1">Kategori</Text>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
                                 {categories.map(cat => (
                                     <Pressable
                                         key={cat}
                                         onPress={() => setCategory(cat)}
-                                        className={`mr-2 px-4 py-3 rounded-xl border ${category === cat ? 'bg-primary border-primary' : 'bg-[#1E293B] border-white/5'}`}
+                                        className={`mr-2 px-4 py-3 rounded-xl border ${category === cat ? 'bg-[#d4af35] border-[#d4af35]' : 'bg-[#1E1E1E] border-white/5'}`}
                                     >
-                                        <Text className={`font-bold ${category === cat ? 'text-white' : 'text-[#64748B]'}`}>
+                                        <Text className={`font-bold ${category === cat ? 'text-black' : 'text-zinc-400'}`}>
                                             {cat}
                                         </Text>
                                     </Pressable>
@@ -120,8 +118,8 @@ export default function ServiceDetailScreen() {
                         {/* Price and Duration */}
                         <View className="flex-row gap-4">
                             <View className="flex-1 gap-2">
-                                <Text className="text-[#94A3B8] text-sm font-medium ml-1">Fiyat (₺)</Text>
-                                <View className="bg-[#1E293B] flex-row items-center px-4 h-[56px] rounded-xl border border-white/5 focus:border-primary/50">
+                                <Text className="text-zinc-400 text-sm font-medium ml-1">Fiyat (₺)</Text>
+                                <View className="bg-[#1E1E1E] flex-row items-center px-4 h-[56px] rounded-xl border border-white/5 focus:border-[#d4af35]/50">
                                     <DollarSign size={18} color="#94A3B8" style={{ marginRight: 8 }} />
                                     <TextInput
                                         className="flex-1 text-white font-medium text-base p-0"
@@ -135,8 +133,8 @@ export default function ServiceDetailScreen() {
                             </View>
 
                             <View className="flex-1 gap-2">
-                                <Text className="text-[#94A3B8] text-sm font-medium ml-1">Süre (dk)</Text>
-                                <View className="bg-[#1E293B] flex-row items-center px-4 h-[56px] rounded-xl border border-white/5 focus:border-primary/50">
+                                <Text className="text-zinc-400 text-sm font-medium ml-1">Süre (dk)</Text>
+                                <View className="bg-[#1E1E1E] flex-row items-center px-4 h-[56px] rounded-xl border border-white/5 focus:border-[#d4af35]/50">
                                     <Clock size={18} color="#94A3B8" style={{ marginRight: 8 }} />
                                     <TextInput
                                         className="flex-1 text-white font-medium text-base p-0"
@@ -152,8 +150,8 @@ export default function ServiceDetailScreen() {
 
                         {/* Description */}
                         <View className="gap-2">
-                            <Text className="text-[#94A3B8] text-sm font-medium ml-1">Açıklama (İsteğe bağlı)</Text>
-                            <View className="bg-[#1E293B] rounded-xl border border-white/5 focus:border-primary/50 p-4 min-h-[120px]">
+                            <Text className="text-zinc-400 text-sm font-medium ml-1">Açıklama (İsteğe bağlı)</Text>
+                            <View className="bg-[#1E1E1E] rounded-xl border border-white/5 focus:border-[#d4af35]/50 p-4 min-h-[120px]">
                                 <TextInput
                                     className="text-white font-medium text-base flex-1"
                                     placeholder="Hizmet detayları..."
@@ -167,15 +165,15 @@ export default function ServiceDetailScreen() {
                         </View>
 
                         {/* Active Switch */}
-                        <View className="flex-row items-center justify-between bg-[#1E293B] p-4 rounded-xl border border-white/5 min-h-[72px]">
+                        <View className="flex-row items-center justify-between bg-[#1E1E1E] p-4 rounded-xl border border-white/5 min-h-[72px]">
                             <View>
                                 <Text className="text-white font-bold text-base">Hizmet Aktif</Text>
-                                <Text className="text-[#94A3B8] text-xs mt-0.5">Müşteriler tarafından görüntülenebilir</Text>
+                                <Text className="text-zinc-400 text-xs mt-0.5">Müşteriler tarafından görüntülenebilir</Text>
                             </View>
                             <Switch
                                 value={isActive}
                                 onValueChange={setIsActive}
-                                trackColor={{ false: '#334155', true: COLORS.primary.DEFAULT }}
+                                trackColor={{ false: '#334155', true: '#d4af35' }}
                                 thumbColor="white"
                             />
                         </View>
@@ -184,12 +182,12 @@ export default function ServiceDetailScreen() {
                         <Pressable
                             onPress={handleSave}
                             disabled={saving}
-                            className="mt-6 bg-primary w-full py-4 rounded-xl items-center shadow-lg shadow-primary/25 active:scale-[0.99] transition-transform mb-10"
+                            className="mt-6 bg-[#d4af35] w-full py-4 rounded-xl items-center shadow-lg shadow-[#d4af35]/25 active:scale-[0.99] transition-transform mb-10"
                         >
                             {saving ? (
-                                <ActivityIndicator color="white" />
+                                <ActivityIndicator color="black" />
                             ) : (
-                                <Text className="text-white font-bold text-lg">
+                                <Text className="text-black font-bold text-lg">
                                     {isEditing ? 'Güncelle' : 'Kaydet'}
                                 </Text>
                             )}

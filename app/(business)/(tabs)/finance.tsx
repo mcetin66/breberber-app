@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, ActivityIndicator, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DollarSign, Users, Calendar, TrendingUp, CreditCard, ArrowUpRight, ArrowDownLeft, Filter } from 'lucide-react-native';
+import { DollarSign, Wallet, Users, Calendar, TrendingUp, CreditCard, ArrowUpRight, ArrowDownLeft, Filter } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { useAuthStore } from '@/stores/authStore';
 import { useBusinessStore } from '@/stores/businessStore';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AdminHeader } from '@/components/admin/AdminHeader';
 
 export default function FinanceScreen() {
   const { user } = useAuthStore();
@@ -37,16 +38,17 @@ export default function FinanceScreen() {
     <View className="flex-1 bg-[#121212]">
       <SafeAreaView className="flex-1" edges={['top']}>
         {/* Header */}
-        <View className="px-5 py-4 flex-row items-center justify-between border-b border-white/5">
-          <View>
-            <Text className="text-white text-2xl font-bold">Ödeme ve Finans</Text>
-            <Text className="text-primary text-xs font-medium uppercase tracking-wider mt-1">Mali Durum Özeti</Text>
-          </View>
-          {/* Mock Profile or Menu Icon */}
-          <View className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center">
-            <CreditCard size={20} color={COLORS.primary.DEFAULT} />
-          </View>
-        </View>
+        {/* Standard Header */}
+        <AdminHeader
+          title="Ödeme ve Finans"
+          subtitle="MALİ DURUM ÖZETİ"
+          headerIcon={<Wallet size={20} color="#121212" />}
+          rightElement={
+            <View className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center">
+              <CreditCard size={20} color={COLORS.primary.DEFAULT} />
+            </View>
+          }
+        />
 
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
 
