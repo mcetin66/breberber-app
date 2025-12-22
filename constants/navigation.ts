@@ -56,6 +56,12 @@ export const CUSTOMER_TABS: TabDefinition[] = [
     { name: 'appointments', title: 'Randevular', icon: Calendar },
     { name: 'favorites', title: 'Favoriler', icon: Heart },
     { name: 'profile', title: 'Profil', icon: User },
+    // Hidden routes
+    { name: 'search', title: '', icon: Home, hidden: true },
+    { name: 'booking/staff-selection', title: '', icon: Home, hidden: true },
+    { name: 'booking/time-slot-selection', title: '', icon: Home, hidden: true },
+    { name: 'booking/booking-summary', title: '', icon: Home, hidden: true },
+    { name: 'booking/booking-success', title: '', icon: Home, hidden: true },
 ];
 
 export const PLATFORM_TABS: TabDefinition[] = [
