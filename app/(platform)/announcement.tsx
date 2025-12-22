@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAdminStore } from '@/stores/adminStore';
 import { useAuthStore } from '@/stores/authStore';
 import { supabase } from '@/lib/supabase';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 interface Announcement {
     id: string;
@@ -137,24 +138,11 @@ export default function AnnouncementScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Header */}
-            <View className="px-4 py-3 flex-row items-center gap-3 border-b border-white/5">
-                <Pressable
-                    onPress={() => router.back()}
-                    className="w-10 h-10 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/10"
-                >
-                    <ChevronLeft size={20} color="#fff" />
-                </Pressable>
-                <View className="flex-row items-center gap-3 flex-1">
-                    <View className="w-10 h-10 rounded-full bg-[#8B5CF6] items-center justify-center">
-                        <Megaphone size={20} color="#fff" />
-                    </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">Duyuru Gönder</Text>
-                        <Text className="text-gray-500 text-xs">Tüm işletmelere bildirim</Text>
-                    </View>
-                </View>
-            </View>
+            <BaseHeader
+                title="Duyuru Gönder"
+                subtitle="Tüm işletmelere bildirim"
+                showBack
+            />
 
             <ScrollView className="flex-1 px-4 pt-4" keyboardShouldPersistTaps="handled">
                 {/* Target Audience */}

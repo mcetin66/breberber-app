@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAdminStore } from '@/stores/adminStore';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { BarChart3, TrendingUp, Users, Store, FileBarChart } from 'lucide-react-native';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -97,22 +98,17 @@ export default function PlatformReportsScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Simple Header */}
-            <View className="px-4 py-3 flex-row items-center justify-between border-b border-white/5">
-                <View className="flex-row items-center gap-3">
-                    <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-                        <FileBarChart size={20} color="#121212" />
+            <BaseHeader
+                title="Raporlar"
+                subtitle="Detaylı analiz"
+                variant="settings"
+                rightElement={
+                    <View className="flex-row items-center gap-2 bg-[#1E1E1E] px-3 py-2 rounded-lg border border-white/5">
+                        <BarChart3 size={16} color="#d4af35" />
+                        <Text className="text-white text-xs font-semibold">{aggregateStats.totalBusinesses || 0} işletme</Text>
                     </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">Raporlar</Text>
-                        <Text className="text-gray-500 text-xs">Detaylı analiz</Text>
-                    </View>
-                </View>
-                <View className="flex-row items-center gap-2 bg-[#1E1E1E] px-3 py-2 rounded-lg border border-white/5">
-                    <BarChart3 size={16} color="#d4af35" />
-                    <Text className="text-white text-xs font-semibold">{aggregateStats.totalBusinesses || 0} işletme</Text>
-                </View>
-            </View>
+                }
+            />
 
             <ScrollView
                 className="flex-1"
