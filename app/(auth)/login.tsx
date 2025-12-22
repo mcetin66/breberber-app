@@ -152,13 +152,16 @@ export default function LoginScreen() {
           return;
         }
 
-        // Save Account Logic
+        // Save Account Logic - Read FULL list, not filtered
         if (rememberMe && user) {
           const newAccount = { email: data.email, role: user.role, lastUsed: Date.now() };
-          const accounts = savedAccounts.filter(a => a.email !== data.email);
-          accounts.unshift(newAccount);
-          if (accounts.length > 10) accounts.pop();
-          await AsyncStorage.setItem('saved_accounts', JSON.stringify(accounts));
+          // Get ALL saved accounts, not just filtered ones
+          const allSaved = await AsyncStorage.getItem('saved_accounts');
+          let allAccounts = allSaved ? JSON.parse(allSaved) : [];
+          allAccounts = allAccounts.filter((a: any) => a.email !== data.email);
+          allAccounts.unshift(newAccount);
+          if (allAccounts.length > 10) allAccounts.pop();
+          await AsyncStorage.setItem('saved_accounts', JSON.stringify(allAccounts));
         }
 
         // Routing Logic
