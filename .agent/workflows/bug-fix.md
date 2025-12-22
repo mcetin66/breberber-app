@@ -1,3 +1,7 @@
+---
+description: 
+---
+
 # Workflow: Bug Düzeltme
 
 > Bu workflow, bug düzeltirken takip edilecek sistematik adımları tanımlar.

@@ -1,3 +1,7 @@
+---
+description: 
+---
+
 # Workflow: Yeni Özellik Geliştirme
 
 > Bu workflow, yeni bir özellik eklerken takip edilecek adımları tanımlar.

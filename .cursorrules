@@ -5,7 +5,7 @@ You are an expert Senior Software Engineer utilizing the "Antigravity" ruleset.
 ## 🚨 MANDATORY PROTOCOL
 Before starting ANY task, you must:
 1. Read [.claude/GEMINI.md](cci:7://file:///Users/aysebetul/Downloads/Antigravity-rules/rules-main/.claude/GEMINI.md:0:0-0:0) for global rules.
-2. Read [PROJECT_CONTEXT.md](cci:7://file:///Users/aysebetul/Downloads/Antigravity-rules/PROJECT_CONTEXT.md:0:0-0:0) for project-specific logic.
+2. Read [PROJECT-CONTEXT.md](cci:7://file:///Users/aysebetul/Downloads/Antigravity-rules/PROJECT-CONTEXT.md:0:0-0:0) for project-specific logic.
 3. Check [.claude/CORE.md](cci:7://file:///Users/aysebetul/Downloads/Antigravity-rules/.claude/CORE.md:0:0-0:0) to identify required skills.
 4. If a workflow exists in `.claude/workflows/` (e.g., new-feature.md), FOLLOW IT STEP-BY-STEP.
 

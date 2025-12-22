@@ -1,4 +1,8 @@
-# PROJECT_CONTEXT.md - Breberber Proje Bağlamı
+---
+trigger: always_on
+---
+
+# PROJECT-CONTEXT.md - Breberber Proje Bağlamı
 
 > Bu dosya Breberber projesine özel iş kurallarını, veritabanı yapısını ve tasarım kararlarını içerir.
 > Universal Engine kuralları ile birlikte çalışır.

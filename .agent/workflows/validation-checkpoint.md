@@ -1,3 +1,7 @@
+---
+description: 
+---
+
 # Workflow: Validation Checkpoint
 
 > Bu workflow, kod teslim etmeden ÖNCE çalıştırılması ZORUNLU kontrol listesidir.

@@ -1,5 +1,5 @@
 ---
-description: Central Orchestrator & Skills Registry. Görev tipine göre uygun skill(ler)i yükler.
+trigger: always_on
 ---
 
 # CORE.md - Skills Orchestrator

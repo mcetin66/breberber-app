@@ -1,5 +1,5 @@
 ---
-description: Global agent kuralları. Tüm işlemlerde CORE.md yönergelerine uyulmalı ve uygun skills yüklenmelidir.
+trigger: always_on
 ---
 
 # GEMINI.md - Global Agent Kuralları
