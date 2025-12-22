@@ -55,7 +55,7 @@ export const CUSTOMER_TABS: TabDefinition[] = [
     { name: 'home', title: 'Keşfet', icon: Home },
     { name: 'appointments', title: 'Randevular', icon: Calendar },
     { name: 'favorites', title: 'Favoriler', icon: Heart },
-    { name: 'profile', title: 'Profil', icon: User },
+    { name: 'profile', title: 'Ayarlar', icon: Settings },
 ];
 
 export const PLATFORM_TABS: TabDefinition[] = [
