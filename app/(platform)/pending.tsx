@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { Building2, ChevronLeft, Check, X, Clock, MapPin, Phone } from 'lucide-react-native';
 import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 interface PendingBusiness {
     id: string;
@@ -78,24 +79,11 @@ export default function PendingScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Header */}
-            <View className="px-4 py-3 flex-row items-center gap-3 border-b border-white/5">
-                <Pressable
-                    onPress={() => router.back()}
-                    className="w-10 h-10 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/10"
-                >
-                    <ChevronLeft size={20} color="#fff" />
-                </Pressable>
-                <View className="flex-row items-center gap-3 flex-1">
-                    <View className="w-10 h-10 rounded-full bg-[#F97316] items-center justify-center">
-                        <Building2 size={20} color="#fff" />
-                    </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">Onay Bekleyenler</Text>
-                        <Text className="text-gray-500 text-xs">{pendingBusinesses.length} işletme bekliyor</Text>
-                    </View>
-                </View>
-            </View>
+            <BaseHeader
+                title="Onay Bekleyenler"
+                subtitle={`${pendingBusinesses.length} işletme bekliyor`}
+                showBack
+            />
 
             <ScrollView
                 className="flex-1 px-4 pt-4"

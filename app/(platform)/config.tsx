@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { Settings, ChevronLeft, Percent, Users, Calendar, Crown, Wallet, Save, RefreshCw } from 'lucide-react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 interface ConfigItem {
     key: string;
@@ -179,24 +180,12 @@ export default function PlatformConfigScreen() {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={80}>
             <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-                {/* Header */}
-                <View className="px-4 py-3 flex-row items-center gap-3 border-b border-white/5">
-                    <Pressable
-                        onPress={() => router.back()}
-                        className="w-10 h-10 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/10"
-                    >
-                        <ChevronLeft size={20} color="#fff" />
-                    </Pressable>
-                    <View className="flex-row items-center gap-3 flex-1">
-                        <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-                            <Settings size={20} color="#121212" />
-                        </View>
-                        <View>
-                            <Text className="text-white text-lg font-bold">Platform Yapılandırması</Text>
-                            <Text className="text-gray-500 text-xs">Komisyon, limitler ve fiyatlar</Text>
-                        </View>
-                    </View>
-                </View>
+                <BaseHeader
+                    title="Platform Yapılandırması"
+                    subtitle="Komisyon, limitler ve fiyatlar"
+                    showBack
+                    variant="settings"
+                />
 
                 <ScrollView className="flex-1 px-4 pt-4 pb-20" keyboardShouldPersistTaps="handled">
                     {/* Komisyon */}

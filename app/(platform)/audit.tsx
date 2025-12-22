@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { Shield, Clock, Search, Filter, AlertCircle, X, ChevronLeft } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 // ... (keep interface ActionFilters etc)
 
@@ -192,24 +193,11 @@ export default function AuditLogScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Header */}
-            <View className="px-4 py-3 flex-row items-center gap-3 border-b border-white/5">
-                <Pressable
-                    onPress={() => router.back()}
-                    className="w-10 h-10 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/10"
-                >
-                    <ChevronLeft size={20} color="#fff" />
-                </Pressable>
-                <View className="flex-row items-center gap-3 flex-1">
-                    <View className="w-10 h-10 rounded-full bg-[#8B5CF6] items-center justify-center">
-                        <Shield size={20} color="#fff" />
-                    </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">Sistem Kayıtları</Text>
-                        <Text className="text-gray-500 text-xs">Log ve aktivite takibi</Text>
-                    </View>
-                </View>
-            </View>
+            <BaseHeader
+                title="Sistem Kayıtları"
+                subtitle="Log ve aktivite takibi"
+                showBack
+            />
 
             {/* Filters */}
             <View className="py-4 border-b border-white/5">
