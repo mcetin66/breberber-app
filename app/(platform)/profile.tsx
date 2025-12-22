@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { User, ChevronLeft, Mail, Phone, Shield, Calendar } from 'lucide-react-native';
 import { useAuthStore } from '@/stores/authStore';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function PlatformProfileScreen() {
     const router = useRouter();
@@ -18,24 +19,11 @@ export default function PlatformProfileScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Header */}
-            <View className="px-4 py-3 flex-row items-center gap-3 border-b border-white/5">
-                <Pressable
-                    onPress={() => router.back()}
-                    className="w-10 h-10 rounded-full bg-[#1E1E1E] items-center justify-center border border-white/10"
-                >
-                    <ChevronLeft size={20} color="#fff" />
-                </Pressable>
-                <View className="flex-row items-center gap-3 flex-1">
-                    <View className="w-10 h-10 rounded-full bg-[#3B82F6] items-center justify-center">
-                        <User size={20} color="#fff" />
-                    </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">Profil Bilgileri</Text>
-                        <Text className="text-gray-500 text-xs">Hesap detayları</Text>
-                    </View>
-                </View>
-            </View>
+            <BaseHeader
+                title="Profil Bilgileri"
+                subtitle="Hesap detayları"
+                showBack
+            />
 
             <ScrollView className="flex-1 px-4 pt-6">
                 {/* Avatar */}
