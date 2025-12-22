@@ -70,7 +70,7 @@ export const SETTINGS_MENU: Record<string, SettingsCategory[]> = {
             title: 'EKİP',
             items: [
                 { icon: Users, label: 'Personel Yönetimi', route: '/(business)/(tabs)/staff', iconBg: '#10B981' },
-                { icon: Wallet, label: 'Ödeme ve Finans', route: '/(business)/finance', iconBg: '#F97316' },
+                { icon: Wallet, label: 'Ödeme ve Finans', route: '/(business)/(tabs)/finance', iconBg: '#F97316' },
             ]
         },
         {
