@@ -5,6 +5,7 @@ import { Store, TrendingUp, Wallet, Clock, ChevronRight, Bell, Users, Calendar, 
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useAdminStore } from '@/stores/adminStore';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function AdminDashboardScreen() {
   const router = useRouter();
@@ -16,24 +17,12 @@ export default function AdminDashboardScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-      {/* Simple Header */}
-      <View className="px-4 py-3 flex-row items-center justify-between border-b border-white/5">
-        <View className="flex-row items-center gap-3">
-          <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-            <Sparkles size={20} color="#121212" />
-          </View>
-          <View>
-            <Text className="text-white text-lg font-bold">Platform Yönetimi</Text>
-            <Text className="text-gray-500 text-xs">Hoş geldiniz</Text>
-          </View>
-        </View>
-        <Pressable className="relative">
-          <Bell size={24} color="#6B7280" />
-          <View className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full items-center justify-center">
-            <Text className="text-white text-[10px] font-bold">3</Text>
-          </View>
-        </Pressable>
-      </View>
+      <BaseHeader
+        title="Platform Yönetimi"
+        subtitle="Hoş geldiniz"
+        variant="settings"
+        showNotifications
+      />
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
 

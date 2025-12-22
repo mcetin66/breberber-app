@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { useAdminStore } from '@/stores/adminStore';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddBusinessModal from '@/components/admin/AddBusinessModal';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 // İşletme Türü Filtreleri
 const TYPE_FILTERS = [
@@ -74,24 +75,19 @@ export default function PlatformBusinessesScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Standard Header (Matching Dashboard) */}
-            <View className="px-4 py-3 flex-row items-center justify-between border-b border-white/5">
-                <View className="flex-row items-center gap-3">
-                    <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-                        <Store size={20} color="#121212" />
-                    </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">İşletmeler</Text>
-                        <Text className="text-gray-500 text-xs">{totalCount} kayıtlı • {activeCount} aktif</Text>
-                    </View>
-                </View>
-                <Pressable
-                    onPress={() => setShowAddModal(true)}
-                    className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center"
-                >
-                    <Plus size={20} color="#d4af35" />
-                </Pressable>
-            </View>
+            <BaseHeader
+                title="İşletmeler"
+                subtitle={`${totalCount} kayıtlı • ${activeCount} aktif`}
+                variant="settings"
+                rightElement={
+                    <Pressable
+                        onPress={() => setShowAddModal(true)}
+                        className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center"
+                    >
+                        <Plus size={20} color="#d4af35" />
+                    </Pressable>
+                }
+            />
 
             {/* Standard Search Bar */}
             <View className="px-4 py-3">

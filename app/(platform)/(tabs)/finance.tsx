@@ -5,6 +5,7 @@ import { Wallet, TrendingUp, CreditCard, ArrowUpRight, ArrowDownLeft, ChevronRig
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAdminStore } from '@/stores/adminStore';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function PlatformFinanceScreen() {
     const router = useRouter();
@@ -29,18 +30,11 @@ export default function PlatformFinanceScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Simple Header */}
-            <View className="px-4 py-3 flex-row items-center border-b border-white/5">
-                <View className="flex-row items-center gap-3">
-                    <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-                        <Wallet size={20} color="#121212" />
-                    </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">Finans</Text>
-                        <Text className="text-gray-500 text-xs">Gelir ve abonelik takibi</Text>
-                    </View>
-                </View>
-            </View>
+            <BaseHeader
+                title="Finans"
+                subtitle="Gelir ve abonelik takibi"
+                variant="settings"
+            />
 
             <ScrollView
                 className="flex-1"
