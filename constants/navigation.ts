@@ -1,5 +1,5 @@
 import { LucideIcon } from 'lucide-react-native';
-import { Calendar, Scissors, LayoutDashboard, Wallet, Settings, FileBarChart, Home, Heart, User } from 'lucide-react-native';
+import { Calendar, Scissors, LayoutDashboard, Wallet, Settings, FileBarChart, Home, Heart, User, Compass } from 'lucide-react-native';
 
 // =============================================================================
 // TAB BAR CONFIG - Ortak stil tanımları
@@ -52,7 +52,7 @@ export const BUSINESS_TABS: TabDefinition[] = [
 ];
 
 export const CUSTOMER_TABS: TabDefinition[] = [
-    { name: 'home', title: 'Keşfet', icon: Home },
+    { name: 'home', title: 'Keşfet', icon: Compass },
     { name: 'appointments', title: 'Randevular', icon: Calendar },
     { name: 'favorites', title: 'Favoriler', icon: Heart },
     { name: 'profile', title: 'Ayarlar', icon: Settings },
