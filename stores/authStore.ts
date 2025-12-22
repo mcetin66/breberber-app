@@ -41,6 +41,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   error: null,
   selectedRole: null,
   viewMode: null,
+  _pendingSignIn: false,
 
   setSelectedRole: (role) => set({ selectedRole: role }),
   setBarberId: (id) => set((state) => ({ user: state.user ? { ...state.user, barberId: id } : null })),
@@ -240,9 +241,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  signIn: async (email, password) => {
+  signIn: async (email, password, requiredRole?: string) => {
     try {
-      set({ isLoading: true, error: null });
+      set({ isLoading: true, error: null, _pendingSignIn: true });
 
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
@@ -269,6 +270,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         avatar: profile.avatar_url || undefined,
         role: profile.role as Role,
       };
+
+      // STRICT ROLE VALIDATION - Check BEFORE setting authenticated state
+      if (requiredRole && user.role !== requiredRole) {
+        const roleNames: Record<string, string> = {
+          'platform_admin': 'Platform Yöneticisi',
+          'business_owner': 'İşletme Sahibi',
+          'staff': 'Personel',
+          'customer': 'Müşteri'
+        };
+        const userRoleName = roleNames[user.role] || user.role;
+        const reqRoleName = roleNames[requiredRole] || requiredRole;
+
+        // Sign out from Supabase immediately
+        await supabase.auth.signOut();
+        set({ isLoading: false });
+
+        throw new Error(`Bu giriş ekranı sadece ${reqRoleName} içindir. Sizin rolünüz: ${userRoleName}`);
+      }
 
       // Set initial viewMode based on role
       const initialViewMode =

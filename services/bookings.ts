@@ -184,8 +184,9 @@ export const bookingService = {
   },
 
   async create(booking: BookingInsert) {
-    const { data, error } = await (supabase
-      .from('bookings') as any)
+    const { data, error } = await supabase
+      .from('bookings')
+      // @ts-ignore
       .insert(booking)
       .select()
       .single();
@@ -195,8 +196,9 @@ export const bookingService = {
   },
 
   async update(id: string, updates: BookingUpdate) {
-    const { data, error } = await (supabase
-      .from('bookings') as any)
+    const { data, error } = await supabase
+      .from('bookings')
+      // @ts-ignore
       .update(updates)
       .eq('id', id)
       .select()
@@ -214,8 +216,8 @@ export const bookingService = {
   },
 
   async delete(id: string) {
-    const { error } = await (supabase
-      .from('bookings') as any)
+    const { error } = await supabase
+      .from('bookings')
       .delete()
       .eq('id', id);
 
@@ -280,6 +282,28 @@ export const createBooking = async (params: any) => {
 
   const { userId, businessId, staffId, serviceIds, date, startTime, endTime, totalPrice, notes } = params;
 
+  // --- VALIDATION: 10-Minute Rule ---
+  if (!startTime) throw new Error('Başlangıç saati zorunludur.');
+
+  const [h, m] = startTime.split(':').map(Number);
+  if (isNaN(h) || isNaN(m)) throw new Error('Geçersiz saat formatı.');
+
+  if (m % 10 !== 0) {
+    throw new Error('Randevu başlangıç saati 10 dakikanın katı olmalıdır (Örn: 10:00, 10:10).');
+  }
+
+  if (endTime) {
+    const [eh, em] = endTime.split(':').map(Number);
+    const startMins = h * 60 + m;
+    const endMins = eh * 60 + em;
+    const duration = endMins - startMins;
+
+    if (duration > 0 && duration % 10 !== 0) {
+      throw new Error('Randevu süresi 10 dakikanın katı olmalıdır.');
+    }
+  }
+  // ----------------------------------
+
   return bookingService.create({
     customer_id: userId,
     business_id: businessId,
@@ -291,7 +315,7 @@ export const createBooking = async (params: any) => {
     total_price: totalPrice,
     notes: notes,
     status: 'pending'
-  });
+  } as any);
 };
 
 export const getUserBookings = bookingService.getMyBookings;

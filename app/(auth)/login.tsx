@@ -88,9 +88,20 @@ export default function LoginScreen() {
       const saved = await AsyncStorage.getItem('saved_accounts');
       if (saved) {
         const parsed = JSON.parse(saved);
-        setSavedAccounts(parsed);
-        if (parsed.length > 0) {
-          setValue('email', parsed[0].email);
+
+        // Filter accounts by role matching the current login screen
+        const roleMapping: Record<string, string[]> = {
+          customer: ['customer'],
+          business: ['business_owner'],
+          staff: ['staff'],
+          admin: ['platform_admin'],
+        };
+        const allowedRoles = roleMapping[currentRole] || ['customer'];
+        const filtered = parsed.filter((acc: any) => allowedRoles.includes(acc.role));
+
+        setSavedAccounts(filtered);
+        if (filtered.length > 0) {
+          setValue('email', filtered[0].email);
         }
       }
     } catch (e) { }
