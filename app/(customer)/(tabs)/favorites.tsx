@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, Pressable, TextInput, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
 import { useRouter } from 'expo-router';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 // Mock Data
 const FAVORITES = [
@@ -62,19 +62,17 @@ export default function FavoritesScreen() {
         <View className="flex-1 bg-[#121212]">
             <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
-            <SafeAreaView edges={['top']} className="bg-[#121212]/95 backdrop-blur-md border-b border-white/5 z-50">
-                <View className="flex-row items-center justify-between px-4 py-3">
-                    <Pressable onPress={() => router.back()} className="w-10 h-10 items-center justify-center rounded-full hover:bg-white/10">
-                        <MaterialIcons name="arrow-back" size={24} color="white" />
-                    </Pressable>
-                    <Text className="text-white text-lg font-bold tracking-wide">Favorilerim</Text>
-                    <Pressable className="w-10 h-10 items-center justify-center rounded-full hover:bg-white/10">
+            <BaseHeader
+                title="Favorilerim"
+                noBorder
+                rightElement={
+                    <Pressable className="w-10 h-10 items-center justify-center rounded-full bg-[#1E1E1E] border border-white/5">
                         <MaterialIcons name="filter-list" size={24} color={COLORS.primary.DEFAULT} />
                     </Pressable>
-                </View>
-
+                }
+            >
                 {/* Search Bar */}
-                <View className="px-4 pb-3">
+                <View className="pb-3 mt-2">
                     <View className="flex-row items-center bg-[#1E1E1E] rounded-xl h-12 border border-white/5 px-3">
                         <MaterialIcons name="search" size={22} color="#9ca3af" />
                         <TextInput
@@ -88,7 +86,7 @@ export default function FavoritesScreen() {
                 </View>
 
                 {/* Filter Chips */}
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 12, paddingBottom: 16 }}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingBottom: 16 }}>
                     {FILTERS.map((filter) => (
                         <Pressable
                             key={filter}
@@ -99,7 +97,7 @@ export default function FavoritesScreen() {
                         </Pressable>
                     ))}
                 </ScrollView>
-            </SafeAreaView>
+            </BaseHeader>
 
             <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
                 {filteredFavorites.map((item) => (

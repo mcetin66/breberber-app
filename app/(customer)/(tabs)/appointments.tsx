@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, Pressable, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 // Mock Data
 const UPCOMING_APPOINTMENTS = [
@@ -113,17 +113,13 @@ export default function AppointmentsScreen() {
     <View className="flex-1 bg-[#121212]">
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
-      <SafeAreaView edges={['top']} className="bg-[#121212]/95 backdrop-blur-md border-b border-white/5 z-50">
-        <View className="flex-row items-center justify-between px-4 py-3">
-          <View className="w-10" />
-          <Text className="text-white text-lg font-bold tracking-wide uppercase text-primary">RANDEVULARIM</Text>
-          <Pressable className="w-10 items-end">
-            <MaterialIcons name="notifications" size={24} color="white" />
-          </Pressable>
-        </View>
-
+      <BaseHeader
+        title="Randevularım"
+        showNotifications
+        noBorder
+      >
         {/* Tabs */}
-        <View className="bg-[#121212] pt-2 px-4 flex-row border-b border-white/10">
+        <View className="pt-2 flex-row border-b border-white/10 mt-2">
           <Pressable
             className="flex-1 pb-3 items-center relative"
             onPress={() => setActiveTab('upcoming')}
@@ -143,7 +139,7 @@ export default function AppointmentsScreen() {
             )}
           </Pressable>
         </View>
-      </SafeAreaView>
+      </BaseHeader>
 
       <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         {activeTab === 'upcoming' ? (
