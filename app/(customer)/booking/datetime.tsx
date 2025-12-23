@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react-native';
 import { useBookingStore } from '@/stores/bookingStore';
 import { COLORS } from '@/constants/theme';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 const MOCK_DATES = [
   { date: '2024-12-13', dayName: 'Cuma', day: '13', month: 'Ara' },
@@ -41,15 +42,11 @@ export default function DateTimeSelectionScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-      <View className="flex-row items-center px-4 py-4 border-b border-background-card">
-        <Pressable onPress={() => router.back()} className="mr-4">
-          <ArrowLeft size={24} color={COLORS.text.DEFAULT} />
-        </Pressable>
-        <View className="flex-1">
-          <Text className="text-white text-xl font-poppins-bold">Tarih & Saat</Text>
-          <Text className="text-text-secondary text-sm font-poppins">{barber.name}</Text>
-        </View>
-      </View>
+      <BaseHeader
+        title="Tarih & Saat"
+        subtitle={barber?.name}
+        showBack
+      />
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-4 py-4">

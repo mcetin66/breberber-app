@@ -7,6 +7,7 @@ import { useBookingStore } from '@/stores/bookingStore';
 import { useBusinessStore } from '@/stores/businessStore';
 import type { Staff } from '@/types';
 import { COLORS } from '@/constants/theme';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function StaffSelectionScreen() {
   const router = useRouter();
@@ -45,15 +46,11 @@ export default function StaffSelectionScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-      <View className="flex-row items-center px-4 py-4 border-b border-background-card">
-        <Pressable onPress={() => router.back()} className="mr-4">
-          <ArrowLeft size={24} color={COLORS.text.DEFAULT} />
-        </Pressable>
-        <View className="flex-1">
-          <Text className="text-white text-xl font-poppins-bold">Berber Seçin</Text>
-          <Text className="text-text-secondary text-sm font-poppins">{barber?.name}</Text>
-        </View>
-      </View>
+      <BaseHeader
+        title="Berber Seçin"
+        subtitle={barber?.name}
+        showBack
+      />
 
       <ScrollView className="flex-1 px-4 py-4" showsVerticalScrollIndicator={false}>
         <Text className="text-text-secondary font-poppins mb-4">

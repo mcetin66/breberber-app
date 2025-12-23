@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { ChevronLeft, User, Phone, Save } from 'lucide-react-native';
 import { useAuthStore } from '@/stores/authStore';
 import { COLORS } from '@/constants/theme';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function ProfileEditScreen() {
     const router = useRouter();
@@ -35,17 +36,10 @@ export default function ProfileEditScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-            <View className="px-4 py-4 flex-row items-center border-b border-background-card justify-between">
-                <View className="flex-row items-center">
-                    <Pressable
-                        onPress={() => router.back()}
-                        className="mr-4 p-2 -ml-2 rounded-full active:bg-background-card"
-                    >
-                        <ChevronLeft size={24} color={COLORS.text.DEFAULT} />
-                    </Pressable>
-                    <Text className="text-white text-xl font-poppins-bold">Profili Düzenle</Text>
-                </View>
-            </View>
+            <BaseHeader
+                title="Profili Düzenle"
+                showBack
+            />
 
             <ScrollView className="flex-1 px-4 py-6">
                 <View className="bg-background-card rounded-2xl p-4 mb-6">
