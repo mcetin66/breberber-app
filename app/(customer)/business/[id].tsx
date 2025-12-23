@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, ScrollView, Image, Pressable, StatusBar, Animated, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, ScrollView, Image, Pressable, StatusBar, Animated, StyleSheet, LayoutAnimation, Platform, UIManager, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -7,33 +7,21 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
 import { BlurView } from 'expo-blur';
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
+import { businessService } from '@/services/businesses';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-// Mock Data
-const SPECIALISTS = [
-    { id: 1, name: 'Ahmet K.', role: 'Senior', image: 'https://randomuser.me/api/portraits/men/32.jpg' },
-    { id: 2, name: 'Mehmet Y.', role: 'Stylist', image: 'https://randomuser.me/api/portraits/men/44.jpg' },
-    { id: 3, name: 'Elif S.', role: 'Colorist', image: 'https://randomuser.me/api/portraits/women/68.jpg' },
-    { id: 4, name: 'Caner T.', role: 'Junior', image: 'https://randomuser.me/api/portraits/men/86.jpg' },
-];
-
-const SERVICES = [
-    { id: 101, name: 'Lüks Saç Kesimi & Yıkama', duration: '45 dk', price: 350, description: 'Kişiye özel saç tasarımı, rahatlatıcı baş masajı ve premium şampuan ile yıkama.' },
-    { id: 102, name: 'Sakal Tıraşı & Bakım', duration: '30 dk', price: 200, description: 'Sıcak havlu kompresi, ustura ile detaylı tıraş ve sakal yağı bakımı.' },
-    { id: 103, name: 'Kral Bakım Paketi', duration: '90 dk', price: 850, description: 'Saç kesimi, sakal tıraşı, yüz maskesi ve kaş dizaynı içeren tam paket.' },
-];
-
+// Static Gallery Images (will come from business_gallery table later)
 const GALLERY = [
-    'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1503951914875-befea74701c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1621605815971-fbc98d665033?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1599351431202-6e0000a4024a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800',
+    'https://images.unsplash.com/photo-1503951914875-befea74701c5?w=800',
+    'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800',
+    'https://images.unsplash.com/photo-1599351431202-6e0000a4024a?w=800',
 ];
 
-// Before-After Transformations
+// Before-After Transformations (will come from business_gallery later)
 const TRANSFORMATIONS = [
     {
         id: 1,
@@ -49,8 +37,6 @@ const TRANSFORMATIONS = [
     },
 ];
 
-const REVIEWS_SUMMARY = { count: 120, rating: 4.9 };
-
 const TABS = [
     { id: 'services', label: 'Hizmetler' },
     { id: 'staff', label: 'Uzmanlar' },
@@ -62,9 +48,34 @@ const TABS = [
 export default function BusinessDetailScreen() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
-    const [selectedServices, setSelectedServices] = useState<number[]>([]);
+    const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [activeTab, setActiveTab] = useState('services');
     const scrollY = useRef(new Animated.Value(0)).current;
+
+    // Supabase Data
+    const [business, setBusiness] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (id) {
+            loadBusiness(id as string);
+        }
+    }, [id]);
+
+    const loadBusiness = async (businessId: string) => {
+        try {
+            const data = await businessService.getById(businessId);
+            setBusiness(data);
+        } catch (error) {
+            console.error('Error loading business:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Derived data from business
+    const staff = business?.business_staff?.filter((s: any) => s.is_active) || [];
+    const services = business?.services?.filter((s: any) => s.is_active) || [];
 
     // Header Animation
     const headerHeight = 320;
@@ -79,7 +90,7 @@ export default function BusinessDetailScreen() {
         extrapolate: 'clamp',
     });
 
-    const toggleService = (serviceId: number) => {
+    const toggleService = (serviceId: string) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         if (selectedServices.includes(serviceId)) {
             setSelectedServices(selectedServices.filter(id => id !== serviceId));
@@ -89,7 +100,7 @@ export default function BusinessDetailScreen() {
     };
 
     const totalPrice = selectedServices.reduce((sum, id) => {
-        const service = SERVICES.find(s => s.id === id);
+        const service = services.find((s: any) => s.id === id);
         return sum + (service?.price || 0);
     }, 0);
 
@@ -212,15 +223,17 @@ export default function BusinessDetailScreen() {
                             <Text className="text-primary text-xs font-bold uppercase">Tümünü Gör</Text>
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 16 }}>
-                            {SPECIALISTS.map((staff) => (
-                                <View key={staff.id} className="items-center mr-2">
+                            {staff.length > 0 ? staff.map((member: any) => (
+                                <View key={member.id} className="items-center mr-2">
                                     <View className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#1e1e1e] mb-2">
-                                        <Image source={{ uri: staff.image }} className="w-full h-full" resizeMode="cover" />
+                                        <Image source={{ uri: member.avatar_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200' }} className="w-full h-full" resizeMode="cover" />
                                     </View>
-                                    <Text className="text-white text-xs font-bold">{staff.name}</Text>
-                                    <Text className="text-gray-500 text-[10px]">{staff.role}</Text>
+                                    <Text className="text-white text-xs font-bold">{member.name}</Text>
+                                    <Text className="text-gray-500 text-[10px]">{member.title || 'Uzman'}</Text>
                                 </View>
-                            ))}
+                            )) : (
+                                <Text className="text-gray-500 text-sm">Personel bilgisi yok</Text>
+                            )}
                         </ScrollView>
                     </View>
 
@@ -231,7 +244,7 @@ export default function BusinessDetailScreen() {
                             <View className="h-[1px] bg-primary/30 flex-1" />
                         </View>
                         <View className="gap-3">
-                            {SERVICES.map((service) => (
+                            {services.length > 0 ? services.map((service: any) => (
                                 <Pressable
                                     key={service.id}
                                     onPress={() => toggleService(service.id)}
@@ -239,10 +252,10 @@ export default function BusinessDetailScreen() {
                                 >
                                     <View className="flex-1 pr-4">
                                         <Text className={`font-medium text-base mb-1 ${selectedServices.includes(service.id) ? 'text-primary' : 'text-white'}`}>{service.name}</Text>
-                                        <Text className="text-gray-500 text-xs leading-relaxed" numberOfLines={2}>{service.description}</Text>
+                                        <Text className="text-gray-500 text-xs leading-relaxed" numberOfLines={2}>{service.description || ''}</Text>
                                         <View className="flex-row items-center gap-2 mt-2">
                                             <MaterialIcons name="schedule" size={14} color="#6b7280" />
-                                            <Text className="text-gray-400 text-xs">{service.duration}</Text>
+                                            <Text className="text-gray-400 text-xs">{service.duration_minutes} dk</Text>
                                         </View>
                                     </View>
                                     <View className="items-end gap-2">
@@ -256,7 +269,9 @@ export default function BusinessDetailScreen() {
                                         </View>
                                     </View>
                                 </Pressable>
-                            ))}
+                            )) : (
+                                <Text className="text-gray-500 text-center py-4">Hizmet bilgisi yok</Text>
+                            )}
                         </View>
                         <Pressable className="mt-4 flex-row items-center justify-center py-2 gap-1">
                             <Text className="text-gray-400 text-sm font-medium">Tüm Hizmetleri Gör</Text>
@@ -295,10 +310,10 @@ export default function BusinessDetailScreen() {
                                 </View>
                             ))}
                         </View>
-                    </View>
+                    </View >
 
                     {/* Reviews */}
-                    <View className="bg-[#1e1e1e] border border-white/5 rounded-xl p-5 mt-2">
+                    < View className="bg-[#1e1e1e] border border-white/5 rounded-xl p-5 mt-2" >
                         <View className="flex-row items-center justify-between mb-4">
                             <View>
                                 <Text className="text-lg font-bold text-white font-serif">Müşteri Yorumları</Text>
@@ -330,12 +345,12 @@ export default function BusinessDetailScreen() {
                             </View>
                             <Text className="text-gray-400 text-sm leading-snug">Ahmet Bey işinin ehli. Saç kesimi tam istediğim gibi oldu. Mekan çok temiz ve kaliteli.</Text>
                         </View>
-                    </View>
-                </View>
-            </Animated.ScrollView>
+                    </View >
+                </View >
+            </Animated.ScrollView >
 
             {/* Bottom Action Bar */}
-            <View className="absolute bottom-0 left-0 right-0 bg-[#121212]/95 border-t border-white/10 px-5 pt-4 pb-8 backdrop-blur-md">
+            < View className="absolute bottom-0 left-0 right-0 bg-[#121212]/95 border-t border-white/10 px-5 pt-4 pb-8 backdrop-blur-md" >
                 <View className="flex-row items-center gap-4">
                     <View>
                         <Text className="text-gray-400 text-xs">Toplam Tutar</Text>
@@ -356,7 +371,7 @@ export default function BusinessDetailScreen() {
                         </LinearGradient>
                     </Pressable>
                 </View>
-            </View>
-        </View>
+            </View >
+        </View >
     );
 }
