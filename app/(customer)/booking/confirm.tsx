@@ -17,7 +17,7 @@ export default function ConfirmBookingScreen() {
   const [loading, setLoading] = useState(false);
 
   if (!barber || !staff || !selectedDate || !selectedSlot) {
-    router.replace('/(customer)/home');
+    router.replace('/(customer)/(tabs)/home');
     return null;
   }
 
@@ -41,7 +41,7 @@ export default function ConfirmBookingScreen() {
             {
               text: 'Tamam',
               onPress: () => {
-                router.replace('/(customer)/appointments');
+                router.replace('/(customer)/(tabs)/appointments');
               },
             },
           ]
@@ -67,9 +67,9 @@ export default function ConfirmBookingScreen() {
       <ScrollView className="flex-1 px-4 py-4" showsVerticalScrollIndicator={false}>
         <View className="bg-background-card rounded-2xl p-4 mb-4">
           <View className="flex-row items-center mb-4">
-            {barber.logo && (
+            {barber.image && (
               <Image
-                source={{ uri: barber.logo }}
+                source={{ uri: barber.image }}
                 className="w-16 h-16 rounded-2xl mr-3"
               />
             )}

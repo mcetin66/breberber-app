@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Star, Check } from 'lucide-react-native';
 import { useBookingStore } from '@/stores/bookingStore';
 import { useBusinessStore } from '@/stores/businessStore';
-import type { Staff } from '@/types';
+import type { StaffProfile } from '@/types';
 import { COLORS } from '@/constants/theme';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
@@ -18,7 +18,7 @@ export default function StaffSelectionScreen() {
 
   useEffect(() => {
     if (!barber) {
-      router.replace('/(customer)/home');
+      router.replace('/(customer)/(tabs)/home');
       return;
     }
     loadStaff();
@@ -29,8 +29,8 @@ export default function StaffSelectionScreen() {
     await fetchStaff(barber.id);
   };
 
-  const handleSelectStaff = (staff: Staff) => {
-    setStaff(staff);
+  const handleSelectStaff = (staffMember: StaffProfile) => {
+    setStaff(staffMember);
     router.push('/(customer)/booking/datetime');
   };
 
@@ -87,7 +87,7 @@ export default function StaffSelectionScreen() {
                 </View>
 
                 <View className="flex-row flex-wrap">
-                  {member.expertise.slice(0, 2).map((skill, index) => (
+                  {member.expertise?.slice(0, 2).map((skill: string, index: number) => (
                     <View
                       key={index}
                       className="px-2 py-1 rounded-md mr-2 mb-1"

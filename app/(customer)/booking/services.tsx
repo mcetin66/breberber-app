@@ -18,7 +18,7 @@ export default function ServiceSelectionScreen() {
 
   useEffect(() => {
     if (!barber) {
-      router.replace('/(customer)/home');
+      router.replace('/(customer)/(tabs)/home');
       return;
     }
     loadServices();

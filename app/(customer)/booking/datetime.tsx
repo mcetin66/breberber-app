@@ -29,7 +29,7 @@ export default function DateTimeSelectionScreen() {
   const [localSlot, setLocalSlot] = useState(selectedSlot || '');
 
   if (!barber || !staff) {
-    router.replace('/(customer)/home');
+    router.replace('/(customer)/(tabs)/home');
     return null;
   }
 
