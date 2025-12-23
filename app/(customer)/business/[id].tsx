@@ -6,6 +6,7 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
 import { BlurView } from 'expo-blur';
+import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -30,6 +31,22 @@ const GALLERY = [
     'https://images.unsplash.com/photo-1503951914875-befea74701c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
     'https://images.unsplash.com/photo-1621605815971-fbc98d665033?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
     'https://images.unsplash.com/photo-1599351431202-6e0000a4024a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+];
+
+// Before-After Transformations
+const TRANSFORMATIONS = [
+    {
+        id: 1,
+        before: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+        after: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',
+        label: 'Saç Kesimi Dönüşümü',
+    },
+    {
+        id: 2,
+        before: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+        after: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+        label: 'Sakal Bakımı',
+    },
 ];
 
 const REVIEWS_SUMMARY = { count: 120, rating: 4.9 };
@@ -80,7 +97,7 @@ export default function BusinessDetailScreen() {
         if (router.canGoBack()) {
             router.back();
         } else {
-            router.replace('/(customer)/home');
+            router.replace('/(customer)/(tabs)/home');
         }
     };
 
@@ -247,12 +264,30 @@ export default function BusinessDetailScreen() {
                         </Pressable>
                     </View>
 
-                    {/* Gallery */}
+                    {/* Gallery with Before-After */}
                     <View>
                         <View className="flex-row justify-between items-center mb-4">
-                            <Text className="text-lg font-bold text-white font-serif">Galeri</Text>
+                            <Text className="text-lg font-bold text-white font-serif">Dönüşümler</Text>
                             <Text className="text-primary text-xs font-bold uppercase">Tümünü Gör</Text>
                         </View>
+
+                        {/* Before-After Sliders */}
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+                            {TRANSFORMATIONS.map((item) => (
+                                <View key={item.id} className="mr-2">
+                                    <BeforeAfterSlider
+                                        beforeImage={item.before}
+                                        afterImage={item.after}
+                                        width={280}
+                                        height={200}
+                                    />
+                                    <Text className="text-gray-400 text-xs mt-2 text-center">{item.label}</Text>
+                                </View>
+                            ))}
+                        </ScrollView>
+
+                        {/* Regular Gallery */}
+                        <Text className="text-sm font-medium text-gray-400 mt-6 mb-3">Galeri</Text>
                         <View className="flex-row flex-wrap gap-2">
                             {GALLERY.map((img, idx) => (
                                 <View key={idx} className="w-[48%] aspect-square rounded-lg overflow-hidden bg-gray-800">
