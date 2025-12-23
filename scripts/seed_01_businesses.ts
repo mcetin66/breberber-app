@@ -98,7 +98,11 @@ async function seedBusinesses() {
                 address: faker.location.streetAddress(),
                 business_type: type,
                 is_active: true,
-                cover_url: `https://loremflickr.com/800/400/${type === 'berber' ? 'barber' : 'salon'}?random=${i}`,
+                cover_url: type === 'berber'
+                    ? `https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800&h=400&fit=crop`
+                    : type === 'kuafor'
+                        ? `https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=400&fit=crop`
+                        : `https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&h=400&fit=crop`,
             }).select().single();
 
             if (busError || !business) {
