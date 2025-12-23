@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, Pressable, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, Image, Pressable, StatusBar, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -9,49 +9,7 @@ import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 import { CalendarDays, Star } from 'lucide-react-native';
 import { WriteReviewModal } from '@/components/customer/WriteReviewModal';
 import { useAuthStore } from '@/stores/authStore';
-
-// Mock Data
-const UPCOMING_APPOINTMENTS = [
-  {
-    id: 1,
-    barberName: 'Mehmet Yılmaz',
-    service: 'Lüks Sakal Tıraşı',
-    date: 12,
-    month: 'Eki',
-    time: '14:00',
-    location: 'Levent Şubesi',
-    status: 'Onaylandı',
-    barberImage: 'https://randomuser.me/api/portraits/men/32.jpg',
-    isPending: false
-  },
-  {
-    id: 2,
-    barberName: 'Ali Demir',
-    service: 'Saç Kesimi & Yıkama',
-    date: 18,
-    month: 'Eki',
-    time: '10:30',
-    location: 'Etiler Şubesi',
-    status: 'Beklemede',
-    barberImage: 'https://randomuser.me/api/portraits/men/44.jpg',
-    isPending: true
-  }
-];
-
-const PAST_APPOINTMENTS = [
-  {
-    id: 3,
-    barberName: 'Ahmet Kaya',
-    service: 'Kral Bakımı Paketi',
-    date: 5,
-    month: 'Eyl',
-    time: '16:00',
-    location: 'Nişantaşı Şubesi',
-    status: 'Tamamlandı',
-    barberImage: 'https://randomuser.me/api/portraits/men/86.jpg',
-    isPending: false
-  }
-];
+import { bookingService } from '@/services/bookings';
 
 export default function AppointmentsScreen() {
   const router = useRouter();
@@ -59,10 +17,47 @@ export default function AppointmentsScreen() {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
   const [reviewModalVisible, setReviewModalVisible] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user?.id) {
+      loadBookings();
+    }
+  }, [user?.id]);
+
+  const loadBookings = async () => {
+    try {
+      const data = await bookingService.getMyBookings(user?.id || '');
+      setBookings(data);
+    } catch (error) {
+      console.error('Error loading bookings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Split bookings into upcoming and past
+  const upcomingBookings = bookings.filter(b =>
+    ['pending', 'confirmed'].includes(b.status)
+  );
+  const pastBookings = bookings.filter(b =>
+    ['completed', 'cancelled'].includes(b.status)
+  );
 
   const handleWriteReview = (appointment: any) => {
     setSelectedAppointment(appointment);
     setReviewModalVisible(true);
+  };
+
+  // Helper to format date
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const months = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+    return {
+      date: date.getDate(),
+      month: months[date.getMonth()]
+    };
   };
 
   const renderAppointmentCard = (item: any) => (
@@ -167,10 +162,30 @@ export default function AppointmentsScreen() {
       </BaseHeader>
 
       <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {activeTab === 'upcoming' ? (
-          UPCOMING_APPOINTMENTS.length > 0 ? (
+        {loading ? (
+          <View className="flex-1 items-center justify-center py-20">
+            <ActivityIndicator size="large" color={COLORS.primary.DEFAULT} />
+            <Text className="text-gray-400 mt-4">Yükleniyor...</Text>
+          </View>
+        ) : activeTab === 'upcoming' ? (
+          upcomingBookings.length > 0 ? (
             <>
-              {UPCOMING_APPOINTMENTS.map(renderAppointmentCard)}
+              {upcomingBookings.map((booking) => {
+                const dateInfo = formatDate(booking.booking_date);
+                const item = {
+                  id: booking.id,
+                  barberName: booking.business_staff?.name || 'Personel',
+                  service: booking.services?.name || 'Hizmet',
+                  date: dateInfo.date,
+                  month: dateInfo.month,
+                  time: booking.start_time?.slice(0, 5) || '',
+                  location: booking.businesses?.address || '',
+                  status: booking.status === 'pending' ? 'Beklemede' : 'Onaylandı',
+                  barberImage: booking.business_staff?.avatar_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+                  isPending: booking.status === 'pending'
+                };
+                return renderAppointmentCard(item);
+              })}
 
               {/* Promo Banner */}
               <LinearGradient
@@ -208,8 +223,28 @@ export default function AppointmentsScreen() {
             </View>
           )
         ) : (
-          PAST_APPOINTMENTS.length > 0 ? (
-            PAST_APPOINTMENTS.map(renderAppointmentCard)
+          pastBookings.length > 0 ? (
+            pastBookings.map((booking) => {
+              const dateInfo = formatDate(booking.booking_date);
+              const item = {
+                id: booking.id,
+                barberName: booking.business_staff?.name || 'Personel',
+                service: booking.services?.name || 'Hizmet',
+                date: dateInfo.date,
+                month: dateInfo.month,
+                time: booking.start_time?.slice(0, 5) || '',
+                location: booking.businesses?.address || '',
+                status: booking.status === 'completed' ? 'Tamamlandı' : 'İptal Edildi',
+                barberImage: booking.business_staff?.avatar_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+                isPending: false,
+                // Extra data for review modal
+                bookingId: booking.id,
+                businessId: booking.business_id,
+                staffId: booking.staff_id,
+                businessName: booking.businesses?.name
+              };
+              return renderAppointmentCard(item);
+            })
           ) : (
             <View className="flex-1 items-center justify-center py-20">
               <View className="w-20 h-20 rounded-full bg-[#1E1E1E] items-center justify-center mb-4 border border-white/5">
