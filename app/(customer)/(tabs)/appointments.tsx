@@ -6,6 +6,7 @@ import { COLORS } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
+import { CalendarDays } from 'lucide-react-native';
 
 // Mock Data
 const UPCOMING_APPOINTMENTS = [
@@ -117,6 +118,11 @@ export default function AppointmentsScreen() {
         title="Randevularım"
         showNotifications
         noBorder
+        leftElement={
+          <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
+            <CalendarDays size={20} color="#121212" />
+          </View>
+        }
       >
         {/* Tabs */}
         <View className="pt-2 flex-row border-b border-white/10 mt-2">

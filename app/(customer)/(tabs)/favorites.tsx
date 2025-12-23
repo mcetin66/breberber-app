@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
+import { Heart } from 'lucide-react-native';
 
 // Mock Data
 const FAVORITES = [
@@ -65,6 +66,11 @@ export default function FavoritesScreen() {
             <BaseHeader
                 title="Favorilerim"
                 noBorder
+                leftElement={
+                    <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
+                        <Heart size={20} color="#121212" />
+                    </View>
+                }
                 rightElement={
                     <Pressable className="w-10 h-10 items-center justify-center rounded-full bg-[#1E1E1E] border border-white/5">
                         <MaterialIcons name="filter-list" size={24} color={COLORS.primary.DEFAULT} />
