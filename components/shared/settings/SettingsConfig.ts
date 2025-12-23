@@ -1,10 +1,10 @@
-import { LucideIcon, User, Store, Clock, Image, Wallet, Bell, Lock, LogOut, Shield, Users, CreditCard, Calendar, UserCog, Building2, Scissors, FileText, Crown, BarChart3, Settings2, Key, HelpCircle, Info, Settings, Megaphone } from 'lucide-react-native';
+import { LucideIcon, User, Store, Clock, Image, Wallet, Bell, Lock, LogOut, Shield, Users, CreditCard, Calendar, UserCog, Building2, Scissors, FileText, Crown, BarChart3, Settings2, Key, HelpCircle, Info, Settings, Megaphone, Trash2 } from 'lucide-react-native';
 
 export type SettingsItem = {
     icon: LucideIcon;
     label: string;
     route?: string;
-    action?: 'logout' | 'toggle_notifications' | 'password_reset' | 'switch_to_staff' | 'switch_to_business';
+    action?: 'logout' | 'toggle_notifications' | 'password_reset' | 'switch_to_staff' | 'switch_to_business' | 'delete_account';
     danger?: boolean;
     modal?: string;
     type?: 'toggle' | 'link' | 'button';
@@ -148,6 +148,7 @@ export const SETTINGS_MENU: Record<string, SettingsCategory[]> = {
         {
             title: '',
             items: [
+                { icon: Trash2, label: 'Hesabı Sil', action: 'delete_account', danger: true, iconBg: '#DC2626' },
                 { icon: LogOut, label: 'Çıkış Yap', action: 'logout', danger: true, iconBg: '#EF4444' },
             ]
         }

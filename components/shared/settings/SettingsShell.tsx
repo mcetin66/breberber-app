@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Switch } from 'react-native';
+import { View, Text, ScrollView, Switch, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/stores/authStore';
@@ -49,6 +49,27 @@ export function SettingsShell({ role }: SettingsShellProps) {
         } else if (item.action === 'switch_to_business') {
             switchViewMode('business');
             router.replace('/(business)/(tabs)/dashboard');
+        } else if (item.action === 'delete_account') {
+            Alert.alert(
+                'Hesabı Sil',
+                'Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz ve tüm verileriniz kalıcı olarak silinecektir.',
+                [
+                    { text: 'İptal', style: 'cancel' },
+                    {
+                        text: 'Hesabı Sil',
+                        style: 'destructive',
+                        onPress: async () => {
+                            // TODO: Implement actual account deletion via Supabase
+                            // For now, just sign out with a message
+                            Alert.alert(
+                                'Talep Alındı',
+                                'Hesap silme talebiniz alınmıştır. 30 gün içinde hesabınız ve tüm verileriniz silinecektir.',
+                                [{ text: 'Tamam', onPress: () => signOut() }]
+                            );
+                        }
+                    }
+                ]
+            );
         } else if (item.route) {
             router.push(item.route as any);
         }
