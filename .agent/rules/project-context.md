@@ -2,102 +2,108 @@
 trigger: always_on
 ---
 
-# PROJECT-CONTEXT.md - Breberber Proje Bağlamı
+# BREBERBER MASTER PLAN v5.0 - PROJECT CONTEXT
+## Proje Vizyonu
+Breberber, Türkiye'de berber, kuaför ve güzellik salonları için premium, yerel odaklı, MHRS esintili bir universal (iOS/Android/Web) Multi-Tenant SaaS randevu platformudur.  
+Amaç: Müşteriye lüks ve kolay randevu deneyimi, işletme sahibine güçlü yönetim ve düşük no-show oranı, personele pratik operasyonel araçlar sunmak.
 
-> Bu dosya Breberber projesine özel iş kurallarını, veritabanı yapısını ve tasarım kararlarını içerir.
-> Universal Engine kuralları ile birlikte çalışır.
+## Teknik Altyapı (Zorunlu Stack)
+- Frontend: React Native + Expo (Universal)
+- Styling: NativeWind (Tailwind CSS) – dark/gold premium tema (#121212 background, #D4AF37 gold accents)
+- State Management: Zustand (authStore, businessStore, calendarStore, uiStore)
+- Backend/Database: Supabase (Postgres + RLS tenant izolasyonu + Realtime)
+- Performance: @shopify/flash-list (takvim ve listeler için)
+- Routing: Expo Router (dosya bazlı: (auth)/, (customer)/, (business)/, (staff)/, (platform)/, (legal)/)
 
----
+## Kesin Rol Hiyerarşisi ve Yetkiler (4 Role)
+1. **Platform Admin** (Global)
+   - İşletme onay/red
+   - Abonelik yönetimi
+   - Yasal metin versiyonlama & yeniden onay tetikleme
+   - Audit log görüntüleme
 
-## 📋 Proje Bilgileri
+2. **İşletme Sahibi** (Tenant Admin)
+   - Personel/hizmet/galeri yönetimi
+   - Takvim (grid/timeline), ciro girişi, raporlar
+   - Müşteri listesi & notlar
+   - Çalışma saatleri & mola tanımlama
 
-### Proje Adı
-**Breberber (Universal SaaS Platform)**
+3. **Personel** (Staff)
+   - Kişisel takvim görüntüleme & bloklama
+   - Walk-in (ayak müşterisi) hızlı ekleme
+   - Randevu tamamlama & not ekleme
 
-### Vizyon
-Türkiye genelindeki berber, kuaför ve güzellik merkezleri için geliştirilmiş, React Native + Expo tabanlı, çok kiracılı (multi-tenant) bir SaaS platformudur. Sadece hizmet ve randevu yönetimine odaklanır; stok veya ürün satışı yapmaz. Amacı, işletmelere dijital bir işletim sistemi sunarken, son kullanıcılara (müşterilere) sürtünmesiz ve hızlı bir randevu deneyimi yaşatmaktır.
+4. **Müşteri** (Customer)
+   - Salon keşfi & filtreleme
+   - Randevu alma (hizmet/personel/slot seçimi)
+   - Geçmiş randevular & yorum yazma
+   - Favoriler & profil
 
----
+## Takvim & Randevu Motoru (KALP – En Kritik Modül)
+- Slot Sistemi: Kesin 10 dakikalık katlar (DB CHECK constraint ile zorunlu)
+- Görünüm: Timeline (mobil varsayılan) + Grid (multi-personel için toggle)
+- Renk Kodlaması:
+  - Yeşil: Boş veya onaylı randevu
+  - Kırmızı: Dolu
+  - Gri: Mola/blok
+  - Turuncu: Walk-in (müşteri tarafında "dolu" görünür)
+- Conflict Prevention: DB trigger + RLS + uygulama katmanı çift kontrol
+- "Fark Etmez" Personel Seçeneği: İlk müsait personel otomatik atanır
+- Akıllı Slot Hesaplama: Seçilen hizmetlerin toplam süresine göre en erken boş blok öner
 
-## 👥 Roller ve Yetkilendirme
+## Özellik Kademeleri (v5.0 Güncellemesiyle)
 
-### Rol Hiyerarşisi
+### MVP (Tamamlanmış/Tamamlanacak – Şu Anki Repo Durumu)
+- Multi-role auth & onboarding
+- Role selection sonrası yönlendirme
+- Temel müşteri keşif & salon detay
+- Hizmet/personel/slot seçimi & randevu alma
+- Before-after drag slider (galeri yönetimi + müşteri onayı)
+- KVKK zorunlu onaylar & veri silme
 
-| Rol | Yetkiler | Erişim Kapsamı |
-|-----|----------|----------------|
-| **Platform Admin** | Sistem geneli onay, paket yönetimi, yasal metin güncelleme. | Global (Tüm Tenantlar) |
-| **İşletme Sahibi** | Personel, hizmet, galeri yönetimi, ciro raporları. | Sadece Kendi Tenant'ı |
-| **Çalışan (Staff)** | Kendi takvimini yönetme, vakit bloklama, işlem tamamlama. | Kendi Tenant'ı + Kendi Verisi |
-| **Müşteri** | İşletme keşfi, randevu alma, profil ve sadakat takibi. | Genel Keşif + Kendi Verisi |
+### v1.1 (İlk Büyük Güncelleme – 3-6 Ay)
+- Sürükle-bırak randevu taşıma (gesture handler + flash-list)
+- Waitlist (bekleme listesi) + iptal durumunda otomatik bildirim
+- Randevu hatırlatma otomasyonu (WhatsApp + Push + SMS – 24h ve 1h önce)
+- No-show politikası: Yumuşak (2 no-show sonrası uyarı, 3 sonrası manuel/otomatik kara liste)
+- Müşteri kara listesi (işletme sahibi manuel kontrol)
 
----
+### v1.2 (6-12 Ay)
+- Tekrarlayan randevular (her hafta/ay aynı slot)
+- Manuel adisyon/sepet sistemi (randevuya ek hizmet/ürün ekleyip toplam tutar girişi – sadece kayıt & raporlama amaçlı)
+- Yorum bazlı personel performans raporu (puan ortalaması, yorum sayısı, doluluk oranı, tercih edilen hizmetler)
+- Personel bazlı portfolio galeri genişletme
 
-## 📊 Veritabanı (Supabase)
+### v2.0+ (Uzun Vadeli)
+- Sosyal medya entegrasyonu (Instagram bağlama)
+- Gider takibi & net kar hesabı
+- İleride: Online ödeme entegrasyonu (eğer karar değişirse)
 
-### Ana Tablolar ve Güvenlik
+## Kapsam Dışı (Kesin Kararlı)
+- Çoklu şube (multi-branch) – her şube ayrı tenant
+- Online ödeme alma (sadece manuel kayıt)
+- Stok/ürün satışı
+- Offline/PWA
+- Google/iCal sync
 
-| Tablo | Açıklama | RLS (Row Level Security) |
-|-------|----------|-------------------------|
-| `tenants` | İşletme profilleri ve ayarları | ✅ (Tenant ID) |
-| `staff_profiles` | Çalışan detayları ve yetkinlikleri | ✅ (Tenant ID) |
-| `services` | Hizmet tanımları (Süre: 10'un katı) | ✅ (Tenant ID) |
-| `appointments` | Randevu kayıtları ve durumları | ✅ (Tenant ID + User ID) |
-| `user_consents` | KVKK ve TOS onay versiyonları | ✅ (User ID) |
-| `audit_logs` | İşlem geçmişi (Eski/Yeni değer JSONB) | ✅ (Admin Only) |
+## Yasal & Güvenlik Kuralları (KVKK Zorunlu)
+- Kayıtta zorunlu KVKK + TOS + marketing_allowed checkbox'lar
+- Yasal metin güncellendiğinde tüm kullanıcılardan yeniden onay (admin tetiklemeli)
+- Data portability: Müşteri verisini silme/ihrac etme hakkı
+- Soft delete tüm tablolarda
+- Audit log (JSONB) tüm kritik işlemlerde
 
----
+## UI/UX Kuralları (Premium Standart)
+- Default dark mode (#121212 bg, #1E1E1E cards)
+- Gold accents (#D4AF37) butonlar, aktif tab, yıldızlar, seçili slot
+- Subtle glow sadece kritik aksiyonlarda (onay butonu, başarı animasyonu)
+- Wide spacing & elegant typography
+- No pink colors
 
-## 📏 İş Kuralları (Business Logic)
+## Geliştirme Kuralları (AI Agent İçin Zorunlu)
+- Zero-Deletion: Mevcut kod asla silinmez, sadece comment out veya refactor
+- 10dk kuralı veritabanı seviyesinde CHECK constraint ile korunur
+- Her yeni özellik öncesi: Plan → Design → Code → Validate → Deliver
+- Her değişiklik sonrası validation checkpoint (syntax, type, test coverage, anti-gravity kuralları)
 
-### Kritik Kurallar
-- [x] **10 Dakika Kuralı:** Tüm hizmet süreleri ve randevu aralıkları 10 dakikanın katı (10, 20, 30...) olmak zorundadır.
-- [x] **Paket Limitleri:**
-    - **Silver:** Maksimum 2 Personel (1 Sahip + 1 Çalışan).
-    - **Gold:** Maksimum 3 Personel.
-    - **Platinum:** Maksimum 5 Personel.
-- [x] **Ödeme Yok:** Uygulama içi kredi kartı/ödeme alınmaz. Fiyat sadece raporlama için girilir.
-- [x] **Çakışma Kontrolü:** Aynı personele, aynı zaman diliminde (10dk slot) ikinci randevu verilemez (DB Trigger + App Logic).
-- [x] **Ayak Müşterisi:** Personel, randevusuz gelen müşteri için takvimde ilgili slotu "Dolu" olarak işaretler (Müşteri detay görmez).
-
-### Renk Kodları (Takvim Durumları)
-
-| Durum | Renk (Tailwind/Hex) | Anlamı |
-|-------|---------------------|--------|
-| **Müsait** | `bg-white` | Boş zaman dilimi |
-| **Randevu** | `bg-green-100` / `#DCFCE7` | Onaylanmış müşteri randevusu |
-| **Blok/Mola** | `bg-gray-200` / `#E5E7EB` | Personel molası veya kapalılık |
-| **Ayak Müşterisi** | `bg-orange-100` / `#FFEDD5` | Randevusuz işlem (Dışarıya 'Dolu' görünür) |
-
----
-
-## 🔐 Güvenlik ve Uyumluluk
-
-### KVKK / GDPR
-- [x] **Zorunlu Onay:** Kayıt sırasında KVKK, TOS ve Pazarlama İzni checkbox'ları zorunludur.
-- [x] **Versiyonlama:** Yasal metin değiştiğinde sistem kullanıcıyı "Yeniden Onay" ekranına zorlar.
-- [x] **Veri İzolasyonu:** Bir şubenin verisi asla başka bir şube ile paylaşılmaz (Multi-branch olsa bile).
-
----
-
-## 🎨 UI/UX Kararları (NativeWind)
-
-### Tema ve Stil
-*   **Primary:** Koyu Gri / Siyah (`bg-slate-900`) - Premium hissi.
-*   **Secondary:** Altın Sarısı / Bronz (`text-amber-500`) - Vurgular ve CTA butonları.
-*   **Font:** Inter (Sistem fontu), Başlıklar için opsiyonel Serif.
-
-### Özel Bileşenler
-- **Smart Calendar:** Hem Grid (Personel sütunları) hem MHRS (Dikey liste) görünümü.
-- **Before-After Slider:** `react-native-reanimated` ile yapılan, parmakla kaydırılan karşılaştırma bileşeni.
-- **FlashList:** Tüm listeler `@shopify/flash-list` performans bileşeni ile kurulur.
-
----
-
-## 📝 Notlar ve Kısıtlamalar
-
-- **Offline Mod Yok:** Uygulama aktif internet bağlantısı gerektirir (PWA kapsam dışı).
-- **Google Calendar Sync Yok:** Dış takvim entegrasyonu MVP kapsamındadır.
-- **Form Yönetimi:** React Hook Form + Zod zorunludur.
-- **State Yönetimi:** Zustand (auth, calendar, business store) zorunludur.
-
-**Son Güncelleme:** 21.12.2025 (Master Plan v4.0 Uyumlu)
+Bu döküman, AI agent'ın proje hakkında tam kontekst sahibi olmasını sağlar. Her session'da zorunlu olarak yüklenir.

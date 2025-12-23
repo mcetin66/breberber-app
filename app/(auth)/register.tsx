@@ -40,6 +40,11 @@ export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // KVKK Consents
+  const [kvkkAccepted, setKvkkAccepted] = useState(false);
+  const [tosAccepted, setTosAccepted] = useState(false);
+  const [marketingAllowed, setMarketingAllowed] = useState(false);
+
   // Setup Form
   const { control, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormData>({
     resolver: zodResolver(registerMethod === 'email' ? emailSchema : phoneSchema) as any,
@@ -64,7 +69,7 @@ export default function RegisterScreen() {
 
       if (result.success) {
         Alert.alert('Başarılı', 'Kayıt işleminiz başarıyla tamamlandı.', [
-          { text: 'Tamam', onPress: () => router.replace('/(customer)/home') }
+          { text: 'Tamam', onPress: () => router.replace('/(customer)/(tabs)/home') }
         ]);
       } else {
         Alert.alert('Hata', result.error || 'Kayıt başarısız.');
@@ -203,10 +208,58 @@ export default function RegisterScreen() {
               </Pressable>
             </View>
 
+            {/* KVKK Consent Checkboxes */}
+            <View className="gap-3 mb-4">
+              {/* KVKK Checkbox - Required */}
+              <Pressable
+                onPress={() => setKvkkAccepted(!kvkkAccepted)}
+                className="flex-row items-start gap-3"
+              >
+                <View className={`w-5 h-5 rounded border-2 items-center justify-center mt-0.5 ${kvkkAccepted ? 'bg-primary border-primary' : 'border-gray-500'
+                  }`}>
+                  {kvkkAccepted && <MaterialIcons name="check" size={14} color="black" />}
+                </View>
+                <Text className="flex-1 text-gray-400 text-xs leading-relaxed">
+                  <Text className="text-red-500">*</Text>{" "}
+                  <Text className="text-primary" onPress={() => router.push('/(legal)/terms')}>KVKK Aydınlatma Metni</Text>'ni okudum ve kabul ediyorum.
+                </Text>
+              </Pressable>
+
+              {/* TOS Checkbox - Required */}
+              <Pressable
+                onPress={() => setTosAccepted(!tosAccepted)}
+                className="flex-row items-start gap-3"
+              >
+                <View className={`w-5 h-5 rounded border-2 items-center justify-center mt-0.5 ${tosAccepted ? 'bg-primary border-primary' : 'border-gray-500'
+                  }`}>
+                  {tosAccepted && <MaterialIcons name="check" size={14} color="black" />}
+                </View>
+                <Text className="flex-1 text-gray-400 text-xs leading-relaxed">
+                  <Text className="text-red-500">*</Text>{" "}
+                  <Text className="text-primary" onPress={() => router.push('/(legal)/terms')}>Kullanım Koşulları</Text>'nı okudum ve kabul ediyorum.
+                </Text>
+              </Pressable>
+
+              {/* Marketing Checkbox - Optional */}
+              <Pressable
+                onPress={() => setMarketingAllowed(!marketingAllowed)}
+                className="flex-row items-start gap-3"
+              >
+                <View className={`w-5 h-5 rounded border-2 items-center justify-center mt-0.5 ${marketingAllowed ? 'bg-primary border-primary' : 'border-gray-500'
+                  }`}>
+                  {marketingAllowed && <MaterialIcons name="check" size={14} color="black" />}
+                </View>
+                <Text className="flex-1 text-gray-400 text-xs leading-relaxed">
+                  Kampanya ve fırsatlardan haberdar olmak istiyorum. (İsteğe bağlı)
+                </Text>
+              </Pressable>
+            </View>
+
             <Button
               label="Hemen Üye Ol"
               onPress={handleSubmit(onSubmit)}
               loading={loading}
+              disabled={!kvkkAccepted || !tosAccepted}
               icon={<ArrowRight size={20} color="black" />}
               className="mt-2"
             />
