@@ -6,7 +6,9 @@ import { COLORS } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
-import { CalendarDays } from 'lucide-react-native';
+import { CalendarDays, Star } from 'lucide-react-native';
+import { WriteReviewModal } from '@/components/customer/WriteReviewModal';
+import { useAuthStore } from '@/stores/authStore';
 
 // Mock Data
 const UPCOMING_APPOINTMENTS = [
@@ -53,7 +55,15 @@ const PAST_APPOINTMENTS = [
 
 export default function AppointmentsScreen() {
   const router = useRouter();
+  const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
+  const [reviewModalVisible, setReviewModalVisible] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
+
+  const handleWriteReview = (appointment: any) => {
+    setSelectedAppointment(appointment);
+    setReviewModalVisible(true);
+  };
 
   const renderAppointmentCard = (item: any) => (
     <View key={item.id} className={`bg-[#1E1E1E] rounded-xl overflow-hidden border ${item.isPending ? 'border-white/5' : 'border-white/5 hover:border-primary/30'} mb-4`}>
@@ -99,6 +109,15 @@ export default function AppointmentsScreen() {
           {item.isPending && (
             <Pressable>
               <Text className="text-xs text-red-400">İptal Et</Text>
+            </Pressable>
+          )}
+          {item.status === 'Tamamlandı' && (
+            <Pressable
+              onPress={() => handleWriteReview(item)}
+              className="flex-row items-center gap-1 bg-primary/10 px-3 py-1.5 rounded-lg"
+            >
+              <Star size={14} color={COLORS.primary.DEFAULT} />
+              <Text className="text-primary text-xs font-medium">Yorum Yaz</Text>
             </Pressable>
           )}
           <Pressable className="flex-row items-center gap-1">
@@ -204,6 +223,24 @@ export default function AppointmentsScreen() {
           )
         )}
       </ScrollView>
+
+      {/* Review Modal */}
+      {selectedAppointment && (
+        <WriteReviewModal
+          visible={reviewModalVisible}
+          onClose={() => {
+            setReviewModalVisible(false);
+            setSelectedAppointment(null);
+          }}
+          bookingId={selectedAppointment.id?.toString() || ''}
+          businessId="mock-business-id"
+          customerId={user?.id || ''}
+          businessName={selectedAppointment.barberName}
+          onSuccess={() => {
+            // Refresh appointments or show success state
+          }}
+        />
+      )}
     </View>
   );
 }
