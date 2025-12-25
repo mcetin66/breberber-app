@@ -393,7 +393,7 @@ export default function LoginScreen() {
             {currentRole !== 'admin' && (
               <View className="mt-auto mb-8 flex-row justify-center items-center gap-1">
                 <Text className="text-text-muted text-sm">Hesabınız yok mu?</Text>
-                <Pressable onPress={() => router.push('/(auth)/register')}>
+                <Pressable onPress={() => router.push('/(auth)/customer-register')}>
                   <Text className="text-primary text-sm font-bold">Kayıt Ol</Text>
                 </Pressable>
               </View>

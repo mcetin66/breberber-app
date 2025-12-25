@@ -5,9 +5,10 @@ interface InputProps extends TextInputProps {
     label?: string;
     error?: string;
     icon?: React.ReactNode;
+    rightIcon?: React.ReactNode;
 }
 
-export const Input = ({ label, error, icon, className, ...props }: InputProps) => {
+export const Input = ({ label, error, icon, rightIcon, className, ...props }: InputProps) => {
     return (
         <View className={`mb-4 ${className}`}>
             {label && <Text className="text-text-muted text-xs font-semibold mb-2 ml-1">{label}</Text>}
@@ -19,6 +20,7 @@ export const Input = ({ label, error, icon, className, ...props }: InputProps) =
                     style={{ outlineStyle: 'none' } as any} // Fix for web outline
                     {...props}
                 />
+                {rightIcon && <View className="ml-3">{rightIcon}</View>}
             </View>
             {error && <Text className="text-red-500 text-xs mt-1 ml-1">{error}</Text>}
         </View>
