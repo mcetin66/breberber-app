@@ -75,7 +75,21 @@ export default function RegisterScreen() {
           { text: 'Tamam', onPress: () => router.replace('/(customer)/(tabs)/home') }
         ]);
       } else {
-        Alert.alert('Hata', result.error || 'Kayıt başarısız.');
+        // Check if email already exists
+        const errorMsg = result.error?.toLowerCase() || '';
+        if (errorMsg.includes('already') || errorMsg.includes('exists') || errorMsg.includes('registered') || errorMsg.includes('mevcut')) {
+          Alert.alert(
+            'E-posta Zaten Kayıtlı',
+            'Bu e-posta adresi ile daha önce kayıt olunmuş. Giriş yapmak veya şifrenizi sıfırlamak ister misiniz?',
+            [
+              { text: 'Giriş Yap', onPress: () => router.replace('/(auth)/login') },
+              { text: 'Şifremi Unuttum', onPress: () => router.push('/(auth)/forgot-password') },
+              { text: 'İptal', style: 'cancel' }
+            ]
+          );
+        } else {
+          Alert.alert('Hata', result.error || 'Kayıt başarısız.');
+        }
       }
     } catch (error) {
       Alert.alert('Hata', 'Beklenmedik bir hata oluştu.');
