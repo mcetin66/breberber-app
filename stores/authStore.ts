@@ -24,6 +24,7 @@ interface AuthState {
   stopImpersonating: () => void;
   signUp: (email: string, password: string, fullName: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signInWithPhone: (phone: string, fullName: string) => Promise<{ success: boolean; error?: string }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<User>) => Promise<{ success: boolean; error?: string }>;
   updatePassword: (password: string) => Promise<{ success: boolean; error?: string }>;
@@ -307,6 +308,86 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       return { success: true };
     } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Phone-based sign in (OTP verified) - creates/updates user profile
+  signInWithPhone: async (phone, fullName) => {
+    try {
+      set({ isLoading: true, error: null });
+      console.log('authStore.signInWithPhone: Starting', { phone, fullName });
+
+      // Check if user already exists with this phone
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('phone', phone)
+        .single();
+
+      let userId: string;
+      let profile: any;
+
+      if (existingProfile) {
+        // User exists, update name if needed
+        userId = existingProfile.id;
+        profile = existingProfile;
+
+        if (!existingProfile.full_name || existingProfile.full_name === 'Misafir') {
+          await supabase
+            .from('profiles')
+            .update({ full_name: fullName })
+            .eq('id', userId);
+          profile.full_name = fullName;
+        }
+      } else {
+        // Create new user profile with phone
+        const newId = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString();
+
+        const { data: newProfile, error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            id: newId,
+            phone: phone,
+            full_name: fullName,
+            role: 'customer',
+          })
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error('Error creating profile:', insertError);
+          throw insertError;
+        }
+
+        userId = newId;
+        profile = newProfile;
+      }
+
+      // Create user object
+      const user: User = {
+        id: userId,
+        email: profile.email || '',
+        phone: phone,
+        fullName: profile.full_name || fullName,
+        role: (profile.role as Role) || 'customer',
+        avatarUrl: profile.avatar_url || null,
+        barberId: profile.barber_id || null,
+      };
+
+      set({
+        user,
+        token: null, // Phone auth doesn't have token like email
+        isAuthenticated: true,
+        isLoading: false,
+        viewMode: 'customer',
+      });
+
+      console.log('authStore.signInWithPhone: Finished successfully', { userId, fullName: user.fullName });
+      return { success: true };
+    } catch (error: any) {
+      console.error('authStore.signInWithPhone: Error', error);
       set({ isLoading: false, error: error.message });
       return { success: false, error: error.message };
     }

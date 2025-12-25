@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '@/constants/theme';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
+import { LegalTextModal } from '@/components/modals/LegalTextModal';
 
 export default function TermsScreen() {
     const router = useRouter();
@@ -11,7 +12,20 @@ export default function TermsScreen() {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [marketingAccepted, setMarketingAccepted] = useState(false);
 
+    // Modal states
+    const [modalType, setModalType] = useState<'kvkk' | 'terms' | 'marketing' | null>(null);
+
     const canProceed = kvkkAccepted && termsAccepted;
+
+    const handleProceed = () => {
+        if (canProceed) {
+            router.replace('/(customer)/(tabs)/home' as any);
+        }
+    };
+
+    const openModal = (type: 'kvkk' | 'terms' | 'marketing') => {
+        setModalType(type);
+    };
 
     return (
         <ScreenWrapper noPadding>
@@ -52,7 +66,9 @@ export default function TermsScreen() {
                                     />
                                 </View>
                                 <Text className="text-gray-500 text-xs leading-tight mb-2">Kişisel verilerinizin işlenmesi ve korunması hakkında detaylı yasal bilgilendirme.</Text>
-                                <Text className="text-primary text-xs font-medium">Metni Oku</Text>
+                                <Pressable onPress={() => openModal('kvkk')}>
+                                    <Text className="text-primary text-xs font-medium">Metni Oku</Text>
+                                </Pressable>
                             </View>
                         </View>
                     </View>
@@ -74,7 +90,9 @@ export default function TermsScreen() {
                                     />
                                 </View>
                                 <Text className="text-gray-500 text-xs leading-tight mb-2">Hizmet kullanım koşulları, iptal şartları ve üyelik haklarınız.</Text>
-                                <Text className="text-primary text-xs font-medium">Metni Oku</Text>
+                                <Pressable onPress={() => openModal('terms')}>
+                                    <Text className="text-primary text-xs font-medium">Metni Oku</Text>
+                                </Pressable>
                             </View>
                         </View>
                     </View>
@@ -99,7 +117,9 @@ export default function TermsScreen() {
                                     />
                                 </View>
                                 <Text className="text-gray-500 text-xs leading-tight mb-2">Size özel indirimler, yeni hizmetler ve randevu hatırlatmaları için iletişim izni.</Text>
-                                <Text className="text-primary text-xs font-medium">Detaylar</Text>
+                                <Pressable onPress={() => openModal('marketing')}>
+                                    <Text className="text-primary text-xs font-medium">Detaylar</Text>
+                                </Pressable>
                             </View>
                         </View>
                     </View>
@@ -114,7 +134,7 @@ export default function TermsScreen() {
                 {/* Footer */}
                 <View className="absolute bottom-0 left-0 w-full p-6 bg-[#121212]/90 border-t border-white/5">
                     <Pressable
-                        onPress={() => canProceed && router.replace('/(customer)/(tabs)/home' as any)}
+                        onPress={handleProceed}
                         className={`w-full py-4 rounded-lg flex-row items-center justify-center gap-2 ${canProceed ? 'bg-primary shadow-lg shadow-primary/20' : 'bg-gray-800 opacity-50'
                             }`}
                         disabled={!canProceed}
@@ -127,6 +147,15 @@ export default function TermsScreen() {
                 </View>
 
             </View>
+
+            {/* Legal Text Modal */}
+            {modalType && (
+                <LegalTextModal
+                    visible={!!modalType}
+                    onClose={() => setModalType(null)}
+                    type={modalType}
+                />
+            )}
         </ScreenWrapper>
     );
 }

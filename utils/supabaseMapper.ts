@@ -105,7 +105,10 @@ export const mapStaffToDb = (staff: Partial<StaffProfile>): DbStaffInsert => {
 
 // --- BUSINESS (Barber) MAPPERS ---
 
-export const mapBusinessToDomain = (db: DbBusiness): Barber => {
+export const mapBusinessToDomain = (db: DbBusiness & {
+    business_staff?: any[];
+    services?: any[];
+}): Barber => {
     return {
         ...db,
         // UI Aliases
@@ -123,7 +126,11 @@ export const mapBusinessToDomain = (db: DbBusiness): Barber => {
 
         // workingHours is usually JSONB, passed as is
         workingHours: db.working_hours,
-    };
+
+        // Pass through joined data (from getById with nested selects)
+        business_staff: (db as any).business_staff,
+        services: (db as any).services,
+    } as any;
 };
 
 export const mapBusinessToDb = (barber: Partial<Barber>): DbBusinessInsert => {

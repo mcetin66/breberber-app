@@ -4,13 +4,16 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '@/constants/theme';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function OTPScreen() {
     const router = useRouter();
-    const { phone } = useLocalSearchParams();
+    const { phone, fullName } = useLocalSearchParams<{ phone: string; fullName?: string }>();
+    const { signInWithPhone } = useAuthStore();
     const [code, setCode] = useState(['', '', '', '', '', '']);
     const inputs = useRef<Array<TextInput | null>>([]);
     const [timer, setTimer] = useState(120);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -41,12 +44,25 @@ export default function OTPScreen() {
         }
     };
 
-    const handleVerify = () => {
+    const handleVerify = async () => {
         const fullCode = code.join('');
         if (fullCode === '111111') {
-            Alert.alert('Başarılı', 'Telefon doğrulandı!', [
-                { text: 'Devam Et', onPress: () => router.replace('/(customer)/(tabs)/home') }
-            ]);
+            setLoading(true);
+            try {
+                // Sign in and create/update user profile
+                const result = await signInWithPhone(phone || '', fullName || 'Kullanıcı');
+                if (result.success) {
+                    Alert.alert('Başarılı', 'Telefon doğrulandı!', [
+                        { text: 'Devam Et', onPress: () => router.replace('/(customer)/(tabs)/home' as any) }
+                    ]);
+                } else {
+                    Alert.alert('Hata', result.error || 'Giriş başarısız.');
+                }
+            } catch (error) {
+                Alert.alert('Hata', 'Beklenmedik bir hata oluştu.');
+            } finally {
+                setLoading(false);
+            }
         } else {
             Alert.alert('Hata', 'Girdiğiniz kod hatalı. Lütfen tekrar deneyin. (Test Kodu: 111111)');
             setCode(['', '', '', '', '', '']);
@@ -85,6 +101,9 @@ export default function OTPScreen() {
                         <Text className="text-gray-400 text-sm font-medium text-center leading-relaxed">
                             Lütfen <Text className="text-white font-bold">{phone || 'numaranıza'}</Text> gönderilen 6 haneli kodu giriniz.
                         </Text>
+                        {fullName && (
+                            <Text className="text-primary text-xs">Hoş geldin, {fullName}!</Text>
+                        )}
                     </View>
 
                     {/* Inputs */}
@@ -98,36 +117,33 @@ export default function OTPScreen() {
                                 onKeyPress={(e) => handleKeyPress(e, index)}
                                 keyboardType="number-pad"
                                 maxLength={1}
-                                className={`w-12 h-14 rounded-xl bg-[#1E1E1E] border text-center text-xl font-bold text-white ${digit ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/10'
-                                    }`}
-                                selectionColor={COLORS.primary.DEFAULT}
+                                className="w-12 h-14 text-center text-2xl font-bold bg-[#1E1E1E] text-white rounded-lg border-2 border-white/20 focus:border-primary"
                             />
                         ))}
                     </View>
 
                     {/* Timer */}
-                    <View className="items-center gap-3 mb-8">
-                        <View className="flex-row items-center gap-2 px-4 py-2 bg-[#1E1E1E]/50 rounded-full border border-white/5">
-                            <MaterialIcons name="timer" size={16} color={COLORS.primary.DEFAULT} />
-                            <Text className="text-primary font-bold">{formatTime(timer)}</Text>
-                        </View>
-                        <Pressable onPress={() => setTimer(120)}>
-                            <Text className="text-sm font-medium text-gray-500">
-                                Kodu almadınız mı? <Text className="text-white font-semibold underline">Tekrar Gönder</Text>
+                    <View className="items-center mb-12">
+                        <Text className="text-primary text-3xl font-bold tracking-tight mb-2">{formatTime(timer)}</Text>
+                        <Pressable disabled={timer > 0}>
+                            <Text className={timer > 0 ? 'text-gray-500 text-sm' : 'text-primary text-sm font-medium'}>
+                                {timer > 0 ? 'Tekrar kod gönder' : 'Kodu tekrar gönder'}
                             </Text>
                         </Pressable>
                     </View>
 
-                    {/* Verify Button */}
+                    {/* Button */}
                     <Pressable
                         onPress={handleVerify}
-                        className="w-full py-4 bg-primary rounded-full shadow-lg shadow-primary/20 active:scale-[0.98] flex-row items-center justify-center gap-2"
+                        disabled={loading}
+                        className="w-full bg-primary py-4 rounded-lg active:opacity-90 items-center justify-center"
                     >
-                        <Text className="text-[#121212] text-lg font-bold">Doğrula</Text>
-                        <MaterialIcons name="check-circle" size={20} color="#121212" />
+                        <Text className="text-[#121212] text-lg font-bold">
+                            {loading ? 'Doğrulanıyor...' : 'Doğrula'}
+                        </Text>
                     </Pressable>
-
                 </View>
+
             </View>
         </ScreenWrapper>
     );

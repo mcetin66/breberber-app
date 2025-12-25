@@ -22,6 +22,7 @@ const emailSchema = z.object({
 });
 
 const phoneSchema = z.object({
+  fullName: z.string().min(2, 'Ad Soyad en az 2 karakter olmalıdır'),
   phoneNumber: z.string().min(10, 'Geçerli bir telefon numarası giriniz'),
 });
 
@@ -58,7 +59,7 @@ export default function RegisterScreen() {
 
   const onSubmit = async (data: RegisterFormData) => {
     if (registerMethod === 'phone') {
-      router.push({ pathname: '/(auth)/otp', params: { phone: data.phoneNumber } });
+      router.push({ pathname: '/(auth)/otp', params: { phone: data.phoneNumber, fullName: data.fullName } });
       return;
     }
 
@@ -117,6 +118,20 @@ export default function RegisterScreen() {
 
             {registerMethod === 'phone' ? (
               <View className="gap-2">
+                <Controller
+                  control={control}
+                  name="fullName"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      label="AD SOYAD"
+                      placeholder="Adınız Soyadınız"
+                      value={value}
+                      onChangeText={onChange}
+                      icon={<User size={20} color="#6a7785" />}
+                      error={errors.fullName?.message}
+                    />
+                  )}
+                />
                 <Controller
                   control={control}
                   name="phoneNumber"
