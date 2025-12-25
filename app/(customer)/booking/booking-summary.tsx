@@ -35,7 +35,7 @@ export default function BookingSummaryScreen() {
                                     resizeMode="cover"
                                 />
                                 <View className="absolute -bottom-2 -right-2 bg-primary rounded-full p-1 border-2 border-[#2c281b]">
-                                    <MaterialIcons name="verified" size={16} color={COLORS.background.dark} />
+                                    <MaterialIcons name="verified" size={16} color={COLORS.background.DEFAULT} />
                                 </View>
                             </View>
                             <View className="flex-1">
@@ -151,7 +151,7 @@ export default function BookingSummaryScreen() {
                     className="w-full h-14 bg-primary rounded-full flex-row items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.99] group"
                 >
                     <Text className="text-background-dark font-bold text-lg">Randevuyu Tamamla</Text>
-                    <MaterialIcons name="arrow-forward" size={20} color={COLORS.background.dark} />
+                    <MaterialIcons name="arrow-forward" size={20} color={COLORS.background.DEFAULT} />
                 </Pressable>
             </View>
         </View>

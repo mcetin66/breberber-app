@@ -1,12 +1,12 @@
 import { supabase } from '@/lib/supabase';
 import type { Database } from '@/types/database';
+import { Appointment } from '@/types';
+import { mapAppointmentToDomain, mapAppointmentToDb } from '@/utils/supabaseMapper';
 
 type Booking = Database['public']['Tables']['bookings']['Row'];
-type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
-type BookingUpdate = Database['public']['Tables']['bookings']['Update'];
 
 export const bookingService = {
-  async getMyBookings(userId: string, status?: Booking['status']) {
+  async getMyBookings(userId: string, status?: Booking['status']): Promise<Appointment[]> {
     let query = supabase
       .from('bookings')
       .select(`
@@ -41,7 +41,7 @@ export const bookingService = {
     const { data, error } = await query;
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(item => mapAppointmentToDomain(item as any));
   },
 
   async getBusinessBookings(businessId: string, filters?: {
@@ -49,7 +49,7 @@ export const bookingService = {
     startDate?: string;
     endDate?: string;
     staffId?: string;
-  }) {
+  }): Promise<Appointment[]> {
     let query = supabase
       .from('bookings')
       .select(`
@@ -95,13 +95,13 @@ export const bookingService = {
     const { data, error } = await query;
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(item => mapAppointmentToDomain(item as any));
   },
 
   async getStaffBookings(staffId: string, filters?: {
     status?: Booking['status'];
     date?: string;
-  }) {
+  }): Promise<Appointment[]> {
     let query = supabase
       .from('bookings')
       .select(`
@@ -139,10 +139,10 @@ export const bookingService = {
     const { data, error } = await query;
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(item => mapAppointmentToDomain(item as any));
   },
 
-  async getById(id: string) {
+  async getById(id: string): Promise<Appointment | null> {
     const { data, error } = await supabase
       .from('bookings')
       .select(`
@@ -180,39 +180,43 @@ export const bookingService = {
       .maybeSingle();
 
     if (error) throw error;
-    return data;
+    return data ? mapAppointmentToDomain(data as any) : null;
   },
 
-  async create(booking: BookingInsert) {
+  async create(booking: Partial<Appointment>): Promise<Appointment> {
+    const dbPayload = mapAppointmentToDb(booking);
+
     const { data, error } = await supabase
       .from('bookings')
-      // @ts-ignore
-      .insert(booking)
+      .insert(dbPayload)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapAppointmentToDomain(data as any);
   },
 
-  async update(id: string, updates: BookingUpdate) {
+  async update(id: string, updates: Partial<Appointment>): Promise<Appointment> {
+    const dbPayload = mapAppointmentToDb(updates);
+    // Remove ID from payload to avoid PK update error if present
+    delete (dbPayload as any).id;
+
     const { data, error } = await supabase
       .from('bookings')
-      // @ts-ignore
-      .update(updates)
+      .update(dbPayload)
       .eq('id', id)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapAppointmentToDomain(data as any);
   },
 
   async cancel(id: string, reason?: string) {
     return this.update(id, {
       status: 'cancelled',
       cancellation_reason: reason || null,
-    });
+    } as any);
   },
 
   async delete(id: string) {
@@ -227,13 +231,13 @@ export const bookingService = {
   async confirm(id: string) {
     return this.update(id, {
       status: 'confirmed',
-    });
+    } as any);
   },
 
   async complete(id: string) {
     return this.update(id, {
       status: 'completed',
-    });
+    } as any);
   },
 
   async getAvailableSlots(staffId: string, date: string) {
@@ -270,16 +274,6 @@ export const bookingService = {
 
 // Aliases for compatibility with bookingStore
 export const createBooking = async (params: any) => {
-  // Convert friendly params to DB params if needed, or just pass through
-  // The store passes: { userId, businessId, staffId, serviceIds, date, startTime, endTime, totalPrice, notes }
-  // The DB expects: { customer_id, business_id, staff_id, service_id (single?), booking_date, start_time, end_time, total_price, notes }
-
-  // Note: DB schema has 'service_id' (singular). But store passes serviceIds (plural).
-  // If we support multiple services per booking, we might need a separate table or just pick the first one for the main reference.
-  // The schema I saw earlier: `service_id UUID REFERENCES services` in bookings.
-  // So it seems it supports single service per booking, OR we need to handle multiple.
-  // Assuming single service for now or primary service.
-
   const { userId, businessId, staffId, serviceIds, date, startTime, endTime, totalPrice, notes } = params;
 
   // --- VALIDATION: 10-Minute Rule ---
@@ -305,18 +299,19 @@ export const createBooking = async (params: any) => {
   // ----------------------------------
 
   return bookingService.create({
-    customer_id: userId,
-    business_id: businessId,
-    staff_id: staffId,
-    service_id: serviceIds[0], // Taking the first one as primary
-    booking_date: date,
-    start_time: startTime,
-    end_time: endTime,
-    total_price: totalPrice,
+    customerId: userId,
+    barberId: businessId,
+    staffId: staffId,
+    serviceId: serviceIds[0], // Taking the first one as primary
+    date: date,
+    startTime: startTime,
+    endTime: endTime,
+    totalPrice: totalPrice,
     notes: notes,
     status: 'pending'
-  } as any);
+  });
 };
 
 export const getUserBookings = bookingService.getMyBookings;
 export const cancelBooking = bookingService.cancel;
+

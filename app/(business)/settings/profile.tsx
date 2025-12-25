@@ -39,7 +39,7 @@ export default function BusinessProfileScreen() {
                 slogan: myBusiness.description || '',
                 // @ts-ignore
                 category: myBusiness.subscriptionTier === 'basic' ? 'Erkek Berberi' : 'Erkek Berberi', // Placeholder mapping
-                logo: myBusiness.coverImage || null,
+                logo: myBusiness.cover_url || null,
             });
         }
     }, [myBusiness]);
@@ -70,7 +70,7 @@ export default function BusinessProfileScreen() {
                 name: form.businessName,
                 description: form.slogan,
                 // businessType mapping if needed, omitting for now as DB might not support it directly or it's 'category'
-                coverImage: form.logo || undefined
+                cover_url: form.logo || undefined
             });
             Alert.alert('Başarılı', 'Profil güncellendi.');
             router.back();

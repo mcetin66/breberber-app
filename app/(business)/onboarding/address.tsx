@@ -3,7 +3,7 @@ import { View, Text, Pressable, Keyboard, TouchableWithoutFeedback, Alert } from
 import { useRouter } from 'expo-router';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
 import { BusinessAddressForm } from '@/components/business/onboarding/BusinessAddressForm';
-import { useBusinessStore } from '@/store/useBusinessStore';
+import { useBusinessStore } from '@/stores/businessStore';
 import { ChevronLeft } from 'lucide-react-native';
 
 export default function OnboardingAddressScreen() {

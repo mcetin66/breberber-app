@@ -34,6 +34,7 @@ export default function PlatformFinanceScreen() {
                 title="Finans"
                 subtitle="Gelir ve abonelik takibi"
                 variant="settings"
+                headerIcon={<Wallet size={20} color="#121212" />}
             />
 
             <ScrollView

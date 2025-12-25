@@ -618,7 +618,7 @@ export default function BusinessCalendarScreen() {
                       className={`flex-row items-center pl-1 pr-3 py-1 rounded-full border ${isSelected ? 'bg-[#d4af35]/10 border-[#d4af35]' : 'bg-[#1E1E1E] border-white/10'}`}
                     >
                       <Image
-                        source={{ uri: staff.avatar || 'https://via.placeholder.com/150' }}
+                        source={{ uri: staff.avatar_url || 'https://via.placeholder.com/150' }}
                         className={`w-6 h-6 rounded-full mr-2 ${isSelected ? '' : 'grayscale opacity-50'}`}
                       />
                       <Text className={`text-xs font-medium ${isSelected ? 'text-[#d4af35]' : 'text-gray-500'}`}>
@@ -686,7 +686,7 @@ export default function BusinessCalendarScreen() {
               {viewMode === 'collective' ? (
                 staffToRender.map(staff => (
                   <View key={staff.id} className="w-40 h-10 items-center justify-center border-r border-white/5 bg-[#1E1E1E] flex-row gap-2 px-2">
-                    <Image source={{ uri: staff.avatar || 'https://via.placeholder.com/150' }} className="w-6 h-6 rounded-full" />
+                    <Image source={{ uri: staff.avatar_url || 'https://via.placeholder.com/150' }} className="w-6 h-6 rounded-full" />
                     <Text className="text-zinc-300 font-bold text-xs truncate">{staff.name.split(' ')[0]}</Text>
                   </View>
                 ))

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useBusinessStore } from '@/stores/businessStore';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useAuthStore } from '@/stores/authStore';
 import { bookingService, createBooking as createBookingAlias } from '@/services/bookings';
 import { format } from 'date-fns/format'; // Assuming date-fns is available or use native
 

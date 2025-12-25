@@ -1,12 +1,12 @@
 import { supabase } from '@/lib/supabase';
 import type { Database } from '@/types/database';
+import { Barber } from '@/types';
+import { mapBusinessToDomain, mapBusinessToDb } from '@/utils/supabaseMapper';
 
 type Business = Database['public']['Tables']['businesses']['Row'];
-type BusinessInsert = Database['public']['Tables']['businesses']['Insert'];
-type BusinessUpdate = Database['public']['Tables']['businesses']['Update'];
 
 export const businessService = {
-  async getAll(filters?: { city?: string; search?: string }) {
+  async getAll(filters?: { city?: string; search?: string }): Promise<Barber[]> {
     let query = supabase
       .from('businesses')
       .select('*')
@@ -24,10 +24,10 @@ export const businessService = {
     const { data, error } = await query;
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(item => mapBusinessToDomain(item));
   },
 
-  async getById(id: string) {
+  async getById(id: string): Promise<Barber | null> {
     const { data, error } = await supabase
       .from('businesses')
       .select(`
@@ -61,10 +61,10 @@ export const businessService = {
       .maybeSingle();
 
     if (error) throw error;
-    return data;
+    return data ? mapBusinessToDomain(data as any) : null;
   },
 
-  async getMyBusinesses(ownerId: string) {
+  async getMyBusinesses(ownerId: string): Promise<Barber[]> {
     const { data, error } = await supabase
       .from('businesses')
       .select('*')
@@ -72,32 +72,35 @@ export const businessService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(item => mapBusinessToDomain(item));
   },
 
-  async create(business: BusinessInsert) {
+  async create(business: Partial<Barber>): Promise<Barber> {
+    const dbPayload = mapBusinessToDb(business);
+
     const { data, error } = await supabase
       .from('businesses')
-      // @ts-ignore
-      .insert(business)
+      .insert(dbPayload)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapBusinessToDomain(data);
   },
 
-  async update(id: string, updates: BusinessUpdate) {
+  async update(id: string, updates: Partial<Barber>): Promise<Barber> {
+    const dbPayload = mapBusinessToDb(updates);
+    delete (dbPayload as any).id;
+
     const { data, error } = await supabase
       .from('businesses')
-      // @ts-ignore
-      .update(updates)
+      .update(dbPayload)
       .eq('id', id)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapBusinessToDomain(data);
   },
 
   async delete(id: string) {
@@ -129,7 +132,7 @@ export const businessService = {
     return data || [];
   },
 
-  async getNearby(latitude: number, longitude: number, radiusKm: number = 10) {
+  async getNearby(latitude: number, longitude: number, radiusKm: number = 10): Promise<Barber[]> {
     // @ts-ignore
     const { data, error } = await supabase.rpc('nearby_businesses', {
       lat: latitude,
@@ -142,6 +145,6 @@ export const businessService = {
       return this.getAll();
     }
 
-    return data || [];
+    return ((data as any[]) || []).map((item: any) => mapBusinessToDomain(item));
   },
 };

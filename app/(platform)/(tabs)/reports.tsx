@@ -102,6 +102,7 @@ export default function PlatformReportsScreen() {
                 title="Raporlar"
                 subtitle="Detaylı analiz"
                 variant="settings"
+                headerIcon={<FileBarChart size={20} color="#121212" />}
                 rightElement={
                     <View className="flex-row items-center gap-2 bg-[#1E1E1E] px-3 py-2 rounded-lg border border-white/5">
                         <BarChart3 size={16} color="#d4af35" />

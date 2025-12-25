@@ -104,7 +104,7 @@ export default function AdminBarberDetailScreen() {
     const getDates = () => {
         const today = new Date();
         const created = new Date(barber.createdAt || Date.now());
-        let start = barber.subscriptionStartDate ? new Date(barber.subscriptionStartDate) : null;
+        let start = barber.subscription_start_date ? new Date(barber.subscription_start_date) : null;
         let end = barber.subscriptionEndDate ? new Date(barber.subscriptionEndDate) : null;
 
         if (!end) {

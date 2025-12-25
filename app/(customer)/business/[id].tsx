@@ -8,6 +8,8 @@ import { COLORS } from '@/constants/theme';
 import { BlurView } from 'expo-blur';
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 import { businessService } from '@/services/businesses';
+import { reviewService } from '@/services/reviews';
+import { Review } from '@/types';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -54,6 +56,7 @@ export default function BusinessDetailScreen() {
 
     // Supabase Data
     const [business, setBusiness] = useState<any>(null);
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -64,8 +67,12 @@ export default function BusinessDetailScreen() {
 
     const loadBusiness = async (businessId: string) => {
         try {
-            const data = await businessService.getById(businessId);
-            setBusiness(data);
+            const [businessData, reviewsData] = await Promise.all([
+                businessService.getById(businessId),
+                reviewService.getByBusinessId(businessId)
+            ]);
+            setBusiness(businessData);
+            setReviews(reviewsData);
         } catch (error) {
             console.error('Error loading business:', error);
         } finally {
@@ -313,39 +320,53 @@ export default function BusinessDetailScreen() {
                     </View >
 
                     {/* Reviews */}
-                    < View className="bg-[#1e1e1e] border border-white/5 rounded-xl p-5 mt-2" >
+                    <View className="bg-[#1e1e1e] border border-white/5 rounded-xl p-5 mt-2">
                         <View className="flex-row items-center justify-between mb-4">
                             <View>
                                 <Text className="text-lg font-bold text-white font-serif">Müşteri Yorumları</Text>
-                                <Text className="text-gray-500 text-xs">Son 30 günde 24 yorum</Text>
+                                <Text className="text-gray-500 text-xs">Toplam {reviews.length} yorum</Text>
                             </View>
                             <View className="items-end">
-                                <Text className="text-3xl font-bold text-white">4.9</Text>
+                                <Text className="text-3xl font-bold text-white">
+                                    {reviews.length > 0
+                                        ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
+                                        : '0.0'}
+                                </Text>
                                 <View className="flex-row">
                                     {[1, 2, 3, 4, 5].map(i => (
-                                        <MaterialIcons key={i} name="star" size={14} color={COLORS.primary.DEFAULT} />
+                                        <MaterialIcons key={i} name="star" size={14} color={reviews.length > 0 && (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length) >= i ? COLORS.primary.DEFAULT : '#333'} />
                                     ))}
                                 </View>
                             </View>
                         </View>
-                        <View className="border-t border-white/10 pt-4">
-                            <View className="flex-row items-center gap-3 mb-2">
-                                <View className="w-8 h-8 rounded-full bg-gray-600 items-center justify-center">
-                                    <Text className="text-white text-xs font-bold">MK</Text>
+                        <View className="border-t border-white/10 pt-4 gap-4">
+                            {reviews.length > 0 ? reviews.map((review) => (
+                                <View key={review.id} className="border-b border-white/5 pb-4 mb-2 last:border-0 last:mb-0">
+                                    <View className="flex-row items-center gap-3 mb-2">
+                                        <View className="w-8 h-8 rounded-full bg-gray-600 items-center justify-center overflow-hidden">
+                                            {review.userAvatar ? (
+                                                <Image source={{ uri: review.userAvatar }} className="w-full h-full" resizeMode="cover" />
+                                            ) : (
+                                                <Text className="text-white text-xs font-bold">{(review.userName || 'M').charAt(0)}</Text>
+                                            )}
+                                        </View>
+                                        <View>
+                                            <Text className="text-white text-sm font-medium">{review.userName || 'Misafir'}</Text>
+                                            <Text className="text-gray-500 text-[10px]">{new Date(review.date || Date.now()).toLocaleDateString('tr-TR')}</Text>
+                                        </View>
+                                        <View className="ml-auto flex-row">
+                                            {[1, 2, 3, 4, 5].map(i => (
+                                                <MaterialIcons key={i} name="star" size={12} color={review.rating >= i ? COLORS.primary.DEFAULT : '#333'} />
+                                            ))}
+                                        </View>
+                                    </View>
+                                    <Text className="text-gray-400 text-sm leading-snug">{review.comment}</Text>
                                 </View>
-                                <View>
-                                    <Text className="text-white text-sm font-medium">Murat Kaya</Text>
-                                    <Text className="text-gray-500 text-[10px]">2 gün önce</Text>
-                                </View>
-                                <View className="ml-auto flex-row">
-                                    {[1, 2, 3, 4, 5].map(i => (
-                                        <MaterialIcons key={i} name="star" size={12} color={COLORS.primary.DEFAULT} />
-                                    ))}
-                                </View>
-                            </View>
-                            <Text className="text-gray-400 text-sm leading-snug">Ahmet Bey işinin ehli. Saç kesimi tam istediğim gibi oldu. Mekan çok temiz ve kaliteli.</Text>
+                            )) : (
+                                <Text className="text-gray-500 text-center">Henüz yorum yapılmamış.</Text>
+                            )}
                         </View>
-                    </View >
+                    </View>
                 </View >
             </Animated.ScrollView >
 

@@ -19,6 +19,7 @@ export interface BaseHeaderProps {
     showBack?: boolean;
     rightElement?: ReactNode;
     leftElement?: ReactNode;
+    headerIcon?: ReactNode;  // Custom icon for left side
     children?: ReactNode;
     variant?: 'default' | 'large' | 'settings';
     noBorder?: boolean;
@@ -31,6 +32,7 @@ export function BaseHeader({
     showBack = false,
     rightElement,
     leftElement,
+    headerIcon,
     children,
     variant = 'default',
     noBorder = false,
@@ -65,7 +67,7 @@ export function BaseHeader({
                         </Pressable>
                     ) : isSettings ? (
                         <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-                            <Settings size={20} color="#121212" />
+                            {headerIcon || <Settings size={20} color="#121212" />}
                         </View>
                     ) : null}
 

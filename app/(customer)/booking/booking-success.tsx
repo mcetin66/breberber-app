@@ -16,7 +16,7 @@ export default function BookingSuccessScreen() {
                     Başarılı Randevu
                 </Text>
                 <Pressable
-                    onPress={() => router.push('/(customer)/home')}
+                    onPress={() => router.push('/(customer)/(tabs)/home' as any)}
                     className="w-10 h-10 items-center justify-center rounded-full hover:bg-black/5 dark:active:bg-white/10"
                 >
                     <MaterialIcons name="close" size={24} color={COLORS.text.DEFAULT} />
@@ -79,7 +79,7 @@ export default function BookingSuccessScreen() {
                 {/* Actions */}
                 <View className="w-full gap-3">
                     <Pressable
-                        onPress={() => router.push('/(customer)/home')}
+                        onPress={() => router.push('/(customer)/(tabs)/home' as any)}
                         className="w-full h-14 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/25 active:scale-[0.98]"
                     >
                         <Text className="text-white text-base font-bold">Ana sayfaya dön</Text>

@@ -1,13 +1,12 @@
 import { supabase } from '@/lib/supabase';
 import type { Database } from '@/types/database';
+import { Service } from '@/types';
+import { mapServiceToDomain, mapServiceToDb } from '@/utils/supabaseMapper';
 
-type Service = Database['public']['Tables']['services']['Row'];
-type ServiceInsert = Database['public']['Tables']['services']['Insert'];
-type ServiceUpdate = Database['public']['Tables']['services']['Update'];
 type ServiceCategory = Database['public']['Tables']['service_categories']['Row'];
 
 export const servicesApi = {
-  async getByBusinessId(businessId: string) {
+  async getByBusinessId(businessId: string): Promise<Service[]> {
     const { data, error } = await supabase
       .from('services')
       .select(`
@@ -22,10 +21,10 @@ export const servicesApi = {
       .order('name', { ascending: true });
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(item => mapServiceToDomain(item));
   },
 
-  async getById(id: string) {
+  async getById(id: string): Promise<Service | null> {
     const { data, error } = await supabase
       .from('services')
       .select(`
@@ -44,30 +43,38 @@ export const servicesApi = {
       .maybeSingle();
 
     if (error) throw error;
-    return data;
+    return data ? mapServiceToDomain(data as any) : null;
   },
 
-  async create(service: ServiceInsert) {
+  async create(service: Partial<Service>): Promise<Service> {
+    const dbPayload = mapServiceToDb(service);
+
+    // Remove ID if present/empty
+    if (!dbPayload.id) delete (dbPayload as any).id;
+
     const { data, error } = await (supabase
       .from('services') as any)
-      .insert(service)
+      .insert(dbPayload)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapServiceToDomain(data);
   },
 
-  async update(id: string, updates: ServiceUpdate) {
+  async update(id: string, updates: Partial<Service>): Promise<Service> {
+    const dbPayload = mapServiceToDb(updates);
+    delete (dbPayload as any).id;
+
     const { data, error } = await (supabase
       .from('services') as any)
-      .update(updates)
+      .update(dbPayload)
       .eq('id', id)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapServiceToDomain(data);
   },
 
   async delete(id: string) {

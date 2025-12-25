@@ -15,35 +15,5 @@ app/(customer)/booking/staff.tsx(85,30): error TS2551: Property 'reviewCount' do
 app/(legal)/terms.tsx(117,69): error TS2345: Argument of type '"/(customer)/home"' is not assignable to parameter of type '"/(platform)/config" | "/(platform)/plans" | "/(platform)/audit" | "/(platform)/docs" | "/(platform)/pending" | "/(platform)/announcement" | "/(platform)/profile" | "/(platform)/change-password" | ... 411 more ... | { ...; }'.
 app/(platform)/business-detail/[id].tsx(107,28): error TS2551: Property 'subscriptionStartDate' does not exist on type 'Barber'. Did you mean 'subscription_start_date'?
 app/(platform)/business-detail/[id].tsx(107,68): error TS2551: Property 'subscriptionStartDate' does not exist on type 'Barber'. Did you mean 'subscription_start_date'?
-app/(platform)/pending.tsx(34,38): error TS2345: Argument of type '{ address: string | null; business_type: string | null; city: string | null; contact_name: string | null; cover_url: string | null; created_at: string | null; description: string | null; ... 16 more ...; working_hours: Json; }[]' is not assignable to parameter of type 'SetStateAction<PendingBusiness[]>'.
-  Type '{ address: string | null; business_type: string | null; city: string | null; contact_name: string | null; cover_url: string | null; created_at: string | null; description: string | null; ... 16 more ...; working_hours: Json; }[]' is not assignable to type 'PendingBusiness[]'.
-    Type '{ address: string | null; business_type: string | null; city: string | null; contact_name: string | null; cover_url: string | null; created_at: string | null; description: string | null; ... 16 more ...; working_hours: Json; }' is not assignable to type 'PendingBusiness'.
-      Types of property 'city' are incompatible.
-        Type 'string | null' is not assignable to type 'string'.
-          Type 'null' is not assignable to type 'string'.
-app/(staff)/(tabs)/calendar.tsx(64,22): error TS2552: Cannot find name 'appointments'. Did you mean 'getAppointments'?
-app/(staff)/(tabs)/calendar.tsx(64,40): error TS7006: Parameter 'a' implicitly has an 'any' type.
-app/(staff)/(tabs)/calendar.tsx(139,34): error TS2304: Cannot find name 'setSelectedStaffId'.
-app/(staff)/(tabs)/calendar.tsx(140,69): error TS2304: Cannot find name 'selectedStaffId'.
-app/(staff)/(tabs)/calendar.tsx(142,58): error TS2304: Cannot find name 'selectedStaffId'.
-app/(staff)/(tabs)/calendar.tsx(147,36): error TS2304: Cannot find name 'setSelectedStaffId'.
-app/(staff)/(tabs)/calendar.tsx(148,70): error TS2304: Cannot find name 'selectedStaffId'.
-app/(staff)/(tabs)/calendar.tsx(150,59): error TS2304: Cannot find name 'selectedStaffId'.
-app/(staff)/(tabs)/calendar.tsx(164,19): error TS2304: Cannot find name 'filteredAppointments'.
-app/(staff)/(tabs)/calendar.tsx(165,17): error TS2304: Cannot find name 'filteredAppointments'.
-app/(staff)/(tabs)/calendar.tsx(165,43): error TS7006: Parameter 'appt' implicitly has an 'any' type.
-app/(staff)/(tabs)/calendar.tsx(165,49): error TS7006: Parameter 'i' implicitly has an 'any' type.
 app/_layout.tsx(75,24): error TS2345: Argument of type '"/(customer)/home"' is not assignable to parameter of type '"/(platform)/config" | "/(platform)/plans" | "/(platform)/audit" | "/(platform)/docs" | "/(platform)/pending" | "/(platform)/announcement" | "/(platform)/profile" | "/(platform)/change-password" | ... 411 more ... | { ...; }'.
 components/BarberCard.tsx(69,16): error TS18047: 'barber.rating' is possibly 'null'.
-components/calendar/BookingForm.tsx(7,34): error TS2307: Cannot find module '@/store/useBusinessStore' or its corresponding type declarations.
-components/ui/RoleIndicator.tsx(3,30): error TS2307: Cannot find module '@/store/useAuthStore' or its corresponding type declarations.
-hooks/useCalendarLogic.ts(4,30): error TS2307: Cannot find module '@/store/useAuthStore' or its corresponding type declarations.
-services/mockApi.ts(57,5): error TS2353: Object literal may only specify known properties, and 'logo' does not exist in type 'Barber'.
-services/mockApi.ts(86,5): error TS2353: Object literal may only specify known properties, and 'logo' does not exist in type 'Barber'.
-services/mockApi.ts(110,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'StaffProfile'.
-services/mockApi.ts(122,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'StaffProfile'.
-services/mockApi.ts(137,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
-services/mockApi.ts(147,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
-services/mockApi.ts(157,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
-services/mockApi.ts(215,36): error TS2339: Property 'barberId' does not exist on type 'StaffProfile'.
-services/mockApi.ts(220,39): error TS2339: Property 'barberId' does not exist on type 'Service'.

@@ -55,9 +55,27 @@ interface BusinessState {
     customerChange: number;
     transactions: Appointment[];
   };
+  dashboardStats: {
+    dailyRevenue: number;
+    dailyChange: number; // Percentage or value
+    weeklyRevenue: number;
+    weeklyChange: number;
+    upcomingAppointments: Appointment[];
+  };
+  fetchDashboardStats: (barberId: string) => Promise<void>;
   fetchFinanceStats: (barberId: string, period: 'day' | 'week' | 'month') => Promise<void>;
   resetState: () => void;
   staff: Staff[]; // Exposed staff list
+  appointments: Appointment[]; // Exposed appointments list
+
+  // Onboarding
+  onboardingData: Record<string, any>;
+  onboardingStep: number;
+  isLoading: boolean;
+  setBusinessInfo: (data: Record<string, any>) => void;
+  setStep: (step: number) => void;
+  completeOnboarding: () => Promise<boolean>;
+  resetOnboarding: () => void;
 }
 
 const initializeBarberData = (): BusinessData => ({
@@ -80,6 +98,20 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
     customerChange: 0,
     transactions: [],
   },
+  appointments: [],
+  dashboardStats: {
+    dailyRevenue: 0,
+    dailyChange: 0,
+    weeklyRevenue: 0,
+    weeklyChange: 0,
+    upcomingAppointments: [],
+  },
+
+
+  // Onboarding initial state
+  onboardingData: {},
+  onboardingStep: 1,
+  isLoading: false,
 
   // Derived state for easier access
   get staff() {
@@ -139,8 +171,8 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
         phone: updates.phone,
         description: updates.description,
         city: updates.city,
-        cover_url: updates.coverImage,
-        is_active: updates.isOpen,
+        cover_url: updates.cover_url,
+        is_active: updates.is_active,
         working_hours: updates.workingHours,
       };
 
@@ -537,24 +569,20 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
         endDate: date
       });
 
-      const appointments: Appointment[] = bookings.map((b: any) => ({
-        id: b.id,
-        barberId: b.business_id, // Mapped correctly
-        customerId: b.customer_id,
-        staffId: b.staff_id,
-        serviceId: b.service_id, // Added to match type
+      const appointments: Appointment[] = bookings.map(b => ({
+        ...b,
+        // Override for 'blocked' status visual logic if needed, 
+        // but prefer keeping original data if UI handles it.
+        // Existing store logic was:
+        // customerName: b.status === 'blocked' ? (b.notes || 'KAPALI') : b.customerName,
+        // serviceName: b.status === 'blocked' ? 'Mola' : b.serviceName,
+
+        customerName: b.status === 'blocked' ? (b.notes || 'KAPALI') : b.customerName,
+        serviceName: b.status === 'blocked' ? 'Mola' : b.serviceName,
+
+        // Ensure arrays are present if type requires them (though Appointment type doesn't explicitly require serviceIds as array, but let's check store usage)
         serviceIds: [],
-        date: b.booking_date,
-        startTime: b.start_time,
-        endTime: b.end_time,
         totalDuration: 0,
-        totalPrice: b.total_price,
-        status: b.status,
-        notes: b.notes,
-        createdAt: b.created_at,
-        customerName: b.status === 'blocked' ? (b.notes || 'KAPALI') : b.profiles?.full_name,
-        serviceName: b.status === 'blocked' ? 'Mola' : b.services?.name,
-        staffName: b.business_staff?.name,
       }));
 
       const { barberData } = get();
@@ -568,6 +596,7 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
             appointments,
           }
         },
+        appointments, // Update exposed list
         loading: false,
       });
     } catch (error: any) {
@@ -583,24 +612,12 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
         endDate
       });
 
-      const appointments: Appointment[] = bookings.map((b: any) => ({
-        id: b.id,
-        barberId: b.business_id,
-        customerId: b.customer_id,
-        staffId: b.staff_id,
-        serviceId: b.service_id,
+      const appointments: Appointment[] = bookings.map(b => ({
+        ...b,
+        customerName: b.status === 'blocked' ? (b.notes || 'KAPALI') : b.customerName,
+        serviceName: b.status === 'blocked' ? 'Mola' : b.serviceName,
         serviceIds: [],
-        date: b.booking_date,
-        startTime: b.start_time,
-        endTime: b.end_time,
         totalDuration: 0,
-        totalPrice: b.total_price,
-        status: b.status,
-        notes: b.notes,
-        createdAt: b.created_at,
-        customerName: b.status === 'blocked' ? (b.notes || 'KAPALI') : b.profiles?.full_name,
-        serviceName: b.status === 'blocked' ? 'Mola' : b.services?.name,
-        staffName: b.business_staff?.name,
       }));
 
       const { barberData } = get();
@@ -649,18 +666,9 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
         ...bookingData
       }) as any;
 
-      // Convert to Appointment type
+      // Convert to Appointment type (already returned by service, just add UI specifics)
       const appt: Appointment = {
-        id: newBooking.id,
-        barberId: newBooking.business_id,
-        staffId: newBooking.staff_id,
-        customerId: newBooking.customer_id || '',
-        serviceId: newBooking.service_id || '',
-        date: newBooking.booking_date,
-        startTime: newBooking.start_time,
-        endTime: newBooking.end_time,
-        status: newBooking.status as any,
-        totalPrice: newBooking.total_price || 0,
+        ...newBooking,
         customerName: newBooking.status === 'blocked' ? (newBooking.notes || 'KAPALI') : 'KAPALI',
         serviceName: 'Mola',
         staffName: '',
@@ -755,6 +763,85 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
     return slots;
   },
 
+  fetchDashboardStats: async (barberId: string) => {
+    set({ loading: true, error: null });
+    try {
+      const now = new Date();
+
+      // 1. Daily Stats
+      const todayStart = new Date(now);
+      todayStart.setHours(0, 0, 0, 0);
+      const todayEnd = new Date(now);
+      todayEnd.setHours(23, 59, 59, 999);
+
+      // Yesterday for comparison
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+      const yesterdayEnd = new Date(todayStart);
+      yesterdayEnd.setMilliseconds(-1);
+
+      // 2. Weekly Stats
+      // Simple approximation: Last 7 days vs Previous 7 days
+      const weekStart = new Date(todayStart);
+      weekStart.setDate(weekStart.getDate() - 6); // Last 7 days including today
+
+      const prevWeekStart = new Date(weekStart);
+      prevWeekStart.setDate(prevWeekStart.getDate() - 7);
+      const prevWeekEnd = new Date(weekStart);
+      prevWeekEnd.setMilliseconds(-1);
+
+      // Fetch All needed data
+      const [todayBookings, yesterdayBookings, weekBookings, prevWeekBookings, upcomingBookings] = await Promise.all([
+        bookingService.getBusinessBookings(barberId, { startDate: todayStart.toISOString().split('T')[0], endDate: todayEnd.toISOString().split('T')[0] }),
+        bookingService.getBusinessBookings(barberId, { startDate: yesterdayStart.toISOString().split('T')[0], endDate: yesterdayEnd.toISOString().split('T')[0] }),
+        bookingService.getBusinessBookings(barberId, { startDate: weekStart.toISOString().split('T')[0], endDate: todayEnd.toISOString().split('T')[0] }),
+        bookingService.getBusinessBookings(barberId, { startDate: prevWeekStart.toISOString().split('T')[0], endDate: prevWeekEnd.toISOString().split('T')[0] }),
+        bookingService.getBusinessBookings(barberId, { startDate: now.toISOString().split('T')[0] }),
+      ]);
+
+      const calculateRevenue = (bookings: any[]) => bookings
+        .filter(b => b.status === 'completed' || b.status === 'confirmed')
+        .reduce((sum, b) => sum + (b.total_price || 0), 0);
+
+      const dailyRevenue = calculateRevenue(todayBookings);
+      const yesterdayRevenue = calculateRevenue(yesterdayBookings);
+      const dailyChange = yesterdayRevenue > 0 ? ((dailyRevenue - yesterdayRevenue) / yesterdayRevenue) * 100 : 0;
+
+      const weeklyRevenue = calculateRevenue(weekBookings);
+      const prevWeekRevenue = calculateRevenue(prevWeekBookings);
+      const weeklyChange = prevWeekRevenue > 0 ? ((weeklyRevenue - prevWeekRevenue) / prevWeekRevenue) * 100 : 0;
+
+      // 3. Upcoming Appointments 
+      const upcomingAppointments: Appointment[] = upcomingBookings
+        .filter((b: any) => {
+          return (b.status === 'confirmed' || b.status === 'pending') && new Date(b.booking_date + 'T' + b.start_time) > now;
+        })
+        .slice(0, 5) // Top 5
+        .map((b: any) => ({
+          ...b,
+          customerName: b.customerName || 'Misafir',
+          serviceName: b.serviceName || 'Hizmet',
+          staffName: b.staffName || 'Personel',
+          serviceIds: [],
+          totalDuration: 0
+        }));
+
+      set({
+        dashboardStats: {
+          dailyRevenue,
+          dailyChange,
+          weeklyRevenue,
+          weeklyChange,
+          upcomingAppointments
+        },
+        loading: false
+      });
+
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
   fetchFinanceStats: async (barberId: string, period: 'day' | 'week' | 'month') => {
     set({ loading: true, error: null });
     try {
@@ -789,23 +876,14 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
       const revenue = validBookings.reduce((sum: number, booking: any) => sum + (booking.total_price || 0), 0);
       const uniqueCustomers = new Set(validBookings.map((b: any) => b.customer_id)).size;
 
-      const transactions: Appointment[] = bookings.map((b: any) => ({
-        id: b.id,
-        barberId: b.business_id, // FIX: businessId -> barberId
-        staffId: b.staff_id,
-        serviceId: b.service_id,
+      const transactions: Appointment[] = bookings.map(b => ({
+        ...b,
+        // Ensure defaults or overrides if needed
+        customerName: b.customerName || 'Misafir',
+        serviceName: b.serviceName || 'Hizmet',
+        staffName: b.staffName || 'Personel',
         serviceIds: [],
-        customerId: b.customer_id,
-        date: b.booking_date,
-        startTime: b.start_time,
-        endTime: b.end_time,
-        status: b.status,
-        totalPrice: b.total_price || 0,
-        totalDuration: 0,
-        customerName: b.profiles?.full_name || 'Misafir',
-        serviceName: b.services?.name || 'Hizmet',
-        staffName: b.business_staff?.name || 'Personel',
-        createdAt: b.created_at
+        totalDuration: 0
       })).slice(0, 10);
 
       set({
@@ -830,6 +908,7 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
       currentBusiness: null,
       barberData: {},
       currentBarberId: null,
+      appointments: [],
       loading: false,
       error: null,
       financeStats: {
@@ -839,6 +918,64 @@ export const useBusinessStore = create<BusinessState>((set, get) => ({
         customerChange: 0,
         transactions: [],
       },
+      dashboardStats: {
+        dailyRevenue: 0,
+        dailyChange: 0,
+        weeklyRevenue: 0,
+        weeklyChange: 0,
+        upcomingAppointments: [],
+      },
+      onboardingData: {},
+      onboardingStep: 1,
+    });
+  },
+
+  // Onboarding Actions
+  setBusinessInfo: (data) => {
+    const { onboardingData } = get();
+    set({ onboardingData: { ...onboardingData, ...data } });
+  },
+
+  setStep: (step) => {
+    set({ onboardingStep: step });
+  },
+
+  completeOnboarding: async () => {
+    const { onboardingData } = get();
+    set({ isLoading: true, error: null });
+
+    try {
+      // Create business using Supabase service
+      const newBusiness = await businessService.create({
+        name: onboardingData.name || '',
+        description: onboardingData.description || null,
+        address: onboardingData.address || null,
+        city: onboardingData.city || null,
+        phone: onboardingData.phone || null,
+        email: onboardingData.email || null,
+        is_active: false, // Pending approval
+      });
+
+      if (newBusiness) {
+        set({
+          isLoading: false,
+          onboardingData: {},
+          onboardingStep: 1,
+        });
+        return true;
+      }
+      return false;
+    } catch (error: any) {
+      set({ error: error.message, isLoading: false });
+      return false;
+    }
+  },
+
+  resetOnboarding: () => {
+    set({
+      onboardingData: {},
+      onboardingStep: 1,
+      isLoading: false,
     });
   },
 }));

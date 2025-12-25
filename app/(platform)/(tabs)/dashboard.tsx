@@ -21,6 +21,7 @@ export default function AdminDashboardScreen() {
         title="Platform Yönetimi"
         subtitle="Hoş geldiniz"
         variant="settings"
+        headerIcon={<Sparkles size={20} color="#121212" />}
         showNotifications
       />
 

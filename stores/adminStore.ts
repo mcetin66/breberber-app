@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { Barber, Activity } from '@/types';
 import { supabase } from '@/lib/supabase';
 import { logAudit } from '@/services/auditService';
+import { mapBusinessToDomain } from '@/utils/supabaseMapper';
 
 interface AggregateStats {
   totalBusinesses: number;
@@ -260,16 +261,9 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       };
 
       const mappedBarbers = data.map((b: any) => ({
-        ...b,
-        coverImage: b.cover_url,
-        isOpen: b.is_active,
-        isActive: b.is_active,
-        subscriptionTier: b.subscription_tier || 'silver', // Default to Silver
-        businessType: b.business_type || 'berber',
-        subscriptionEndDate: b.subscription_end_date,
-        contactName: b.contact_name,
-        createdAt: b.created_at, // Explicit mapping
-        // Staff data
+        ...mapBusinessToDomain(b),
+        // Staff data manual mapping if needed as extended property,
+        // or ensure mapBusinessToDomain preserves ...db (it does)
         staffList: (b.staff || []).map((s: any) => ({
           id: s.id,
           name: s.profile?.full_name || 'Personel',
@@ -455,16 +449,8 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       console.log('Insert Success. New Business:', data);
 
       // Fix TS Error: generic spread and property access on 'never'
-      const responseData = data as any;
-
-      // 4. Update Local State
-      const newBarber = {
-        ...responseData,
-        coverImage: responseData.cover_url,
-        subscriptionTier: subscriptionTier,
-        subscriptionEndDate: subscriptionEndDate,
-        isOpen: isOpen ?? true
-      } as Barber;
+      // Use mapper!
+      const newBarber = mapBusinessToDomain(data as any);
 
       const { barbers } = get();
       set({ barbers: [newBarber, ...barbers], loading: false });
@@ -594,3 +580,4 @@ export const useAdminStore = create<AdminState>((set, get) => ({
     }
   },
 }));
+

@@ -114,7 +114,7 @@ export default function TermsScreen() {
                 {/* Footer */}
                 <View className="absolute bottom-0 left-0 w-full p-6 bg-[#121212]/90 border-t border-white/5">
                     <Pressable
-                        onPress={() => canProceed && router.replace('/(customer)/home')}
+                        onPress={() => canProceed && router.replace('/(customer)/(tabs)/home' as any)}
                         className={`w-full py-4 rounded-lg flex-row items-center justify-center gap-2 ${canProceed ? 'bg-primary shadow-lg shadow-primary/20' : 'bg-gray-800 opacity-50'
                             }`}
                         disabled={!canProceed}

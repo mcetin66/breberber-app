@@ -4,19 +4,24 @@ import { useRouter } from 'expo-router';
 import { FlashList } from '@shopify/flash-list';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
-import { useBusinessStore } from '@/store/useBusinessStore';
+import { useBusinessStore } from '@/stores/businessStore';
+import { useAuthStore } from '@/stores/authStore';
 import { RoleIndicator } from '@/components/ui/RoleIndicator';
 import { COLORS } from '@/constants/theme';
 import { Service } from '@/types';
 
 export default function ServiceListScreen() {
     const router = useRouter();
-    const { serviceList, loadServices, isLoading, onboardingData } = useBusinessStore();
+    const { fetchServices, getServices, isLoading } = useBusinessStore();
+    const { user } = useAuthStore();
+    const businessId = user?.barberId;
+    const serviceList = businessId ? getServices(businessId) : [];
 
     useEffect(() => {
-        // Mock tenant ID using business name or similar for now
-        loadServices(onboardingData.businessName || 'default-tenant');
-    }, []);
+        if (businessId) {
+            fetchServices(businessId);
+        }
+    }, [businessId]);
 
     const formatDuration = (mins?: number) => {
         if (!mins) return '0 dk';
@@ -73,7 +78,7 @@ export default function ServiceListScreen() {
                         keyExtractor={item => item.id.toString()}
                         showsVerticalScrollIndicator={false}
                         refreshControl={
-                            <RefreshControl refreshing={isLoading} onRefresh={() => loadServices('refresh')} tintColor="#d4af35" />
+                            <RefreshControl refreshing={isLoading} onRefresh={() => businessId && fetchServices(businessId)} tintColor="#d4af35" />
                         }
                         ListEmptyComponent={
                             <View className="mt-10 items-center">

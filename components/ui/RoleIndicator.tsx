@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useAuthStore } from '@/stores/authStore';
 import { Role } from '@/types';
 
 export const RoleIndicator = () => {

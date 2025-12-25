@@ -172,7 +172,7 @@ export default function LoginScreen() {
         } else if (user?.role === 'platform_admin') {
           router.replace('/(platform)/(tabs)/dashboard');
         } else {
-          router.replace('/(customer)/home');
+          router.replace('/(customer)/(tabs)/home');
         }
       } else {
         Alert.alert('Hata', result.error || 'Giriş başarısız.');

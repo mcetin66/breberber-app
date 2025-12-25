@@ -91,7 +91,7 @@ export const useBookingStore = create<BookingState>()(
 
       calculateTotals: () => {
         const { selectedServices } = get();
-        const totalDuration = selectedServices.reduce((sum, service) => sum + service.duration, 0);
+        const totalDuration = selectedServices.reduce((sum, service) => sum + (service.duration || 0), 0);
         const totalPrice = selectedServices.reduce((sum, service) => sum + service.price, 0);
         set({ totalDuration, totalPrice });
       },

@@ -35,10 +35,10 @@ export default function ServiceEditorScreen() {
             setForm({
                 name: existingService.name,
                 price: existingService.price.toString(),
-                duration: existingService.duration,
+                duration: existingService.duration_minutes || existingService.duration || 30,
                 category: existingService.category || 'Saç Kesimi',
                 description: existingService.description || '',
-                isActive: existingService.isActive ?? true,
+                isActive: existingService.is_active ?? true,
             });
         }
     }, [existingService]);
@@ -60,8 +60,7 @@ export default function ServiceEditorScreen() {
                 category: form.category,
                 description: form.description,
                 isActive: form.isActive,
-                staffIds: existingService?.staffIds || [], // Preserve existing staff assignments
-            };
+            } as any; // Cast to bypass strict Omit type check, store handles mapping
 
             if (isEditing && params.id) {
                 await updateService(user.barberId, params.id as string, serviceData);

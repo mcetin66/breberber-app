@@ -5,7 +5,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
-import { useBusinessStore } from '@/store/useBusinessStore';
+import { useBusinessStore } from '@/stores/businessStore';
+import { useAuthStore } from '@/stores/authStore';
 import { ChevronLeft } from 'lucide-react-native';
 
 const staffSchema = z.object({
@@ -20,6 +21,9 @@ export default function StaffFormScreen() {
     const router = useRouter();
     const { addStaff, isLoading } = useBusinessStore();
 
+    const { user } = useAuthStore();
+    const businessId = user?.barberId;
+
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm<StaffFormData>({
         resolver: zodResolver(staffSchema),
         defaultValues: {
@@ -32,13 +36,24 @@ export default function StaffFormScreen() {
     const selectedRole = watch('role');
 
     const onSubmit = async (data: StaffFormData) => {
-        const success = await addStaff(data);
-        if (success) {
+        if (!businessId) {
+            Alert.alert("Hata", "İşletme bilgisi bulunamadı.");
+            return;
+        }
+
+        try {
+            await addStaff(businessId, {
+                name: data.full_name,
+                phone: data.phone,
+                is_active: true,
+                title: data.role === 'business_owner' ? 'Yönetici' : 'Personel'
+            } as any);
+
             Alert.alert("Başarılı", "Personel eklendi.", [
                 { text: "Tamam", onPress: () => router.back() }
             ]);
-        } else {
-            Alert.alert("Hata", "Personel eklenemedi.");
+        } catch (error: any) {
+            Alert.alert("Hata", error.message || "Personel eklenemedi.");
         }
     };
 

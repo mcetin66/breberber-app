@@ -7,6 +7,7 @@ import { SETTINGS_MENU, SettingsItem, SettingsCategory } from './SettingsConfig'
 import { Role } from '@/types';
 import { useState } from 'react';
 import { Settings } from 'lucide-react-native';
+import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 interface SettingsShellProps {
     role: Role;
@@ -77,18 +78,13 @@ export function SettingsShell({ role }: SettingsShellProps) {
 
     return (
         <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            {/* Header with Gold Icon */}
-            <View className="px-4 py-3 flex-row items-center border-b border-white/5">
-                <View className="flex-row items-center gap-3">
-                    <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-                        <Settings size={20} color="#121212" />
-                    </View>
-                    <View>
-                        <Text className="text-white text-lg font-bold">Ayarlar</Text>
-                        <Text className="text-gray-500 text-xs">{user?.fullName || 'Kullanıcı'} • {getModeLabel()}</Text>
-                    </View>
-                </View>
-            </View>
+            {/* Header - Using BaseHeader for consistency */}
+            <BaseHeader
+                title="Ayarlar"
+                subtitle={`${user?.fullName || 'Kullanıcı'} • ${getModeLabel()}`}
+                variant="settings"
+                headerIcon={<Settings size={20} color="#121212" />}
+            />
 
             <ScrollView className="flex-1 px-4 pt-4" showsVerticalScrollIndicator={false}>
                 {categories.map((category, catIndex) => (

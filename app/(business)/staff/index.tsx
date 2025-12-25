@@ -1,21 +1,26 @@
 import React, { useEffect } from 'react';
-import { View, Text, Pressable, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, Image, ActivityIndicator, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { FlashList } from '@shopify/flash-list';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
-import { useBusinessStore } from '@/store/useBusinessStore';
+import { useBusinessStore } from '@/stores/businessStore';
+import { useAuthStore } from '@/stores/authStore';
 import { ChevronLeft, Plus, MoreVertical } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { StaffProfile } from '@/types';
 
 export default function StaffListScreen() {
     const router = useRouter();
-    const { staffList, loadStaffList, isLoading } = useBusinessStore();
+    const { fetchStaff, getStaff, isLoading } = useBusinessStore();
+    const { user } = useAuthStore();
+    const businessId = user?.barberId;
+    const staffList = businessId ? getStaff(businessId) : [];
 
     useEffect(() => {
-        // Ensure fresh data
-        loadStaffList('auto');
-    }, []);
+        if (businessId) {
+            fetchStaff(businessId);
+        }
+    }, [businessId]);
 
     const renderItem = ({ item }: { item: StaffProfile }) => (
         <View className="flex-row items-center bg-[#1E1E1E] p-4 rounded-xl border border-white/5 mb-3">
@@ -24,8 +29,8 @@ export default function StaffListScreen() {
                 className="w-12 h-12 rounded-full bg-zinc-800"
             />
             <View className="flex-1 ml-4">
-                <Text className="text-white font-bold text-base">{item.full_name}</Text>
-                <Text className="text-zinc-400 text-xs mt-0.5 capitalize">{item.role === 'business_owner' ? 'İşletme Sahibi' : 'Personel'}</Text>
+                <Text className="text-white font-bold text-base">{item.name}</Text>
+                <Text className="text-zinc-400 text-xs mt-0.5 capitalize">{item.title || 'Personel'}</Text>
             </View>
             <Pressable className="p-2 -mr-2">
                 <MoreVertical size={20} color="#666" />
@@ -66,6 +71,9 @@ export default function StaffListScreen() {
                             estimatedItemSize={80}
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{ paddingBottom: 100 }}
+                            refreshControl={
+                                <RefreshControl refreshing={isLoading} onRefresh={() => businessId && fetchStaff(businessId)} tintColor="#d4af35" />
+                            }
                         />
                     </View>
                 )}

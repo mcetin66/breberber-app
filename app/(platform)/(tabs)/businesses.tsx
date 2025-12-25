@@ -79,6 +79,7 @@ export default function PlatformBusinessesScreen() {
                 title="İşletmeler"
                 subtitle={`${totalCount} kayıtlı • ${activeCount} aktif`}
                 variant="settings"
+                headerIcon={<Store size={20} color="#121212" />}
                 rightElement={
                     <Pressable
                         onPress={() => setShowAddModal(true)}

@@ -14,7 +14,7 @@ export default function StaffSelectionScreen() {
   const { barber, staff: selectedStaff, setStaff } = useBookingStore();
   const { barberData, loading, fetchStaff } = useBusinessStore();
 
-  const staff = barber ? barberData[barber.id]?.staff.filter(s => s.isActive) || [] : [];
+  const staff = barber ? barberData[barber.id]?.staff.filter(s => s.is_active) || [] : [];
 
   useEffect(() => {
     if (!barber) {
@@ -79,10 +79,10 @@ export default function StaffSelectionScreen() {
                 <View className="flex-row items-center mb-2">
                   <Star size={14} color={COLORS.primary.DEFAULT} fill={COLORS.primary.DEFAULT} />
                   <Text className="text-white font-poppins-semibold ml-1">
-                    {member.rating.toFixed(1)}
+                    {(member.rating ?? 0).toFixed(1)}
                   </Text>
                   <Text className="text-text-secondary text-sm font-poppins ml-1">
-                    ({member.reviewCount})
+                    ({member.review_count ?? 0})
                   </Text>
                 </View>
 

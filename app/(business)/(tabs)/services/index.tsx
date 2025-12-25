@@ -82,7 +82,7 @@ export default function ServicesScreen() {
             {categories.map((cat) => (
               <Pressable
                 key={cat}
-                onPress={() => setSelectedCategory(cat)}
+                onPress={() => setSelectedCategory(cat ?? 'Tümü')}
                 className={`rounded-xl px-4 py-2 mr-2 border ${selectedCategory === cat ? 'bg-[#d4af35] border-[#d4af35]' : 'bg-[#1E1E1E] border-white/5'}`}
               >
                 <Text
@@ -130,16 +130,9 @@ export default function ServicesScreen() {
                 {/* Duration */}
                 <View className="flex-row items-center bg-[#121212] px-2.5 py-1.5 rounded-lg border border-white/5">
                   <Clock size={12} color="#94a3b8" />
-                  <Text className="text-zinc-400 text-xs font-poppins-medium ml-1.5">{service.duration} dk</Text>
+                  <Text className="text-zinc-400 text-xs font-poppins-medium ml-1.5">{service.duration_minutes || service.duration || 30} dk</Text>
                 </View>
 
-                {/* Staff Count */}
-                {service.staffIds && service.staffIds.length > 0 && (
-                  <View className="flex-row items-center bg-[#121212] px-2.5 py-1.5 rounded-lg border border-white/5">
-                    <Users size={12} color="#94a3b8" />
-                    <Text className="text-zinc-400 text-xs font-poppins-medium ml-1.5">{service.staffIds.length} Per.</Text>
-                  </View>
-                )}
               </View>
 
               {/* Action Buttons */}

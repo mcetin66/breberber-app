@@ -21,16 +21,17 @@ export default function StaffDetailScreen() {
 
     const [name, setName] = useState(existingStaff?.name || '');
     const [selectedServices, setSelectedServices] = useState<string[]>(existingStaff?.expertise || []);
-    const [isActive, setIsActive] = useState(existingStaff?.isActive ?? true);
+    const [isActive, setIsActive] = useState(existingStaff?.is_active ?? true);
 
-    // Time state
-    const [workStart, setWorkStart] = useState(existingStaff?.workingHours?.start || '09:00');
-    const [workEnd, setWorkEnd] = useState(existingStaff?.workingHours?.end || '19:00');
+    // Time state - workingHours comes from store mapping
+    const staffWorkingHours = (existingStaff as any)?.workingHours;
+    const [workStart, setWorkStart] = useState(staffWorkingHours?.start || '09:00');
+    const [workEnd, setWorkEnd] = useState(staffWorkingHours?.end || '19:00');
 
     // Lunch Break state
-    const [hasLunch, setHasLunch] = useState(!!existingStaff?.workingHours?.lunchStart);
-    const [lunchStart, setLunchStart] = useState(existingStaff?.workingHours?.lunchStart || '12:00');
-    const [lunchEnd, setLunchEnd] = useState(existingStaff?.workingHours?.lunchEnd || '13:00');
+    const [hasLunch, setHasLunch] = useState(!!staffWorkingHours?.lunchStart);
+    const [lunchStart, setLunchStart] = useState(staffWorkingHours?.lunchStart || '12:00');
+    const [lunchEnd, setLunchEnd] = useState(staffWorkingHours?.lunchEnd || '13:00');
 
     const [tempDate, setTempDate] = useState(new Date()); // For iOS picker
     const [activeOriginalTime, setActiveOriginalTime] = useState(''); // Keep track of what we are editing
@@ -85,11 +86,11 @@ export default function StaffDetailScreen() {
                     lunchStart: hasLunch ? lunchStart : undefined,
                     lunchEnd: hasLunch ? lunchEnd : undefined
                 },
-                workingDays: existingStaff?.workingDays || ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+                workingDays: (existingStaff as any)?.workingDays || ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
                 rating: existingStaff?.rating || 5.0,
-                reviewCount: existingStaff?.reviewCount || 0,
-                avatar: existingStaff?.avatar || 'https://via.placeholder.com/150'
-            };
+                reviewCount: existingStaff?.review_count || 0,
+                avatar: existingStaff?.avatar_url || 'https://via.placeholder.com/150'
+            } as any; // Cast for strict type bypass
 
             if (isEditing && params.id) {
                 await updateStaff(user.barberId, params.id as string, staffData);

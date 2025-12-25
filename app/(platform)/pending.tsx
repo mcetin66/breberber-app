@@ -31,7 +31,11 @@ export default function PendingScreen() {
                 .order('created_at', { ascending: false });
 
             if (!error && data) {
-                setPendingBusinesses(data);
+                const safeData = data.map((item: any) => ({
+                    ...item,
+                    city: item.city || '',
+                })) as unknown as PendingBusiness[];
+                setPendingBusinesses(safeData);
             }
         } catch (err) {
             console.error('Error fetching pending:', err);

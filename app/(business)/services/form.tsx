@@ -6,7 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
-import { useBusinessStore } from '@/store/useBusinessStore';
+import { useBusinessStore } from '@/stores/businessStore';
+import { useAuthStore } from '@/stores/authStore';
 import { RoleIndicator } from '@/components/ui/RoleIndicator';
 import { DurationPicker } from '@/components/ui/DurationPicker';
 import { COLORS } from '@/constants/theme';
@@ -33,6 +34,7 @@ const CATEGORIES = [
 export default function ServiceFormScreen() {
     const router = useRouter();
     const { addService, isLoading } = useBusinessStore();
+    const { user } = useAuthStore();
 
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: zodResolver(serviceSchema),
@@ -45,16 +47,18 @@ export default function ServiceFormScreen() {
     });
 
     const onSubmit = async (data: FormData) => {
-        const success = await addService({
-            name: data.name,
-            price: parseInt(data.price),
-            duration_minutes: data.duration_minutes,
-            duration: data.duration_minutes, // backward compat
-            category: data.category,
-        });
-
-        if (success) {
+        if (!user?.barberId) return;
+        try {
+            await addService(user.barberId, {
+                name: data.name,
+                price: parseInt(data.price),
+                duration_minutes: data.duration_minutes,
+                duration: data.duration_minutes, // backward compat
+                category: data.category,
+            } as any);
             router.back();
+        } catch (error) {
+            console.error('Failed to add service', error);
         }
     };
 

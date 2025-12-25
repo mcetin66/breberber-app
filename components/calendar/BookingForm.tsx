@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useBusinessStore } from '@/store/useBusinessStore';
+import { useBusinessStore } from '@/stores/businessStore';
 import { COLORS } from '@/constants/theme';
 import { Service, StaffProfile } from '@/types';
 
@@ -38,10 +38,10 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     onSuccess
 }) => {
     // Store Data
-    const { serviceList, staffList: allStaff } = useBusinessStore();
+    const { getServices, getStaff } = useBusinessStore();
     // In this app architecture, the store holds the current tenant's data.
-    const services = serviceList;
-    const staffList = allStaff;
+    const services = getServices(businessId);
+    const staffList = getStaff(businessId);
 
     const { control, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<BookingFormData>({
         resolver: zodResolver(bookingSchema),

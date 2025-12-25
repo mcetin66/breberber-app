@@ -1,7 +1,9 @@
-import { View, Text, Pressable, ScrollView, Dimensions } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { StandardScreen } from '@/components/ui/StandardScreen';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/stores/authStore';
+import { useBusinessStore } from '@/stores/businessStore';
+import { useEffect } from 'react';
 import {
   Bell,
   Wallet,
@@ -11,8 +13,6 @@ import {
   Scissors,
   Calendar,
   UserSearch,
-  ChevronRight,
-  MoreHorizontal,
   LayoutDashboard
 } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -22,6 +22,13 @@ import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Path, Circle, Lin
 export default function BusinessDashboardScreen() {
   const router = useRouter();
   const { user } = useAuthStore();
+  const { fetchDashboardStats, dashboardStats, loading } = useBusinessStore();
+
+  useEffect(() => {
+    if (user?.barberId) {
+      fetchDashboardStats(user.barberId);
+    }
+  }, [user?.barberId]);
 
   return (
     <StandardScreen
@@ -31,7 +38,7 @@ export default function BusinessDashboardScreen() {
       rightElement={
         <Pressable className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center relative">
           <Bell size={20} color={COLORS.primary.DEFAULT} />
-          <View className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full" />
+          {/* <View className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full" /> */}
         </Pressable>
       }
     >
@@ -49,14 +56,16 @@ export default function BusinessDashboardScreen() {
             <View className="flex-row justify-between items-center z-10">
               <Text className="text-gray-400 text-sm font-medium">Günlük Ciro</Text>
               <View className="flex-row items-center bg-[#0bda1d]/10 px-2 py-1 rounded-full gap-1">
-                <TrendingUp size={12} color="#0bda1d" />
-                <Text className="text-[#0bda1d] text-xs font-bold">+15%</Text>
+                <TrendingUp size={12} color={dashboardStats.dailyChange >= 0 ? "#0bda1d" : "#ef4444"} />
+                <Text className={`${dashboardStats.dailyChange >= 0 ? "text-[#0bda1d]" : "text-red-500"} text-xs font-bold`}>
+                  {dashboardStats.dailyChange >= 0 ? '+' : ''}{dashboardStats.dailyChange.toFixed(0)}%
+                </Text>
               </View>
             </View>
 
             <View className="z-10">
-              <Text className="text-white text-3xl font-bold tracking-tight mb-1">₺12.450</Text>
-              <Text className="text-xs text-gray-500">Düne göre +₺1.850 artış</Text>
+              <Text className="text-white text-3xl font-bold tracking-tight mb-1">₺{dashboardStats.dailyRevenue}</Text>
+              <Text className="text-xs text-gray-500">Düne göre</Text>
             </View>
           </View>
 
@@ -69,13 +78,15 @@ export default function BusinessDashboardScreen() {
             <View className="flex-row justify-between items-center z-10">
               <Text className="text-gray-400 text-sm font-medium">Haftalık Ciro</Text>
               <View className="flex-row items-center bg-[#0bda1d]/10 px-2 py-1 rounded-full gap-1">
-                <TrendingUp size={12} color="#0bda1d" />
-                <Text className="text-[#0bda1d] text-xs font-bold">+8%</Text>
+                <TrendingUp size={12} color={dashboardStats.weeklyChange >= 0 ? "#0bda1d" : "#ef4444"} />
+                <Text className={`${dashboardStats.weeklyChange >= 0 ? "text-[#0bda1d]" : "text-red-500"} text-xs font-bold`}>
+                  {dashboardStats.weeklyChange >= 0 ? '+' : ''}{dashboardStats.weeklyChange.toFixed(0)}%
+                </Text>
               </View>
             </View>
 
             <View className="z-10">
-              <Text className="text-white text-3xl font-bold tracking-tight mb-1">₺84.200</Text>
+              <Text className="text-white text-3xl font-bold tracking-tight mb-1">₺{dashboardStats.weeklyRevenue}</Text>
               <Text className="text-xs text-gray-500">Geçen haftaya göre</Text>
             </View>
           </View>
@@ -87,7 +98,7 @@ export default function BusinessDashboardScreen() {
       <View className="mb-6">
         <View className="flex-row justify-between items-center mb-3">
           <Text className="text-white text-base font-bold">Hızlı Erişim</Text>
-          <Text className="text-xs text-[#d4af35] font-medium">Düzenle</Text>
+          {/* <Text className="text-xs text-[#d4af35] font-medium">Düzenle</Text> */}
         </View>
 
         <View className="flex-row flex-wrap gap-3">
@@ -111,7 +122,7 @@ export default function BusinessDashboardScreen() {
         </View>
       </View>
 
-      {/* 3. Performance Chart */}
+      {/* 3. Performance Chart - KEPT AS MOCK/STATIC FOR MVP (Simplification) */}
       <View className="bg-[#1E1E1E] rounded-2xl border border-white/5 p-5 mb-6">
         <View className="flex-row justify-between items-center mb-6">
           <View>
@@ -121,9 +132,6 @@ export default function BusinessDashboardScreen() {
           <View className="flex-row gap-2">
             <View className="bg-[#d4af35]/10 border border-[#d4af35]/20 px-3 py-1 rounded-md">
               <Text className="text-[#d4af35] text-xs font-semibold">Hafta</Text>
-            </View>
-            <View className="px-3 py-1 rounded-md">
-              <Text className="text-gray-400 text-xs font-semibold">Ay</Text>
             </View>
           </View>
         </View>
@@ -168,38 +176,42 @@ export default function BusinessDashboardScreen() {
       <View className="mb-6">
         <View className="flex-row justify-between items-center mb-3">
           <Text className="text-white text-base font-bold">Yaklaşan Randevular</Text>
-          <Text className="text-xs text-[#d4af35] font-medium">Tümünü Gör</Text>
+          <Text className="text-xs text-[#d4af35] font-medium" onPress={() => router.push('/(business)/(tabs)/calendar' as any)}>Tümünü Gör</Text>
         </View>
 
         {/* Items */}
         <View className="gap-2">
-          {[
-            { name: 'Mehmet Yılmaz', service: 'Saç & Sakal Kesimi • Volkan Bey', time: '14:30', day: 'Bugün', status: 'ONAYLI' },
-            { name: 'Caner Erkin', service: 'VIP Cilt Bakımı • Selim Bey', time: '15:15', day: 'Bugün', status: 'BEKLİYOR' },
-            { name: 'Burak Özçivit', service: 'Saç Boyama • Ahmet Bey', time: '09:00', day: 'Yarın', status: 'ONAYLI' },
-          ].map((apt, i) => (
-            <View key={i} className="flex-row items-center gap-3 p-3 rounded-xl bg-[#1E1E1E] border border-white/5">
-              <View className="bg-[#2A2A2A] rounded-lg h-12 w-12 items-center justify-center border border-white/5">
-                <Text className="text-xs text-gray-400 font-bold uppercase">{apt.day}</Text>
-                <Text className="text-sm text-white font-bold">{apt.time}</Text>
+          {dashboardStats.upcomingAppointments.length > 0 ? (
+            dashboardStats.upcomingAppointments.map((apt, i) => (
+              <View key={i} className="flex-row items-center gap-3 p-3 rounded-xl bg-[#1E1E1E] border border-white/5">
+                <View className="bg-[#2A2A2A] rounded-lg h-12 w-12 items-center justify-center border border-white/5">
+                  <Text className="text-xs text-gray-400 font-bold uppercase">
+                    {apt.date ? new Date(apt.date).getDate() : 'Bugün'}
+                  </Text>
+                  <Text className="text-sm text-white font-bold">{apt.startTime?.slice(0, 5)}</Text>
+                </View>
+                <View className="flex-1">
+                  <Text className="text-white text-sm font-semibold truncate">{apt.customerName}</Text>
+                  <Text className="text-gray-400 text-xs truncate">{apt.serviceName} • {apt.staffName}</Text>
+                </View>
+                <View>
+                  {apt.status === 'confirmed' ? (
+                    <View className="bg-[#d4af35]/10 border border-[#d4af35]/20 px-2 py-1 rounded">
+                      <Text className="text-[#d4af35] text-[10px] font-bold">ONAYLI</Text>
+                    </View>
+                  ) : (
+                    <View className="bg-orange-500/10 border border-orange-500/20 px-2 py-1 rounded">
+                      <Text className="text-orange-400 text-[10px] font-bold">BEKLİYOR</Text>
+                    </View>
+                  )}
+                </View>
               </View>
-              <View className="flex-1">
-                <Text className="text-white text-sm font-semibold truncate">{apt.name}</Text>
-                <Text className="text-gray-400 text-xs truncate">{apt.service}</Text>
-              </View>
-              <View>
-                {apt.status === 'ONAYLI' ? (
-                  <View className="bg-[#d4af35]/10 border border-[#d4af35]/20 px-2 py-1 rounded">
-                    <Text className="text-[#d4af35] text-[10px] font-bold">ONAYLI</Text>
-                  </View>
-                ) : (
-                  <View className="bg-orange-500/10 border border-orange-500/20 px-2 py-1 rounded">
-                    <Text className="text-orange-400 text-[10px] font-bold">BEKLİYOR</Text>
-                  </View>
-                )}
-              </View>
+            ))
+          ) : (
+            <View className="p-4 items-center">
+              <Text className="text-gray-500">Yaklaşan randevu yok</Text>
             </View>
-          ))}
+          )}
         </View>
       </View>
 

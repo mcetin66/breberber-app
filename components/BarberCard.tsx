@@ -66,7 +66,7 @@ export default function BarberCard({ barber }: BarberCardProps) {
           <View className="flex-row items-center gap-1">
             <Star size={20} color={COLORS.primary.DEFAULT} fill={COLORS.primary.DEFAULT} />
             <Text className="text-slate-900 dark:text-white font-bold text-sm">
-              {barber.rating.toFixed(1)}
+              {(barber.rating ?? 0).toFixed(1)}
             </Text>
             <Text className="text-text-secondary text-xs font-medium">
               ({barber.reviewCount})

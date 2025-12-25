@@ -45,7 +45,7 @@ export default function OTPScreen() {
         const fullCode = code.join('');
         if (fullCode === '111111') {
             Alert.alert('Başarılı', 'Telefon doğrulandı!', [
-                { text: 'Devam Et', onPress: () => router.replace('/(customer)/home') }
+                { text: 'Devam Et', onPress: () => router.replace('/(customer)/(tabs)/home') }
             ]);
         } else {
             Alert.alert('Hata', 'Girdiğiniz kod hatalı. Lütfen tekrar deneyin. (Test Kodu: 111111)');

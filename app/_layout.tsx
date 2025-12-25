@@ -71,8 +71,8 @@ export default function RootLayout() {
       const currentView = viewMode || (currentRole === 'business_owner' ? 'business' : currentRole === 'staff' ? 'staff' : currentRole === 'platform_admin' ? 'platform' : 'customer');
 
       if (currentView === 'customer' && !inCustomerGroup) {
-        console.log('Redirecting to /(customer)/home');
-        router.replace('/(customer)/home');
+        console.log('Redirecting to /(customer)/(tabs)/home');
+        router.replace('/(customer)/(tabs)/home' as any);
       }
       else if (currentView === 'business' && !inBusinessGroup) {
         console.log('Redirecting to /(business)/(tabs)/dashboard');

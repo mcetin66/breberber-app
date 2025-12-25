@@ -38,12 +38,12 @@ components/BarberCard.tsx(69,16): error TS18047: 'barber.rating' is possibly 'nu
 components/calendar/BookingForm.tsx(7,34): error TS2307: Cannot find module '@/store/useBusinessStore' or its corresponding type declarations.
 components/ui/RoleIndicator.tsx(3,30): error TS2307: Cannot find module '@/store/useAuthStore' or its corresponding type declarations.
 hooks/useCalendarLogic.ts(4,30): error TS2307: Cannot find module '@/store/useAuthStore' or its corresponding type declarations.
-services/mockApi.ts(57,5): error TS2353: Object literal may only specify known properties, and 'logo' does not exist in type 'Barber'.
-services/mockApi.ts(86,5): error TS2353: Object literal may only specify known properties, and 'logo' does not exist in type 'Barber'.
-services/mockApi.ts(110,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'StaffProfile'.
-services/mockApi.ts(122,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'StaffProfile'.
-services/mockApi.ts(137,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
-services/mockApi.ts(147,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
-services/mockApi.ts(157,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
-services/mockApi.ts(215,36): error TS2339: Property 'barberId' does not exist on type 'StaffProfile'.
-services/mockApi.ts(220,39): error TS2339: Property 'barberId' does not exist on type 'Service'.
+test/mocks/mockApi.ts(57,5): error TS2353: Object literal may only specify known properties, and 'logo' does not exist in type 'Barber'.
+test/mocks/mockApi.ts(86,5): error TS2353: Object literal may only specify known properties, and 'logo' does not exist in type 'Barber'.
+test/mocks/mockApi.ts(110,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'StaffProfile'.
+test/mocks/mockApi.ts(122,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'StaffProfile'.
+test/mocks/mockApi.ts(137,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
+test/mocks/mockApi.ts(147,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
+test/mocks/mockApi.ts(157,5): error TS2353: Object literal may only specify known properties, and 'barberId' does not exist in type 'Service'.
+test/mocks/mockApi.ts(215,36): error TS2339: Property 'barberId' does not exist on type 'StaffProfile'.
+test/mocks/mockApi.ts(220,39): error TS2339: Property 'barberId' does not exist on type 'Service'.

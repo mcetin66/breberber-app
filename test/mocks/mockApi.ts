@@ -2,7 +2,7 @@ import type { User, Barber, Staff, Service } from '@/types';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const mockUsers: User[] = [
+export const mockUsers: any[] = [
   {
     id: 'user-1',
     fullName: 'Ahmet Yılmaz',
@@ -43,7 +43,7 @@ export const mockUsers: User[] = [
   },
 ];
 
-export const mockBarbers: Barber[] = [
+export const mockBarbers: any[] = [
   {
     id: 'barber-1',
     name: 'Golden Scissors',
@@ -54,7 +54,6 @@ export const mockBarbers: Barber[] = [
     reviewCount: 128,
     coverImage: 'https://picsum.photos/seed/barber1/800/400',
     image: 'https://picsum.photos/seed/logo1/200',
-    logo: 'https://picsum.photos/seed/logo1/200',
     phone: '+902161234567',
     email: 'info@goldenscissors.com',
     isOpen: true,
@@ -104,7 +103,7 @@ export const mockBarbers: Barber[] = [
   },
 ];
 
-export const mockStaff: Staff[] = [
+export const mockStaff: any[] = [
   {
     id: 'staff-1',
     barberId: 'barber-1',
@@ -131,7 +130,7 @@ export const mockStaff: Staff[] = [
   },
 ];
 
-export const mockServices: Service[] = [
+export const mockServices: any[] = [
   {
     id: 'service-1',
     barberId: 'barber-1',

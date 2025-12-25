@@ -9,8 +9,22 @@ import { useBusinessStore } from '@/stores/businessStore';
 
 export default function StaffCalendarScreen() {
   const { user } = useAuthStore();
-  const { fetchAppointments, getAppointments, loading, fetchStaff, staff = [] } = useBusinessStore();
+  const { fetchAppointments, appointments, loading, fetchStaff, staff = [] } = useBusinessStore();
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedStaffId, setSelectedStaffId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user?.barberId) {
+      fetchAppointments(user.barberId);
+      fetchStaff(user.barberId);
+    }
+  }, [user?.barberId]);
+
+  const filteredAppointments = appointments.filter(a => {
+    const isDateMatch = a.date === selectedDate.toISOString().split('T')[0];
+    const isStaffMatch = selectedStaffId ? a.staffId === selectedStaffId : true;
+    return isDateMatch && isStaffMatch;
+  });
   /* 
      RESTORING TOGGLE FUNCTIONALITY:
      The user confirmed this page originally had BOTH Daily and Weekly views.
@@ -168,10 +182,10 @@ export default function StaffCalendarScreen() {
                       <View className="flex-row gap-3 items-center">
                         <View className="w-12 h-12 rounded-full bg-[#2A2A2A] overflow-hidden border border-white/10 items-center justify-center">
                           {/* Use Initials if no image, or standard user icon */}
-                          <Text className="text-[#d4af35] font-bold text-lg">{appt.customerName.charAt(0)}</Text>
+                          <Text className="text-[#d4af35] font-bold text-lg">{(appt.customerName || 'M').charAt(0)}</Text>
                         </View>
                         <View>
-                          <Text className="text-base font-bold text-white">{appt.customerName}</Text>
+                          <Text className="text-base font-bold text-white">{appt.customerName || 'Misafir'}</Text>
                           <Text className="text-xs font-medium text-[#d4af35] mt-0.5">{appt.serviceName}</Text>
                         </View>
                       </View>

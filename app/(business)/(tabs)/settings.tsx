@@ -28,7 +28,7 @@ export default function BusinessSettingsScreen() {
         : businesses.find(b => b.id === user?.barberId);
 
     const businessName = activeBusiness?.name || 'Yükleniyor...';
-    const businessLogo = activeBusiness?.coverImage;
+    const businessLogo = activeBusiness?.cover_url;
 
     // Debug Log
     useEffect(() => {

@@ -1,32 +1,35 @@
 import { supabase } from '@/lib/supabase';
-import type { Database } from '@/types/database';
-
-type Review = Database['public']['Tables']['reviews']['Row'];
-type ReviewInsert = Database['public']['Tables']['reviews']['Insert'];
-type ReviewUpdate = Database['public']['Tables']['reviews']['Update'];
+import type { Review } from '@/types';
+import { mapReviewToDb, mapReviewToDomain } from '@/utils/supabaseMapper';
 
 export const reviewService = {
-  async create(review: ReviewInsert) {
+  async create(review: Partial<Review>) {
+    const dbPayload = mapReviewToDb(review);
+
     const { data, error } = await (supabase
       .from('reviews') as any)
-      .insert(review)
+      .insert(dbPayload)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapReviewToDomain(data);
   },
 
-  async update(id: string, updates: ReviewUpdate) {
+  async update(id: string, updates: Partial<Review>) {
+    const dbPayload = mapReviewToDb(updates);
+    // Remove ID if present in payload to avoid update error
+    delete dbPayload.id;
+
     const { data, error } = await (supabase
       .from('reviews') as any)
-      .update(updates)
+      .update(dbPayload)
       .eq('id', id)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return mapReviewToDomain(data);
   },
 
   async delete(id: string) {
@@ -46,7 +49,7 @@ export const reviewService = {
       .maybeSingle();
 
     if (error) throw error;
-    return data;
+    return data ? mapReviewToDomain(data as any) : null;
   },
 
   async getByBusinessId(businessId: string) {
@@ -66,7 +69,7 @@ export const reviewService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map((r: any) => mapReviewToDomain(r));
   },
 
   async getMyReviews(userId: string) {
@@ -75,7 +78,6 @@ export const reviewService = {
       .select(`
         *,
         businesses (
-          id,
           name,
           logo_url
         ),
@@ -87,6 +89,6 @@ export const reviewService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map((r: any) => mapReviewToDomain(r));
   },
 };

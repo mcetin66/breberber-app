@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 import { CalendarDays, Star } from 'lucide-react-native';
-import { WriteReviewModal } from '@/components/customer/WriteReviewModal';
+import WriteReviewModal from '@/components/modals/WriteReviewModal';
 import { useAuthStore } from '@/stores/authStore';
 import { bookingService } from '@/services/bookings';
 
@@ -267,12 +267,9 @@ export default function AppointmentsScreen() {
             setReviewModalVisible(false);
             setSelectedAppointment(null);
           }}
-          bookingId={selectedAppointment.id?.toString() || ''}
-          businessId="mock-business-id"
-          customerId={user?.id || ''}
-          businessName={selectedAppointment.barberName}
+          booking={selectedAppointment}
           onSuccess={() => {
-            // Refresh appointments or show success state
+            loadBookings();
           }}
         />
       )}
