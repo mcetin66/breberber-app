@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, Pressable, StatusBar, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -125,13 +126,14 @@ export default function AppointmentsScreen() {
   );
 
   return (
-    <View className="flex-1 bg-[#121212]">
+    <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
       <BaseHeader
         title="Randevularım"
         showNotifications
         noBorder
+        useSafeArea={false}
         leftElement={
           <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
             <CalendarDays size={20} color="#121212" />
@@ -273,6 +275,6 @@ export default function AppointmentsScreen() {
           }}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }
