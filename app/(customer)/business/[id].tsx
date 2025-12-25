@@ -9,6 +9,8 @@ import { BlurView } from 'expo-blur';
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 import { businessService } from '@/services/businesses';
 import { reviewService } from '@/services/reviews';
+import { favoriteService } from '@/services/favorites';
+import { useAuthStore } from '@/stores/authStore';
 import { Review } from '@/types';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -50,6 +52,7 @@ const TABS = [
 export default function BusinessDetailScreen() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
+    const { user } = useAuthStore();
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [activeTab, setActiveTab] = useState('services');
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -58,6 +61,7 @@ export default function BusinessDetailScreen() {
     const [business, setBusiness] = useState<any>(null);
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -73,10 +77,31 @@ export default function BusinessDetailScreen() {
             ]);
             setBusiness(businessData);
             setReviews(reviewsData);
+
+            // Check if favorited
+            if (user?.id) {
+                const isFav = await favoriteService.isFavorite(user.id, businessId);
+                setIsFavorite(isFav);
+            }
         } catch (error) {
             console.error('Error loading business:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const toggleFavorite = async () => {
+        if (!user?.id || !id) return;
+
+        try {
+            if (isFavorite) {
+                await favoriteService.remove(user.id, id as string);
+            } else {
+                await favoriteService.add(user.id, id as string);
+            }
+            setIsFavorite(!isFavorite);
+        } catch (error) {
+            console.error('Error toggling favorite:', error);
         }
     };
 
@@ -160,8 +185,11 @@ export default function BusinessDetailScreen() {
                     <Pressable className="w-10 h-10 rounded-full bg-black/30 items-center justify-center border border-white/10 backdrop-blur-md">
                         <MaterialIcons name="share" size={20} color="white" />
                     </Pressable>
-                    <Pressable className="w-10 h-10 rounded-full bg-black/30 items-center justify-center border border-white/10 backdrop-blur-md">
-                        <MaterialIcons name="favorite-border" size={20} color="white" />
+                    <Pressable
+                        onPress={toggleFavorite}
+                        className={`w-10 h-10 rounded-full items-center justify-center border backdrop-blur-md ${isFavorite ? 'bg-primary border-primary' : 'bg-black/30 border-white/10'}`}
+                    >
+                        <MaterialIcons name={isFavorite ? "favorite" : "favorite-border"} size={20} color={isFavorite ? "#121212" : "white"} />
                     </Pressable>
                 </View>
             </SafeAreaView>

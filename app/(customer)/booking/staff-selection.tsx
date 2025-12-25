@@ -44,7 +44,7 @@ export default function StaffSelectionScreen() {
     return (
         <View className="flex-1 bg-background-light dark:bg-background-dark">
             {/* Header / Navigation */}
-            <SafeAreaView className="absolute top-0 left-0 right-0 z-20 flex-row items-center justify-between p-4 bg-white/80 dark:bg-[#101922]/80 backdrop-blur-md">
+            <SafeAreaView className="absolute top-0 left-0 right-0 z-20 flex-row items-center justify-between p-4 bg-[#121212]">
                 <Pressable
                     onPress={() => router.back()}
                     className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-[#1a1a1a] active:bg-gray-200 dark:active:bg-white/10"
