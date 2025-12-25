@@ -2,7 +2,6 @@ import React from 'react';
 import { View, ScrollView, RefreshControl, ViewStyle } from 'react-native';
 import { ScreenWrapper } from './ScreenWrapper';
 import { AdminHeader } from '../admin/AdminHeader';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /* 
     STANDARD SCREEN STRUCTURE
@@ -49,7 +48,6 @@ export const StandardScreen = ({
     footer,
     noPadding = false,
 }: StandardScreenProps) => {
-    const insets = useSafeAreaInsets();
 
     return (
         <ScreenWrapper noPadding className="flex-1">
@@ -95,7 +93,7 @@ export const StandardScreen = ({
             {/* 3. Footer Area */}
             {footer && (
                 <View
-                    style={{ paddingBottom: insets.bottom + 10 }}
+                    style={{ paddingBottom: 24 }}
                     className="absolute bottom-0 left-0 right-0 bg-[#121212]/95 backdrop-blur-md border-t border-white/5 px-4 pt-4 z-30"
                 >
                     {footer}

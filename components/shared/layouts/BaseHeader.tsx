@@ -8,7 +8,6 @@
  */
 
 import { View, Text, Pressable } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, Settings, Bell } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { ReactNode } from 'react';
@@ -39,7 +38,6 @@ export function BaseHeader({
     showNotifications = false,
 }: BaseHeaderProps) {
     const router = useRouter();
-    const insets = useSafeAreaInsets();
 
     // Variant-based styling
     const isLarge = variant === 'large';
