@@ -132,10 +132,20 @@ export default function TermsScreen() {
                 <View className="absolute bottom-0 left-0 w-full p-6 bg-[#121212]/95 border-t border-white/5">
                     <Pressable
                         onPress={handleProceed}
-                        className={`w-full py-4 rounded-lg flex-row items-center justify-center gap-2 ${canProceed ? 'bg-primary shadow-lg shadow-primary/20' : 'bg-gray-800 opacity-50'}`}
                         disabled={!canProceed}
+                        style={{
+                            width: '100%',
+                            paddingVertical: 16,
+                            borderRadius: 8,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 8,
+                            backgroundColor: canProceed ? COLORS.primary.DEFAULT : '#1f2937',
+                            opacity: canProceed ? 1 : 0.5,
+                        }}
                     >
-                        <Text className={`text-lg font-bold ${canProceed ? 'text-[#121212]' : 'text-gray-500'}`}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: canProceed ? '#121212' : '#6b7280' }}>
                             Onayla ve Devam Et
                         </Text>
                         <MaterialIcons name="arrow-forward" size={20} color={canProceed ? '#121212' : '#6b7280'} />
