@@ -84,7 +84,6 @@ export function SettingsShell({ role }: SettingsShellProps) {
                 subtitle={`${user?.fullName || 'Kullanıcı'} • ${getModeLabel()}`}
                 variant="settings"
                 headerIcon={<Settings size={20} color="#121212" />}
-                useSafeArea={false}
             />
 
             <ScrollView className="flex-1 px-4 pt-4" showsVerticalScrollIndicator={false}>

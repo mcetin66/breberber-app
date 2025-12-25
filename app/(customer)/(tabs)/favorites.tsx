@@ -60,7 +60,6 @@ export default function FavoritesScreen() {
             <BaseHeader
                 title="Favorilerim"
                 noBorder
-                useSafeArea={false}
                 leftElement={
                     <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
                         <Heart size={20} color="#121212" />

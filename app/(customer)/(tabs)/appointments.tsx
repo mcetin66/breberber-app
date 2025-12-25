@@ -133,7 +133,6 @@ export default function AppointmentsScreen() {
         title="Randevularım"
         showNotifications
         noBorder
-        useSafeArea={false}
         leftElement={
           <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
             <CalendarDays size={20} color="#121212" />
