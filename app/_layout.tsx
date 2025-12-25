@@ -55,40 +55,29 @@ export default function RootLayout() {
     const inStaffGroup = segments[0] === '(staff)';
     const inPlatformGroup = segments[0] === '(platform)';
 
-    console.log('ROOT LAYOUT: Segments', JSON.stringify(segments));
-    console.log('ROOT LAYOUT: Auth State', { role: user?.role, isAuthenticated });
-
     const isPublicRoute = segments[0] === 'barber' || segments[0] === 'detail' || segments[0] === 'business-role' || segments[0] === 'role-selection' || segments[0] === '(legal)';
     if (isPublicRoute) return;
 
-    const { viewMode } = useAuthStore.getState(); // direct access to avoid stale closure
+    const { viewMode } = useAuthStore.getState();
 
-    if (!isAuthenticated && !inAuthGroup && !inPlatformGroup && segments[0] !== undefined) {
-      console.log('Redirecting to /');
+    if (!isAuthenticated && !inAuthGroup && segments[0] !== undefined) {
       router.replace('/');
-    } else if (isAuthenticated && user) {
+    } else if (isAuthenticated && user && segments[0] === undefined) {
+      // Only redirect when at root (index) - not on tab switches
       const currentRole = user.role;
       const currentView = viewMode || (currentRole === 'business_owner' ? 'business' : currentRole === 'staff' ? 'staff' : currentRole === 'platform_admin' ? 'platform' : 'customer');
 
-      if (currentView === 'customer' && !inCustomerGroup) {
-        console.log('Redirecting to /(customer)/(tabs)/home');
+      if (currentView === 'customer') {
         router.replace('/(customer)/(tabs)/home' as any);
-      }
-      else if (currentView === 'business' && !inBusinessGroup) {
-        console.log('Redirecting to /(business)/(tabs)/dashboard');
+      } else if (currentView === 'business') {
         router.replace('/(business)/(tabs)/dashboard');
-      }
-      // Staff view redirection (allows business_owner in staff mode)
-      else if (currentView === 'staff' && !inStaffGroup) {
-        console.log('Redirecting to /(staff)/(tabs)/dashboard');
+      } else if (currentView === 'staff') {
         router.replace('/(staff)/(tabs)/dashboard');
-      }
-      else if (currentView === 'platform' && !inPlatformGroup) {
-        console.log('Redirecting to /(platform)/dashboard');
+      } else if (currentView === 'platform') {
         router.replace('/(platform)/(tabs)/dashboard');
       }
     }
-  }, [isAuthenticated, user, segments, isLoading]); // removed viewMode from dep to avoid loops, access via getState
+  }, [isAuthenticated, user, isLoading, fontsLoaded, fontError]); // Removed segments to prevent redirect on every tab switch
 
   if ((!fontsLoaded && !fontError) || isLoading) {
     return (
