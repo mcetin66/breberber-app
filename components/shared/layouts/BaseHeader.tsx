@@ -51,8 +51,9 @@ export function BaseHeader({
     const containerPadding = isLarge ? 'px-5 pt-2 pb-6' : 'px-4 py-3';
 
     // Only add safe area padding if useSafeArea is true and variant is default
+    // Use Math.max to ensure minimum 44px (iOS safe area min) to prevent initial load jump
     const safeAreaStyle = useSafeArea && variant === 'default'
-        ? { paddingTop: insets.top > 0 ? insets.top + 8 : 12 }
+        ? { paddingTop: Math.max(insets.top, 44) + 8 }
         : undefined;
 
     return (
