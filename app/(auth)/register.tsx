@@ -7,6 +7,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { ScreenWrapper } from '@/components/ui/ScreenWrapper';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { LegalTextModal } from '@/components/modals/LegalTextModal';
 import { ArrowRight, ChevronLeft, User, Mail, Lock, Phone } from 'lucide-react-native';
 
 // Validation
@@ -45,6 +46,7 @@ export default function RegisterScreen() {
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [tosAccepted, setTosAccepted] = useState(false);
   const [marketingAllowed, setMarketingAllowed] = useState(false);
+  const [modalType, setModalType] = useState<'kvkk' | 'terms' | 'marketing' | null>(null);
 
   // Setup Form
   const { control, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormData>({
@@ -227,7 +229,7 @@ export default function RegisterScreen() {
             <View className="gap-3 mb-4">
               {/* KVKK Checkbox - Required */}
               <Pressable
-                onPress={() => setKvkkAccepted(!kvkkAccepted)}
+                onPress={() => setModalType('kvkk')}
                 className="flex-row items-start gap-3"
               >
                 <View className={`w-5 h-5 rounded border-2 items-center justify-center mt-0.5 ${kvkkAccepted ? 'bg-primary border-primary' : 'border-gray-500'
@@ -236,13 +238,13 @@ export default function RegisterScreen() {
                 </View>
                 <Text className="flex-1 text-gray-400 text-xs leading-relaxed">
                   <Text className="text-red-500">*</Text>{" "}
-                  <Text className="text-primary" onPress={() => router.push('/(legal)/terms')}>KVKK Aydınlatma Metni</Text>'ni okudum ve kabul ediyorum.
+                  <Text className="text-primary">KVKK Aydınlatma Metni</Text>'ni okudum ve kabul ediyorum.
                 </Text>
               </Pressable>
 
               {/* TOS Checkbox - Required */}
               <Pressable
-                onPress={() => setTosAccepted(!tosAccepted)}
+                onPress={() => setModalType('terms')}
                 className="flex-row items-start gap-3"
               >
                 <View className={`w-5 h-5 rounded border-2 items-center justify-center mt-0.5 ${tosAccepted ? 'bg-primary border-primary' : 'border-gray-500'
@@ -251,7 +253,7 @@ export default function RegisterScreen() {
                 </View>
                 <Text className="flex-1 text-gray-400 text-xs leading-relaxed">
                   <Text className="text-red-500">*</Text>{" "}
-                  <Text className="text-primary" onPress={() => router.push('/(legal)/terms')}>Kullanım Koşulları</Text>'nı okudum ve kabul ediyorum.
+                  <Text className="text-primary">Kullanım Koşulları</Text>'nı okudum ve kabul ediyorum.
                 </Text>
               </Pressable>
 
@@ -307,6 +309,20 @@ export default function RegisterScreen() {
           </View>
         </View>
       </TouchableWithoutFeedback>
+
+      {/* Legal Text Modal */}
+      {modalType && (
+        <LegalTextModal
+          visible={!!modalType}
+          onClose={() => setModalType(null)}
+          onAccept={() => {
+            if (modalType === 'kvkk') setKvkkAccepted(true);
+            if (modalType === 'terms') setTosAccepted(true);
+            if (modalType === 'marketing') setMarketingAllowed(true);
+          }}
+          type={modalType}
+        />
+      )}
     </ScreenWrapper>
   );
 }
