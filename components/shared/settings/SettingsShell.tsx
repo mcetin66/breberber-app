@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Switch, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/stores/authStore';
 import { SettingsRow } from './SettingsRow';
@@ -14,6 +14,7 @@ interface SettingsShellProps {
 }
 
 export function SettingsShell({ role }: SettingsShellProps) {
+    const insets = useSafeAreaInsets();
     const router = useRouter();
     const { signOut, user, viewMode, switchViewMode } = useAuthStore();
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -77,7 +78,7 @@ export function SettingsShell({ role }: SettingsShellProps) {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
+        <View className="flex-1 bg-[#121212]" style={{ paddingTop: insets.top }}>
             {/* Header - Using BaseHeader for consistency */}
             <BaseHeader
                 title="Ayarlar"
@@ -126,6 +127,6 @@ export function SettingsShell({ role }: SettingsShellProps) {
                     <Text className="text-gray-700 text-[10px] mt-1">Breberber © 2025</Text>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }

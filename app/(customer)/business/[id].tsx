@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, ScrollView, Image, Pressable, StatusBar, Animated, StyleSheet, LayoutAnimation, Platform, UIManager, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -50,6 +50,7 @@ const TABS = [
 ];
 
 export default function BusinessDetailScreen() {
+    const insets = useSafeAreaInsets();
     const { id } = useLocalSearchParams();
     const router = useRouter();
     const { user } = useAuthStore();
@@ -177,7 +178,7 @@ export default function BusinessDetailScreen() {
             </Animated.View>
 
             {/* Top Navigation Bar (Fixed) */}
-            <SafeAreaView edges={['top']} style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16 }}>
+            <View style={{ position: 'absolute', paddingTop: insets.top, top: 0, left: 0, right: 0, zIndex: 50, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16 }}>
                 <Pressable onPress={handleBack} className="w-10 h-10 rounded-full bg-black/30 items-center justify-center border border-white/10 backdrop-blur-md">
                     <MaterialIcons name="arrow-back" size={24} color="white" />
                 </Pressable>
@@ -192,7 +193,7 @@ export default function BusinessDetailScreen() {
                         <MaterialIcons name={isFavorite ? "favorite" : "favorite-border"} size={20} color={isFavorite ? "#121212" : "white"} />
                     </Pressable>
                 </View>
-            </SafeAreaView>
+            </View>
 
             {/* Main Content */}
             <Animated.ScrollView

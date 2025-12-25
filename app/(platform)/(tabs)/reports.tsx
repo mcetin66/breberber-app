@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, RefreshControl, Pressable, Dimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAdminStore } from '@/stores/adminStore';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { BarChart3, TrendingUp, Users, Store, FileBarChart } from 'lucide-react-native';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -97,19 +97,22 @@ export default function PlatformReportsScreen() {
     const activeTabConfig = currentTabs.find(t => t.id === activeTab) || currentTabs[0];
 
     return (
-        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            <BaseHeader
-                title="Raporlar"
-                subtitle="Detaylı analiz"
-                variant="settings"
-                headerIcon={<FileBarChart size={20} color="#121212" />}
-                rightElement={
-                    <View className="flex-row items-center gap-2 bg-[#1E1E1E] px-3 py-2 rounded-lg border border-white/5">
-                        <BarChart3 size={16} color="#d4af35" />
-                        <Text className="text-white text-xs font-semibold">{aggregateStats.totalBusinesses || 0} işletme</Text>
-                    </View>
-                }
-            />
+        <AppScreen
+            header={
+                <BaseHeader
+                    title="Raporlar"
+                    subtitle="Detaylı analiz"
+                    variant="settings"
+                    headerIcon={<FileBarChart size={20} color="#121212" />}
+                    rightElement={
+                        <View className="flex-row items-center gap-2 bg-[#1E1E1E] px-3 py-2 rounded-lg border border-white/5">
+                            <BarChart3 size={16} color="#d4af35" />
+                            <Text className="text-white text-xs font-semibold">{aggregateStats.totalBusinesses || 0} işletme</Text>
+                        </View>
+                    }
+                />
+            }
+        >
 
             <ScrollView
                 className="flex-1"
@@ -258,6 +261,6 @@ export default function PlatformReportsScreen() {
                 </View>
                 <View className="h-24" />
             </ScrollView>
-        </SafeAreaView>
+        </AppScreen>
     );
 }

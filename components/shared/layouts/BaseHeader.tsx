@@ -71,12 +71,15 @@ export function BaseHeader({
                         </View>
                     ) : null}
 
-                    {/* Title & Subtitle */}
-                    <View className="flex-1">
-                        {subtitle && (
+                    {/* Title & Subtitle - Sabit yükseklik için minHeight var */}
+                    <View className="flex-1" style={{ minHeight: 40 }}>
+                        {subtitle ? (
                             <Text className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-0.5">
                                 {subtitle}
                             </Text>
+                        ) : (
+                            // Subtitle yoksa bile boşluk bırak - header yüksekliği sabit kalsın
+                            <View style={{ height: 15 }} />
                         )}
                         <Text className={`text-white ${titleSize} font-bold tracking-tight`} numberOfLines={1}>
                             {title}

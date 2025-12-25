@@ -11,6 +11,8 @@ import { useAuthStore } from '@/stores/authStore';
 
 SplashScreen.preventAutoHideAsync().catch(() => { });
 
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
     Poppins_400Regular,
@@ -29,22 +31,24 @@ export default function RootLayout() {
 
   const isSplashHidden = React.useRef(false);
 
+  // Splash'i sadece layout tamamen hazır olduğunda gizle
   useEffect(() => {
-    if (fontsLoaded || fontError) {
+    // Hem fontlar yüklenmeli HEM de auth loading bitmeli
+    if ((fontsLoaded || fontError) && !isLoading) {
       if (!isSplashHidden.current) {
-        try {
+        // Küçük bir gecikme ekle - layout'un oturmasını bekle
+        const timer = setTimeout(() => {
           SplashScreen.hideAsync()
             .then(() => { isSplashHidden.current = true; })
             .catch((e) => {
               console.log('Splash Screen Safe Error:', e);
               isSplashHidden.current = true;
             });
-        } catch (e) {
-          // Ignore synchronous errors
-        }
+        }, 50); // 50ms gecikme - layout'un render olmasını bekle
+        return () => clearTimeout(timer);
       }
     }
-  }, [fontsLoaded, fontError]);
+  }, [fontsLoaded, fontError, isLoading]);
 
   useEffect(() => {
     if ((!fontsLoaded && !fontError) || isLoading) return;
@@ -79,13 +83,18 @@ export default function RootLayout() {
     }
   }, [isAuthenticated, user, isLoading, fontsLoaded, fontError]); // Removed segments to prevent redirect on every tab switch
 
-  if ((!fontsLoaded && !fontError) || isLoading) {
-    return (
-      <View style={{ flex: 1, backgroundColor: '#0f0f0f', alignItems: 'center', justifyContent: 'center' }} />
-    );
-  }
-
-  return (
+  // Her iki durumda da SafeAreaProvider içinde render et - bu layout jump'ı önler
+  const content = ((!fontsLoaded && !fontError) || isLoading) ? (
+    // Loading state - aynı padding ile boş ekran göster
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#0f0f0f',
+        paddingTop: initialWindowMetrics?.insets.top ?? 0
+      }}
+    />
+  ) : (
+    // Ana uygulama
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0f0f0f' }}>
       <StatusBar style="light" />
       <Stack screenOptions={{ headerShown: false, animation: 'fade' }}>
@@ -101,5 +110,11 @@ export default function RootLayout() {
       </Stack>
       <Toast />
     </GestureHandlerRootView>
+  );
+
+  return (
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      {content}
+    </SafeAreaProvider>
   );
 }

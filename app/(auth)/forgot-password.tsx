@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, Pressable, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '@/constants/theme';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase';
 import { Mail, ChevronLeft } from 'lucide-react-native';
 
 export default function ForgotPasswordScreen() {
+    const insets = useSafeAreaInsets();
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
@@ -43,8 +44,8 @@ export default function ForgotPasswordScreen() {
     };
 
     return (
-        <View className="flex-1 bg-[#121212]">
-            <SafeAreaView className="flex-1" edges={['top']}>
+        <View className="flex-1 bg-[#121212]" style={{ paddingTop: insets.top }}>
+            <View className="flex-1">
                 {/* Header */}
                 <View className="flex-row items-center px-4 py-3">
                     <Pressable
@@ -111,7 +112,7 @@ export default function ForgotPasswordScreen() {
                         </View>
                     )}
                 </View>
-            </SafeAreaView>
+            </View>
         </View>
     );
 }

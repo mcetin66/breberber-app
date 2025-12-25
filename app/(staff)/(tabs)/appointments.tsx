@@ -1,20 +1,23 @@
 import { View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar, Clock } from 'lucide-react-native';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { AppHeader } from '@/components/shared/layouts/AppHeader';
 
 export default function StaffAppointmentsScreen() {
     return (
-        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            <AppHeader
-                title="Randevularım"
-                subtitle="PERSONEL"
-                leftElement={
-                    <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
-                        <Calendar size={20} color="#121212" />
-                    </View>
-                }
-            />
+        <AppScreen
+            header={
+                <AppHeader
+                    title="Randevularım"
+                    subtitle="PERSONEL"
+                    leftElement={
+                        <View className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center">
+                            <Calendar size={20} color="#121212" />
+                        </View>
+                    }
+                />
+            }
+        >
 
             <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
                 {/* Placeholder content */}
@@ -28,6 +31,6 @@ export default function StaffAppointmentsScreen() {
                     </Text>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </AppScreen>
     );
 }

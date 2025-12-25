@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, Image, FlatList, RefreshControl, Switch } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Search, MapPin, Star, ChevronRight, Plus, Store, Users, TrendingUp, Crown, ArrowRight } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { useAdminStore } from '@/stores/adminStore';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddBusinessModal from '@/components/admin/AddBusinessModal';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 // İşletme Türü Filtreleri
@@ -74,21 +74,24 @@ export default function PlatformBusinessesScreen() {
     const totalCount = barbers.length;
 
     return (
-        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            <BaseHeader
-                title="İşletmeler"
-                subtitle={`${totalCount} kayıtlı • ${activeCount} aktif`}
-                variant="settings"
-                headerIcon={<Store size={20} color="#121212" />}
-                rightElement={
-                    <Pressable
-                        onPress={() => setShowAddModal(true)}
-                        className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center"
-                    >
-                        <Plus size={20} color="#d4af35" />
-                    </Pressable>
-                }
-            />
+        <AppScreen
+            header={
+                <BaseHeader
+                    title="İşletmeler"
+                    subtitle={`${totalCount} kayıtlı • ${activeCount} aktif`}
+                    variant="settings"
+                    headerIcon={<Store size={20} color="#121212" />}
+                    rightElement={
+                        <Pressable
+                            onPress={() => setShowAddModal(true)}
+                            className="w-10 h-10 rounded-full bg-[#1E1E1E] border border-white/10 items-center justify-center"
+                        >
+                            <Plus size={20} color="#d4af35" />
+                        </Pressable>
+                    }
+                />
+            }
+        >
 
             {/* Standard Search Bar */}
             <View className="px-4 py-3">
@@ -280,6 +283,6 @@ export default function PlatformBusinessesScreen() {
                 visible={showAddModal}
                 onClose={() => setShowAddModal(false)}
             />
-        </SafeAreaView>
+        </AppScreen>
     );
 }

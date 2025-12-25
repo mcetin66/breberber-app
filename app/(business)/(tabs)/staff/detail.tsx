@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Switch, Modal, FlatList, Platform, KeyboardAvoidingView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Camera, Clock, Check, ChevronDown, X, Coffee, Users } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLORS } from '@/constants/theme';
 import { useBusinessStore } from '@/stores/businessStore';
 import { useAuthStore } from '@/stores/authStore';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 
 export default function StaffDetailScreen() {
@@ -166,17 +166,19 @@ export default function StaffDetailScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-[#0F172A]" edges={['top']}>
+        <AppScreen
+            header={
+                <AdminHeader
+                    title={isEditing ? 'Personeli Düzenle' : 'Yeni Personel'}
+                    headerIcon={<Users size={20} color="#121212" />}
+                    showBack
+                    rightElement={<View className="w-10" />}
+                />
+            }
+            backgroundColor="#0F172A"
+        >
             {/* Hide Native Header */}
             <Stack.Screen options={{ headerShown: false }} />
-
-            {/* Standard Header */}
-            <AdminHeader
-                title={isEditing ? 'Personeli Düzenle' : 'Yeni Personel'}
-                headerIcon={<Users size={20} color="#121212" />}
-                showBack
-                rightElement={<View className="w-10" />}
-            />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -426,6 +428,6 @@ export default function StaffDetailScreen() {
                     />
                 )
             )}
-        </SafeAreaView>
+        </AppScreen>
     );
 }

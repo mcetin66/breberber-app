@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Check, Calendar, Percent, Bell, Clock, Tag, CheckCircle, Lightbulb, Receipt } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
@@ -69,6 +69,7 @@ const FILTER_CHIPS = [
 ];
 
 export default function NotificationsScreen() {
+    const insets = useSafeAreaInsets();
     const router = useRouter();
     const [activeFilter, setActiveFilter] = useState('all');
 
@@ -92,7 +93,7 @@ export default function NotificationsScreen() {
             <StatusBar barStyle="light-content" />
 
             {/* Header */}
-            <SafeAreaView edges={['top']} className="bg-[#121212]/95 backdrop-blur-md border-b border-white/5 z-50">
+            <View style={{ paddingTop: insets.top }} className="bg-[#121212]/95 backdrop-blur-md border-b border-white/5 z-50">
                 <View className="flex-row items-center justify-between px-4 py-3">
                     <Pressable
                         onPress={() => router.back()}
@@ -126,7 +127,7 @@ export default function NotificationsScreen() {
                         })}
                     </ScrollView>
                 </View>
-            </SafeAreaView>
+            </View>
 
             <ScrollView className="flex-1 px-4 pt-4" showsVerticalScrollIndicator={false}>
                 {Object.entries(groupedNotifications).map(([date, notifications]) => (

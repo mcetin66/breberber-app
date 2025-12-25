@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, Camera, Edit2, Store, Type, Check, Briefcase } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { COLORS } from '@/constants/theme';
@@ -88,9 +88,11 @@ export default function BusinessProfileScreen() {
         { id: 'Manikür & Pedikür', icon: 'pan-tool-alt', label: 'Manikür & Pedikür' },
     ];
 
+    const insets = useSafeAreaInsets();
+
     return (
         <View className="flex-1 bg-[#121212]">
-            <SafeAreaView edges={['top']} className="bg-[#121212] z-10 px-4 py-3 border-b border-white/5">
+            <View style={{ paddingTop: insets.top }} className="bg-[#121212] z-10 px-4 py-3 border-b border-white/5">
                 <View className="flex-row items-center justify-between">
                     <Pressable onPress={() => router.back()} className="w-10 h-10 items-center justify-center rounded-full active:bg-white/5">
                         <ChevronLeft size={24} color="white" />
@@ -98,7 +100,7 @@ export default function BusinessProfileScreen() {
                     <Text className="text-white text-lg font-bold">İşletme Bilgileri</Text>
                     <View className="w-10" />
                 </View>
-            </SafeAreaView>
+            </View>
 
             {/* Steps Indicator (Mock) */}
             <View className="flex-row justify-center gap-2 py-4">

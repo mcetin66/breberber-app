@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, Pressable, ActivityIndicator, ImageBackground, Dimensions } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useBusinessStore } from '@/stores/businessStore';
@@ -27,6 +27,7 @@ const SERVICES = [
 ];
 
 export default function BarberDetailScreen() {
+    const insets = useSafeAreaInsets();
     const { id } = useLocalSearchParams();
     console.log('--- BARBER DETAIL SCREEN MOUNTED ---', { id });
     const router = useRouter();
@@ -81,7 +82,7 @@ export default function BarberDetailScreen() {
                     </ImageBackground>
 
                     {/* Top Navigation */}
-                    <SafeAreaView className="absolute top-0 left-0 right-0 flex-row justify-between items-center px-4 pt-2">
+                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, paddingTop: insets.top }} className="flex-row justify-between items-center px-4">
                         <Pressable
                             onPress={() => router.back()}
                             className="w-10 h-10 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm active:bg-black/50"
@@ -102,7 +103,7 @@ export default function BarberDetailScreen() {
                                 <MaterialIcons name="favorite-border" size={20} color="white" />
                             </Pressable>
                         </View>
-                    </SafeAreaView>
+                    </View>
 
                     {/* Header Info */}
                     <View className="absolute bottom-6 left-0 right-0 px-5">

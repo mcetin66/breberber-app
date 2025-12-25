@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Switch, Platform, KeyboardAvoidingView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Clock, DollarSign, AlignLeft, Scissors } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import { COLORS } from '@/constants/theme';
 import { useBusinessStore } from '@/stores/businessStore';
 import { useAuthStore } from '@/stores/authStore';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 
 export default function ServiceDetailScreen() {
@@ -66,16 +66,17 @@ export default function ServiceDetailScreen() {
     const categories = ['Saç Kesimi', 'Sakal Tıraşı', 'Saç Bakımı', 'Cilt Bakımı', 'Diğer'];
 
     return (
-        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
+        <AppScreen
+            header={
+                <AdminHeader
+                    title={isEditing ? 'Hizmeti Düzenle' : 'Yeni Hizmet'}
+                    headerIcon={<Scissors size={20} color="#121212" />}
+                    showBack
+                    rightElement={<View className="w-10" />}
+                />
+            }
+        >
             <Stack.Screen options={{ headerShown: false }} />
-
-            {/* Standard Header */}
-            <AdminHeader
-                title={isEditing ? 'Hizmeti Düzenle' : 'Yeni Hizmet'}
-                headerIcon={<Scissors size={20} color="#121212" />}
-                showBack
-                rightElement={<View className="w-10" />}
-            />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -194,6 +195,6 @@ export default function ServiceDetailScreen() {
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
-        </SafeAreaView>
+        </AppScreen>
     );
 }

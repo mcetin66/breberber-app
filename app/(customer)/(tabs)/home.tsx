@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, Pressable, TextInput, StatusBar, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -21,6 +21,7 @@ const CATEGORIES = [
 ];
 
 export default function HomeScreen() {
+    const insets = useSafeAreaInsets();
     const { user } = useAuthStore();
     const router = useRouter();
     const [businesses, setBusinesses] = useState<Business[]>([]);
@@ -50,7 +51,7 @@ export default function HomeScreen() {
             <StatusBar barStyle="light-content" />
 
             {/* Header */}
-            <SafeAreaView edges={['top']} className="bg-[#121212] z-40">
+            <View className="bg-[#121212] z-40" style={{ paddingTop: insets.top }}>
                 <View className="px-5 pt-2 pb-2 flex-row items-center justify-between">
                     <View className="flex-row items-center gap-3">
                         <View className="relative">
@@ -100,7 +101,7 @@ export default function HomeScreen() {
                         </Pressable>
                     </View>
                 </View>
-            </SafeAreaView>
+            </View>
 
             <ScrollView
                 className="flex-1"

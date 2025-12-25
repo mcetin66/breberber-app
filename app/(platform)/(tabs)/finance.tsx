@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, ActivityIndicator, FlatList, RefreshControl } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Wallet, TrendingUp, CreditCard, ArrowUpRight, ArrowDownLeft, ChevronRight, BarChart3, Crown, Calendar, RefreshCw } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAdminStore } from '@/stores/adminStore';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function PlatformFinanceScreen() {
@@ -29,13 +29,16 @@ export default function PlatformFinanceScreen() {
     const revenueHistory = aggregateStats.revenueHistory || [];
 
     return (
-        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-            <BaseHeader
-                title="Finans"
-                subtitle="Gelir ve abonelik takibi"
-                variant="settings"
-                headerIcon={<Wallet size={20} color="#121212" />}
-            />
+        <AppScreen
+            header={
+                <BaseHeader
+                    title="Finans"
+                    subtitle="Gelir ve abonelik takibi"
+                    variant="settings"
+                    headerIcon={<Wallet size={20} color="#121212" />}
+                />
+            }
+        >
 
             <ScrollView
                 className="flex-1"
@@ -184,6 +187,6 @@ export default function PlatformFinanceScreen() {
 
                 <View className="h-24" />
             </ScrollView>
-        </SafeAreaView>
+        </AppScreen>
     );
 }

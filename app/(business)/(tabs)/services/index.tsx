@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus, Clock, Edit, Trash2, Users, Scissors } from 'lucide-react-native';
 import { useAuthStore } from '@/stores/authStore';
 import { useBusinessStore } from '@/stores/businessStore';
 import { useRouter } from 'expo-router';
 import { COLORS } from '@/constants/theme';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 import { formatCurrency } from '@/utils/format';
 
@@ -53,48 +53,33 @@ export default function ServicesScreen() {
 
   if (loading && services.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-background">
+      <AppScreen>
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={COLORS.primary.DEFAULT} />
           <Text className="text-text-secondary font-poppins mt-4">Hizmetler yükleniyor...</Text>
         </View>
-      </SafeAreaView>
+      </AppScreen>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-      <AdminHeader
-        title="Hizmetler"
-        subtitle="Servislerinizi yönetin"
-        headerIcon={<Scissors size={20} color="#121212" />}
-        rightElement={
-          <Pressable
-            onPress={() => router.push('/(business)/(tabs)/services/detail')}
-            className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center shadow-lg shadow-[#d4af35]/30 active:scale-95"
-          >
-            <Plus size={24} color="#121212" />
-          </Pressable>
-        }
-      >
-        {categories.length > 1 && (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-2">
-            {categories.map((cat) => (
-              <Pressable
-                key={cat}
-                onPress={() => setSelectedCategory(cat ?? 'Tümü')}
-                className={`rounded-xl px-4 py-2 mr-2 border ${selectedCategory === cat ? 'bg-[#d4af35] border-[#d4af35]' : 'bg-[#1E1E1E] border-white/5'}`}
-              >
-                <Text
-                  className={`font-poppins-semibold text-xs ${selectedCategory === cat ? 'text-black' : 'text-zinc-400'}`}
-                >
-                  {cat}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-        )}
-      </AdminHeader>
+    <AppScreen
+      header={
+        <AdminHeader
+          title="Hizmetler"
+          subtitle="Servislerinizi yönetin"
+          headerIcon={<Scissors size={20} color="#121212" />}
+          rightElement={
+            <Pressable
+              onPress={() => router.push('/(business)/(tabs)/services/detail')}
+              className="w-10 h-10 rounded-full bg-[#d4af35] items-center justify-center shadow-lg shadow-[#d4af35]/30 active:scale-95"
+            >
+              <Plus size={24} color="#121212" />
+            </Pressable>
+          }
+        />
+      }
+    >
 
       <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
         {filteredServices.length > 0 ? (
@@ -184,6 +169,6 @@ export default function ServicesScreen() {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </AppScreen>
   );
 }

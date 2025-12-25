@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator, Alert, Switch, KeyboardAvoidingView, Platform, Modal } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, Check, Trash2, Edit2, DollarSign, Clock, ChevronDown, Wand2, X } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import { COLORS } from '@/constants/theme';
@@ -92,12 +92,14 @@ export default function ServiceEditorScreen() {
         ]);
     }
 
+    const insets = useSafeAreaInsets();
+
     return (
         <View className="flex-1 bg-[#0F172A]">
             <Stack.Screen options={{ headerShown: false }} />
 
             {/* Header */}
-            <SafeAreaView edges={['top']} className="bg-[#0F172A] border-b border-white/5 z-10 px-4 py-3 pb-4">
+            <View style={{ paddingTop: insets.top }} className="bg-[#0F172A] border-b border-white/5 z-10 px-4 py-3 pb-4">
                 <View className="flex-row items-center justify-between">
                     <Pressable onPress={() => router.back()} className="w-10 h-10 items-center justify-center rounded-full active:bg-white/5">
                         <ChevronLeft size={24} color="white" />
@@ -105,7 +107,7 @@ export default function ServiceEditorScreen() {
                     <Text className="text-white text-lg font-bold">{isEditing ? 'Hizmeti Düzenle' : 'Yeni Hizmet'}</Text>
                     <View className="w-10" />
                 </View>
-            </SafeAreaView>
+            </View>
 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1">
                 <ScrollView className="flex-1 px-5 pt-6" contentContainerStyle={{ paddingBottom: 50 }}>

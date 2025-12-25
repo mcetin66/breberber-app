@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, Pressable, StatusBar, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -13,6 +13,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { bookingService } from '@/services/bookings';
 
 export default function AppointmentsScreen() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -126,11 +127,12 @@ export default function AppointmentsScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
+    <View className="flex-1 bg-[#121212]" style={{ paddingTop: insets.top }}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
       <BaseHeader
         title="Randevularım"
+        subtitle={`${upcomingBookings.length} aktif randevu`}
         showNotifications
         noBorder
         leftElement={
@@ -274,6 +276,6 @@ export default function AppointmentsScreen() {
           }}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }

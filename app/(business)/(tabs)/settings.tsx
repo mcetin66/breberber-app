@@ -62,6 +62,7 @@ export default function BusinessSettingsScreen() {
     return (
         <StandardScreen
             title="Ayarlar"
+            subtitle={activeBusiness?.name ? `${activeBusiness.name} • İşletme Sahibi` : 'İşletme Sahibi'}
             headerIcon={<Settings size={20} color="#121212" />}
             noPadding
         >

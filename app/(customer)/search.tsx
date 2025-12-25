@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, TextInput, Pressable, Image, Dimensions, StatusBar, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -17,6 +17,7 @@ const TABS = [
 ];
 
 export default function SearchScreen() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const params = useLocalSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,7 +72,7 @@ export default function SearchScreen() {
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
       {/* Header Section */}
-      <SafeAreaView edges={['top']} className="bg-[#121212]/95 border-b border-[#333] z-50">
+      <View className="bg-[#121212]/95 border-b border-[#333] z-50" style={{ paddingTop: insets.top }}>
         <View className="px-4 pb-2 pt-2">
           <View className="flex-row items-center bg-[#1E1E1E] rounded-xl h-12 border border-[#333] mb-3">
             <View className="pl-4 pr-2">
@@ -110,7 +111,7 @@ export default function SearchScreen() {
             ))}
           </View>
         </View>
-      </SafeAreaView>
+      </View>
 
       <ScrollView
         className="flex-1"

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { View, Text, Pressable, Image, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Store, TrendingUp, Wallet, Clock, ChevronRight, Bell, Users, Calendar, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useAdminStore } from '@/stores/adminStore';
+import { AppScreen } from '@/components/shared/layouts/AppScreen';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function AdminDashboardScreen() {
@@ -16,14 +16,17 @@ export default function AdminDashboardScreen() {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
-      <BaseHeader
-        title="Platform Yönetimi"
-        subtitle="Hoş geldiniz"
-        variant="settings"
-        headerIcon={<Sparkles size={20} color="#121212" />}
-        showNotifications
-      />
+    <AppScreen
+      header={
+        <BaseHeader
+          title="Platform Yönetimi"
+          subtitle="Hoş geldiniz"
+          variant="settings"
+          headerIcon={<Sparkles size={20} color="#121212" />}
+          showNotifications
+        />
+      }
+    >
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
 
@@ -151,6 +154,6 @@ export default function AdminDashboardScreen() {
 
         <View className="h-24" />
       </ScrollView>
-    </SafeAreaView>
+    </AppScreen>
   );
 }

@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar, View, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -10,12 +10,20 @@ interface ScreenWrapperProps {
 }
 
 export const ScreenWrapper = ({ children, style, noPadding, className }: ScreenWrapperProps) => {
+    const insets = useSafeAreaInsets();
     return (
         <LinearGradient
             colors={['#121212', '#0a0a0a']} // Main dark theme gradient
             style={{ flex: 1 }}
         >
-            <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+            <View
+                style={{
+                    flex: 1,
+                    paddingTop: insets.top,
+                    paddingLeft: insets.left,
+                    paddingRight: insets.right
+                }}
+            >
                 <StatusBar barStyle="light-content" />
                 <View
                     className={`flex-1 ${noPadding ? '' : 'px-4'} ${className || ''}`}
@@ -23,7 +31,7 @@ export const ScreenWrapper = ({ children, style, noPadding, className }: ScreenW
                 >
                     {children}
                 </View>
-            </SafeAreaView>
+            </View>
         </LinearGradient>
     );
 };

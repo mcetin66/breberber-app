@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, Image, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowLeft, Star, Check } from 'lucide-react-native';
 import { useBookingStore } from '@/stores/bookingStore';
 import { useBusinessStore } from '@/stores/businessStore';
@@ -10,6 +10,7 @@ import { COLORS } from '@/constants/theme';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function StaffSelectionScreen() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const { barber, staff: selectedStaff, setStaff } = useBookingStore();
   const { barberData, loading, fetchStaff } = useBusinessStore();
@@ -36,16 +37,16 @@ export default function StaffSelectionScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 bg-background">
+      <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={COLORS.primary.DEFAULT} />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background" edges={['top']}>
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <BaseHeader
         title="Berber Seçin"
         subtitle={barber?.name}
@@ -121,6 +122,6 @@ export default function StaffSelectionScreen() {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

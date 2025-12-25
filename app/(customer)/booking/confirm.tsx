@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, ScrollView, Pressable, TextInput, Image, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowLeft, Calendar, Clock, User, MapPin, Check } from 'lucide-react-native';
 import { useBookingStore } from '@/stores/bookingStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -9,6 +9,7 @@ import { COLORS } from '@/constants/theme';
 import { BaseHeader } from '@/components/shared/layouts/BaseHeader';
 
 export default function ConfirmBookingScreen() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const user = useAuthStore(state => state.user);
   const { barber, staff, selectedServices, selectedDate, selectedSlot, totalDuration, totalPrice, notes, setNotes, resetBooking, createBooking, error } = useBookingStore();
@@ -57,7 +58,7 @@ export default function ConfirmBookingScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background" edges={['top']}>
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <BaseHeader
         title="Randevu Özeti"
         subtitle="Son adım"
@@ -189,6 +190,6 @@ export default function ConfirmBookingScreen() {
           </Text>
         </Pressable>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }

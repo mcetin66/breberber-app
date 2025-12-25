@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, Pressable, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '@/constants/theme';
 import { useAuthStore } from '@/stores/authStore';
 import { Input } from '@/components/ui/Input';
@@ -21,6 +21,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function StaffLoginScreen() {
+    const insets = useSafeAreaInsets();
     const router = useRouter();
     const { signIn } = useAuthStore();
     const [loading, setLoading] = useState(false);
@@ -60,8 +61,8 @@ export default function StaffLoginScreen() {
     };
 
     return (
-        <View className="flex-1 bg-[#121212]">
-            <SafeAreaView className="flex-1" edges={['top']}>
+        <View className="flex-1 bg-[#121212]" style={{ paddingTop: insets.top }}>
+            <View className="flex-1">
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View className="flex-1 px-6">
                         {/* Header */}
@@ -175,7 +176,7 @@ export default function StaffLoginScreen() {
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
-            </SafeAreaView>
+            </View>
         </View>
     );
 }

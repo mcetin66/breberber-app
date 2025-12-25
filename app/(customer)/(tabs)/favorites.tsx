@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, Pressable, TextInput, StatusBar, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/constants/theme';
@@ -19,6 +19,7 @@ const FILTER_LABELS: Record<string, string> = {
 };
 
 export default function FavoritesScreen() {
+    const insets = useSafeAreaInsets();
     const router = useRouter();
     const { user } = useAuthStore();
     const [activeFilter, setActiveFilter] = useState('Tümü');
@@ -54,7 +55,7 @@ export default function FavoritesScreen() {
     });
 
     return (
-        <SafeAreaView className="flex-1 bg-[#121212]" edges={['top']}>
+        <View className="flex-1 bg-[#121212]" style={{ paddingTop: insets.top }}>
             <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
             <BaseHeader
@@ -176,6 +177,6 @@ export default function FavoritesScreen() {
                     </View>
                 )}
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }
