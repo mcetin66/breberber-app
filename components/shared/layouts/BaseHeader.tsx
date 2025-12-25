@@ -51,7 +51,6 @@ export function BaseHeader({
     return (
         <View
             className={`${containerPadding} bg-[#121212] ${!noBorder ? 'border-b border-white/5' : ''}`}
-            style={{ paddingTop: variant === 'default' ? (insets.top > 0 ? insets.top + 8 : 12) : undefined }}
         >
             <View className="flex-row items-center justify-between">
                 <View className="flex-row items-center gap-3 flex-1">
