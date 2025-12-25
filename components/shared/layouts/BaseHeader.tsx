@@ -8,6 +8,7 @@
  */
 
 import { View, Text, Pressable } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, Settings, Bell } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { ReactNode } from 'react';
@@ -23,6 +24,7 @@ export interface BaseHeaderProps {
     variant?: 'default' | 'large' | 'settings';
     noBorder?: boolean;
     showNotifications?: boolean;
+    useSafeArea?: boolean; // NEW: Opt-in safe area padding
 }
 
 export function BaseHeader({
@@ -36,8 +38,10 @@ export function BaseHeader({
     variant = 'default',
     noBorder = false,
     showNotifications = false,
+    useSafeArea = true, // Default true for backwards compatibility
 }: BaseHeaderProps) {
     const router = useRouter();
+    const insets = useSafeAreaInsets();
 
     // Variant-based styling
     const isLarge = variant === 'large';
@@ -46,9 +50,15 @@ export function BaseHeader({
     const titleSize = isLarge ? 'text-3xl' : 'text-lg';
     const containerPadding = isLarge ? 'px-5 pt-2 pb-6' : 'px-4 py-3';
 
+    // Only add safe area padding if useSafeArea is true and variant is default
+    const safeAreaStyle = useSafeArea && variant === 'default'
+        ? { paddingTop: insets.top > 0 ? insets.top + 8 : 12 }
+        : undefined;
+
     return (
         <View
             className={`${containerPadding} bg-[#121212] ${!noBorder ? 'border-b border-white/5' : ''}`}
+            style={safeAreaStyle}
         >
             <View className="flex-row items-center justify-between">
                 <View className="flex-row items-center gap-3 flex-1">
