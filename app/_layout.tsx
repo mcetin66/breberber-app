@@ -102,6 +102,7 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false, animation: 'fade' }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(legal)" />
         <Stack.Screen name="(customer)" />
         <Stack.Screen name="(business)" />
         <Stack.Screen name="(staff)" />
