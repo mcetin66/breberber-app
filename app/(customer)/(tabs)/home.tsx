@@ -55,14 +55,14 @@ export default function HomeScreen() {
                     <View className="flex-row items-center gap-3">
                         <View className="relative">
                             <Image
-                                source={{ uri: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80' }}
+                                source={{ uri: user?.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80' }}
                                 className="w-12 h-12 rounded-full border-2 border-primary/30"
                             />
                             <View className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#121212]" />
                         </View>
                         <View>
                             <Text className="text-xs text-[#9dabb9] font-medium uppercase tracking-wider">Hoş geldin</Text>
-                            <Text className="text-white text-lg font-bold">{user?.name || 'Misafir'}</Text>
+                            <Text className="text-white text-lg font-bold">{user?.fullName || 'Misafir'}</Text>
                         </View>
                     </View>
 
