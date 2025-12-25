@@ -6,6 +6,7 @@ import { COLORS } from '@/constants/theme';
 interface LegalTextModalProps {
     visible: boolean;
     onClose: () => void;
+    onAccept?: () => void;
     type: 'kvkk' | 'terms' | 'marketing';
 }
 
@@ -111,8 +112,13 @@ Not: Randevu bildirimleri, hizmetin doğası gereği zorunludur ve bu izinden ba
     }
 };
 
-export function LegalTextModal({ visible, onClose, type }: LegalTextModalProps) {
+export function LegalTextModal({ visible, onClose, onAccept, type }: LegalTextModalProps) {
     const content = LEGAL_CONTENT[type];
+
+    const handleAccept = () => {
+        onAccept?.();
+        onClose();
+    };
 
     return (
         <Modal
@@ -141,10 +147,9 @@ export function LegalTextModal({ visible, onClose, type }: LegalTextModalProps) 
                     </Text>
                 </ScrollView>
 
-                {/* Footer */}
                 <View className="p-4 border-t border-white/5">
                     <Pressable
-                        onPress={onClose}
+                        onPress={handleAccept}
                         className="w-full py-4 rounded-xl bg-primary items-center justify-center"
                     >
                         <Text className="text-black font-bold text-base">Okudum, Anladım</Text>

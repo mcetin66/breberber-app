@@ -58,7 +58,7 @@ export default function TermsScreen() {
                                     <Text className="text-white font-medium text-sm">KVKK Aydınlatma Metni</Text>
                                     <Switch
                                         value={kvkkAccepted}
-                                        onValueChange={setKvkkAccepted}
+                                        onValueChange={() => openModal('kvkk')}
                                         trackColor={{ false: '#334155', true: COLORS.primary.DEFAULT }}
                                         thumbColor={'white'}
                                     />
@@ -82,7 +82,7 @@ export default function TermsScreen() {
                                     <Text className="text-white font-medium text-sm">Üyelik Sözleşmesi</Text>
                                     <Switch
                                         value={termsAccepted}
-                                        onValueChange={setTermsAccepted}
+                                        onValueChange={() => openModal('terms')}
                                         trackColor={{ false: '#334155', true: COLORS.primary.DEFAULT }}
                                         thumbColor={'white'}
                                     />
@@ -109,7 +109,7 @@ export default function TermsScreen() {
                                     <Text className="text-white font-medium text-sm">Kampanya İzinleri</Text>
                                     <Switch
                                         value={marketingAccepted}
-                                        onValueChange={setMarketingAccepted}
+                                        onValueChange={() => openModal('marketing')}
                                         trackColor={{ false: '#334155', true: COLORS.primary.DEFAULT }}
                                         thumbColor={'white'}
                                     />
@@ -158,6 +158,11 @@ export default function TermsScreen() {
                 <LegalTextModal
                     visible={!!modalType}
                     onClose={() => setModalType(null)}
+                    onAccept={() => {
+                        if (modalType === 'kvkk') setKvkkAccepted(true);
+                        if (modalType === 'terms') setTermsAccepted(true);
+                        if (modalType === 'marketing') setMarketingAccepted(true);
+                    }}
                     type={modalType}
                 />
             )}
