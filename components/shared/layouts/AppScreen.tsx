@@ -42,15 +42,16 @@ export function AppScreen({
     header,
     useSafeArea = true,
     backgroundColor = '#121212',
-    noPadding = false,
+    noPadding = true,  // Varsayılan true - mevcut ekranlar kendi padding'lerini yönetiyor
     scrollable = false,
     style,
     ...props
 }: AppScreenProps) {
     const insets = useSafeAreaInsets();
 
+    // Sadece noPadding false ise padding uygula
     const bodyContent = noPadding ? children : (
-        <View style={{ paddingHorizontal: SCREEN_PADDING.horizontal, paddingTop: SCREEN_PADDING.top }}>
+        <View style={{ paddingHorizontal: SCREEN_PADDING.horizontal, paddingTop: SCREEN_PADDING.top, flex: 1 }}>
             {children}
         </View>
     );

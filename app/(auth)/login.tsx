@@ -164,7 +164,7 @@ export default function LoginScreen() {
           await AsyncStorage.setItem('saved_accounts', JSON.stringify(allAccounts));
         }
 
-        // Routing Logic
+        // Rol bazlı yönlendirme
         if (user?.role === 'business_owner') {
           router.replace('/(business)/(tabs)/dashboard');
         } else if (user?.role === 'staff') {
